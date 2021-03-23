@@ -14,31 +14,98 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DonateService{
-  static showDonateDialog(BuildContext context,Project project) {
-    TextEditingController _moneyControllerField = TextEditingController();
-    TextEditingController _messageControllerField = TextEditingController();
-    String str_donate_money="";
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomAlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width / 1,
-              color: Colors.white,
+
+
+class DonateScreen extends StatefulWidget {
+  final Project project;
+  DonateScreen({@required this.project});
+  @override
+  _DonateScreenState createState() => _DonateScreenState();
+}
+
+class _DonateScreenState extends State<DonateScreen> {
+  TextEditingController _moneyControllerField = TextEditingController();
+  TextEditingController _messageControllerField = TextEditingController();
+  String str_donate_money="";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Quyên góp',
+          style: const TextStyle(
+            color: kPrimaryColor,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: -1.2,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            onPressed: () {
+              // do something
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(30,10,30,10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(0))),
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Text(project.project_name,
+                    Container(
+                      height: MediaQuery.of(context).size.width - 200,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                            ),
+                          ],
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(widget.project.image_url),
+                          )),
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    Text(widget.project.project_name,
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: size.height * 0.01),
                     Container(height: 1.5,color: Colors.grey[300],margin: EdgeInsets.symmetric(horizontal: 0),),
-                    SizedBox(height: 10),
+                    SizedBox(height: size.height * 0.01),
                     Text("Phương thức thanh toán"),
                     IconButton(
                       icon: FaIcon(FontAwesomeIcons.paypal), onPressed: () {  },
@@ -46,7 +113,7 @@ class DonateService{
                       iconSize: 40,
                     ),
                     Container(height: 1.5,color: Colors.grey[300],margin: EdgeInsets.symmetric(horizontal: 0),),
-                    SizedBox(height: 10),
+                    SizedBox(height: size.height * 0.01),
                     CustomCheckBoxGroup(
                       buttonTextStyle: ButtonTextStyle(
                         selectedColor: Colors.white,
@@ -65,7 +132,9 @@ class DonateService{
                         int selected_money=0;
                         values.forEach((i) {selected_money+=i; });
                         _moneyControllerField.text=selected_money.toString();
-                        str_donate_money=selected_money.toString();
+                        setState(() {
+                          str_donate_money=selected_money.toString();
+                        });
                       },
                       defaultSelected: null,
                       horizontal: false,
@@ -74,9 +143,9 @@ class DonateService{
                       padding: 5,
                       enableShape: true,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: size.height * 0.01),
                     Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: Container(
                         child: Text("Số tiền: "+MoneyUtility.numberToString(str_donate_money)+"đồng"),
                       ),
@@ -88,11 +157,14 @@ class DonateService{
                       controller: _moneyControllerField,
                       onTopClearIcon: ()=>{
                         _moneyControllerField.clear(),
-                        str_donate_money = '',
-
+                        setState(() {
+                          str_donate_money = '';
+                        }),
                       },
                       onChanged: (value) {
-                        str_donate_money=value;
+                        setState(() {
+                          str_donate_money=value;
+                        });
                         if(CheckString.onlyNumber(value.toString())==false){
                           _moneyControllerField.clear();
                           str_donate_money='';
@@ -106,7 +178,7 @@ class DonateService{
                               fontSize: 16.0
                           );
                         }
-                        if(int.tryParse(value) > 1000000000){
+                        if(int.tryParse(value) > 20000000){
                           _moneyControllerField.clear();
                           str_donate_money='';
                           Fluttertoast.showToast(
@@ -119,7 +191,7 @@ class DonateService{
                               fontSize: 16.0
                           );
                         }
-                        },
+                      },
                     ),
                     RoundedInputField(
                       hintText: "Lời nhắn",
@@ -132,7 +204,7 @@ class DonateService{
                     RoundedButton(
                       text: "Ủng hộ",
                       press: ()async{
-                        int lessMoney=project.target_money-project.cur_money;
+                        int lessMoney=widget.project.target_money-widget.project.cur_money;
                         String message="";
                         int errorCode=-1;
                         if(_moneyControllerField.text.length != 0){
@@ -141,7 +213,7 @@ class DonateService{
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               int donator_id = prefs.getInt('donator_id');
                               if(donator_id==null){donator_id = -1;}  //nếu chưa đăng nhập***** Vấn đề là lỡ có nhiều lượt quyên góp ko đăng nhập thì sao ******
-                              String url = baseUrl+"/paypal/donator_id/${donator_id}/project_id/${project.prj_id}/donate";
+                              String url = baseUrl+"/paypal/donator_id/${donator_id}/project_id/${widget.project.prj_id}/donate";
                               final body = jsonEncode(<String, String>{
                                 "price": _moneyControllerField.text,
                                 "description":_messageControllerField.text
@@ -150,7 +222,7 @@ class DonateService{
                               Navigator.pop(context);
                               Navigator.push(
                                   context, MaterialPageRoute(
-                                  builder: (context)=>DonateScreen(paypalurl: res.body.toString(),project: project, money: _moneyControllerField.text,))
+                                  builder: (context)=>DonateWithPaypalWebViewScreen(paypalurl: res.body.toString(),project: widget.project, money: _moneyControllerField.text,))
                               );
                             }else{
                               message='Dự án này chỉ cần ${lessMoney} VNĐ nữa là đủ!';
@@ -177,7 +249,10 @@ class DonateService{
                 ),
               ),
             ),
-          );
-        });
+          )
+        ],
+      ),
+    );
   }
+
 }

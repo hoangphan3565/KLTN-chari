@@ -4,12 +4,13 @@ import 'dart:convert' show utf8;
 
 import 'package:charity_donator_app/API.dart';
 import 'package:charity_donator_app/models/models.dart';
-import 'package:charity_donator_app/screens/notifications_screen.dart';
 import 'package:charity_donator_app/screens/screens.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/charity_donator_app/lib/screens/notification/notifications_screen.dart';
 
 import 'screens.dart';
 
@@ -142,8 +143,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
           animationDuration: Duration(milliseconds: 300),
           onTap: (index) {
             setState(() {
-              if(index == 0 || index == 3){
+              if(index == 0){
                 _getDatas();
+              }
+              else if(islogin==true && index == 3){
                 _getDonateHistory();
               }
               _page = index;

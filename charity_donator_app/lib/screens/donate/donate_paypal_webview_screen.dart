@@ -1,30 +1,23 @@
 
 
 import 'package:charity_donator_app/models/models.dart';
+import 'package:charity_donator_app/utility/utility.dart';
 import 'package:charity_donator_app/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class  DonateScreen extends StatefulWidget{
+class  DonateWithPaypalWebViewScreen extends StatefulWidget{
   final String paypalurl;
   final Project project;
   final String money;
-  DonateScreen({@required this.paypalurl,this.project,this.money});
+  DonateWithPaypalWebViewScreen({@required this.paypalurl,this.project,this.money});
   @override
-  _DonateScreenState createState()=> _DonateScreenState();
+  _DonateWithPaypalWebViewScreenState createState()=> _DonateWithPaypalWebViewScreenState();
 }
-class _DonateScreenState extends State<DonateScreen>{
+class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewScreen>{
 
   _showDonateSuccessDialog(BuildContext context,Project project) {
-    MoneyFormatterOutput fo = new FlutterMoneyFormatter(
-        amount: double.tryParse(widget.money),
-        settings: MoneyFormatterSettings(
-          thousandSeparator: '.',
-          decimalSeparator: ',',
-        )
-    ).output;
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -55,7 +48,7 @@ class _DonateScreenState extends State<DonateScreen>{
                     Text("Bạn vừa ủng hộ cho dự án: "+ project.project_name),
                     SizedBox(height: 20),
                     Text(
-                      "Với số tiền: " + fo.withoutFractionDigits+" VND",
+                      "Với số tiền: " + MoneyUtility.convertToMoney(widget.money.toString())+" VND",
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

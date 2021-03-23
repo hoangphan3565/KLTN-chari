@@ -47,6 +47,7 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private DonatorService donatorService;
+
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		JSONObject jo = new JSONObject();
@@ -75,22 +76,11 @@ public class JwtAuthenticationController {
 			JwtUser newuser = new JwtUser();
 			newuser.setUsername(user.getUsername());
 			newuser.setPassword(p);
-			if(user.getUsertype().equals(UserType.Donator.toString()))			{
-				newuser.setUsertype(UserType.Donator);
-				donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
-			}else if(user.getUsertype().equals(UserType.Collaborator.toString())){
-				newuser.setUsertype(UserType.Collaborator);
-				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
-			}else{
-				jo.put("errorCode", 1);
-				jo.put("data", "");
-				jo.put("message", "Đăng ký thất bại!");
-				return new ResponseEntity<>(jo.toMap(),HttpStatus.BAD_REQUEST);
-			}
+			newuser.setStatus("NOT-ACTIVATED");
 			jwtuserRepo.save(newuser);
 			jo.put("errorCode", 0);
 			jo.put("data", newuser);
-			jo.put("message", "Đăng ký thành công!");
+			jo.put("message", "Đăng ký thành công!\nMã xác thực sẽ được gửi!");
 			return ResponseEntity.ok(jo.toMap());
 		}else{
 			jo.put("errorCode", 1);
@@ -98,10 +88,40 @@ public class JwtAuthenticationController {
 			jo.put("data", "");
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.ALREADY_REPORTED);
 		}
-
+	}
+	@PostMapping("/activate")
+	public ResponseEntity<?> activateUser(@RequestBody JwtUserDTO user) throws Exception {
+		JSONObject jo = new JSONObject();
+		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
+		if(appUser!=null){
+			if(user.getUsertype().equals(UserType.Donator.toString())){
+				appUser.setUsertype(UserType.Donator);
+				donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
+			}else if(user.getUsertype().equals(UserType.Collaborator.toString())){
+				appUser.setUsertype(UserType.Collaborator);
+				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
+			}else{
+				jo.put("errorCode", 1);
+				jo.put("data", "");
+				jo.put("message", "Kích hoạt thất bại!");
+				return new ResponseEntity<>(jo.toMap(),HttpStatus.BAD_REQUEST);
+			}
+			appUser.setStatus("ACTIVATED");
+			jwtuserRepo.save(appUser);
+			jo.put("errorCode", 0);
+			jo.put("data", appUser);
+			jo.put("message", "Kích hoạt thành công!");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+		}
+		else{
+			jo.put("errorCode", 1);
+			jo.put("data", "");
+			jo.put("message", "Không thể tìm thấy người dùng với username: "+user.getUsername()+ " !");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+		}
 	}
 	@PostMapping("/change/password")
-	public ResponseEntity<?> addProjectToFavoriteList(@RequestBody JwtUserDTO user) {
+	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
 		if(user.getUsertype().equals(UserType.Donator.toString())){
 			JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
@@ -136,13 +156,30 @@ public class JwtAuthenticationController {
 		}
 	}
 
-	@GetMapping("username/{usn}")
+	@GetMapping("/username/{usn}")
 	public ResponseEntity<?> getUserByUSN(@PathVariable(value = "usn") String usn) {
 		JSONObject jo = new JSONObject();
 		if (jwtuserRepo.findByUsername(usn) != null) {
 			jo.put("errorCode", 0);
 			jo.put("data", jwtuserRepo.findByUsername(usn));
-			jo.put("message", "Tìm thành công!");
+			jo.put("message", "Mã xác thực sẽ được gửi!");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+		}
+		else{
+			jo.put("errorCode", 1);
+			jo.put("data", "");
+			jo.put("message", usn+" Chưa được đăng ký!");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	@DeleteMapping("/username/{usn}")
+	public ResponseEntity<?> deleteUserByUSN(@PathVariable(value = "usn") String usn) {
+		JSONObject jo = new JSONObject();
+		if (jwtuserRepo.findByUsername(usn) != null) {
+			jo.put("errorCode", 0);
+			jo.put("data", jwtuserRepo.findByUsername(usn));
+			jo.put("message", "Xóa thành công!");
+			jwtuserRepo.delete(jwtuserRepo.findByUsername(usn));
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
 		}
 		else{

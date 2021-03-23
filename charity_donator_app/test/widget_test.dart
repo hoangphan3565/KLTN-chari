@@ -5,7 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:charity_donator_app/screens/home_screen.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/charity_donator_app/lib/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

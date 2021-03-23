@@ -7,55 +7,45 @@ import 'package:charity_donator_app/utility/utility.dart';
 import 'package:charity_donator_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 
-class SignUpScreen extends StatefulWidget {
+class RecoverPasswordScreen extends StatefulWidget {
+  final String phone;
+  RecoverPasswordScreen({@required this.phone});
   @override
-  _SignUpScreenState createState()=> _SignUpScreenState();
+  _RecoverPasswordScreenState createState()=> _RecoverPasswordScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen>{
-  TextEditingController _usernameController = TextEditingController();
+class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
   TextEditingController _password1Controller = TextEditingController();
   TextEditingController _password2Controller = TextEditingController();
   bool notSeePassword1=true;
   bool notSeePassword2=true;
 
   //Hàm xử lý đăng ký bằng API
-  _singUp(String username, String password1,String password2) async{
+  _recoverPassword(String username, String new_password1,String new_password2) async{
     String message='';
     int errorCode=1;
-    if(username.length != 0 && password1.length !=0 && password2.length!=0) {
-      if(username.length==10 && CheckString.onlyNumber(username)) {
-        if(password1==password2) {
-          if(CheckString.isMyCustomPassword(password1)) {
-            String url = baseUrl+register;
-            final body = jsonEncode(<String, String>{
-              "username":username,
-              "password1":password1,
-              "password2":password2,
-              "usertype":"Donator"
-            });
-            var res = await http.post(url,headers:header,body: body);
-            var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
-            message = jsonResponse['message'];
-            errorCode = jsonResponse['errorCode'];
-            if(errorCode==0) {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()), (Route<dynamic> route) => false);
-            }}else{
-            message ='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
-          }}else{
-          message ='Mật khẩu mới không trùng khớp!';
-        }}else{
-        message ='Số điện thoại không chính xác!';
-      }}else{
-      message ='Không được trống thông tin nào';
+    if(new_password1==new_password2) {
+      if(CheckString.isMyCustomPassword(new_password1)){
+        var res = await API.changeUserPassword(username, new_password1, new_password2);
+        var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
+        message = jsonResponse['message'];
+        errorCode = jsonResponse['errorCode'];
+        if(errorCode == 0){
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()), (Route<dynamic> route) => false);
+        }
+      }
+      else{
+        message='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
+      }
+    }else{
+      message='Mật khẩu mới không trùng khớp!';
     }
     Fluttertoast.showToast(
         msg: message,
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: errorCode == 0? Colors.green: Colors.orangeAccent,
@@ -63,6 +53,8 @@ class _SignUpScreenState extends State<SignUpScreen>{
         fontSize: 16.0
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Đăng ký",
+                "Lấy lại mật khẩu",
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontWeight: FontWeight.bold,
@@ -83,17 +75,19 @@ class _SignUpScreenState extends State<SignUpScreen>{
               ),
               SizedBox(height: size.height * 0.03),
               Image.asset(
-                "assets/icons/signup.png",
-                height: size.height * 0.35,
+                "assets/icons/login.png",
+                height: size.height * 0.25,
               ),
-              RoundedInputField(
-                hintText: "Nhập Số điện thoại",
-                icon: LineAwesomeIcons.phone,
-                keyboardType: TextInputType.number,
-                controller: _usernameController,
-                onTopClearIcon: ()=>{_usernameController.clear()},
-                onChanged: (value) {},
+              SizedBox(height: size.height * 0.03),
+              Text(
+                widget.phone,
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                ),
               ),
+              SizedBox(height: size.height * 0.03),
               RoundedPasswordField(
                 hintText: "Nhập mật khẩu",
                 icon: LineAwesomeIcons.lock_open,
@@ -123,9 +117,9 @@ class _SignUpScreenState extends State<SignUpScreen>{
                 onChanged: (value) {},
               ),
               RoundedButton(
-                text: "Đăng ký",
+                text: "Xác nhận",
                 press:(){
-                  _singUp(_usernameController.text,_password1Controller.text,_password2Controller.text);
+                  _recoverPassword(widget.phone,_password1Controller.text,_password2Controller.text);
                 },
               ),
               SizedBox(height: size.height * 0.03),

@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-//local ip và port server đang run
-const baseUrl = "http://192.168.137.1:8080/api";
-//const baseUrl = "http://192.168.43.139:8080/api";
+//local ip và port server đang deploy
+const baseUrl = "http://192.168.43.139:8080/api";
+// const baseUrl = "http://192.168.0.102:8080/api";
 
 const login = "/login";
 const register = "/register";
+const activate = "/activate";
 const projects = "/projects";
 const project_images = "/project_images/project/";
 const donators = "/donators";
@@ -21,6 +23,55 @@ getHeaderJWT(token) {
 
 class API {
 
+  static signin(String username,String password) {
+    String url = baseUrl+login;
+    final body = jsonEncode(<String, String>{
+      "username":username,
+      "password":password,
+    });
+    return http.post(url,headers:header,body: body);
+  }
+
+  static signup(String username,String password1,String password2) {
+    String url = baseUrl+register;
+    final body = jsonEncode(<String, String>{
+      "username":username,
+      "password1":password1,
+      "password2":password2,
+    });
+    return http.post(url,headers:header,body: body);
+  }
+
+  static Future activateUser(String username){
+    String url = baseUrl+activate;
+    final body = jsonEncode(<String, String>{
+      "username":username,
+      "usertype":"Donator"
+    });
+    http.post(url,headers:header,body: body);
+  }
+
+  static Future findUserByUserName(String username){
+    var url = baseUrl + "/username/"+username;
+    return http.get(url);
+  }
+
+  static Future deleteUserByUserName(String username){
+    var url = baseUrl + "/username/"+username;
+    return http.delete(url);
+  }
+
+  static Future changeUserPassword(String username,String new_password1,String new_password2){
+    String url = baseUrl+"/change/password";
+    final body = jsonEncode(<String, String>{
+      "username":username,
+      "password1":new_password1,
+      "password2":new_password2,
+      "usertype":"Donator"
+    });
+    return http.post(url,headers:header,body: body);
+  }
+
   static Future getProjects() {
     var url = baseUrl + projects;
     return http.get(url);
@@ -29,8 +80,14 @@ class API {
     var url = baseUrl + project_types;
     return http.get(url);
   }
+
   static Future getDonateDetailsListByDonatorId(int donator_id,String token) {
     var url = baseUrl + donate_details+'/donator_id/'+donator_id.toString();
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+
+  static Future getDonatorDetailsByPhone(String phone,String token) {
+    var url = baseUrl + donators +'/phone/'+phone;
     return http.get(url,headers:getHeaderJWT(token));
   }
 

@@ -19,6 +19,7 @@ public class CharitysystemApplication implements CommandLineRunner {
 
 		//Connect to existing database
 		String url = "jdbc:postgresql://localhost:5432/chari?user=postgres&password=123";
+//		String url = "jdbc:postgresql://ec2-54-85-13-135.compute-1.amazonaws.com:5432/d1rovdsrk9r70l?user=ubkpsljlfyuuab&password=96ef0a841b72520b7695b69025a064a0ddfd4aab7715f5661b6da9874eb9643c";
 
 		Connection conn = DriverManager.getConnection(url);
 		//Creating the Statement

@@ -28,4 +28,7 @@ public class JwtUser implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private UserType usertype;
+
+    @Column(length = 20)
+    private String status;
 }

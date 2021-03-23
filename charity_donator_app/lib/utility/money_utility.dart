@@ -1,4 +1,5 @@
 
+
 class MoneyUtility{
   static String numberToString(String number) {
     String sNumber = number.toString();
@@ -49,7 +50,7 @@ class MoneyUtility{
     return sReturn;
   }
 
-// Khoi tao ham Read
+  // Khoi tao ham Read
   static String Read(String sNumber, int iPo) {
     // Tao mot bien tra ve
     String sReturn = "";
@@ -132,5 +133,9 @@ class MoneyUtility{
       print(sNumber.substring(11, 8));
     }
     return sReturn;
+  }
+
+  static convertToMoney(String sNumber){
+    return sNumber.split('').reversed.join().replaceAllMapped(RegExp(r".{3}"), (match) => "${match.group(0)} ").split('').reversed.join();
   }
 }

@@ -23,6 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^0.4.0+9
+  firebase_analytics: ^5.0.2
+  firebase_auth: ^0.14.0+5
+  cloud_firestore: ^0.12.9+5
   shared_preferences: ^0.5.12+4 #All platform
   http: ^0.12.1 #All
   fluttertoast: ^7.1.1 #All
@@ -33,7 +37,7 @@ dependencies:
   carousel_slider: ^2.3.1 #All
   line_awesome_flutter: ^1.0.1 #All
   font_awesome_flutter: ^8.10.0 #All
-  flutter_money_formatter: 0.8.3 #iOS, Android
+  #flutter_money_formatter: 0.8.3 #iOS, Android
   webview_flutter: ^1.0.7 #iOS, Android
   curved_navigation_bar: ^0.3.4 #All
   custom_radio_grouped_button: ^1.0.6+1 #All

@@ -2,9 +2,9 @@
 import 'package:charity_donator_app/constants.dart';
 import 'package:charity_donator_app/models/models.dart';
 import 'package:charity_donator_app/screens/screens.dart';
+import 'package:charity_donator_app/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -92,13 +92,6 @@ class _HistoryScreenState extends State<HistoryScreen>{
   }
 
   Container buildProjectInfo(DonateDetails donate_details){
-    MoneyFormatterOutput fo = new FlutterMoneyFormatter(
-        amount: double.tryParse(donate_details.money.toString()),
-        settings: MoneyFormatterSettings(
-          thousandSeparator: '.',
-          decimalSeparator: ',',
-        )
-    ).output;
     return Container(
       margin: EdgeInsets.fromLTRB(8,5,8,5),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -118,7 +111,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
                   height: 5,
                 ),
                 Text(
-                  "Ủng hộ: "+ fo.withoutFractionDigits+' đ',
+                  "Ủng hộ: "+ MoneyUtility.convertToMoney(donate_details.money.toString())+' đ',
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,

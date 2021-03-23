@@ -5,10 +5,9 @@ import 'package:charity_donator_app/API.dart';
 import 'package:charity_donator_app/constants.dart';
 import 'package:charity_donator_app/models/models.dart';
 import 'package:charity_donator_app/screens/screens.dart';
-import 'package:charity_donator_app/services/donate_services.dart';
+import 'package:charity_donator_app/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -125,9 +124,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           SliverList(
             delegate: SliverChildBuilderDelegate(
                   (context, index){
-                    return buildPostSection(favorite_projects[index]);},
-            childCount: favorite_projects.length,
-          ),
+                return buildPostSection(favorite_projects[index]);},
+              childCount: favorite_projects.length,
+            ),
           )
         ],
       ),
@@ -240,20 +239,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
     else{
       percent = project.cur_money / project.target_money;
     }
-    MoneyFormatterOutput fo1 = new FlutterMoneyFormatter(
-        amount: double.tryParse(project.cur_money.toString()),
-        settings: MoneyFormatterSettings(
-          thousandSeparator: '.',
-          decimalSeparator: ',',
-        )
-    ).output;
-    MoneyFormatterOutput fo2 = new FlutterMoneyFormatter(
-        amount: double.tryParse(project.target_money.toString()),
-        settings: MoneyFormatterSettings(
-          thousandSeparator: '.',
-          decimalSeparator: ',',
-        )
-    ).output;
     return Row(
         children: [
           if (project.status != 'overdue')
@@ -261,7 +246,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Đã quyên góp được ${fo1.withoutFractionDigits} đ / ${fo2.withoutFractionDigits} đ",
+                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
                   style: TextStyle(
                       fontSize: 12,
                       color: Colors.black),
@@ -282,7 +267,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Đã quyên góp được ${fo1.withoutFractionDigits} đ / ${fo2.withoutFractionDigits} đ",
+                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
                   style: TextStyle(
                       fontSize: 12,
                       color: Colors.black),
@@ -361,7 +346,10 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                 borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
-                DonateService.showDonateDialog(context,project),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,)),
+                ),
               },
               child: Text(
                 "Quyên góp",

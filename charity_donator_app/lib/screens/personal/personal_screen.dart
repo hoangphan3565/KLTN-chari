@@ -55,14 +55,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
           if(new_password1!=password){
             if(CheckString.isMyCustomPassword(new_password1)){
               SharedPreferences _prefs = await SharedPreferences.getInstance();
-              String url = baseUrl+"/change/password";
-              final body = jsonEncode(<String, String>{
-                "username":username,
-                "password1":new_password1,
-                "password2":new_password2,
-                "usertype":"Donator"
-              });
-              var res = await http.post(url,headers:getHeaderJWT(_prefs.getString('token')),body: body);
+              var res = await API.changeUserPassword(username, new_password1, new_password2);
               var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
               message = jsonResponse['message'];
               errorCode = jsonResponse['errorCode'];
