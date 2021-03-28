@@ -1,4 +1,4 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.DTO.JwtUserDTO;
 import com.macia.charitysystem.model.Collaborator;
@@ -12,7 +12,6 @@ import com.macia.charitysystem.security.JwtUserDetailsService;
 import com.macia.charitysystem.service.CollaboratorService;
 import com.macia.charitysystem.service.DonatorService;
 import com.macia.charitysystem.utility.UserType;
-import javassist.NotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +23,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
 
 
 @RestController
@@ -68,7 +65,7 @@ public class JwtAuthenticationController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> saveUser(@RequestBody JwtUserDTO user) throws Exception {
+	public ResponseEntity<?> saveUser(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if(jwtuserRepo.findByUsername(user.getUsername())==null){
@@ -76,6 +73,7 @@ public class JwtAuthenticationController {
 			JwtUser newuser = new JwtUser();
 			newuser.setUsername(user.getUsername());
 			newuser.setPassword(p);
+            newuser.setUsertype(user.getUsertype());
 			newuser.setStatus("NOT-ACTIVATED");
 			jwtuserRepo.save(newuser);
 			jo.put("errorCode", 0);
@@ -90,16 +88,18 @@ public class JwtAuthenticationController {
 		}
 	}
 	@PostMapping("/activate")
-	public ResponseEntity<?> activateUser(@RequestBody JwtUserDTO user) throws Exception {
+	public ResponseEntity<?> saveUserInfoAndActivate(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){
-			if(user.getUsertype().equals(UserType.Donator.toString())){
-				appUser.setUsertype(UserType.Donator);
-				donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
-			}else if(user.getUsertype().equals(UserType.Collaborator.toString())){
-				appUser.setUsertype(UserType.Collaborator);
-				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
+			if(user.getUsertype().equals(UserType.Donator)){
+				if(donatorService.findByPhone(user.getUsername())==null){
+					donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
+				}
+			}else if(user.getUsertype().equals(UserType.Collaborator)){
+				if(collaboratorService.findByPhone(user.getUsername())==null) {
+					collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
+				}
 			}else{
 				jo.put("errorCode", 1);
 				jo.put("data", "");
@@ -120,10 +120,12 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	@PostMapping("/change/password")
+
+
+    @PostMapping("/change/password")
 	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
-		if(user.getUsertype().equals(UserType.Donator.toString())){
+		if(user.getUsertype().equals(UserType.Donator)){
 			JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 			if(appUser!=null){
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -142,7 +144,7 @@ public class JwtAuthenticationController {
 				return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 			}
 		}
-		else if(user.getUsertype().equals(UserType.Collaborator.toString())) {
+		else if(user.getUsertype().equals(UserType.Collaborator)) {
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Đổi mật khẩu cho "+UserType.Collaborator.toString()+" chưa có sẵn!");

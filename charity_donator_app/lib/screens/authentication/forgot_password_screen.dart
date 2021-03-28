@@ -24,169 +24,49 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
     Size size = MediaQuery.of(context).size;
     String NavitePhone = "0"+phone.substring(3);
     _firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 120),
-        verificationCompleted: (AuthCredential authCredential) {
-          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
-            Navigator.of(context).pop(); // to pop the dialog box
-            Fluttertoast.showToast(
-                msg: 'Xác thực thành công!',
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-            API.activateUser(NavitePhone);
-            Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
-            return "successful";
-          }).catchError((e) {
-            return "error";
-          });
-        },
-        verificationFailed: (AuthException exception) {
+      phoneNumber: phone,
+      timeout: Duration(seconds: 120),
+      verificationCompleted: (AuthCredential authCredential) {
+        _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+          Navigator.of(context).pop(); // to pop the dialog box
           Fluttertoast.showToast(
-              msg: "Xác thực thất bại!\nSĐT không tồn tại hoặc Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!",
+              msg: 'Xác thực thành công!',
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.orangeAccent,
+              backgroundColor: Colors.green,
               textColor: Colors.white,
               fontSize: 16.0
           );
+          API.activateUser(NavitePhone);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
+          return "successful";
+        }).catchError((e) {
           return "error";
-        },
-        codeSent: (String verificationId, [int forceResendingToken]) {
-          final _codeController = TextEditingController();
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return CustomAlertDialog(
-                  content: Container(
-                      width: MediaQuery.of(context).size.width / 1,
-                      color: Colors.white,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Đã gửi mã xác nhận đến",
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(
-                              NavitePhone,
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Sử dụng SĐT khác ? ",
-                                  style: TextStyle(color: kPrimaryColor),
-                                ),
-                                GestureDetector(
-                                  onTap: ()=>{
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()))
-                                  },
-                                  child: Text(
-                                    "Đăng ký ngay",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Image.asset(
-                              "assets/icons/activate.png",
-                              height: size.height * 0.25,
-                            ),
-                            RoundedInputField(
-                              hintText: "Nhập mã xác nhận",
-                              icon: LineAwesomeIcons.key,
-                              keyboardType: TextInputType.number,
-                              controller: _codeController,
-                              onTopClearIcon: ()=>{_codeController.clear()},
-                              onChanged: (value) {},
-                            ),
-                            RoundedButton(
-                              text: "Xác nhận",
-                              press:() {
-                                var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
-                                    smsCode: _codeController.text.trim());
-                                _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
-                                  Navigator.of(context).pop(); // to pop the dialog box
-                                  Fluttertoast.showToast(
-                                      msg: 'Xác thực thành công!',
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.green,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0
-                                  );
-                                  API.activateUser(NavitePhone);
-                                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
-                                  return "successful";
-                                }).catchError((e) {
-                                  Fluttertoast.showToast(
-                                      msg: "Xác thực thất bại!\nMã xác nhận không chính xác!",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.orangeAccent,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0
-                                  );
-                                  return "error";
-                                });
-                              },
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Bạn muốn gửi lại mã ? ",
-                                  style: TextStyle(color: kPrimaryColor),
-                                ),
-                                GestureDetector(
-                                  onTap: ()=>{
-
-                                  },
-                                  child: Text(
-                                    "Gửi ngay",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                  ),
-                );
-              });
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          verificationId = verificationId;
         });
+      },
+      verificationFailed: (AuthException exception) {
+        Fluttertoast.showToast(
+            msg: "Xác thực thất bại!\nSĐT không tồn tại hoặc Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.orangeAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        return "error";
+      },
+      codeSent: (String verificationId, [int forceResendingToken]) async {
+        final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
+        if(await result=='successful'){
+          API.activateUser(NavitePhone);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
+        }
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationId = verificationId;
+      });
   }
 
   _findUserAndSendCodeIfAvailable(String username, BuildContext context) async {

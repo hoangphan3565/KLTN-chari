@@ -62,17 +62,16 @@ class _SignUpScreenState extends State<SignUpScreen>{
   //Hàm này dùng firebase như một backend trung gian mục đích để xác thực xem sđt user nhập có phải là sdt thật hay không
   //nếu sdt là thật thì lần đăng nhập sau ko cần gửi mã xác nhận nữa
   Future sendCodeToUser(String phone, BuildContext context) async {
-    Size size = MediaQuery.of(context).size;
     String NavitePhone="0"+phone.substring(3);
     _firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 120),
-        verificationCompleted: (AuthCredential authCredential) {
-          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
-            Navigator.of(context).pop(); // to pop the dialog box
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()), (Route<dynamic> route) => false);
-            API.activateUser(NavitePhone);
-            Fluttertoast.showToast(
+      phoneNumber: phone,
+      timeout: Duration(seconds: 120),
+      verificationCompleted: (AuthCredential authCredential) {
+        _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+          Navigator.of(context).pop(); // to pop the dialog box
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
+          API.activateUser(NavitePhone);
+          Fluttertoast.showToast(
                 msg: "Đăng ký thành công!",
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
@@ -81,153 +80,33 @@ class _SignUpScreenState extends State<SignUpScreen>{
                 textColor: Colors.white,
                 fontSize: 16.0
             );
-          }).catchError((e) {
-            return "error";
-          });
-        },
-        verificationFailed: (AuthException exception) {
-          Fluttertoast.showToast(
-              msg: "Xác thực thất bại! SĐT không tồn tại!",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.orangeAccent,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
-          API.deleteUserByUserName(NavitePhone);
+        }).catchError((e) {
           return "error";
-        },
-        codeSent: (String verificationId, [int forceResendingToken]) {
-          final _codeController = TextEditingController();
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return CustomAlertDialog(
-                  content: Container(
-                    width: MediaQuery.of(context).size.width / 1,
-                    color: Colors.white,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "Xác thực SĐT ",
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                            ),
-                          ),
-                          Text(
-                            NavitePhone,
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Bạn muốn đổi SĐT khác ? ",
-                                style: TextStyle(color: kPrimaryColor),
-                              ),
-                              GestureDetector(
-                                onTap: ()=>{
-                                  Navigator.pop(context),
-                                  API.deleteUserByUserName(NavitePhone)
-
-                                },
-                                child: Text(
-                                  "Đổi ngay",
-                                  style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: size.height * 0.03),
-                          Image.asset(
-                            "assets/icons/activate.png",
-                            height: size.height * 0.25,
-                          ),
-                          RoundedInputField(
-                            hintText: "Nhập mã xác nhận",
-                            icon: LineAwesomeIcons.key,
-                            keyboardType: TextInputType.number,
-                            controller: _codeController,
-                            onTopClearIcon: ()=>{_codeController.clear()},
-                            onChanged: (value) {},
-                          ),
-                          RoundedButton(
-                            text: "Xác nhận",
-                            press:() {
-                              var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
-                                  smsCode: _codeController.text.trim());
-                              _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
-                                Navigator.of(context).pop(); // to pop the dialog box
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()), (Route<dynamic> route) => false);
-                                API.activateUser(NavitePhone);
-                                Fluttertoast.showToast(
-                                    msg: "Đăng ký thành công!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.green,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0
-                                );
-                              }).catchError((e) {
-                                Fluttertoast.showToast(
-                                    msg: "Xác thực thất bại!\nMã xác nhận không chính xác!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.orangeAccent,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0
-                                );
-                                return "error";
-                              });
-                            },
-                          ),
-                          SizedBox(height: size.height * 0.03),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Bạn muốn gửi lại mã ? ",
-                                style: TextStyle(color: kPrimaryColor),
-                              ),
-                              GestureDetector(
-                                onTap: ()=>{
-
-                                },
-                                child: Text(
-                                  "Gửi ngay",
-                                  style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ),
-                );
-              });
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          verificationId = verificationId;
         });
+      },
+      verificationFailed: (AuthException exception) {
+        Fluttertoast.showToast(
+          msg: "Xác thực thất bại! SĐT không tồn tại!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.orangeAccent,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        API.deleteUserByUserName(NavitePhone);
+        return "error";
+      },
+      codeSent: (String verificationId, [int forceResendingToken]) async {
+        final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
+        if(await result=='successful'){
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
+          API.activateUser(NavitePhone);
+        }
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationId = verificationId;
+      });
   }
 
   @override

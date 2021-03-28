@@ -1,4 +1,4 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.model.Feedback;
 import com.macia.charitysystem.repository.FeedbackRepository;

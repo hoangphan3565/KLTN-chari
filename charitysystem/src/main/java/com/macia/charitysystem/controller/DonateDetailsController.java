@@ -1,4 +1,4 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.service.DonateDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

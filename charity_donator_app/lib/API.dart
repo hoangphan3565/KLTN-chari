@@ -38,6 +38,7 @@ class API {
       "username":username,
       "password1":password1,
       "password2":password2,
+      "usertype":"Donator"
     });
     return http.post(url,headers:header,body: body);
   }
@@ -46,7 +47,6 @@ class API {
     String url = baseUrl+activate;
     final body = jsonEncode(<String, String>{
       "username":username,
-      "usertype":"Donator"
     });
     http.post(url,headers:header,body: body);
   }

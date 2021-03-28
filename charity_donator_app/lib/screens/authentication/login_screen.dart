@@ -142,7 +142,6 @@ class _LoginScreenState extends State<LoginScreen>{
 
   //Hàm xác nhận sdt tương tự như bên đăng ký - tuy nhiên hàm này đảm bảo khi người dùng đăng nhập với một tk chưa dc đk thì firebase sẽ gửi mã để xác nhận
   Future _sendCodeToUser(String phone,String password, BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     String NavitePhone = "0"+phone.substring(3);
     _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
@@ -178,134 +177,12 @@ class _LoginScreenState extends State<LoginScreen>{
           );
           return "error";
         },
-        codeSent: (String verificationId, [int forceResendingToken]) {
-          final _codeController = TextEditingController();
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return CustomAlertDialog(
-                  content: Container(
-                      width: MediaQuery.of(context).size.width / 1,
-                      color: Colors.white,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Xác thực SĐT ",
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(
-                              NavitePhone,
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Bạn muốn đổi SĐT khác ? ",
-                                  style: TextStyle(color: kPrimaryColor),
-                                ),
-                                GestureDetector(
-                                  onTap: ()=>{
-                                    //Xóa tài khoảng chưa được xác nhận để giảm rác trong csdl...
-                                    API.deleteUserByUserName(NavitePhone),
-                                    //Chuyển hướng
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()))
-                                  },
-                                  child: Text(
-                                    "Đổi ngay",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Image.asset(
-                              "assets/icons/activate.png",
-                              height: size.height * 0.25,
-                            ),
-                            RoundedInputField(
-                              hintText: "Nhập mã xác nhận",
-                              icon: LineAwesomeIcons.key,
-                              keyboardType: TextInputType.number,
-                              controller: _codeController,
-                              onTopClearIcon: ()=>{_codeController.clear()},
-                              onChanged: (value) {},
-                            ),
-                            RoundedButton(
-                              text: "Xác nhận",
-                              press:() {
-                                var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
-                                    smsCode: _codeController.text.trim());
-                                _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
-                                  Navigator.of(context).pop(); // to pop the dialog box
-                                  Fluttertoast.showToast(
-                                      msg: 'Xác thực thành công!',
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.green,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0
-                                  );
-                                  API.activateUser(NavitePhone);
-                                  _login(_usernameController.text,_passwordController.text);
-                                  return "successful";
-                                }).catchError((e) {
-                                  Fluttertoast.showToast(
-                                      msg: "Xác thực thất bại!\nMã xác nhận không chính xác!",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.orangeAccent,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0
-                                  );
-                                  return "error";
-                                });
-                              },
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Bạn muốn gửi lại mã ? ",
-                                  style: TextStyle(color: kPrimaryColor),
-                                ),
-                                GestureDetector(
-                                  onTap: ()=>{
-
-                                  },
-                                  child: Text(
-                                    "Gửi ngay",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                  ),
-                );
-              });
+        codeSent: (String verificationId, [int forceResendingToken]) async {
+          final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
+          if(await result=='successful'){
+            API.activateUser(NavitePhone);
+            _login(_usernameController.text,_passwordController.text);
+          }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           verificationId = verificationId;
@@ -358,6 +235,13 @@ class _LoginScreenState extends State<LoginScreen>{
                   onChanged: (value) {},
                 ),
                 SizedBox(height: size.height * 0.01),
+                RoundedButton(
+                  text: "Đăng nhập",
+                  press: () {
+                    _validateCheckActivetedSendCodeAndLoginIfVerifireSuccessful(_usernameController.text,_passwordController.text);
+                  },
+                ),
+                SizedBox(height: size.height * 0.01),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -376,13 +260,6 @@ class _LoginScreenState extends State<LoginScreen>{
                   ],
                 ),
                 SizedBox(height: size.height * 0.01),
-                RoundedButton(
-                  text: "Đăng nhập",
-                  press: () {
-                    _validateCheckActivetedSendCodeAndLoginIfVerifireSuccessful(_usernameController.text,_passwordController.text);
-                  },
-                ),
-                SizedBox(height: size.height * 0.03),
                 AlreadyHaveAnAccountCheck(
                   press: () {
                     Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()));

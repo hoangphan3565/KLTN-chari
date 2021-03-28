@@ -45,137 +45,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
     });
   }
 
-
-  _changePassword(String username,String password, String cur_password,String new_password1,String new_password2) async{
-    String message='';
-    int errorCode=1;
-    if(cur_password.length != 0 && new_password1.length !=0 && new_password2.length!=0) {
-      if(cur_password==password){
-        if(new_password1==new_password2){
-          if(new_password1!=password){
-            if(CheckString.isMyCustomPassword(new_password1)){
-              SharedPreferences _prefs = await SharedPreferences.getInstance();
-              var res = await API.changeUserPassword(username, new_password1, new_password2);
-              var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
-              message = jsonResponse['message'];
-              errorCode = jsonResponse['errorCode'];
-              if(errorCode == 0){
-                _prefs.setString('password',jsonResponse['data']['password']);
-                Navigator.pop(context);
-              }}else{
-              message='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
-            }}else{
-            message='Mật khẩu mới phải khác mật khẩu cũ!';
-          }}else{
-          message='Mật khẩu mới không trùng khớp!';
-        }}else{
-        message='Mật khẩu hiện tại không chính xác!';
-      }}else{
-      message='Không được trống thông tin nào';
-    }
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: errorCode==0? Colors.green:Colors.orangeAccent,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-  }
-
-  _showChangePasswordDialog(BuildContext context) {
-    TextEditingController _curPasswordField = TextEditingController();
-    TextEditingController _newPasswordField = TextEditingController();
-    TextEditingController _reWritePasswordField = TextEditingController();
-    bool notSeePassword = true;
-    bool notSeePassword1 = true;
-    bool notSeePassword2 = true;
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomAlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width / 1,
-              color: Colors.white,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Text("Đổi mật khẩu",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[600],
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Container(
-                      height: 1.5,
-                      color: Colors.grey[300],
-                      margin: EdgeInsets.symmetric(horizontal: 0),
-                    ),
-                    SizedBox(height: 5),
-                    RoundedPasswordField(
-                      hintText: "Mật khẩu hiện tại",
-                      icon: LineAwesomeIcons.alternate_unlock,
-                      obscureText: notSeePassword,
-                      controller: _curPasswordField,
-                      onTapSuffixIcon: ()=>{
-                        if(notSeePassword==true){
-                          notSeePassword=false
-                          //setState((){notSeePassword=false;})
-                        }else{
-                          //setState((){notSeePassword=true;})
-                          notSeePassword=true
-                        }
-                      },
-                      onChanged: (value) {},
-                    ),
-                    RoundedPasswordField(
-                      hintText: "Mật khẩu mới",
-                      icon: LineAwesomeIcons.lock_open,
-                      obscureText: notSeePassword1,
-                      controller: _newPasswordField,
-                      onTapSuffixIcon: ()=>{
-                        if(notSeePassword1==true){
-                          notSeePassword1=false
-                        }else{
-                          notSeePassword1=true
-                        }
-                      },
-                      onChanged: (value) {},
-                    ),
-                    RoundedPasswordField(
-                      hintText: "Nhập lại mật khẩu mới",
-                      icon: LineAwesomeIcons.lock,
-                      obscureText: notSeePassword2,
-                      controller: _reWritePasswordField,
-                      onTapSuffixIcon: ()=>{
-                        if(notSeePassword2==true){
-                          notSeePassword2=false
-                        }else{
-                          notSeePassword2=true
-                        }
-                      },
-                      onChanged: (value) {},
-                    ),
-
-                    RoundedButton(
-                      text: "Xác nhận",
-                      press: ()async{
-                        SharedPreferences _prefs = await SharedPreferences.getInstance();
-                        _changePassword(_prefs.getString('username'),_prefs.getString('password'),_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text);
-                      },
-                    ),
-
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
   _updateInformation(int id, String fullname, String address) async{
     String url = baseUrl+donators+"/update/id/"+id.toString();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -344,8 +213,9 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     RoundedButton(
                       text: 'Đổi mật khẩu',
                       fontsize: 17,
-                      press: ()=>{
-                        _showChangePasswordDialog(context)
+                      press: () async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => ChangePasswordScreen(username: prefs.getString('username'),password: prefs.getString('password'))));
                       },
                     ),
                     RoundedButton(

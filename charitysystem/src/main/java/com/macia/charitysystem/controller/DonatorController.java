@@ -1,4 +1,4 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.model.Donator;
 import com.macia.charitysystem.repository.DonatorRepository;

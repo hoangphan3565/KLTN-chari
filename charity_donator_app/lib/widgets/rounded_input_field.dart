@@ -10,9 +10,11 @@ class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final TextInputType keyboardType;
+  final TextAlign textAlign;
   const RoundedInputField({
     Key key,
     this.hintText,
+    this.textAlign=TextAlign.left,
     this.keyboardType,
     this.controller,
     this.icon,
@@ -25,6 +27,7 @@ class RoundedInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
+        textAlign: textAlign,
         onChanged: onChanged,
         controller: controller,
         keyboardType: keyboardType,

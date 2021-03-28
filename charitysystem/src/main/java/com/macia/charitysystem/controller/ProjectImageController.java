@@ -1,11 +1,8 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.DTO.ImageDTO;
-import com.macia.charitysystem.repository.ProjectImagesRepository;
-import com.macia.charitysystem.repository.ProjectTypeRepository;
 import com.macia.charitysystem.service.ProjectImagesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

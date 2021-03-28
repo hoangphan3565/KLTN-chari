@@ -1,4 +1,4 @@
-package com.macia.charitysystem.api;
+package com.macia.charitysystem.controller;
 
 import com.macia.charitysystem.model.Project;
 import com.macia.charitysystem.model.ProjectType;

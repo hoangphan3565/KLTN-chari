@@ -27,21 +27,21 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
   _recoverPassword(String username, String new_password1,String new_password2) async{
     String message='';
     int errorCode=1;
-    if(new_password1==new_password2) {
-      if(CheckString.isMyCustomPassword(new_password1)){
-        var res = await API.changeUserPassword(username, new_password1, new_password2);
-        var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
-        message = jsonResponse['message'];
-        errorCode = jsonResponse['errorCode'];
-        if(errorCode == 0){
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()), (Route<dynamic> route) => false);
-        }
-      }
-      else{
-        message='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
-      }
-    }else{
-      message='Mật khẩu mới không trùng khớp!';
+    if(new_password1.length !=0 && new_password2.length!=0) {
+      if(new_password1==new_password2) {
+        if(CheckString.isMyCustomPassword(new_password1)){
+          var res = await API.changeUserPassword(username, new_password1, new_password2);
+          var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
+          message = jsonResponse['message'];
+          errorCode = jsonResponse['errorCode'];
+          if(errorCode == 0){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
+          }}else{
+          message='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
+        }}else{
+        message='Mật khẩu mới không trùng khớp!';
+      }}else{
+      message ='Không được trống thông tin nào';
     }
     Fluttertoast.showToast(
         msg: message,
@@ -73,12 +73,12 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
                   fontSize: 30,
                 ),
               ),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.01),
               Image.asset(
-                "assets/icons/login.png",
+                "assets/icons/change-password.jpg",
                 height: size.height * 0.25,
               ),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.01),
               Text(
                 widget.phone,
                 style: TextStyle(

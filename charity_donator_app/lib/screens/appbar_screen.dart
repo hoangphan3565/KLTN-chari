@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:convert' show utf8;
+import 'dart:io';
 
 import 'package:charity_donator_app/API.dart';
 import 'package:charity_donator_app/models/models.dart';
 import 'package:charity_donator_app/screens/screens.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'file:///D:/HCMUTE/HK8/KLTN-chari/charity_donator_app/lib/screens/notification/notifications_screen.dart';
-
 import 'screens.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppBarScreen extends StatefulWidget {
   @override
@@ -20,6 +22,10 @@ class AppBarScreen extends StatefulWidget {
 }
 
 class _AppBarScreenState extends State<AppBarScreen> {
+  // final Firestore _db = Firestore.instance;
+  // StreamSubscription iosSubscription;
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Timer _getNewDataAfter;
   int _page = 0;
@@ -37,11 +43,11 @@ class _AppBarScreenState extends State<AppBarScreen> {
     super.initState();
     _checkLogin();
     _getDatas();
-    if(this.islogin){
+    if(this.islogin==true){
       _getDonateHistory();
     }
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
-    _getNewDataAfter = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
       setState(() {
         _getDatas();
         if(this.islogin){
@@ -50,6 +56,51 @@ class _AppBarScreenState extends State<AppBarScreen> {
         _checkLogin();
       });
     });
+
+    _fcm.subscribeToTopic('project_added');
+    // if(Platform.isIOS){
+    //   iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
+    //   _fcm.requestNotificationPermissions(IosNotificationSettings());
+    // } else { _saveDeviceToken();}
+
+    _fcm.configure(
+      onMessage: (Map<String,dynamic> message) async{
+        print("onMessage: $message");
+        Fluttertoast.showToast(
+            msg: message['notification']['title']+": "+message['notification']['body'],
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.blueAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      },
+      onResume: (Map<String,dynamic> message) async{
+        print("onResume: $message");
+        Fluttertoast.showToast(
+            msg: message['notification']['title']+": "+message['notification']['body'],
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.blueAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      },
+      onLaunch: (Map<String,dynamic> message) async{
+        print("onLaunch: $message");
+        Fluttertoast.showToast(
+            msg: message['notification']['title']+": "+message['notification']['body'],
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.blueAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      },
+    );
   }
 
   @override
@@ -122,6 +173,29 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
+  // _saveDeviceToken() async{
+  //   // Get current user
+  //   String uid = '';
+  //   // FirebaseUser user = await _auth.currentUser();
+  //
+  //   // Get the token for this device
+  //   String fcmToken = await _fcm.getToken();
+  //
+  //   // Save it to Firestore
+  //   if(fcmToken != null){
+  //     var tokenRef = _db
+  //         .collection('users')
+  //         .document(uid)
+  //         .collection('token')
+  //         .document(fcmToken);
+  //     await tokenRef.setData({
+  //       'token': fcmToken,
+  //       'createdAt':FieldValue.serverTimestamp(),
+  //       'platform':Platform.operatingSystem
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,4 +239,5 @@ class _AppBarScreenState extends State<AppBarScreen> {
     );
   }
 }
+
 

@@ -33,9 +33,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (isBearerToken(requestTokenHeader)) {
 			jwtToken = getTokenFromRequestTokenHeader(requestTokenHeader);
 			username = getUsernameFromTokenJWT(jwtToken);
-		}else {
-			logger.warn("JWT Token does not begin with Bearer String or Request don't have JWT Token");
 		}
+//		else {
+//			logger.warn("JWT Token does not begin with Bearer String or Request don't have JWT Token");
+//		}
 		if (isUsernameNotAuthenticated(username)) {
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 			setAuthentcationInSpringSecurity(request, jwtToken, userDetails);
