@@ -61,6 +61,15 @@ class API {
     return http.delete(url);
   }
 
+  static Future saveFCMToken(String username,String fcmToken){
+    String url = baseUrl+"/save_fcmtoken";
+    final body = jsonEncode(<String, String>{
+      "username":username,
+      "fcmToken":fcmToken
+    });
+    return http.post(url,headers:header,body: body);
+  }
+
   static Future changeUserPassword(String username,String new_password1,String new_password2){
     String url = baseUrl+"/change/password";
     final body = jsonEncode(<String, String>{

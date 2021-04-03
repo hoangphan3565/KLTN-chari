@@ -61,9 +61,9 @@ public class CharitysystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String ps = passwordEncoder.encode("hoang123");
-		System.out.println(ps);
+//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//		String ps = passwordEncoder.encode("hoang123");
+//		System.out.println(ps);
 		System.out.println("Web API service is running!");
 	}
 }

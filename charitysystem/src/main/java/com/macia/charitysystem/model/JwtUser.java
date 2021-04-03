@@ -31,4 +31,7 @@ public class JwtUser implements Serializable {
 
     @Column(length = 20)
     private String status;
+
+    @Column(length = 1000)
+    private String fcmToken;
 }

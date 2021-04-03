@@ -87,6 +87,7 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.ALREADY_REPORTED);
 		}
 	}
+
 	@PostMapping("/activate")
 	public ResponseEntity<?> saveUserInfoAndActivate(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
@@ -120,7 +121,6 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
 
     @PostMapping("/change/password")
 	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {
@@ -174,6 +174,7 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@DeleteMapping("/username/{usn}")
 	public ResponseEntity<?> deleteUserByUSN(@PathVariable(value = "usn") String usn) {
 		JSONObject jo = new JSONObject();
@@ -188,6 +189,25 @@ public class JwtAuthenticationController {
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không tìm thấy người dùng có username: "+usn+" !");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/save_fcmtoken")
+	public ResponseEntity<?> saveFCMTokenToUser(@RequestBody JwtUserDTO user) {
+		JSONObject jo = new JSONObject();
+		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
+		if(appUser!=null){
+			appUser.setFcmToken(user.getFcmToken());
+			jwtuserRepo.save(appUser);
+			jo.put("errorCode", 0);
+			jo.put("data", appUser);
+			jo.put("message", "Cập nhật thành công!");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+		}else{
+			jo.put("errorCode", 1);
+			jo.put("data", "");
+			jo.put("message", "Không thể tìm thấy người dùng với username: "+user.getUsername()+ " !");
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
