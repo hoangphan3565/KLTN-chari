@@ -29,6 +29,7 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   firebase_messaging: ^5.0.2
   shared_preferences: ^0.5.12+4 #All platform
+  get: ^3.26.0 #All
   http: ^0.12.1 #All
   fluttertoast: ^7.1.1 #All
   percent_indicator: ^2.1.8 #All
@@ -40,7 +41,7 @@ dependencies:
   font_awesome_flutter: ^8.10.0 #All
   #flutter_money_formatter: 0.8.3 #iOS, Android
   webview_flutter: ^1.0.7 #iOS, Android
-  curved_navigation_bar: ^0.3.4 #All
+  curved_navigation_bar: ^0.3.7 #All
   custom_radio_grouped_button: ^1.0.6+1 #All
   jwt_decoder: ^1.0.3
   #  get: ^3.23.1

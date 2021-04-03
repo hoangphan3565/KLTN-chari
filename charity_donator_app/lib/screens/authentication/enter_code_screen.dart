@@ -124,7 +124,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 icon: LineAwesomeIcons.key,
                 keyboardType: TextInputType.number,
                 controller: _codeController,
-                onTopClearIcon: ()=>{_codeController.clear()},
+                onTapClearIcon: ()=>{_codeController.clear()},
                 onChanged: (value) {},
               ),
               RoundedButton(

@@ -1,12 +1,13 @@
 import 'package:charity_donator_app/constants.dart';
 import 'package:charity_donator_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final bool showClearIcon;
-  final Function onTopClearIcon;
+  final Function onTapClearIcon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final TextInputType keyboardType;
@@ -19,7 +20,7 @@ class RoundedInputField extends StatelessWidget {
     this.controller,
     this.icon,
     this.showClearIcon,
-    this.onTopClearIcon,
+    this.onTapClearIcon,
     this.onChanged,
   }) : super(key: key);
 
@@ -38,8 +39,10 @@ class RoundedInputField extends StatelessWidget {
             color: kPrimaryColor,
           ),
           suffixIcon: IconButton(
-            onPressed: onTopClearIcon,
-            icon: Icon(Icons.close)
+              splashRadius: 18,
+              iconSize: 18,
+              onPressed: onTapClearIcon,
+              icon: FaIcon(FontAwesomeIcons.timesCircle)
           ),
           hintText: hintText,
           border: InputBorder.none,

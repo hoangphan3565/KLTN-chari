@@ -107,10 +107,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image.asset(
-                      "assets/icons/change-password.jpg",
-                      height: size.height * 0.2,
-                    ),
+                    // Image.asset(
+                    //   "assets/icons/change-password.jpg",
+                    //   height: size.height * 0.2,
+                    // ),
                     TextFieldContainer(
                       child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
                         style: TextStyle(
@@ -124,7 +124,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       icon: LineAwesomeIcons.alternate_unlock,
                       obscureText: notSeePassword,
                       controller: _curPasswordField,
-                      onTapSuffixIcon: ()=>{
+                      onTapClearIcon: ()=>{_curPasswordField.clear()},
+                      switchObscureTextMode: ()=>{
                         if(notSeePassword==true){
                           setState((){notSeePassword=false;})
                         }else{
@@ -138,7 +139,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       icon: LineAwesomeIcons.lock_open,
                       obscureText: notSeePassword1,
                       controller: _newPasswordField,
-                      onTapSuffixIcon: ()=>{
+                      onTapClearIcon: ()=>{_newPasswordField.clear()},
+                      switchObscureTextMode: ()=>{
                         if(notSeePassword1==true){
                           setState((){notSeePassword1=false;})
                         }else{
@@ -152,7 +154,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       icon: LineAwesomeIcons.lock,
                       obscureText: notSeePassword2,
                       controller: _reWritePasswordField,
-                      onTapSuffixIcon: ()=>{
+                      onTapClearIcon: ()=>{_reWritePasswordField.clear()},
+                      switchObscureTextMode: ()=>{
                         if(notSeePassword2==true){
                           setState((){notSeePassword2=false;})
                         }else{

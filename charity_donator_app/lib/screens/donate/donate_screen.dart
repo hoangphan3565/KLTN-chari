@@ -155,7 +155,7 @@ class _DonateScreenState extends State<DonateScreen> {
                       icon: Icons.favorite,
                       keyboardType: TextInputType.number,
                       controller: _moneyControllerField,
-                      onTopClearIcon: ()=>{
+                      onTapClearIcon: ()=>{
                         _moneyControllerField.clear(),
                         setState(() {
                           str_donate_money = '';
@@ -198,7 +198,7 @@ class _DonateScreenState extends State<DonateScreen> {
                       icon: Icons.messenger_outline,
                       keyboardType: TextInputType.text,
                       controller: _messageControllerField,
-                      onTopClearIcon: ()=>{_messageControllerField.clear()},
+                      onTapClearIcon: ()=>{_messageControllerField.clear()},
                       onChanged: (value) {},
                     ),
                     RoundedButton(

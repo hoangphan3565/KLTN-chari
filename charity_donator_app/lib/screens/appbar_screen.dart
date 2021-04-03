@@ -23,13 +23,15 @@ class AppBarScreen extends StatefulWidget {
 
 class _AppBarScreenState extends State<AppBarScreen> {
   // final Firestore _db = Firestore.instance;
-  // StreamSubscription iosSubscription;
+  StreamSubscription iosSubscription;
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Timer _getNewDataAfter;
   int _page = 0;
-  GlobalKey _bottomNavigationKey = GlobalKey();
+  GlobalKey _bottomNavigationKeyUnLogged = GlobalKey();
+  GlobalKey _bottomNavigationKeyLogged = GlobalKey();
+
   bool islogin = false;
   var projects = new List<Project>();
   var project_types = new List<ProjectType>();
@@ -58,10 +60,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
 
     _fcm.subscribeToTopic('project_added');
-    // if(Platform.isIOS){
-    //   iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
-    //   _fcm.requestNotificationPermissions(IosNotificationSettings());
-    // } else { _saveDeviceToken();}
+    if(Platform.isIOS){
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    } else { _saveDeviceToken();}
 
     _fcm.configure(
       onMessage: (Map<String,dynamic> message) async{
@@ -78,27 +80,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
       },
       onResume: (Map<String,dynamic> message) async{
         print("onResume: $message");
-        Fluttertoast.showToast(
-            msg: message['notification']['title']+": "+message['notification']['body'],
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.blueAccent,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
       },
       onLaunch: (Map<String,dynamic> message) async{
         print("onLaunch: $message");
-        Fluttertoast.showToast(
-            msg: message['notification']['title']+": "+message['notification']['body'],
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.blueAccent,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
       },
     );
   }
@@ -162,7 +146,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
       if(token==null || expirationDate.isBefore(now)) {
         islogin=false;
         prefs.clear();
-      }else{
+      }
+      else{
         islogin=true;
         donator.full_name = prefs.getString('donator_full_name').toString();
         donator.id = prefs.getInt('donator_id');
@@ -173,34 +158,43 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
-  // _saveDeviceToken() async{
-  //   // Get current user
-  //   String uid = '';
-  //   // FirebaseUser user = await _auth.currentUser();
-  //
-  //   // Get the token for this device
-  //   String fcmToken = await _fcm.getToken();
-  //
-  //   // Save it to Firestore
-  //   if(fcmToken != null){
-  //     var tokenRef = _db
-  //         .collection('users')
-  //         .document(uid)
-  //         .collection('token')
-  //         .document(fcmToken);
-  //     await tokenRef.setData({
-  //       'token': fcmToken,
-  //       'createdAt':FieldValue.serverTimestamp(),
-  //       'platform':Platform.operatingSystem
-  //     });
-  //   }
-  // }
+  _saveDeviceToken() async{
+    String fcmToken = await _fcm.getToken();
+    if(islogin==true){
+      API.saveFCMToken(this.donator.phone_number, fcmToken);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return this.islogin==false ?
+    Scaffold(
+        bottomNavigationBar:
+        CurvedNavigationBar(
+          key: _bottomNavigationKeyUnLogged,
+          index: 0,
+          height: 50.0,
+          items: <Widget>[
+            Icon(Icons.home, size: 30,color: Colors.green[600],),
+            Icon(Icons.account_circle, size: 30,color: Colors.green[600],),
+          ],
+          color: Colors.green[100],
+          buttonBackgroundColor: Colors.green[100],
+          backgroundColor: Colors.white,
+          animationCurve: Curves.easeInOut,
+          animationDuration: Duration(milliseconds: 300),
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+        ),
+        body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,) : AskScreen()
+    )
+        :
+    Scaffold(
         bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
+          key: _bottomNavigationKeyLogged,
           index: 0,
           height: 50.0,
           items: <Widget>[
@@ -227,15 +221,11 @@ class _AppBarScreenState extends State<AppBarScreen> {
             });
           },
         ),
-        body: islogin == false ?
-              (_page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,)
-              : AskScreen())
-            :
-              (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,isLogin: this.islogin)
-              : _page == 1 ? FavoriteScreen(projects: this.projects)
-              : _page == 2 ? NotificationsScreen()
-              : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
-              : PersonalScreen(donator: this.donator))
+        body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,isLogin: this.islogin)
+            : _page == 1 ? FavoriteScreen(projects: this.projects)
+            : _page == 2 ? NotificationsScreen()
+            : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
+            : PersonalScreen(donator: this.donator))
     );
   }
 }

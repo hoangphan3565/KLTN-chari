@@ -1,6 +1,7 @@
 import 'package:charity_donator_app/constants.dart';
 import 'package:charity_donator_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class RoundedPasswordField extends StatelessWidget {
@@ -9,14 +10,16 @@ class RoundedPasswordField extends StatelessWidget {
   final IconData icon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-  final Function onTapSuffixIcon;
+  final Function switchObscureTextMode;
+  final Function onTapClearIcon;
   const RoundedPasswordField({
     Key key,
     this.hintText,
     this.obscureText,
     this.icon,
     this.controller,
-    this.onTapSuffixIcon,
+    this.switchObscureTextMode,
+    this.onTapClearIcon,
     this.onChanged,
   }) : super(key: key);
 
@@ -34,9 +37,31 @@ class RoundedPasswordField extends StatelessWidget {
             icon,
             color: kPrimaryColor,
           ),
-          suffixIcon: IconButton(
-            onPressed: onTapSuffixIcon,
-            icon: Icon(obscureText==true?LineAwesomeIcons.low_vision:Icons.remove_red_eye_outlined),
+          suffixIcon: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+            mainAxisSize: MainAxisSize.min, // added line
+            children: <Widget>[
+              // InkWell(
+              //     onTap: () {onTapClearIcon;},
+              //     child: FaIcon(FontAwesomeIcons.timesCircle,size: 15,)),
+              // InkWell(
+              //     onTap: () {switchObscureTextMode;},
+              //     child: Icon(obscureText==true?LineAwesomeIcons.low_vision:Icons.remove_red_eye_outlined,size: 18,)),
+              IconButton(
+                padding: EdgeInsets.only(right: 0),
+                splashRadius: 18,
+                iconSize: 15,
+                icon: FaIcon(FontAwesomeIcons.timesCircle),
+                onPressed: onTapClearIcon,
+              ),
+              IconButton(
+                padding: EdgeInsets.only(right: 0),
+                splashRadius: 18,
+                iconSize: 18,
+                icon: Icon(obscureText==true?LineAwesomeIcons.low_vision:Icons.remove_red_eye_outlined),
+                onPressed: switchObscureTextMode,
+              ),
+            ],
           ),
           border: InputBorder.none,
         ),

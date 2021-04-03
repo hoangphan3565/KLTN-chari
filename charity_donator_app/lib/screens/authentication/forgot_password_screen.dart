@@ -118,7 +118,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
                 icon: LineAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,
-                onTopClearIcon: ()=>{_usernameController.clear()},
+                onTapClearIcon: ()=>{_usernameController.clear()},
                 onChanged: (value) {},
               ),
 

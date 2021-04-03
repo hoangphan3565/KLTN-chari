@@ -93,7 +93,8 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
                 icon: LineAwesomeIcons.lock_open,
                 obscureText: notSeePassword1,
                 controller: _password1Controller,
-                onTapSuffixIcon: ()=>{
+                onTapClearIcon: ()=>{_password1Controller.clear()},
+                switchObscureTextMode: ()=>{
                   if(notSeePassword1==true){
                     setState((){notSeePassword1=false;})
                   }else{
@@ -107,7 +108,8 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
                 icon: LineAwesomeIcons.lock,
                 obscureText: notSeePassword2,
                 controller: _password2Controller,
-                onTapSuffixIcon: ()=>{
+                onTapClearIcon: ()=>{_password2Controller.clear()},
+                switchObscureTextMode: ()=>{
                   if(notSeePassword2==true){
                     setState((){notSeePassword2=false;})
                   }else{

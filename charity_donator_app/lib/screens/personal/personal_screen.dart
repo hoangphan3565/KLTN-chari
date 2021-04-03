@@ -8,6 +8,7 @@ import 'package:charity_donator_app/screens/screens.dart';
 import 'package:charity_donator_app/services/services.dart';
 import 'package:charity_donator_app/utility/utility.dart';
 import 'package:charity_donator_app/widgets/widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -111,7 +112,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       hintText: 'Họ và tên',
                       keyboardType: TextInputType.name,
                       controller: _fullnameField,
-                      onTopClearIcon: ()=>{_fullnameField.clear()},
+                      onTapClearIcon: ()=>{_fullnameField.clear()},
                       onChanged: (value) {},
                     ),
                     RoundedInputField(
@@ -119,7 +120,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       hintText: 'Địa chỉ',
                       keyboardType: TextInputType.streetAddress,
                       controller: _addressField,
-                      onTopClearIcon: ()=>{_addressField.clear()},
+                      onTapClearIcon: ()=>{_addressField.clear()},
                       onChanged: (value) {},
                     ),
 
@@ -223,6 +224,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       fontsize: 17,
                       press: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
+                        API.saveFCMToken(prefs.getString('username'), null);
                         await prefs.clear();
                         Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => AppBarScreen()));
                       },

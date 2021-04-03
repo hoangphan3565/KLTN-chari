@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   icon: LineAwesomeIcons.phone,
                   keyboardType: TextInputType.number,
                   controller: _usernameController,
-                  onTopClearIcon: ()=>{_usernameController.clear()},
+                  onTapClearIcon: ()=>{_usernameController.clear()},
                   onChanged: (value) {},
                 ),
                 RoundedPasswordField(
@@ -225,7 +225,8 @@ class _LoginScreenState extends State<LoginScreen>{
                   obscureText: notSeePassword,
                   icon: LineAwesomeIcons.lock,
                   controller: _passwordController,
-                  onTapSuffixIcon: ()=>{
+                  onTapClearIcon: ()=>{_passwordController.clear()},
+                  switchObscureTextMode: ()=>{
                     if(notSeePassword==true){
                       setState((){notSeePassword=false;})
                     }else{
@@ -250,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen>{
                         Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => ForgotPasswordScreen()))
                       },
                       child: Text(
-                        "Lấy lại mật khẩu",
+                        "Quên mật khẩu",
                         style: TextStyle(
                           color: kPrimaryColor,
                           fontWeight: FontWeight.bold,
