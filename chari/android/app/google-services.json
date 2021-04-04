@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "956788874265",
+    "firebase_url": "https://chari-c3f85.firebaseio.com",
+    "project_id": "chari-c3f85",
+    "storage_bucket": "chari-c3f85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956788874265:android:61534ad06c27df1d191e88",
+        "android_client_info": {
+          "package_name": "com.macia.chari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956788874265-40kff0f7ip8trt4hd72fqg06q5n47ba6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQjuAxYQ4wtGWKF3NfRdACIeJnZx_9nDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956788874265-40kff0f7ip8trt4hd72fqg06q5n47ba6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "956788874265-c5fk30su04kb8keor36skbjr7c38vff5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.macia.chari"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956788874265:android:0cf9191adcbc51bd191e88",
+        "android_client_info": {
+          "package_name": "com.macia.charity_donator_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956788874265-dpnhrrr7bf0cb6d8icnu3earjo0d2o2p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.macia.charity_donator_app",
+            "certificate_hash": "1a1d7cadc8e625554d7f0f423a44746a144be9d9"
+          }
+        },
+        {
+          "client_id": "956788874265-40kff0f7ip8trt4hd72fqg06q5n47ba6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQjuAxYQ4wtGWKF3NfRdACIeJnZx_9nDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956788874265-40kff0f7ip8trt4hd72fqg06q5n47ba6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "956788874265-c5fk30su04kb8keor36skbjr7c38vff5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.macia.chari"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
