@@ -9,6 +9,7 @@ const baseUrl = "http://192.168.43.139:8080/api";
 
 const login = "/login";
 const register = "/register";
+const save_user = "/save_user";
 const activate = "/activate";
 const projects = "/projects";
 const project_images = "/project_images/project/";
@@ -44,11 +45,17 @@ class API {
   }
 
   static Future activateUser(String username){
-    String url = baseUrl+activate;
+    String url = baseUrl+activate+"/"+username;
+    http.post(url,headers:header);
+  }
+
+  static saveUser(String username) {
+    String url = baseUrl+save_user;
     final body = jsonEncode(<String, String>{
       "username":username,
+      "usertype":"Donator"
     });
-    http.post(url,headers:header,body: body);
+    return http.post(url,headers:header,body: body);
   }
 
   static Future findUserByUserName(String username){

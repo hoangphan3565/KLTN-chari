@@ -48,15 +48,10 @@ public class JwtAuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		JSONObject jo = new JSONObject();
-
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
 		JwtUser user = jwtuserRepo.findByUsername(authenticationRequest.getUsername());
-
 		final String token = jwtTokenUtil.generateToken(userDetails);
-
 		jo.put("errorCode", 0);
 		jo.put("token",new JwtResponse(token).getToken());
 		jo.put("data", user);
@@ -88,20 +83,37 @@ public class JwtAuthenticationController {
 		}
 	}
 
-	@PostMapping("/activate")
-	public ResponseEntity<?> saveUserInfoAndActivate(@RequestBody JwtUserDTO user) {
+	@PostMapping("/activate/{usn}")
+	public ResponseEntity<?> activateUser(@PathVariable(value = "usn") String usn) {
+		JSONObject jo = new JSONObject();
+		JwtUser appUser = jwtuserRepo.findByUsername(usn);
+		if(appUser!=null){
+			appUser.setStatus("ACTIVATED");
+			jwtuserRepo.save(appUser);
+			jo.put("errorCode", 0);
+			jo.put("data", appUser);
+			jo.put("message", "Kích hoạt thành công!");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+		}
+		else{
+			jo.put("errorCode", 1);
+			jo.put("data", "");
+			jo.put("message", "Không thể tìm thấy người dùng với username: "+usn+ " !");
+			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/save_user")
+	public ResponseEntity<?> saveUserInfo(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){
 			if(user.getUsertype().equals(UserType.Donator)){
-				if(donatorService.findByPhone(user.getUsername())==null){
-					donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
-				}
+				donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
 			}else if(user.getUsertype().equals(UserType.Collaborator)){
-				if(collaboratorService.findByPhone(user.getUsername())==null) {
-					collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
-				}
-			}else{
+				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
+			}
+			else{
 				jo.put("errorCode", 1);
 				jo.put("data", "");
 				jo.put("message", "Kích hoạt thất bại!");
@@ -121,6 +133,7 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 
     @PostMapping("/change/password")
 	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {

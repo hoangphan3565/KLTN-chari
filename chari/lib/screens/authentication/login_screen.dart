@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen>{
         phoneNumber: phone,
         timeout: Duration(seconds: 120),
         verificationCompleted: (AuthCredential authCredential) {
-          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result) async {
             Navigator.of(context).pop(); // to pop the dialog box
             Fluttertoast.showToast(
                 msg: 'Xác thực thành công!',
@@ -158,9 +158,9 @@ class _LoginScreenState extends State<LoginScreen>{
                 textColor: Colors.white,
                 fontSize: 16.0
             );
-            API.activateUser(NavitePhone);
+            await API.activateUser(NavitePhone);
+            await API.saveUser(NavitePhone);
             _login(_usernameController.text,_passwordController.text);
-            return "successful";
           }).catchError((e) {
             return "error";
           });
@@ -180,7 +180,8 @@ class _LoginScreenState extends State<LoginScreen>{
         codeSent: (String verificationId, [int forceResendingToken]) async {
           final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
           if(await result=='successful'){
-            API.activateUser(NavitePhone);
+            await API.activateUser(NavitePhone);
+            await API.saveUser(NavitePhone);
             _login(_usernameController.text,_passwordController.text);
           }
         },

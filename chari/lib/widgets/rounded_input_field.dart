@@ -40,7 +40,7 @@ class RoundedInputField extends StatelessWidget {
           ),
           suffixIcon: IconButton(
               splashRadius: 18,
-              iconSize: 18,
+              iconSize: 15,
               onPressed: onTapClearIcon,
               icon: FaIcon(FontAwesomeIcons.timesCircle)
           ),

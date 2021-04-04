@@ -62,6 +62,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   @override
   void dispose() {
     super.dispose();
+    setState(() { _current = 0; });
   }
 
   @override

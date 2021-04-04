@@ -67,10 +67,11 @@ class _SignUpScreenState extends State<SignUpScreen>{
       phoneNumber: phone,
       timeout: Duration(seconds: 120),
       verificationCompleted: (AuthCredential authCredential) {
-        _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+        _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result) async {
           Navigator.of(context).pop(); // to pop the dialog box
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
-          API.activateUser(NavitePhone);
+          await API.activateUser(NavitePhone);
+          await API.saveUser(NavitePhone);
           Fluttertoast.showToast(
                 msg: "Đăng ký thành công!",
                 toastLength: Toast.LENGTH_LONG,
@@ -101,7 +102,8 @@ class _SignUpScreenState extends State<SignUpScreen>{
         final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
         if(await result=='successful'){
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
-          API.activateUser(NavitePhone);
+          await API.activateUser(NavitePhone);
+          await API.saveUser(NavitePhone);
         }
       },
       codeAutoRetrievalTimeout: (String verificationId) {
