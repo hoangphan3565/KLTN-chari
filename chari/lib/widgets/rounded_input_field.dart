@@ -1,4 +1,4 @@
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,13 +36,14 @@ class RoundedInputField extends StatelessWidget {
         decoration: InputDecoration(
           icon: Icon(
             icon,
+            size: 16,
             color: kPrimaryColor,
           ),
           suffixIcon: IconButton(
               splashRadius: 18,
               iconSize: 15,
               onPressed: onTapClearIcon,
-              icon: FaIcon(FontAwesomeIcons.timesCircle)
+              icon: FaIcon(FontAwesomeIcons.solidTimesCircle)
           ),
           hintText: hintText,
           border: InputBorder.none,

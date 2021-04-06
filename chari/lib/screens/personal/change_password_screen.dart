@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/screens/appbar_screen.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -60,7 +60,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: errorCode==0? Colors.green:Colors.orangeAccent,
+        backgroundColor: errorCode==0? kPrimaryColor:Colors.orangeAccent,
         textColor: Colors.white,
         fontSize: 16.0
     );
@@ -121,7 +121,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                     RoundedPasswordField(
                       hintText: "Mật khẩu hiện tại",
-                      icon: LineAwesomeIcons.alternate_unlock,
+                      icon: FontAwesomeIcons.unlock,
                       obscureText: notSeePassword,
                       controller: _curPasswordField,
                       onTapClearIcon: ()=>{_curPasswordField.clear()},
@@ -136,7 +136,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                     RoundedPasswordField(
                       hintText: "Mật khẩu mới",
-                      icon: LineAwesomeIcons.lock_open,
+                      icon: FontAwesomeIcons.lockOpen,
                       obscureText: notSeePassword1,
                       controller: _newPasswordField,
                       onTapClearIcon: ()=>{_newPasswordField.clear()},
@@ -151,7 +151,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                     RoundedPasswordField(
                       hintText: "Nhập lại mật khẩu mới",
-                      icon: LineAwesomeIcons.lock,
+                      icon: FontAwesomeIcons.lock,
                       obscureText: notSeePassword2,
                       controller: _reWritePasswordField,
                       onTapClearIcon: ()=>{_reWritePasswordField.clear()},

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -34,7 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
+              backgroundColor: kPrimaryColor,
               textColor: Colors.white,
               fontSize: 16.0
           );
@@ -84,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: errorCode == 0? Colors.green: Colors.orangeAccent,
+        backgroundColor: errorCode == 0? kPrimaryColor: Colors.orangeAccent,
         textColor: Colors.white,
         fontSize: 16.0
     );
@@ -115,7 +115,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
                 hintText: "Nhập Số điện thoại",
-                icon: LineAwesomeIcons.phone,
+                icon: FontAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,
                 onTapClearIcon: ()=>{_usernameController.clear()},

@@ -37,9 +37,7 @@ dependencies:
   chewie: ^0.12.0 #All 
   video_player: ^1.0.0 #All
   carousel_slider: ^2.3.1 #All
-  line_awesome_flutter: ^1.0.1 #All
   font_awesome_flutter: ^8.10.0 #All
-  #flutter_money_formatter: 0.8.3 #iOS, Android
   webview_flutter: ^1.0.7 #iOS, Android
   curved_navigation_bar: ^0.3.7 #All
   custom_radio_grouped_button: ^1.0.6+1 #All

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -75,7 +75,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: kPrimaryLightColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(18),
@@ -85,7 +85,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
         title: Text(
           'Đã quan tâm',
           style: const TextStyle(
-            color: kPrimaryLightColor,
+            color: kPrimaryColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.2,
@@ -224,7 +224,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               onTap: ()=> {
                 _removeHeart(project),
               },
-              child: Icon(Icons.favorite, size: 35, color: Colors.green.withOpacity(0.9))
+              child: Icon(Icons.favorite, size: 35, color: kPrimaryColor.withOpacity(0.9))
           ),
         )
       ],
@@ -258,7 +258,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                   width: MediaQuery.of(context).size.width-60,
                   lineHeight: 8.0,
                   percent: percent,
-                  progressColor: Colors.green[600],
+                  progressColor: kPrimaryColor,
                 ),
               ],
             ),
@@ -342,7 +342,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             width: 125,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.green[600]),
+                border: Border.all(width: 1, color: kPrimaryColor),
                 borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
@@ -356,7 +356,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
-                    color: Colors.green[600]),
+                    color: kPrimaryColor),
               ),
             ),
           ),

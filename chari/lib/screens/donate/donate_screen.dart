@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -238,7 +238,7 @@ class _DonateScreenState extends State<DonateScreen> {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
-                              backgroundColor: errorCode==0?Colors.green:Colors.orangeAccent,
+                              backgroundColor: errorCode==0?kPrimaryColor:Colors.orangeAccent,
                               textColor: Colors.white,
                               fontSize: 16.0
                           );

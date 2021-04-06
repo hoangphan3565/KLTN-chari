@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
@@ -12,7 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -62,7 +62,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
+        backgroundColor: kPrimaryColor,
         textColor: Colors.white,
         fontSize: 16.0
     );
@@ -97,7 +97,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[600],
+                        color: kPrimaryColor,
                       ),
                     ),
                     SizedBox(height: 5),
@@ -116,7 +116,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       onChanged: (value) {},
                     ),
                     RoundedInputField(
-                      icon: LineAwesomeIcons.address_card,
+                      icon: FontAwesomeIcons.addressCard,
                       hintText: 'Địa chỉ',
                       keyboardType: TextInputType.streetAddress,
                       controller: _addressField,
@@ -145,7 +145,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: kPrimaryLightColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(18),
@@ -155,7 +155,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         title: Text(
           'Trang cá nhân',
           style: const TextStyle(
-            color: kPrimaryLightColor,
+            color: kPrimaryColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.7,
@@ -194,7 +194,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     SizedBox(height: kSpacingUnit.toDouble() * 0.5),
                     Text(
                       widget.donator.phone_number,
-                      style: kCaptionTextStyle,
+                      style: TextStyle(
+                        fontSize: kSpacingUnit.toDouble() * 1.7,
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
                     SizedBox(height: kSpacingUnit.toDouble() * 5),
                     RoundedButton(

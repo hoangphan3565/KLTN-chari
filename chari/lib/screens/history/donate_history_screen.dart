@@ -1,5 +1,5 @@
 
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -21,7 +21,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: kPrimaryLightColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(18),
@@ -31,7 +31,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
         title: Text(
           'Lịch sử quyên góp',
           style: const TextStyle(
-            color: kPrimaryLightColor,
+            color: kPrimaryColor,
             fontSize: 28.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.7,

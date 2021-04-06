@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class FeedBackService{
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[600],
+                        color: kPrimaryColor,
                       ),
                     ),
                     SizedBox(height: 5),
@@ -94,7 +95,7 @@ class FeedBackService{
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: errorCode==0 ? Colors.green : Colors.orangeAccent,
+        backgroundColor: errorCode==0 ? kPrimaryColor : Colors.orangeAccent,
         textColor: Colors.white,
         fontSize: 16.0
     );

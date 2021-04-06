@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green[400],
+          backgroundColor: kPrimaryLightColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(18),
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen>{
           title: Text(
             'Trang chủ',
             style: const TextStyle(
-              color: kPrimaryLightColor,
+              color: kPrimaryColor,
               fontSize: 27.0,
               fontWeight: FontWeight.bold,
               letterSpacing: -0.2,
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>{
               actions: <Widget>[
                 widget.project_types.length == 0 ? Text(""):
                 PopupMenuButton<ProjectType>(
-                  icon:  Icon(Icons.menu_open_outlined,),
+                  icon:  Icon(Icons.menu_open_outlined,color: kPrimaryColor,),
                   onSelected: (ProjectType result) { setState(() {
                     _selectedProjectType = result.id;
                     print(_selectedProjectType);
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen>{
               _changeStateFavorite(project.prj_id,listProjectIdFavorite.contains(project.prj_id.toString())),
             },
             child: listProjectIdFavorite.contains(project.prj_id.toString()) == true ?
-            Icon(Icons.favorite, size: 35, color: Colors.green.withOpacity(0.9))
+            Icon(Icons.favorite, size: 35, color: kPrimaryColor.withOpacity(0.9))
                 :
             Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.9)),
           ),
@@ -361,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   width: MediaQuery.of(context).size.width-60,
                   lineHeight: 8.0,
                   percent: percent,
-                  progressColor: Colors.green[600],
+                  progressColor: kPrimaryColor,
                 ),
               ],
             ),
@@ -445,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen>{
             width: 125,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.green[600]),
+                border: Border.all(width: 1, color: kPrimaryColor),
                 borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
@@ -459,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
-                    color: Colors.green[600]),
+                    color: kPrimaryColor),
               ),
             ),
           ),

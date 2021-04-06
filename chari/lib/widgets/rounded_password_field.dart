@@ -1,8 +1,8 @@
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final String hintText;
@@ -35,6 +35,7 @@ class RoundedPasswordField extends StatelessWidget {
           hintText: hintText,
           icon: Icon(
             icon,
+            size: 16,
             color: kPrimaryColor,
           ),
           suffixIcon: Row(
@@ -46,19 +47,19 @@ class RoundedPasswordField extends StatelessWidget {
               //     child: FaIcon(FontAwesomeIcons.timesCircle,size: 15,)),
               // InkWell(
               //     onTap: () {switchObscureTextMode;},
-              //     child: Icon(obscureText==true?LineAwesomeIcons.low_vision:Icons.remove_red_eye_outlined,size: 18,)),
+              //     child: Icon(obscureText==true?FontAwesomeIcons.low_vision:Icons.remove_red_eye_outlined,size: 18,)),
               IconButton(
                 padding: EdgeInsets.only(right: 0),
                 splashRadius: 18,
                 iconSize: 15,
-                icon: FaIcon(FontAwesomeIcons.timesCircle),
+                icon: FaIcon(FontAwesomeIcons.solidTimesCircle),
                 onPressed: onTapClearIcon,
               ),
               IconButton(
                 padding: EdgeInsets.only(right: 0),
                 splashRadius: 18,
-                iconSize: 18,
-                icon: Icon(obscureText==true?LineAwesomeIcons.low_vision:Icons.remove_red_eye_outlined),
+                iconSize: 16,
+                icon: Icon(obscureText==true?FontAwesomeIcons.lowVision:FontAwesomeIcons.solidEye),
                 onPressed: switchObscureTextMode,
               ),
             ],

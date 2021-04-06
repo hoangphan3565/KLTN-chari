@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/project_model.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -117,8 +117,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         height: 45,
         width: 400,
         decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: Colors.green[600]),
-            borderRadius: BorderRadius.circular(8), color: Colors.green[600]),
+            border: Border.all(width: 1.5, color: kPrimaryColor),
+            borderRadius: BorderRadius.circular(8), color: kPrimaryColor),
         child:((widget.project.status=='activating')?
           FlatButton(
             onPressed:()=> {
@@ -154,7 +154,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.green.withOpacity(0.1),
+                color: kPrimaryColor.withOpacity(0.1),
                 spreadRadius: 1,
               )
             ],
@@ -558,7 +558,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     "Đã đạt mục tiêu",
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.green[600],
+                      color: kPrimaryColor,
                     ),
                   ),
                 ],
@@ -609,7 +609,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   width: MediaQuery.of(context).size.width-60,
                   lineHeight: 8.0,
                   percent: percent,
-                  progressColor: Colors.green[600],
+                  progressColor: kPrimaryColor,
                 ),
               ],
             ),

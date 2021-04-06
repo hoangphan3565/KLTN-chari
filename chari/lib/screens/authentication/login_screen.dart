@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen>{
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: res.statusCode == 200 ? Colors.green:Colors.orangeAccent,
+        backgroundColor: res.statusCode == 200 ? kPrimaryColor:Colors.orangeAccent,
         textColor: Colors.white,
         fontSize: 16.0
     );
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   toastLength: Toast.LENGTH_LONG,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.green,
+                  backgroundColor: kPrimaryColor,
                   textColor: Colors.white,
                   fontSize: 16.0
               );
@@ -154,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
+                backgroundColor: kPrimaryColor,
                 textColor: Colors.white,
                 fontSize: 16.0
             );
@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 SizedBox(height: size.height * 0.03),
                 RoundedInputField(
                   hintText: "Nhập Số điện thoại",
-                  icon: LineAwesomeIcons.phone,
+                  icon: FontAwesomeIcons.phone,
                   keyboardType: TextInputType.number,
                   controller: _usernameController,
                   onTapClearIcon: ()=>{_usernameController.clear()},
@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 RoundedPasswordField(
                   hintText: "Nhập mật khẩu",
                   obscureText: notSeePassword,
-                  icon: LineAwesomeIcons.lock,
+                  icon: FontAwesomeIcons.lock,
                   controller: _passwordController,
                   onTapClearIcon: ()=>{_passwordController.clear()},
                   switchObscureTextMode: ()=>{

@@ -4,6 +4,7 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:chari/API.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -175,11 +176,11 @@ class _AppBarScreenState extends State<AppBarScreen> {
           index: 0,
           height: 50.0,
           items: <Widget>[
-            Icon(Icons.home, size: 30,color: Colors.green[600],),
-            Icon(Icons.account_circle, size: 30,color: Colors.green[600],),
+            Icon(Icons.home, size: 30,color: kPrimaryColor,),
+            Icon(Icons.account_circle, size: 30,color: kPrimaryColor,),
           ],
-          color: Colors.green[100],
-          buttonBackgroundColor: Colors.green[100],
+          color: kPrimaryLightColor,
+          buttonBackgroundColor: kPrimaryLightColor,
           backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
@@ -198,14 +199,14 @@ class _AppBarScreenState extends State<AppBarScreen> {
           index: 0,
           height: 50.0,
           items: <Widget>[
-            Icon(Icons.home, size: 30,color: Colors.green[600],),
-            Icon(Icons.favorite, size: 30,color: Colors.green[600],),
-            Icon(Icons.notifications, size: 30,color: Colors.green[600],),
-            Icon(Icons.history, size: 30,color: Colors.green[600],),
-            Icon(Icons.account_circle, size: 30,color: Colors.green[600],),
+            Icon(Icons.home, size: 30,color: kPrimaryColor,),
+            Icon(Icons.favorite, size: 30,color: kPrimaryColor,),
+            Icon(Icons.notifications, size: 30,color: kPrimaryColor,),
+            Icon(Icons.history, size: 30,color: kPrimaryColor,),
+            Icon(Icons.account_circle, size: 30,color: kPrimaryColor,),
           ],
-          color: Colors.green[100],
-          buttonBackgroundColor: Colors.green[100],
+          color: kPrimaryLightColor,
+          buttonBackgroundColor: kPrimaryLightColor,
           backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:quiver/async.dart';
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class EnterCodeScreen extends StatefulWidget {
@@ -25,6 +25,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   int _start = 120;
   int _current = 120;
 
+
+
+
   void startTimer() {
     CountdownTimer countDownTimer = new CountdownTimer(
       new Duration(seconds: _start),
@@ -32,12 +35,14 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
     );
 
     var sub = countDownTimer.listen(null);
+
     sub.onData((duration) {
       setState(() { _current = _start - duration.elapsed.inSeconds; });
     });
 
     sub.onDone(() {
       print("Done");
+      sub.cancel();
       Navigator.pop(context, 'fail');
       Fluttertoast.showToast(
           msg: 'Mã xác thực hết hiệu lực',
@@ -122,7 +127,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
               RoundedInputField(
                 textAlign: TextAlign.center,
                 hintText: "Nhập mã xác nhận",
-                icon: LineAwesomeIcons.key,
+                icon: FontAwesomeIcons.key,
                 keyboardType: TextInputType.number,
                 controller: _codeController,
                 onTapClearIcon: ()=>{_codeController.clear()},
@@ -139,7 +144,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                         toastLength: Toast.LENGTH_LONG,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.green,
+                        backgroundColor: kPrimaryColor,
                         textColor: Colors.white,
                         fontSize: 16.0
                     );

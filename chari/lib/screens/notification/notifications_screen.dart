@@ -1,4 +1,4 @@
-import 'package:chari/constants.dart';
+import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: kPrimaryLightColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(18),
@@ -22,7 +22,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         title: Text(
           'Thông báo',
           style: const TextStyle(
-            color: kPrimaryLightColor,
+            color: kPrimaryColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.2,
