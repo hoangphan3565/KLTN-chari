@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:quiver/async.dart';
-import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:chari/utility/utility.dart';
 
 class EnterCodeScreen extends StatefulWidget {
   final String phone;

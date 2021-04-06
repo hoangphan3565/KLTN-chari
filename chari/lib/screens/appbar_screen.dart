@@ -4,7 +4,7 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:chari/API.dart';
-import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
+import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';

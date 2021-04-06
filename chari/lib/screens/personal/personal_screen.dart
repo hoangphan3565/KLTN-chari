@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'file:///D:/HCMUTE/HK8/KLTN-chari/chari/lib/utility/constants.dart';
+import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';

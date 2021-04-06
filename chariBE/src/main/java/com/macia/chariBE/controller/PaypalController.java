@@ -27,6 +27,8 @@ public class PaypalController {
 
     @Value("${server.address}")
     private String server_address;
+    @Value("${server.port}")
+    private String server_port;
 
     @Autowired
     PaypalService service;
@@ -66,8 +68,8 @@ public class PaypalController {
                     order.getMethod(),
                     order.getIntent(),
                     order.getDescription(),
-                    "http://" + server_address + ":8080/api/paypal/cancel",
-                    "http://" + server_address + ":8080/api/paypal/success/donator_id/" + donator_id + "/project_id/" + project_id + "/money/" + price);
+                    "http://" + server_address + ":"+server_port+"/api/paypal/cancel",
+                    "http://" + server_address + ":"+server_port+"/api/paypal/success/donator_id/" + donator_id + "/project_id/" + project_id + "/money/" + price);
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
                     return link.getHref();

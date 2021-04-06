@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //local ip và port server đang deploy
-const baseUrl = "http://192.168.43.139:8080/api";
+const baseUrl = "http://192.168.43.101:8080/api";
 // const baseUrl = "http://192.168.0.102:8080/api";
 
 const login = "/login";
