@@ -1,5 +1,4 @@
 
-import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';

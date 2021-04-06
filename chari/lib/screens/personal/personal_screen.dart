@@ -2,17 +2,15 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 

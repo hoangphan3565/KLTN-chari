@@ -4,18 +4,17 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:chari/API.dart';
-import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/utility/utility.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'screens.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppBarScreen extends StatefulWidget {
   @override

@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/utility/utility.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {

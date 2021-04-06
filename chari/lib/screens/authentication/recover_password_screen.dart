@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:chari/API.dart';
-import 'package:chari/utility/utility.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';

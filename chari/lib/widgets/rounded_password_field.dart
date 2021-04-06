@@ -2,7 +2,6 @@ import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final String hintText;

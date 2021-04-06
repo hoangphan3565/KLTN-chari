@@ -1,5 +1,5 @@
-import 'package:chari/utility/utility.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 
