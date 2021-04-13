@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>956788874265-c5fk30su04kb8keor36skbjr7c38vff5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.956788874265-c5fk30su04kb8keor36skbjr7c38vff5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>956788874265-dpnhrrr7bf0cb6d8icnu3earjo0d2o2p.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDmmZPPv4VGD2KNFCZNgnVemUWp7soGNb4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>956788874265</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.macia.chari</string>
+	<key>PROJECT_ID</key>
+	<string>chari-c3f85</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chari-c3f85.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:956788874265:ios:2156d000df352c5d191e88</string>
+	<key>DATABASE_URL</key>
+	<string>https://chari-c3f85.firebaseio.com</string>
+</dict>
+</plist>
