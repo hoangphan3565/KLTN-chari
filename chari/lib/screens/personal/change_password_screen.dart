@@ -76,7 +76,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         title: Text(
           'Đổi mật khẩu',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -1.2,
@@ -113,9 +113,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     TextFieldContainer(
                       child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
                         style: TextStyle(
-                        color: kPrimaryColor,
+                        color: kPrimaryHighLightColor,
                         fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                       )),
                     ),
                     RoundedPasswordField(

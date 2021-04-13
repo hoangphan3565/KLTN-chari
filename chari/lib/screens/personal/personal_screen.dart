@@ -95,7 +95,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
+                        color: kPrimaryHighLightColor,
                       ),
                     ),
                     SizedBox(height: 5),
@@ -153,7 +153,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         title: Text(
           'Trang cá nhân',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.7,

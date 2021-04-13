@@ -27,7 +27,7 @@ class FeedBackService{
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
+                        color: kPrimaryHighLightColor,
                       ),
                     ),
                     SizedBox(height: 5),

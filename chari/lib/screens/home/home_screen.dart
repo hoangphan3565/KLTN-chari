@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
           title: Text(
             'Trang chủ',
             style: const TextStyle(
-              color: kPrimaryColor,
+              color: kPrimaryHighLightColor,
               fontSize: 27.0,
               fontWeight: FontWeight.bold,
               letterSpacing: -0.2,
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
                 style: const TextStyle(
                   fontSize: 16.0,
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
                 ),
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen>{
               actions: <Widget>[
                 widget.project_types.length == 0 ? Text(""):
                 PopupMenuButton<ProjectType>(
-                  icon:  Icon(Icons.menu_open_outlined,color: kPrimaryColor,),
+                  icon:  Icon(Icons.menu_open_outlined,color: kPrimaryHighLightColor,),
                   onSelected: (ProjectType result) { setState(() {
                     _selectedProjectType = result.id;
                     print(_selectedProjectType);
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen>{
                            "Chưa có bài viết nào!",
                             style: const TextStyle(
                               fontSize: 16.0,
-                              color: kPrimaryColor,
+                              color: kPrimaryHighLightColor,
                               fontWeight: FontWeight.bold,
                               letterSpacing: -0.5,
                             ),
@@ -444,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen>{
             width: 125,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1, color: kPrimaryColor),
+                border: Border.all(width: 1, color: kPrimaryHighLightColor),
                 borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
@@ -458,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
-                    color: kPrimaryColor),
+                    color: kPrimaryHighLightColor),
               ),
             ),
           ),

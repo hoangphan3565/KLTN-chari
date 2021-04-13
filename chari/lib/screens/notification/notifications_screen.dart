@@ -22,7 +22,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         title: Text(
           'Thông báo',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.2,
@@ -44,7 +44,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                           "Chưa có thông báo nào!",
                           style: const TextStyle(
                             fontSize: 16.0,
-                            color: kPrimaryColor,
+                            color: kPrimaryHighLightColor,
                             fontWeight: FontWeight.bold,
                             letterSpacing: -0.5,
                           ),

@@ -30,7 +30,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
         title: Text(
           'Lịch sử quyên góp',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 28.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.7,
@@ -61,7 +61,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
                                 "Chưa lịch sử ủng hộ nào!",
                                 style: const TextStyle(
                                   fontSize: 16.0,
-                                  color: kPrimaryColor,
+                                  color: kPrimaryHighLightColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: -0.5,
                                 ),

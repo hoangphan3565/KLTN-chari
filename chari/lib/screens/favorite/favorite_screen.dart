@@ -84,7 +84,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
         title: Text(
           'Đã quan tâm',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 27.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.2,
@@ -107,7 +107,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                         "Bạn chưa quan tâm bài viết nào!",
                         style: const TextStyle(
                           fontSize: 16.0,
-                          color: kPrimaryColor,
+                          color: kPrimaryHighLightColor,
                           fontWeight: FontWeight.bold,
                           letterSpacing: -0.5,
                         ),

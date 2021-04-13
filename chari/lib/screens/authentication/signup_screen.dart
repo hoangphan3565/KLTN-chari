@@ -122,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
               Text(
                 "Đăng ký",
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
                 ),

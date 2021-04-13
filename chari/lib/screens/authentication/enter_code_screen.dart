@@ -79,7 +79,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
         title: Text(
           'Xác thực OPT',
           style: const TextStyle(
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -1.2,
@@ -100,7 +100,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 "Mã xác thực đã được gửi về số điện thoại",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontSize: 15,
                 ),
               ),
@@ -108,7 +108,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 NavitePhone,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -117,7 +117,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 "Hãy nhập mã xác thực ở trong tin nhắn của bạn",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontSize: 15,
                 ),
               ),

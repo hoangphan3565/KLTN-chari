@@ -67,7 +67,7 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
               Text(
                 "Lấy lại mật khẩu",
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: kPrimaryHighLightColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
                 ),

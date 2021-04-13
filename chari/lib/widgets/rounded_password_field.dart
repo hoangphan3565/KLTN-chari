@@ -35,18 +35,12 @@ class RoundedPasswordField extends StatelessWidget {
           icon: Icon(
             icon,
             size: 16,
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
           ),
           suffixIcon: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
             mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
-              // InkWell(
-              //     onTap: () {onTapClearIcon;},
-              //     child: FaIcon(FontAwesomeIcons.timesCircle,size: 15,)),
-              // InkWell(
-              //     onTap: () {switchObscureTextMode;},
-              //     child: Icon(obscureText==true?FontAwesomeIcons.low_vision:Icons.remove_red_eye_outlined,size: 18,)),
               IconButton(
                 padding: EdgeInsets.only(right: 0),
                 splashRadius: 18,

@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 Text(
                   "Đăng nhập",
                   style: TextStyle(
-                    color: kPrimaryColor,
+                    color: kPrimaryHighLightColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen>{
                       child: Text(
                         "Quên mật khẩu",
                         style: TextStyle(
-                          color: kPrimaryColor,
+                          color: kPrimaryHighLightColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

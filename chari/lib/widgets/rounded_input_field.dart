@@ -37,7 +37,7 @@ class RoundedInputField extends StatelessWidget {
           icon: Icon(
             icon,
             size: 16,
-            color: kPrimaryColor,
+            color: kPrimaryHighLightColor,
           ),
           suffixIcon: IconButton(
               splashRadius: 18,
