@@ -25,7 +25,7 @@ public class ProjectController {
 
     @GetMapping()
     public ResponseEntity<?> getAllProject() {
-        return ResponseEntity.ok().body(projectService.findAllProjectDTO());
+        return ResponseEntity.ok().body(projectService.getProjectDTOs());
     }
 
     @PostMapping("/create/type/{prtid}/peo/{sptid}")

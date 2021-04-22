@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @NamedQueries({
         @NamedQuery(name = "named.donate_details.findByDonatorId",
                 query = "SELECT NEW com.macia.chariBE.DTO.DonateDetailsDTO(dd.money,dd.donateDate,dd.donateActivity.project.PRJ_ID,dd.donateActivity.project.projectName) FROM DonateDetails dd where dd.donateActivity.donator.DNT_ID =:dntid order by dd.donateDate desc"),
+        @NamedQuery(name = "named.donate_details.findByDonateActivityId",
+                query = "SELECT dd FROM DonateDetails dd where dd.donateActivity.DNA_ID =: id"),
 })
 public class DonateDetails {
     @Id

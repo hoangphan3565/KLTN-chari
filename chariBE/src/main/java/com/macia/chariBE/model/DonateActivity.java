@@ -18,6 +18,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "named.donate_activity.findByDonatorIdAndProjectId",
                 query = "SELECT da FROM DonateActivity da where da.donator.DNT_ID =:did and da.project.PRJ_ID =:pid"),
+        @NamedQuery(name = "named.donate_activity.findByProjectId",
+                query = "SELECT da FROM DonateActivity da where da.project.PRJ_ID =:id"),
 })
 public class DonateActivity {
     @Id

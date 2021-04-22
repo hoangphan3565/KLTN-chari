@@ -21,36 +21,6 @@ import java.util.List;
         @NamedQuery(name = "named.project.findById",
                 query = "SELECT p FROM Project p where p.PRJ_ID =:id"),
 })
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(
-                name = "named_getProjectDTOList",
-                resultSetMappings = "ProjectMapping",
-                procedureName = "get_projects_dto"
-        ),
-})
-@SqlResultSetMappings({
-        @SqlResultSetMapping(
-                name = "ProjectMapping",
-                classes = @ConstructorResult(targetClass = ProjectDTO.class,
-                        columns = {
-                                @ColumnResult(name = "prj_id", type = Integer.class),
-                                @ColumnResult(name = "project_code", type = String.class),
-                                @ColumnResult(name = "project_name", type = String.class),
-                                @ColumnResult(name = "brief_description", type = String.class),
-                                @ColumnResult(name = "description", type = String.class),
-                                @ColumnResult(name = "image_url", type = String.class),
-                                @ColumnResult(name = "video_url", type = String.class),
-                                @ColumnResult(name = "target_money", type = Integer.class),
-                                @ColumnResult(name = "cur_money", type = Integer.class),
-                                @ColumnResult(name = "num_of_donations", type = Integer.class),
-                                @ColumnResult(name = "remaining_term", type = Integer.class),
-                                @ColumnResult(name = "prt_id", type = Integer.class),
-                                @ColumnResult(name = "project_type_name", type = String.class),
-                                @ColumnResult(name = "status", type = String.class),
-
-                        })
-        ),
-})
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

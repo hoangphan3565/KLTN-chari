@@ -6,20 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @Service
 public class CollaboratorService {
 
     @Autowired
-    private CollaboratorRepository collaboratorRepo;
+    private CollaboratorRepository repo;
 
     public void save(Collaborator collaborator) {
-        collaboratorRepo.saveAndFlush(collaborator);
+        repo.saveAndFlush(collaborator);
     }
+
+    public void deleteById(Integer id){ repo.deleteById(id);}
+
+    public List<Collaborator> findAll(){return repo.findAll();}
 
     public Collaborator findByPhone(String phone) {
         try {
-            return collaboratorRepo.findByPhoneNumber(phone);
+            return repo.findByPhoneNumber(phone);
         } catch (NoResultException e) {
             return null;
         }

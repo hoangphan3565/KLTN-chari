@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProjectDTO {
     private Integer prj_id;
     private String project_code;

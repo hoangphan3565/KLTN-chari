@@ -1,19 +1,30 @@
 insert into jwt_user(username,password,usertype,status) values('1234567890','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('1233211234','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT-ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('1231231231','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','BLOCKED');
+insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('web_admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','WebAdmin','ACTIVATED');
 
 
-insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Minh Anh','123','TP Hà Nội','url of certificate');
-insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Phan Đình Hoàng','1233211234','Quận 1, TP Hà Nội','1 2 10 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Minh Anh','413412312','TP Hà Nội','Tự nguyện');
+insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Trần An','34532473','TP HCM','Có chính chỉ');
+insert into collaborator(full_name,phone_number,address,certificate) values('Lê Minh Vũ','8764252','TP Hà Nội','Tự nguyện');
+insert into collaborator(full_name,phone_number,address,certificate) values('Đại Minh Trung','76893453','TP Vinh','Có chứng chỉ');
+insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Thành Quang','89341234','TP Hà Nội','Có chứng chỉ');
+
+insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
 insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 3 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
 insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
 
-insert into project_type(project_type_code,project_type_name) values('G1','Dự án cộng đồng kinh phí thấp');
-insert into project_type(project_type_code,project_type_name) values('G2','Hoàn cảnh khó khăn cần giúp đỡ hằng tháng');
-insert into project_type(project_type_code,project_type_name) values('G3','Nấu cơm từ thiện');
-insert into project_type(project_type_code,project_type_name) values('G4','Hoàn cảnh hiểm nghèo cần tiền gấp để chữa bệnh');
+insert into project_type(project_type_name) values('Dự án cộng đồng kinh phí thấp');
+insert into project_type(project_type_name) values('Hoàn cảnh khó khăn cần giúp đỡ hằng tháng');
+insert into project_type(project_type_name) values('Nấu cơm từ thiện');
+insert into project_type(project_type_name) values('Hoàn cảnh hiểm nghèo cần tiền gấp để chữa bệnh');
 
+insert into feedback(title,description,contributor) values('Thêm chức năng','Thực hiện quyên góp tiền qua ví Momo','Phan Đình Hoàng');
+insert into feedback(title,description,contributor) values('Ứng dụng lag','Thao tác lướt ở trang chính ko được mượt mà','Nguyễn Văn Qúa');
+insert into feedback(title,description,contributor) values('Thêm Zalopay','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(title,description,contributor) values('Làm lazy load','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
 
 insert into supported_people(full_name,address,phone_number,bank_account) values('Nguyễn Thị Yên','Bình Dương','4089566413','41347242264');
 insert into supported_people(full_name,address,phone_number,bank_account) values('Nguyễn Thị Thoái','Quảng Bình','4083743757','3324454755762');
@@ -239,21 +250,22 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-05',1000000
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',20000000,4);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-11',20001000,4);
 insert into donate_activity(dnt_id,prj_id) values(1,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-12',3000000,5);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000000,5);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-07',30000000,5);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-12',10000000,5);
 insert into donate_activity(dnt_id,prj_id) values(2,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-01',3000000,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,6);
-insert into donate_activity(dnt_id,prj_id) values(2,7);
+insert into donate_activity(dnt_id,prj_id) values(2,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,7);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-03',3000000,7);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,7);
-insert into donate_activity(dnt_id,prj_id) values(2,8);
+insert into donate_activity(dnt_id,prj_id) values(2,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-13',3000000,8);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,8);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,8);
+
 insert into donate_activity(dnt_id,prj_id) values(2,9);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,9);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-20',3000000,9);
@@ -263,6 +275,10 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',3000000,10);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,10);
 
+insert into donate_activity(dnt_id,prj_id) values(1,1);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',212000,11);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-07',122000,11);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-08',113000,11);
 
 
 

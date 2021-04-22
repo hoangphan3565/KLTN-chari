@@ -1,6 +1,7 @@
 package com.macia.chariBE.service;
 
 import com.macia.chariBE.DTO.DonateDetailsDTO;
+import com.macia.chariBE.model.DonateDetails;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,15 @@ public class DonateDetailsService {
         try {
             TypedQuery<DonateDetailsDTO> query = em.createNamedQuery("named.donate_details.findByDonatorId", DonateDetailsDTO.class);
             query.setParameter("dntid", donator_id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public List<DonateDetails> findDonateDetailByDonateActivityId(Integer id) {
+        try {
+            TypedQuery<DonateDetails> query = em.createNamedQuery("named.donate_details.findByDonateActivityId", DonateDetails.class);
+            query.setParameter("id", id);
             return query.getResultList();
         } catch (NoResultException e) {
             return null;

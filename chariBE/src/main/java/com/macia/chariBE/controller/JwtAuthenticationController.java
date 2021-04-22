@@ -11,6 +11,7 @@ import com.macia.chariBE.security.JwtTokenUtil;
 import com.macia.chariBE.security.JwtUserDetailsService;
 import com.macia.chariBE.service.CollaboratorService;
 import com.macia.chariBE.service.DonatorService;
+import com.macia.chariBE.utility.UserStatus;
 import com.macia.chariBE.utility.UserType;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class JwtAuthenticationController {
 			newuser.setUsername(user.getUsername());
 			newuser.setPassword(p);
             newuser.setUsertype(user.getUsertype());
-			newuser.setStatus("NOT-ACTIVATED");
+			newuser.setStatus(UserStatus.NOT_ACTIVATED.toString());
 			jwtuserRepo.save(newuser);
 			jo.put("errorCode", 0);
 			jo.put("data", newuser);
@@ -88,7 +89,7 @@ public class JwtAuthenticationController {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(usn);
 		if(appUser!=null){
-			appUser.setStatus("ACTIVATED");
+			appUser.setStatus(UserStatus.ACTIVATED.toString());
 			jwtuserRepo.save(appUser);
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
@@ -101,6 +102,25 @@ public class JwtAuthenticationController {
 			jo.put("message", "Không thể tìm thấy người dùng với username: "+usn+ " !");
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
+	}
+	@GetMapping("/users")
+	public ResponseEntity<?> getAllUser() {
+		return ResponseEntity.ok().body(jwtuserRepo.findAll());
+	}
+
+	@DeleteMapping("/users/{id}")
+	public ResponseEntity<?> blockUser(@PathVariable(value = "id") Integer id) {
+		JwtUser user = jwtuserRepo.findById(id).orElseThrow();
+		user.setStatus(UserStatus.BLOCKED.toString());
+		jwtuserRepo.save(user);
+		return ResponseEntity.ok().body(jwtuserRepo.findAll());
+	}
+	@PutMapping("/users/{id}")
+	public ResponseEntity<?> unblockUser(@PathVariable(value = "id") Integer id) {
+		JwtUser user = jwtuserRepo.findById(id).orElseThrow();
+		user.setStatus(UserStatus.ACTIVATED.toString());
+		jwtuserRepo.save(user);
+		return ResponseEntity.ok().body(jwtuserRepo.findAll());
 	}
 
 	@PostMapping("/save_user")
@@ -133,7 +153,6 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
 
     @PostMapping("/change/password")
 	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {

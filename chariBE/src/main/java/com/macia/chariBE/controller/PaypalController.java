@@ -27,6 +27,7 @@ public class PaypalController {
 
     @Value("${server.address}")
     private String server_address;
+
     @Value("${server.port}")
     private String server_port;
 
@@ -82,7 +83,6 @@ public class PaypalController {
     }
 
 
-    //Thực hiện chuyển tiền bên paypal thành công thì mới lưu thông tin giao dịch vào database
     @Transactional
     @GetMapping("/success/donator_id/{did}/project_id/{pid}/money/{money}")
     public String successPay(
@@ -108,16 +108,16 @@ public class PaypalController {
                 }
                 else {
                     donateDetailsRepository.save(DonateDetails.builder()
-                                                .donateActivity(donateActivity)
-                                                .donateDate(LocalDateTime.now())
-                                                .money(money)
-                                                .build());
+                            .donateActivity(donateActivity)
+                            .donateDate(LocalDateTime.now())
+                            .money(money)
+                            .build());
                 }
                 return "Quyên góp thành công!";
             }
         } catch (PayPalRESTException e) {
-            //Nếu giao dịch thất bại ví dụ như số như trong Paypal ko đủ -> thông báo giao dịch bằng paypal thất bại
             System.out.println(e.getMessage());
+            return "Thanh toán thất bại!";
         }
         return "Thanh toán thất bại!";
     }

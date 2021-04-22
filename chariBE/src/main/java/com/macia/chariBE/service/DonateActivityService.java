@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Service
 public class DonateActivityService {
@@ -29,6 +30,16 @@ public class DonateActivityService {
             query.setParameter("did", donator_id);
             query.setParameter("pid", project_id);
             return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<DonateActivity> findDonateActivityByProjectID(Integer id) {
+        try {
+            TypedQuery<DonateActivity> query = em.createNamedQuery("named.donate_activity.findByProjectId", DonateActivity.class);
+            query.setParameter("id", id);
+            return query.getResultList();
         } catch (NoResultException e) {
             return null;
         }

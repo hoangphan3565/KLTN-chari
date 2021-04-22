@@ -1,5 +1,5 @@
 package com.macia.chariBE.utility;
 
 public enum UserType {
-    Donator,Collaborator
+    Donator,Collaborator,Admin,WebAdmin
 }

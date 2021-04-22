@@ -24,12 +24,21 @@ public class ProjectTypeController {
         return projectTypeService.findById(id);
     }
     @PostMapping()
-    public ProjectType saveProjectType(@RequestBody ProjectType pt) {
-        return projectTypeService.save(pt);
+    public List<ProjectType> saveProjectType(@RequestBody ProjectType pt) {
+        projectTypeService.save(pt);
+        return projectTypeService.findAll();
+    }
+    @PutMapping("/{id}")
+    public List<ProjectType> updateProjectType(@PathVariable(value = "id") Integer id, @RequestBody ProjectType pt) {
+        ProjectType p = projectTypeService.findById(id);
+        p.setProjectTypeName(pt.getProjectTypeName());
+        projectTypeService.save(p);
+        return projectTypeService.findAll();
     }
 
     @DeleteMapping("/{id}")
-    public void removeProjectTypeById(@PathVariable(value = "id") Integer id) {
+    public List<ProjectType> removeProjectTypeById(@PathVariable(value = "id") Integer id) {
         projectTypeService.removeById(id);
+        return projectTypeService.findAll();
     }
 }

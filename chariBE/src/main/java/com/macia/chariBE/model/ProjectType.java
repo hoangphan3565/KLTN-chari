@@ -26,13 +26,9 @@ public class ProjectType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer PRT_ID;
 
-    @Column(unique = true, length = 10)
-    private String ProjectTypeCode;
-
     @Column(length = 50)
     private String ProjectTypeName;
 
-//    cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY,
     @JsonIgnore
     @OneToMany(mappedBy = "projectType")
     private List<Project> projects;

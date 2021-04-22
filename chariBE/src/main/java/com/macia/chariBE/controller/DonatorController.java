@@ -30,13 +30,15 @@ public class DonatorController {
     }
 
     @PostMapping()
-    public void saveDonator(@RequestBody Donator donator) {
+    public ResponseEntity<?> saveDonator(@RequestBody Donator donator) {
         donatorService.save(donator);
+        return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
     @DeleteMapping("/{id}")
-    public void removeDonatorById(@PathVariable(value = "id") Integer id) {
-       donatorRepo.deleteById(id);
+    public ResponseEntity<?> removeDonatorById(@PathVariable(value = "id") Integer id) {
+        donatorRepo.deleteById(id);
+        return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
     @GetMapping("phone/{phone}")
