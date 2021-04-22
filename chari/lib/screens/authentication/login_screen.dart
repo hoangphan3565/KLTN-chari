@@ -91,33 +91,36 @@ class _LoginScreenState extends State<LoginScreen>{
           var jsRes = json.decode(utf8.decode(res.bodyBytes));
           //Kiem tra API Status
           if(res.statusCode == 200) {
-            //Khi đăng nhập với tài khoản chưa được xác nhận
-            if(jsRes['data']['status']=='NOT-ACTIVATED') {
-              Fluttertoast.showToast(
-                  msg: 'Số điện thoại chưa được xác thực!',
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.orange,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-              Fluttertoast.showToast(
-                  msg: 'Mã xác thực sẽ được gửi đến '+username,
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: kPrimaryColor,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-              //Gửi code xác nhận và kích hoạt tài khoản
-              _sendCodeToUser("+84"+username.substring(1),password,context);
-            }
-            else{
-              _login(_usernameController.text,_passwordController.text);
-            }
-          }else{
+            if(jsRes['data']['status']!='BLOCKED'){
+              //Khi đăng nhập với tài khoản chưa được xác nhận
+              if(jsRes['data']['status']=='NOT_ACTIVATED') {
+                Fluttertoast.showToast(
+                    msg: 'Số điện thoại chưa được xác thực!',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.orange,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                Fluttertoast.showToast(
+                    msg: 'Mã xác thực sẽ được gửi đến '+username,
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: kPrimaryColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                //Gửi code xác nhận và kích hoạt tài khoản
+                _sendCodeToUser("+84"+username.substring(1),password,context);
+              }
+              else{
+                _login(_usernameController.text,_passwordController.text);
+              }
+            }else{
+              error_message='Tài khoản đã bị khoá!';
+            }}else{
             error_message='Sai SĐT hoặc mật khẩu!';
           }}else{
           error_message='Sai SĐT hoặc mật khẩu!';

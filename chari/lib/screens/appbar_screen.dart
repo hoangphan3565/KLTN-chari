@@ -22,7 +22,6 @@ class AppBarScreen extends StatefulWidget {
 }
 
 class _AppBarScreenState extends State<AppBarScreen> {
-  // final Firestore _db = Firestore.instance;
   StreamSubscription iosSubscription;
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -130,7 +129,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         project_types = list.map((model) => ProjectType.fromJson(model)).toList();
-        project_types.insert(0, ProjectType(0, '', 'Tất cả bài viết'));
+        project_types.insert(0, ProjectType(0, 'Tất cả bài viết'));
       });
     });
   }
