@@ -95,13 +95,16 @@ public class ProjectService {
     public List<Project> getAllProjects(){
         return repo.findAll();
     }
+
     public List<Project> getUnverifiedProjects(){
         return repo.findAll().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
     }
-    public void approveProject(Integer id){
+
+    public List<Project> approveProject(Integer id){
         Project p = repo.findById(id).orElseThrow();
         p.setVerified(true);
         repo.saveAndFlush(p);
+        return this.getUnverifiedProjects();
     }
 
     public List<ProjectDTO> getProjectDTOs(){

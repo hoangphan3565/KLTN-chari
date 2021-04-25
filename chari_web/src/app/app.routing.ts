@@ -87,16 +87,20 @@ export const routes: Routes = [
         loadChildren: () => import('./views/collaborator/collaborator.module').then(m => m.CollaboratorModule)
       },
       {
-        path: 'push-notification',
-        loadChildren: () => import('./views/push-notification/push-notification.module').then(m => m.PushNotificationModule)
-      },
-      {
         path: 'user',
         loadChildren: () => import('./views/user/user.module').then(m => m.UserModule)
       },
       {
         path: 'feedback',
         loadChildren: () => import('./views/feedback/feedback.module').then(m => m.FeedbackModule)
+      },
+      {
+        path: 'push-notification',
+        loadChildren: () => import('./views/push-notification/push-notification.module').then(m => m.PushNotificationModule)
+      },
+      {
+        path: 'push-notification-topic',
+        loadChildren: () => import('./views/push-notification-topic/push-notification-topic.module').then(m => m.PushNotificationTopicModule)
       },
       {
         path: 'base',

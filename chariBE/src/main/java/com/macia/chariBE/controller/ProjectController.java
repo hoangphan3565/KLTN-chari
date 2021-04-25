@@ -60,7 +60,7 @@ public class ProjectController {
 
     @PutMapping("/approve/{id}")
     public ResponseEntity<?> approveProject(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getUnverifiedProjects());
+        return ResponseEntity.ok().body(projectService.approveProject(id));
     }
 
     @PostMapping("/create/type/{prtid}/peo/{sptid}")

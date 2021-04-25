@@ -254,15 +254,15 @@ insert into donate_activity(dnt_id,prj_id) values(1,5);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000000,5);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',30000000,5);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',10000000,5);
-insert into donate_activity(dnt_id,prj_id) values(2,6);
+insert into donate_activity(dnt_id,prj_id) values(2,1);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-01',3000000,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,6);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,6);
-insert into donate_activity(dnt_id,prj_id) values(2,6);
+insert into donate_activity(dnt_id,prj_id) values(2,1);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,7);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-03',3000000,7);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,7);
-insert into donate_activity(dnt_id,prj_id) values(2,6);
+insert into donate_activity(dnt_id,prj_id) values(2,1);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-13',3000000,8);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,8);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,8);
@@ -282,5 +282,12 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-07',122000,
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',113000,11);
 
 
+insert into push_notification_topic(topic_name,description) values('project_added','Bạn sẽ nhận thông báo khi một chương trình từ thiện mới được thêm');
+insert into push_notification_topic(topic_name,description) values('project_overdue','Bạn sẽ nhận thông báo khi chương trình từ thiện bạn từng quyên góp bị thất bại');
+insert into push_notification_topic(topic_name,description) values('project_reached','Bạn sẽ nhận thông báo khi chương trình từ thiện bạn từng quyên góp thành công');
+
+insert into push_notification(title,message,tpc_id) values('Chương trình từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này',1);
+insert into push_notification(title,message,tpc_id) values('Chương trình đã quá hạn','Chương trình mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Nếu bạn muốn chuyển số tiền bạn đã quyên góp tới một chương trình khác, hãy nhấn vào đây!',2);
+insert into push_notification(title,message,tpc_id) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.',3);
 
 

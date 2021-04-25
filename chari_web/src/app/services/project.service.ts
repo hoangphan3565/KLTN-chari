@@ -51,7 +51,7 @@ export class ProjectService {
   } 
   public approveProject = async (id: Number) => {
     try {
-        const Projects = await this.http.put(Api.baseUrl+Api.projects+'/'+id,null);
+        const Projects = await this.http.put(Api.baseUrl+Api.projects+'/approve/'+id,null);
         return await Projects.toPromise();
     }
     catch (error) {

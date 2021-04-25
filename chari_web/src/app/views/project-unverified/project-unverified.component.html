@@ -7,12 +7,6 @@
             <small class="text-muted"> danh sách </small> Chương trình chưa được phê duyệt
           </h3>
         </div>
-        <div class="col-auto">
-          <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" >
-            <i class="fa fa-plus"></i>
-            <a>Thêm</a>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -37,8 +31,11 @@
           <td>{{data.supportedPeople.fullName}}</td>
           <td>{{data.collaborator.fullName}}</td>
           <td>
-              <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
-                <i class="fa fa-edit"></i>
+              <button type="button" class="btn btn-success btn-sm">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button type="button" class="btn btn-warning btn-sm" (click)="approveProject(data.prj_ID)">
+                <i class="fa fa-check"></i>
               </button>
           </td>
         </tbody>

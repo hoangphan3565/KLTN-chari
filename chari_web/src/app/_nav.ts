@@ -71,10 +71,20 @@ export const navItems: INavData[] = [
     icon: 'icon-pencil',
   },
   {
+    title: true,
+    name: 'Thông báo đẩy'
+  },
+  {
     name: 'Thông báo đẩy',
     url: '/push-notification',
     icon: 'icon-bell',
   },
+  {
+    name: 'Topic thông báo',
+    url: '/push-notification-topic',
+    icon: 'icon-target',
+  },
+
 
   // //=========================================================================================================//
   

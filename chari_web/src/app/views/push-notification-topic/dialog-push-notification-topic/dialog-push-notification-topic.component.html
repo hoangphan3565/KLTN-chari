@@ -1,0 +1,15 @@
+<h3 mat-dialog-title *ngIf="data.tpc_ID==undefined">Thêm Topic thông báo</h3>
+<h3 mat-dialog-title *ngIf="data.tpc_ID!=undefined">Cập nhật Topic thông báo</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên topic</mat-label>
+        <input name="topic_name" matInput [(ngModel)]="data.topicName" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Mô tả</mat-label>
+        <input name="description" matInput [(ngModel)]="data.description" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions> 

@@ -63,7 +63,6 @@ class _AppBarScreenState extends State<AppBarScreen> {
       iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     } else { _saveDeviceToken();}
-
     _fcm.configure(
       onMessage: (Map<String,dynamic> message) async{
         print("onMessage: $message");

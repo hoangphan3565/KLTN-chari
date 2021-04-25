@@ -18,8 +18,26 @@ export class ProjectUnverifiedComponent implements OnInit {
   ngOnInit(): void {
     this.getUnverified()
   }
-  public async getUnverified(){
+
+  async getUnverified(){
     this.Projects = await this.ProjectService.getUnverified() as Project[];
+  }
+
+  public approveProject = async (id) => {
+    try 
+    {
+      if(confirm('Bạn có thực sự muốn duyệt chương trình từ thiện này?')){
+        const result = await this.ProjectService.approveProject(id);
+        if (result)
+        {
+          this.notificationService.warn('Phê duyệt thành công');
+          this.Projects = result as Project[];
+        }  
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 }
 

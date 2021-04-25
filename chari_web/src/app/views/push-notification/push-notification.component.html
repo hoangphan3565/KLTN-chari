@@ -1,1 +1,38 @@
-<p>push notification</p>
+<div class="col-lg">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            <h3 class="card-title">
+              <small class="text-muted"> danh sách </small> Thông báo đẩy
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <table class="table table-light">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tiêu đề</th>
+              <th>Nội dung</th>
+              <th>Topic</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let data of PushNotifications;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{data.title}}</td>
+            <td>{{data.message}}</td>
+            <td>{{data.notificationTopic.topicName}}</td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deletePushNotification(data.nof_ID)">
+                  <i class="fa fa-remove"></i>
+                </button>
+            </td>
+          </tbody>
+          <tbody>
+        </table>
+      </div>
+    </div>
+</div>

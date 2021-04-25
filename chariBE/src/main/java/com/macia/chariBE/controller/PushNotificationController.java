@@ -2,9 +2,12 @@ package com.macia.chariBE.controller;
 
 
 import com.macia.chariBE.model.JwtUser;
+import com.macia.chariBE.model.PushNotification;
+import com.macia.chariBE.model.PushNotificationTopic;
 import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.JwtUserRepository;
+import com.macia.chariBE.repository.PushNotificationRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/notification")
+@RequestMapping("/api/push_notifications")
 public class PushNotificationController {
 
     @Autowired
@@ -22,6 +25,27 @@ public class PushNotificationController {
     @Autowired
     JwtUserRepository jwtUserRepository;
 
+    @Autowired
+    PushNotificationRepository repo;
+
+    @GetMapping()
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(repo.findAll());
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> savePushNotification(@RequestBody PushNotification notification) {
+        repo.save(notification);
+        return ResponseEntity.ok().body(repo.findAll());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removePushNotificationTopicById(@PathVariable(value = "id") Integer id) {
+        repo.deleteById(id);
+        return ResponseEntity.ok().body(repo.findAll());
+    }
+
+    /*==========================================================================================*/
     @PostMapping("/topic")
     public String pushNotificationWithoutDataToTopic(@RequestBody NotificationObject request) {
         pushNotificationService.sendMessageWithoutData(request);

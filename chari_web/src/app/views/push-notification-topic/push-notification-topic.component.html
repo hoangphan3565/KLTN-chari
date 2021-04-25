@@ -1,0 +1,45 @@
+<div class="col-lg">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            <h3 class="card-title">
+              <small class="text-muted"> danh sách </small> Topic thông báo
+            </h3>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" >
+              <i class="fa fa-plus"></i>
+              <a>Thêm</a>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <table class="table table-light">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên topic</th>
+              <th>Mô tả</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let data of PushNotificationTopics;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{data.topicName}}</td>
+            <td>{{data.description}}</td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deletePushNotificationTopic(data.tpc_ID)">
+                  <i class="fa fa-remove"></i>
+                </button>
+            </td>
+          </tbody>
+          <tbody>
+        </table>
+      </div>
+    </div>
+</div>

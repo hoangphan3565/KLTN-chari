@@ -14,6 +14,8 @@ export class Api {
     // static baseUrl ='http://192.168.30.130:8080/api';
     static baseUrl ='http://192.168.43.202:8080/api';
     static projects = '/projects';
+    static push_notifications = '/push_notifications';
+    static push_notification_topics = '/push_notification_topics';
     static projectTypes = '/project_types';
     static donators = '/donators'
     static collaborators = '/collaborators'
