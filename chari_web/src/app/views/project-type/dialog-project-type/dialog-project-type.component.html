@@ -1,0 +1,13 @@
+<h3 mat-dialog-title *ngIf="data.prt_ID==undefined">Thêm Gói dự án</h3>
+<h3 mat-dialog-title *ngIf="data.prt_ID!=undefined">Cập nhật Gói dự án</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên gói</mat-label>
+        <input name="project_type_name" matInput [(ngModel)]="data.projectTypeName" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>
+
+

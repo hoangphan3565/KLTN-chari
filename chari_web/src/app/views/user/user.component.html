@@ -1,0 +1,53 @@
+<div class="col-lg">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            <h3 class="card-title">
+              <small class="text-muted"> danh sách </small> Người dùng
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <table class="table table-light">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Loại người dùng</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let data of Users;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{data.username}}</td>
+            <td>
+              <span *ngIf="data.usertype=='Donator'" class="badge badge-light">Nhà từ thiện</span>
+              <span *ngIf="data.usertype=='Collaborator'" class="badge badge-primary">Cộng tác viên</span>
+              <span *ngIf="data.usertype=='Admin'" class="badge badge-warning">Quản trị viên</span>
+              <span *ngIf="data.usertype=='WebAdmin'" class="badge badge-info">Quản lý hệ thống</span>
+            </td>
+            <td>
+              <span *ngIf="data.status=='ACTIVATED'" class="badge badge-success">Đã kích hoạt</span>
+              <span *ngIf="data.status=='NOT_ACTIVATED'" class="badge badge-secondary">Chưa kích hoạt</span>
+              <span *ngIf="data.status=='BLOCKED'" class="badge badge-danger">Đã bị khoá</span>
+            </td>
+            <td *ngIf="data.status!='BLOCKED' && data.status!='NOT_ACTIVATED' && data.usertype!='Admin'">
+                <button type="button" class="btn btn-warning btn-sm" (click)="blockUser(data.id)">
+                  <i class="fa fa-lock"></i>
+                </button>
+            </td>
+            <td *ngIf="data.status=='BLOCKED'">
+              <button type="button" class="btn btn-success btn-sm" (click)="unblockUser(data.id)">
+                <i class="fa fa-unlock"></i>
+              </button>
+          </td>
+          </tbody>
+          <tbody>
+        </table>
+      </div>
+    </div>
+</div>

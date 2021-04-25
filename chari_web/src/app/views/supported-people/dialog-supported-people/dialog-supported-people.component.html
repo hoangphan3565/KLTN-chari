@@ -1,0 +1,23 @@
+<h3 mat-dialog-title *ngIf="data.stp_ID==undefined">Thêm Cá nhân thụ hưởng</h3>
+<h3 mat-dialog-title *ngIf="data.stp_ID!=undefined">Cập nhật Cá nhân thụ hưởng</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên đầy đủ</mat-label>
+        <input name="fullname" matInput [(ngModel)]="data.fullName" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Địa chỉ</mat-label>
+        <input name="address" matInput [(ngModel)]="data.address" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Số điện thoại</mat-label>
+        <input name="phoneNumber" matInput [(ngModel)]="data.phoneNumber" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Số tài khoản</mat-label>
+        <input name="bankAccount" matInput [(ngModel)]="data.bankAccount" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>

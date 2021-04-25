@@ -1,0 +1,20 @@
+<h3 mat-dialog-title *ngIf="data.stp_ID==undefined">Thêm Nhà từ thiện</h3>
+<h3 mat-dialog-title *ngIf="data.stp_ID!=undefined">Cập nhật Nhà từ thiện</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên đầy đủ</mat-label>
+        <input name="fullname" matInput [(ngModel)]="data.fullName" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Địa chỉ</mat-label>
+        <input name="address" matInput [(ngModel)]="data.address" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Số điện thoại</mat-label>
+        <input name="phoneNumber" matInput [(ngModel)]="data.phoneNumber" required>
+    </mat-form-field>
+    <p></p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>
