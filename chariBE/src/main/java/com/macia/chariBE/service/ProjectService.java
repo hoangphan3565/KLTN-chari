@@ -5,6 +5,7 @@ import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Project;
 import com.macia.chariBE.repository.ProjectRepository;
+import com.macia.chariBE.utility.ProjectStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -45,7 +47,6 @@ public class ProjectService {
         }
     }
 
-    //Tinh so tien da quyen gop dc
     public int findCurMoneyOfProject(Project p){
         int curMoney = 0;
         List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(p.getPRJ_ID());
@@ -60,7 +61,6 @@ public class ProjectService {
         return curMoney;
     }
 
-    // Tinh so luot quyen gop
     public Integer findNumOfDonationOfProject(Project p){
         Integer numOfDonate = 0;
         List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(p.getPRJ_ID());
@@ -75,28 +75,38 @@ public class ProjectService {
         return numOfDonate;
     }
 
-    //Tinh tgian con lai
     public long findRemainingTermOfProject(Project p){
         return ChronoUnit.DAYS.between(LocalDate.now(), p.getEndDate());
     }
 
-    //Tim trang thai cua du an
     public String findStatusOfProject(Project p){
         int curMoney = this.findCurMoneyOfProject(p);
         long remainingTerm = this.findRemainingTermOfProject(p);
         if(curMoney>=p.getTargetMoney()){
-            return "reached";
+            return ProjectStatus.REACHED.toString();
         }else{
             if(remainingTerm<=0){
-                return "overdue";
+                return ProjectStatus.OVERDUE.toString();
             }
         }
-        return "activating";
+        return ProjectStatus.ACTIVATING.toString();
+    }
+
+    public List<Project> getAllProjects(){
+        return repo.findAll();
+    }
+    public List<Project> getUnverifiedProjects(){
+        return repo.findAll().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
+    }
+    public void approveProject(Integer id){
+        Project p = repo.findById(id).orElseThrow();
+        p.setVerified(true);
+        repo.saveAndFlush(p);
     }
 
     public List<ProjectDTO> getProjectDTOs(){
         List<ProjectDTO> r = new ArrayList<>();
-        List<Project> ps = repo.findAll();
+        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).collect(Collectors.toList());
         for(Project p : ps){
             r.add(ProjectDTO.builder()
                     .prj_id(p.getPRJ_ID())
@@ -116,5 +126,21 @@ public class ProjectService {
                     .build());
         }
         return r;
+    }
+
+    public List<ProjectDTO> getActivatingProjectDTOs(){
+        return this.getProjectDTOs().stream().
+                filter(p->p.getStatus().equals(ProjectStatus.ACTIVATING.toString()))
+                .collect(Collectors.toList());
+    }
+    public List<ProjectDTO> getReachedProjectDTOs(){
+        return this.getProjectDTOs().stream().
+                filter(p->p.getStatus().equals(ProjectStatus.REACHED.toString()))
+                .collect(Collectors.toList());
+    }
+    public List<ProjectDTO> getOverdueProjectDTOs(){
+        return this.getProjectDTOs().stream().
+                filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
+                .collect(Collectors.toList());
     }
 }

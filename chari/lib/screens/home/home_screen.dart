@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen>{
     }
     return Row(
         children: [
-          if (project.status != 'overdue')
+          if (project.status != 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -364,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ],
             ),
-          if (project.status == 'overdue')
+          if (project.status == 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -416,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen>{
             SizedBox(
               width: 20,
             ),
-            if(project.status == 'activating')
+            if(project.status == 'ACTIVATING')
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -435,11 +435,11 @@ class _HomeScreenState extends State<HomeScreen>{
                   ),
                 ],
               ),
-            if(project.status != 'activating')
+            if(project.status != 'ACTIVATING')
               Column(),
           ],
         ),
-        if(project.status == 'activating')
+        if(project.status == 'ACTIVATING')
           Container(
             width: 125,
             height: 35,
@@ -462,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen>{
               ),
             ),
           ),
-        if(project.status == 'reached')
+        if(project.status == 'REACHED')
           Container(
             width: 180,
             height: 35,
@@ -480,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen>{
               ),
             ),
           ),
-        if(project.status == 'overdue')
+        if(project.status == 'OVERDUE')
           Container(
             width: 125,
             height: 35,

@@ -26,7 +26,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer PRJ_ID;
 
-    @Column(length = 10, unique = true)
+    @Column(length = 10)
     private String projectCode;
 
     @Column(length = 300)
@@ -47,14 +47,14 @@ public class Project {
     @Column
     private Integer targetMoney;
 
-    @Column(length = 20)
-    private String status;
-
     @Column(length = 500)
     private String videoUrl;
 
     @Column(length = 500)
     private String imageUrl;
+
+    @Column
+    private Boolean verified;
 
     @ManyToOne
     @JoinColumn(name = "prt_id")

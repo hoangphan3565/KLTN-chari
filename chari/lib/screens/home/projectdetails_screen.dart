@@ -118,7 +118,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         decoration: BoxDecoration(
             border: Border.all(width: 1.5, color: kPrimaryColor),
             borderRadius: BorderRadius.circular(8), color: kPrimaryColor),
-        child:((widget.project.status=='activating')?
+        child:((widget.project.status=='ACTIVATING')?
           FlatButton(
             onPressed:()=> {
               Navigator.push(
@@ -530,7 +530,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             SizedBox(
               width: 40,
             ),
-            if (project.status == 'activating')
+            if (project.status == 'ACTIVATING')
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -549,7 +549,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   ),
                ],
               ),
-            if (project.status == 'reached')
+            if (project.status == 'REACHED')
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -562,7 +562,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   ),
                 ],
               ),
-            if (project.status == 'overdue')
+            if (project.status == 'OVERDUE')
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -591,7 +591,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     }
     return Row(
         children: [
-          if (project.status != 'overdue')
+          if (project.status != 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -612,7 +612,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 ),
               ],
             ),
-          if (project.status == 'overdue')
+          if (project.status == 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

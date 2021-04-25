@@ -25,6 +25,9 @@ public class Collaborator {
     @Column(length = 200)
     private String address;
 
+    @Column(length = 100)
+    private String email;
+
     @Column(length = 10)
     private String phoneNumber;
 

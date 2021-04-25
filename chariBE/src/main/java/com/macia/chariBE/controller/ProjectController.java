@@ -23,9 +23,44 @@ public class ProjectController {
     @Autowired
     private SupportedPeopleService supportedPeopleService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.findProjectById(id));
+    }
+
     @GetMapping()
-    public ResponseEntity<?> getAllProject() {
+    public ResponseEntity<?> getAllProjectDTO() {
         return ResponseEntity.ok().body(projectService.getProjectDTOs());
+    }
+
+    @GetMapping("/activating")
+    public ResponseEntity<?> getActivatingProjectDTO() {
+        return ResponseEntity.ok().body(projectService.getActivatingProjectDTOs());
+    }
+
+    @GetMapping("/overdue")
+    public ResponseEntity<?> getOverdueProjectDTO() {
+        return ResponseEntity.ok().body(projectService.getOverdueProjectDTOs());
+    }
+
+    @GetMapping("/reached")
+    public ResponseEntity<?> getReachedProjectDTO() {
+        return ResponseEntity.ok().body(projectService.getReachedProjectDTOs());
+    }
+
+    @GetMapping("/plain")
+    public ResponseEntity<?> getAllProject() {
+        return ResponseEntity.ok().body(projectService.getAllProjects());
+    }
+
+    @GetMapping("/plain-unverified")
+    public ResponseEntity<?> getUnverifiedProject() {
+        return ResponseEntity.ok().body(projectService.getUnverifiedProjects());
+    }
+
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<?> approveProject(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.getUnverifiedProjects());
     }
 
     @PostMapping("/create/type/{prtid}/peo/{sptid}")

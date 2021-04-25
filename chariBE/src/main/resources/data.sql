@@ -6,11 +6,11 @@ insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$s
 insert into jwt_user(username,password,usertype,status) values('web_admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','WebAdmin','ACTIVATED');
 
 
-insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Minh Anh','413412312','TP Hà Nội','Tự nguyện');
-insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Trần An','34532473','TP HCM','Có chính chỉ');
-insert into collaborator(full_name,phone_number,address,certificate) values('Lê Minh Vũ','8764252','TP Hà Nội','Tự nguyện');
-insert into collaborator(full_name,phone_number,address,certificate) values('Đại Minh Trung','76893453','TP Vinh','Có chứng chỉ');
-insert into collaborator(full_name,phone_number,address,certificate) values('Nguyễn Thành Quang','89341234','TP Hà Nội','Có chứng chỉ');
+insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Minh Anh','413412312','abc@gmail.com','TP Hà Nội','Tự nguyện');
+insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Trần An','34532473','abc@gmail.com','TP HCM','Có chứng chỉ');
+insert into collaborator(full_name,phone_number,email,address,certificate) values('Lê Minh Vũ','8764252','abc@gmail.com','TP Hà Nội','Tự nguyện');
+insert into collaborator(full_name,phone_number,email,address,certificate) values('Đại Minh Trung','76893453','abc@gmail.com','TP Vinh','Có chứng chỉ');
+insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Thành Quang','89341234','abc@gmail.com','TP Hà Nội','Có chứng chỉ');
 
 insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
 insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 3 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
@@ -32,8 +32,8 @@ insert into supported_people(full_name,address,phone_number,bank_account) values
 
 
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,
 'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
 '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
     'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -54,8 +54,8 @@ values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân 
 'https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp3?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,
 'Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn...',
 '       Trường Tiểu học Cù Chính Lan của huyện Ia Grai, tỉnh Gia Lai là một trường vùng biên giới giáp với Campuchia. Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn.
 ' ||
@@ -70,8 +70,8 @@ values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',
 'https://file1.dangcongsan.vn/DATA/0/2016/10/images1068981_hoc_sinh_ngheo-15_12_21_498.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,
 'Trong đợt này, thị xã Hương có 30 người khuyết tật được trao tặng xe lăn, mỗi chiếc trị giá hơn 2 triệu đồng...',
 '       Thông qua nguồn tài trợ của tổ chức Trả lại tuổi thơ (Hoa Kỳ), Hội Chữ thập đỏ, Hội Người khuyết tật thị xã Hương Thủy phối hợp với Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh Thừa Thiên Huế và Ứng dụng Chari, dự định tổ chức trao xe lăn cho người khuyết tật trên địa bàn.
 ' ||
@@ -84,8 +84,8 @@ values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại 
 'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,
 'Trên địa bàn tỉnh Tây Ninh có khoảng 57.000 người khuyết tật...',
 '       Do tình hình của dịch COVID-19 kéo dài đã ảnh hưởng rất nhiều tới đời sống của người dân Việt Nam. Rất nhiều gia đình gặp tình trạng đói kém, mất việc làm và ảnh hưởng tới cuộc sống hằng ngày.
 ' ||
@@ -94,12 +94,12 @@ values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh T
 '       Vấn đề việc làm của người khuyến tật ở Việt Nam còn gặp nhiều trở ngại, mặc dù nhà nước đã đưa ra nhiều chính sách hỗ trợ cho doanh nghiệp nhưng người khuyết tật lại không có nhiều cơ hội để tìm kiếm việc làm. Tại Việt Nam các trung tâm tư vấn, giới thiệu việc làm cho người khuyết tật còn hạn hẹp chưa phổ biến. Điều này dẫn tới chưa thể tiếp cận tới vấn đề việc làm cho người khuyết tật.
 ' ||
 '       Do đó, Chari cùng với các đơn vị đồng hành mong muốn góp một phần nhỏ của mình để giúp đỡ người khuyết tật có vốn ban đầu hỗ trợ cho công việc của họ sau này.',
-'2020-11-01','2021-08-01',100000000,
+'2020-11-01','2021-03-01',100000000,
 'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,
 'Khác với học sinh vùng xuôi, con đường tìm đến con chữ của học sinh miền núi, vùng sâu, vùng xa ở tỉnh Quảng Ngãi còn gặp rất nhiều khó khăn, trắc trở...',
 '       Để “kiếm” con chữ, mỗi ngày, hàng trăm học sinh ở xã vùng cao Ba Vì, huyện miền núi Ba Tơ (Quảng Ngãi) phải bất chấp nguy hiểm lội bộ qua dòng suối chảy xiết để đến trường với bao hiểm họa giăng ra trước mắt.
 ' ||
@@ -112,12 +112,12 @@ values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',
 '       Hiện nay đang là mùa mưa lũ, vì vậy chuyện vượt suối đi học càng trở nên khó khăn, nguy hiểm đối với với nhiều học sinh ở xã vùng cao Ba Vì. Trước mắt, chính quyền địa phương vận động nhân dân tiếp tục cắt cử nhau đưa con em qua suối đi học, nhưng về lâu dài, cần đầu tư xây dựng hệ thống đường, cầu thì mỗi ngày đến trường mới đúng nghĩa là một ngày vui, ngày an toàn đối với học sinh nơi đây.
 ' ||
 '       Mong muốn hoàn thành giấc mơ xây cầu cho các em nhưng còn gặp nhiều khó khăn về mặt pháp lý, nên thời điểm hiện tại để kịp thời giúp đỡ các em Chari kêu gọi các nhà hảo tâm quyên góp tặng cho các em những chiếc “Cặp phao” để các em phần nào an toàn hơn trên con đường đến trường đầy chông gai, nguy hiểm.',
-'2020-11-15','2021-06-15',70000000,
+'2020-11-15','2021-02-15',70000000,
 'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp3?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10006','Xây cầu tình thương cho thôn Diêm Vân',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,
 'Nín thở đi qua cầu gỗ ọp ẹp tại thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định...',
 '       Nhiều năm qua, người dân xóm 3 (thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định) phải tự sửa chữa, gia cố cây cầu tạm bằng gỗ đã xuống cấp trầm trọng để làm nơi qua lại.
 ' ||
@@ -130,8 +130,8 @@ values('G10006','Xây cầu tình thương cho thôn Diêm Vân',
 'https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,
 'Giúp học sinh nghèo vững bước tới trường...',
 '       Ðầu năm học mới, chi phí mua sắm sách giáo khoa, đồ dùng học tập cho học sinh đến trường  luôn là nỗi lo của những gia đình có điều kiện kinh tế khó khăn. Trong khi học sinh ở thành phố lúc nào cũng đầy đủ sách giáo khoa, đồ dùng học tập thì học sinh ở khu vực nông thôn, miền núi hay vùng cao lại rơi vào cảnh  thiếu sách để học. Nhiều  học sinh phải học chung một quyển sách, có những quyển được tận dụng tới ba, bốn năm, đến khi sách quá cũ, không thể dùng được nữa  mới bỏ đi. Trong khi đó ở thành phố, mỗi năm học sinh lại thay một bộ sách mới, sách giáo khoa cũ  không được tận dụng lại cho các  lớp sau.
 ' ||
@@ -142,8 +142,9 @@ values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',
 'https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp3?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G20001','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G20001','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,
+
 'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
 '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
 ' ||
@@ -156,16 +157,16 @@ values('G20001','Xây dựng khu vui chơi trong sân trường cho trường ti
 'https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp3?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',2,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G20002','Xây cầu tình thương cho làng An Phú 9',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G20002','Xây cầu tình thương cho làng An Phú 9',true,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-08-01',40000000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',2,1,1);
 
-insert into project(project_code,project_name,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',
+insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,
 'Anh Hùng là đầu bếp có tâm, từng bỏ tiền túi để nấu 100 phần cơm cho bệnh nhân khó khăn ở quận 10',
 'Làng An Phú 10 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-03-01',9000000,
