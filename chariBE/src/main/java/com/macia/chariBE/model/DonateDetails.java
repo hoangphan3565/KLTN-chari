@@ -29,6 +29,9 @@ public class DonateDetails {
     private Double money;
 
     @Column
+    private String message;
+
+    @Column
     private LocalDateTime donateDate;
 
     @ManyToOne

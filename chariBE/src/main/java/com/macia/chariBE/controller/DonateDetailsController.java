@@ -12,7 +12,7 @@ public class DonateDetailsController {
     @Autowired
     DonateDetailsService donateDetailsService;
 
-    @GetMapping("donator_id/{dntid}")
+    @GetMapping("donator/{dntid}")
     public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorId(@PathVariable(value = "dntid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorId(id));
     }

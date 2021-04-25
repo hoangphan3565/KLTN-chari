@@ -32,8 +32,10 @@ export class CollaboratorComponent implements OnInit {
       data: this.Collaborator,
     });
     dialogRef.afterClosed().subscribe((result: Collaborator) => {
-      if (result.clb_ID==null) this.saveCollaborator(result,'Thêm');
-      else this.saveCollaborator(result,'Cập nhật');
+      if(result){
+        if (result.clb_ID==null) this.saveCollaborator(result,'Thêm');
+        else this.saveCollaborator(result,'Cập nhật');
+      }
     });
   }
   openEditDialog(c : Collaborator): void {

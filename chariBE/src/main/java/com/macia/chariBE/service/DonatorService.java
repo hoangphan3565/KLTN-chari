@@ -1,11 +1,13 @@
 package com.macia.chariBE.service;
 
+import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.repository.DonatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @Service
 public class DonatorService {
@@ -20,6 +22,9 @@ public class DonatorService {
     public Donator findById(Integer id) {
         return donatorRepo.findById(id).orElseThrow();
     }
+
+    public List<Donator> findAll(){return donatorRepo.findAll();}
+
 
     public Donator findByPhone(String phone) {
         try {

@@ -70,7 +70,7 @@ public class Project {
 
     //cascade = {CascadeType.PERSIST, CascadeType.MERGE},
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
     private List<ProjectImages> projectImages;
 
     @JsonIgnore

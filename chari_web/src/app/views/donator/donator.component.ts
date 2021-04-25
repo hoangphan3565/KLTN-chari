@@ -32,9 +32,10 @@ export class DonatorComponent implements OnInit {
       data: this.Donator
     });
     dialogRef.afterClosed().subscribe((result: Donator) => {
-      if (result.dnt_ID==null) this.saveDonator(result,'Thêm');
-      else this.saveDonator(result,'Cập nhật');
-      
+      if(result){
+        if (result.dnt_ID==null) this.saveDonator(result,'Thêm');
+        else this.saveDonator(result,'Cập nhật');
+      }      
     });
   }
   openEditDialog(d : Donator): void {

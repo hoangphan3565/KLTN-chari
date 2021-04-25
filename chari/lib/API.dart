@@ -16,6 +16,7 @@ const projects = "/projects";
 const project_images = "/project_images/project/";
 const donators = "/donators";
 const donate_details = "/donate_details";
+const donator_notifications = "/donator_notifications";
 const project_types = "/project_types";
 
 const header = {'Content-Type': 'application/json; charset=UTF-8',};
@@ -99,7 +100,11 @@ class API {
   }
 
   static Future getDonateDetailsListByDonatorId(int donator_id,String token) {
-    var url = baseUrl + donate_details+'/donator_id/'+donator_id.toString();
+    var url = baseUrl + donate_details+'/donator/'+donator_id.toString();
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+  static Future getDonatorNotificationListByDonatorId(int donator_id,String token) {
+    var url = baseUrl + donator_notifications+'/donator/'+donator_id.toString();
     return http.get(url,headers:getHeaderJWT(token));
   }
 

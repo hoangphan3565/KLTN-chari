@@ -32,8 +32,10 @@ export class SupportedPeopleComponent implements OnInit {
       data: this.SupportedPeople
     });
     dialogRef.afterClosed().subscribe((result: SupportedPeople) => {
-      if (result.stp_ID==null) this.saveSupportedPeople(result,'Thêm'); 
-      else this.saveSupportedPeople(result,'Cập nhật');
+      if(result){
+        if (result.stp_ID==null) this.saveSupportedPeople(result,'Thêm'); 
+        else this.saveSupportedPeople(result,'Cập nhật');      
+      }
     });
   }
   openEditDialog(sp : SupportedPeople): void {

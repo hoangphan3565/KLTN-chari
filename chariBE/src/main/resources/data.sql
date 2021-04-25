@@ -126,7 +126,7 @@ values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,
 '       Người dân thôn Diêm Vân cho biết, từ năm 2012 đến đầu năm 2018, Ban nhân dân thôn Diêm Vân và UBND xã Phước Thuận đã 2 lần tổ chức đấu giá ngòi (còn gọi là lạch Ân Thuận) để làm cầu dân sinh nối liền 2 khu dân cư ở bờ bắc và bờ nam của thôn, với số tiền 90 triệu đồng. Nhưng tới nay cầu vẫn chưa được xây dựng. Lãnh đạo xã Phước Thuận cho biết, số tiền kinh phí đang có của địa phương là 90 triệu đồng, trong khi xây cầu mới dự toán khoảng 250 triệu đồng.
 ' ||
 '       Để giúp đỡ cho người dân có cây cầu đi lại an toàn hơn, không xảy ra những vụ việc đáng tiếc mà ta có thể biết trước nhưng không thể ngăn chặn, thì Chari mong muốn góp một phần nhỏ để giúp đỡ cho chính quyền có đủ kinh phí xây dựng, giúp người dân mau chóng có một cây cầu mới để đi lại an toàn. ',
-'2020-11-01','2021-03-31',150000000,
+'2020-11-01','2021-11-29',150000000,
 'https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
@@ -289,5 +289,4 @@ insert into push_notification_topic(topic_name,description) values('project_reac
 insert into push_notification(title,message,tpc_id) values('Chương trình từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này',1);
 insert into push_notification(title,message,tpc_id) values('Chương trình đã quá hạn','Chương trình mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Nếu bạn muốn chuyển số tiền bạn đã quyên góp tới một chương trình khác, hãy nhấn vào đây!',2);
 insert into push_notification(title,message,tpc_id) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.',3);
-
 

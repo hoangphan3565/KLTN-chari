@@ -39,16 +39,5 @@ export class PushNotificationService {
        console.log(error);
     }  
   }
-
-  
-  public  letPushNotificationWithTopic = async (PushNotification: PushNotification) => {
-    try {
-        const PushNotifications = await this.http.post(Api.baseUrl+Api.push_notifications,PushNotification);
-        return await PushNotifications.toPromise();
-    }
-    catch (error) {
-       console.log(error);
-    }  
-  }
 }
 

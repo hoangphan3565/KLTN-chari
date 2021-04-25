@@ -37,4 +37,8 @@ public class Donator {
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donator")
     private List<DonateActivity> donateActivities;
+
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donator")
+    private List<DonatorNotification> userNotification;
 }

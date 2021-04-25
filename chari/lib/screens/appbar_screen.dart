@@ -4,6 +4,7 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:chari/API.dart';
+import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -35,6 +36,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
   var projects = new List<Project>();
   var project_types = new List<ProjectType>();
   var donate_details_list = new List<DonateDetails>();
+  var donator_notification_list = new List<DonatorNofitication>();
   var donator = new Donator(null,null,null,null,null,null);
 
   List<String> listProjectIdFavorite = new List<String>();
@@ -59,6 +61,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
 
     _fcm.subscribeToTopic('project_added');
+    // _fcm.subscribeToTopic('project_overdue');
+    // _fcm.subscribeToTopic('project_reached');
+
     if(Platform.isIOS){
       iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
       _fcm.requestNotificationPermissions(IosNotificationSettings());
@@ -99,6 +104,18 @@ class _AppBarScreenState extends State<AppBarScreen> {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
+      });
+    });
+  }
+
+  _getNotification() async{
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    int donator_id = _prefs.getInt('donator_id');
+    String token = _prefs.getString('token');
+    API.getDonatorNotificationListByDonatorId(donator_id,token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        donator_notification_list = list.map((model) => DonatorNofitication.fromJson(model)).toList();
       });
     });
   }
@@ -212,6 +229,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
               if(index == 0){
                 _getDatas();
               }
+              else if(islogin==true && index == 2){
+                _getDatas();
+                _getNotification();
+              }
               else if(islogin==true && index == 3){
                 _getDonateHistory();
               }
@@ -221,7 +242,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
         ),
         body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,isLogin: this.islogin)
             : _page == 1 ? FavoriteScreen(projects: this.projects)
-            : _page == 2 ? NotificationsScreen()
+            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects)
             : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
             : PersonalScreen(donator: this.donator))
     );

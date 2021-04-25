@@ -32,8 +32,10 @@ export class PushNotificationTopicComponent implements OnInit {
       data: this.PushNotificationTopic,
     });
     dialogRef.afterClosed().subscribe((result: PushNotificationTopic) => {
-      if (result.tpc_ID==null) this.savePushNotificationTopic(result,'Thêm');
-      else this.savePushNotificationTopic(result,'Cập nhật');
+      if(result){
+        if (result.tpc_ID==null) this.savePushNotificationTopic(result,'Thêm');
+        else this.savePushNotificationTopic(result,'Cập nhật');        
+      }
     });
   }
   openEditDialog(c : PushNotificationTopic): void {

@@ -36,10 +36,12 @@ export class ProjectTypeComponent implements OnInit {
       data: this.projectType,
     });
     dialogRef.afterClosed().subscribe((result: ProjectType) => {
-      if (result.prt_ID==null) {
-        this.saveProjectType(result,'Thêm');
-      }else{
-        this.saveProjectType(result,'Cập nhật');
+      if(result){
+        if (result.prt_ID==null) {
+          this.saveProjectType(result,'Thêm');
+        }else{
+          this.saveProjectType(result,'Cập nhật');
+        }
       }
     });
   }
