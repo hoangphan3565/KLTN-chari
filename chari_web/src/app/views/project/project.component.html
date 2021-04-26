@@ -35,7 +35,8 @@
           <td>{{data.targetMoney/1000000}}</td>
           <td>{{data.projectType.projectTypeName}}</td>
           <td>{{data.supportedPeople.fullName}}</td>
-          <td>{{data.collaborator.fullName}}</td>
+          <td *ngIf="data.collaborator==null">Quản trị viên</td>
+          <td *ngIf="data.collaborator!=null">{{data.collaborator.fullName}}</td>
           <td>
               <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
                 <i class="fa fa-edit"></i>

@@ -1,6 +1,5 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.PushNotificationTopic;
 import com.macia.chariBE.repository.PushNotificationTopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;

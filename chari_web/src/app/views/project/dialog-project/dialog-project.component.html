@@ -1,0 +1,58 @@
+<h3 mat-dialog-title *ngIf="data.prj_id==undefined">Thêm Chương trình từ thiện</h3>
+<h3 mat-dialog-title *ngIf="data.prj_id!=undefined">Cập nhật Chương trình từ thiện</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên chương trình</mat-label>
+        <input name="project_name" matInput [(ngModel)]="data.project_name" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Tiêu đề</mat-label>
+        <input name="brief_description" matInput [(ngModel)]="data.brief_description" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Nội dung</mat-label>
+        <input name="description" matInput [(ngModel)]="data.description" required>
+    </mat-form-field>    
+    <mat-form-field>
+        <mat-label>Ảnh bìa</mat-label>
+        <input name="image_url" matInput [(ngModel)]="data.image_url" required>
+    </mat-form-field>    
+    <mat-form-field>
+        <mat-label>Video giới thiệu</mat-label>
+        <input name="video_url" matInput [(ngModel)]="data.video_url" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Ngày bắt đầu</mat-label>
+        <input name="startDate" matInput [(ngModel)]="data.startDate" required>
+    </mat-form-field>   
+    <mat-form-field>
+        <mat-label>Ngày kết thúc</mat-label>
+        <input name="endDate" matInput [(ngModel)]="data.endDate" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Mục tiêu quyên góp</mat-label>
+        <input name="target_money" matInput [(ngModel)]="data.target_money" required>
+    </mat-form-field>
+    <mat-form-field >
+        <mat-label>Gói từ thiện</mat-label>
+        <mat-select class="form-control" [(ngModel)]="data.prt_ID" id="project_type_id" name="project_type_id" required>
+            <mat-option *ngFor="let type of ProjectTypes" [value]="type.prt_ID">
+                {{type.projectTypeName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>   
+    <mat-form-field >
+        <mat-label>Cá nhân thụ hưởng</mat-label>
+        <mat-select class="form-control" [(ngModel)]="data.stp_ID" id="supported_people_id" name="supported_people_id" required>
+            <mat-option *ngFor="let spt of SupportedPeoples" [value]="spt.stp_ID">
+                {{spt.fullName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>  
+    
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>
+
+

@@ -1,5 +1,6 @@
 package com.macia.chariBE.service;
 
+import com.macia.chariBE.DTO.ProjectDTOForAdmin;
 import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
@@ -7,16 +8,16 @@ import com.macia.chariBE.model.Project;
 import com.macia.chariBE.repository.ProjectRepository;
 import com.macia.chariBE.utility.ProjectStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
-import java.time.Duration;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,15 @@ public class ProjectService {
 
     @Autowired
     private DonateDetailsService donateDetailsService;
+
+    @Autowired
+    private ProjectImagesService projectImagesService;
+
+    @Autowired
+    private ProjectTypeService projectTypeService;
+
+    @Autowired
+    private SupportedPeopleService supportedPeopleService;
 
     public Project save(Project project) {
         return repo.saveAndFlush(project);
@@ -136,14 +146,54 @@ public class ProjectService {
                 filter(p->p.getStatus().equals(ProjectStatus.ACTIVATING.toString()))
                 .collect(Collectors.toList());
     }
+
     public List<ProjectDTO> getReachedProjectDTOs(){
         return this.getProjectDTOs().stream().
                 filter(p->p.getStatus().equals(ProjectStatus.REACHED.toString()))
                 .collect(Collectors.toList());
     }
+
     public List<ProjectDTO> getOverdueProjectDTOs(){
         return this.getProjectDTOs().stream().
                 filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
                 .collect(Collectors.toList());
+    }
+
+    public List<ProjectDTOForAdmin> getProjectDTOForAdmin(){
+        List<ProjectDTOForAdmin> projectDTS = new ArrayList<>();
+        for(Project p : this.getAllProjects()){
+            projectDTS.add(ProjectDTOForAdmin.builder()
+                    .prj_id(p.getPRJ_ID())
+                    .project_name(p.getProjectName())
+                    .brief_description(p.getBriefDescription())
+                    .description(p.getDescription())
+                    .startDate(p.getStartDate().toString())
+                    .endDate(p.getEndDate().toString())
+                    .target_money(p.getTargetMoney())
+                    .video_url(p.getVideoUrl())
+                    .image_url(p.getImageUrl())
+                    .prt_ID(p.getProjectType().getPRT_ID())
+                    .stp_ID(p.getSupportedPeople().getSTP_ID())
+                    .images(this.projectImagesService.findProjectImagesByProjectId(p.getPRJ_ID())).build());
+        }
+        return projectDTS;
+    }
+
+    public List<Project> createProject(ProjectDTOForAdmin p,Boolean isAdmin){
+        Project np = new Project();
+        np.setProjectName(p.getProject_name());
+        np.setBriefDescription(p.getBrief_description());
+        np.setDescription(p.getDescription());
+        np.setStartDate(LocalDate.parse(p.getStartDate()));
+        np.setEndDate(LocalDate.parse(p.getEndDate()));
+        np.setTargetMoney(p.getTarget_money());
+        np.setImageUrl(p.getImage_url());
+        np.setVideoUrl(p.getVideo_url());
+        np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
+        np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        np.setVerified(isAdmin);
+        this.repo.saveAndFlush(np);
+        this.projectImagesService.saveProjectImageToProjectWithListImage(np,p.getImages());
+        return this.getAllProjects();
     }
 }

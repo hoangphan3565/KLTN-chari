@@ -1,6 +1,5 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.repository.DonatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

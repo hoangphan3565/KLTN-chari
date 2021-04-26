@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Project } from '../models/Project';
+import { ProjectDTO } from '../models/ProjectDTO';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Api } from './api.service';
 
@@ -18,6 +19,15 @@ export class ProjectService {
     catch (error) {
        console.log(error);
     }  
+  }    
+  public getProjectDTOs = async () => {
+    try {
+        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/dto_for_admin');
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
   }  
 
   public getUnverified = async () => {
@@ -29,6 +39,16 @@ export class ProjectService {
        console.log(error);
     }  
   } 
+
+  public  createProject = async (ProjectDTO: ProjectDTO,isAdmin: boolean) => {
+    try {
+        const Projects = await this.http.post(Api.baseUrl+Api.projects+'/create/is_admin/'+isAdmin,ProjectDTO);
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
+  }
 
   public  saveProject = async (Project: Project) => {
     try {

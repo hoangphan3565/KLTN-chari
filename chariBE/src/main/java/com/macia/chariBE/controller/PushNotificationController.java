@@ -3,7 +3,6 @@ package com.macia.chariBE.controller;
 
 import com.macia.chariBE.model.JwtUser;
 import com.macia.chariBE.model.PushNotification;
-import com.macia.chariBE.model.PushNotificationTopic;
 import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.JwtUserRepository;

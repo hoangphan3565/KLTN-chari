@@ -47,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(
-						"/api/login","/api/register","/api/activate/{usn}","/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
+						"/api/login","/api/register","/api/activate/{usn}",
+				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
 				"/api/projects","/api/projects/{id}","/api/project_images/project/{id}",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
@@ -55,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/api/push_notification_topics","/api/push_notification_topics/{id}",
 				"/api/push_notifications","/api/push_notifications/{id}",
 				"/api/push_notifications/topic","/api/notification/username/{usn}","/api/notification/data",
-				"/api/projects/approve/{id}",
+				"/api/projects/approve/{id}","/api/projects/create/is_admin/{isadmin}",
 				"/api/project_types","/api/project_types/{id}",
 				"/api/donators","/api/donators/{id}",
 				"/api/collaborators","/api/collaborators/{id}",

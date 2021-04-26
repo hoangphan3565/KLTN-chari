@@ -1,7 +1,6 @@
 package com.macia.chariBE.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.macia.chariBE.DTO.ProjectDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

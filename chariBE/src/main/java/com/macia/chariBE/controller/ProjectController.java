@@ -1,9 +1,9 @@
 package com.macia.chariBE.controller;
 
+import com.macia.chariBE.DTO.ProjectDTOForAdmin;
 import com.macia.chariBE.model.*;
 import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.repository.PushNotificationRepository;
-import com.macia.chariBE.repository.PushNotificationTopicRepository;
 import com.macia.chariBE.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +71,10 @@ public class ProjectController {
     public ResponseEntity<?> getUnverifiedProject() {
         return ResponseEntity.ok().body(projectService.getUnverifiedProjects());
     }
+    @GetMapping("/dto_for_admin")
+    public ResponseEntity<?> getAllProjectDTOForAdmin() {
+        return ResponseEntity.ok().body(projectService.getProjectDTOForAdmin());
+    }
 
     @PutMapping("/approve/{id}")
     public ResponseEntity<?> approveProject(@PathVariable(value = "id") Integer id) {
@@ -93,15 +97,10 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.approveProject(id));
     }
 
-    @PostMapping("/create/type/{prtid}/peo/{sptid}")
+    @PostMapping("/create/is_admin/{isadmin}")
     public ResponseEntity<?> create(
-            @RequestBody Project project,
-            @PathVariable(value = "prtid") Integer prtid,
-            @PathVariable(value = "sptid") Integer sptid) {
-        ProjectType projectType = projectTypeService.findById(prtid);
-        project.setProjectType(projectType);
-        SupportedPeople supportedPeople = supportedPeopleService.findById(sptid);
-        project.setSupportedPeople(supportedPeople);
-        return ResponseEntity.ok().body(projectService.save(project));
+            @RequestBody ProjectDTOForAdmin project,
+            @PathVariable(value = "isadmin") Boolean isAdmin) {
+        return ResponseEntity.ok().body(projectService.createProject(project,isAdmin));
     }
 }

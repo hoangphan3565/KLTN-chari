@@ -1,8 +1,6 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.DonatorNotification;
-import com.macia.chariBE.repository.DonatorNotificationRepository;
 import com.macia.chariBE.service.DonatorNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
