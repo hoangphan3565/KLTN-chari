@@ -9,14 +9,14 @@
         <mat-label>Nội dung</mat-label>
         <input name="message" matInput [(ngModel)]="data.message" required>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field >
         <mat-label>Topic</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let topic of PushNotificationTopics" [value]="topic.tpc_ID">
-            {{topic.topicName}}
-          </mat-option>
+        <mat-select class="form-control" [(ngModel)]="data.notificationTopic.tpc_ID" id="notificationTopic" name="notificationTopic" required>
+            <mat-option *ngFor="let topic of PushNotificationTopics" [value]="topic.tpc_ID" (click)="saveTopicName(topic.topicName)" >
+                {{topic.topicName}}
+            </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field>   
 </mat-dialog-content>
 <mat-dialog-actions>
     <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>

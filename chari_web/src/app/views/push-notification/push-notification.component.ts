@@ -45,12 +45,17 @@ export class PushNotificationComponent implements OnInit {
       title:n.title,
       message:n.message,
       notificationTopic:n.notificationTopic,
-    };
+    }; 
     this.openDialog();
   }
   clearData(){
-    this.PushNotification = new PushNotification;
-    this.PushNotification.nof_ID=null;
+    this.PushNotification = {
+      nof_ID:null,
+      title:'',
+      message:'',
+      notificationTopic:null,
+    };
+    this.PushNotification.notificationTopic = {tpc_ID:null,topicName:'',description:''};
   }
 
   public savePushNotification = async (data,state) => {
