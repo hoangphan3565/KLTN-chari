@@ -1,11 +1,15 @@
 
 
+import 'dart:convert';
+
 import 'package:chari/models/models.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class  DonateWithPaypalWebViewScreen extends StatefulWidget{
   final String paypalurl;
@@ -31,7 +35,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     Container(
                       height: MediaQuery.of(context).size.width - 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(project.image_url),
@@ -56,7 +60,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     ),
                     SizedBox(height: 20),
                     RoundedButton(
-                      text: "Xác nhận",
+                      text: "Đóng",
                       press: ()async{
                         Navigator.pop(context);
                       },
@@ -84,7 +88,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     Container(
                       height: MediaQuery.of(context).size.width - 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(project.image_url),
@@ -98,7 +102,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                    Text("Hiện tại bạn chưa thể ủng hộ cho dự án: "+ project.project_name+". Tất cả số tiền giao dịch sẽ được bảo toàn trong tài khoảng của ban!"),
+                    Text("Hiện tại bạn chưa thể ủng hộ cho dự án: "+ project.project_name+". Tất cả số tiền giao dịch sẽ được bảo toàn trong tài khoản của ban!"),
                     SizedBox(height: 20),
                     Text(
                       "Chúng tôi xin thành thực xin lỗi vì sự cố này",
@@ -109,7 +113,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     ),
                     SizedBox(height: 20),
                     RoundedButton(
-                      text: "Xác nhận",
+                      text: "Đóng",
                       press: ()async{
                         Navigator.pop(context);
                       },
@@ -128,15 +132,45 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Thanh toán Paypal',
+          style: const TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: -1.2,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.timesCircle,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
       body: Container(
         margin: EdgeInsets.only(top: 35),
         padding: EdgeInsets.symmetric(horizontal: 5),
         child:
         WebView(
-          onPageFinished: (page){
+          onPageFinished: (page) async {
             if(page.contains('/success')){
-              Navigator.pop(context); //Đóng webview khi chuyển tiền thành công
-              _showDonateSuccessDialog(context,widget.project); //Hiện thông tin đã quyên góp sau khi thanh toán thành công
+              var res = await http.get(page);
+              var jsRes = json.decode(utf8.decode(res.bodyBytes));
+              if(jsRes["errorCode"]=="0"){
+                Navigator.pop(context);
+                _showDonateSuccessDialog(context,widget.project);
+              }else{
+                Navigator.pop(context);
+                _showDonateFailDialog(context,widget.project);
+              }
             }
           },
           javascriptMode: JavascriptMode.unrestricted,

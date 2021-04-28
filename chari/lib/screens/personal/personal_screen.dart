@@ -142,24 +142,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryLightColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(18),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Trang cá nhân',
-          style: const TextStyle(
-            color: kPrimaryHighLightColor,
-            fontSize: 27.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.7,
-          ),
-        ),
-      ),
       body: Column(
         children: [
           Container(),

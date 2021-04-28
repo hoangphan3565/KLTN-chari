@@ -135,7 +135,16 @@ class MoneyUtility{
     return sReturn;
   }
 
-  static convertToMoney(String sNumber){
-    return sNumber.split('').reversed.join().replaceAllMapped(RegExp(r".{3}"), (match) => "${match.group(0)} ").split('').reversed.join();
+  // static convertToMoney(String sNumber){
+  //   return sNumber.split('').reversed.join().replaceAllMapped(RegExp(r".{3}"), (match) => "${match.group(0)}.").split('').reversed.join();
+  // }
+  static String convertToMoney(String price) {
+    if(price.length > 2) {
+      var value = price;
+      value = value.replaceAll(RegExp(r'\D'), '');
+      value = value.replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.');
+      return value;
+    }
+    return '0';
   }
 }

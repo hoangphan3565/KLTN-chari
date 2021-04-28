@@ -7,6 +7,7 @@ import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/custom_alert_dialog.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen>{
   int _selectedProjectType  = 0;
   var listProjectIdFavorite = new List<String>();
 
+  TabController tabController;
 
   @override
   initState() {
@@ -43,36 +45,42 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kPrimaryLightColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(18),
-            ),
-          ),
-          centerTitle: true,
-          title: Text(
-            'Trang chủ',
-            style: const TextStyle(
-              color: kPrimaryHighLightColor,
-              fontSize: 27.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.2,
-            ),
-          ),
-        ),
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: kPrimaryLightColor,
               centerTitle: true,
               floating: true,
+              title: Text(
+                'chari',
+                style: const TextStyle(
+                  fontSize: 27.0,
+                  color: kPrimaryHighLightColor,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              actions: <Widget>[
+                IconButton(
+                  splashRadius: 20,
+                  icon: Icon(
+                    FontAwesomeIcons.search,
+                  ),
+                  onPressed: () {
+                    // do something
+                  },
+                ),
+              ],
+            ),
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              floating: true,
+              centerTitle: true,
               title: widget.project_types.length == 0 ? Text(""):
               Text(
                 widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
                 style: const TextStyle(
                   fontSize: 16.0,
-                  color: kPrimaryHighLightColor,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
                 ),
@@ -80,11 +88,12 @@ class _HomeScreenState extends State<HomeScreen>{
               actions: <Widget>[
                 widget.project_types.length == 0 ? Text(""):
                 PopupMenuButton<ProjectType>(
-                  icon:  Icon(Icons.menu_open_outlined,color: kPrimaryHighLightColor,),
-                  onSelected: (ProjectType result) { setState(() {
-                    _selectedProjectType = result.id;
-                    print(_selectedProjectType);
-                  }); },
+                  icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
+                  onSelected: (ProjectType result) {
+                    setState(() {
+                      _selectedProjectType = result.id;
+                    });
+                  },
                   itemBuilder: (BuildContext context) {
                     return widget.project_types.map((ProjectType choice) {
                       return PopupMenuItem(
@@ -96,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen>{
                 )
               ],
             ),
-
             _selectedProjectType == 0 ?
             SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -230,91 +238,89 @@ class _HomeScreenState extends State<HomeScreen>{
         });
   }
 
-  //Build component
-  Container buildPostSection(Project project) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(8,4,8,4),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildPostPicture(project),
-          SizedBox(
-            height: 10,
+  GestureDetector buildPostSection(Project project) {
+    return GestureDetector(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: project,)),
+          );
+        },
+        child: Container(
+          margin: EdgeInsets.fromLTRB(8,4,8,4),
+          padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(15),
           ),
-          //Tên dự án
-          Text(
-            project.project_name,
-            style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildPostPicture(project),
+              SizedBox(
+                height: 10,
+              ),
+              //Tên dự án
+              Text(
+                project.project_name,
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              //Thông tin vắn tắt
+              Text(
+                project.brief_description,
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black26),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              //Dấu phân tách
+              Container(
+                height: 1.5,
+                color: Colors.grey[300],
+                margin: EdgeInsets.symmetric(horizontal: 0),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              buildProgressPercentRow(project),
+              SizedBox(
+                height: 5,
+              ),
+              buildInfoDetailsRow(context,project),
+            ],
           ),
-          SizedBox(
-            height: 5,
-          ),
-          //Thông tin vắn tắt
-          Text(
-            project.brief_description,
-            style: TextStyle(
-                fontSize: 15,
-                color: Colors.black26),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          //Dấu phân tách
-          Container(
-            height: 1.5,
-            color: Colors.grey[300],
-            margin: EdgeInsets.symmetric(horizontal: 0),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          buildProgressPercentRow(project),
-          SizedBox(
-            height: 5,
-          ),
-          buildInfoDetailsRow(context,project),
-        ],
-      ),
+        )
     );
   }
 
   Stack buildPostPicture(Project project) {
     return Stack(
       children: [
-        InkWell(
-          onTap: ()=>{
-            Navigator.push(
-            context,
-               MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: project,)),
-            ),
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.width - 200,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 20,
-                    offset: Offset(0, 10),
-                  ),
-                ],
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(project.image_url),
-                )),
-          ),
+        Container(
+          height: MediaQuery.of(context).size.width - 200,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 20,
+                  offset: Offset(0, 10),
+                ),
+              ],
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(project.image_url),
+              )),
         ),
-
         Positioned(
           bottom: 20,
           right: 20,
@@ -347,38 +353,89 @@ class _HomeScreenState extends State<HomeScreen>{
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    if (project.status == 'ACTIVATING')
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.clock,
+                            size: 13,
+                            color: kPrimaryHighLightColor,
+                          ),
+                          Text(
+                            " Còn "+project.remaining_term.toString()+" ngày",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
                 SizedBox(
                   height: 8,
                 ),
-                LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width-60,
-                  lineHeight: 8.0,
-                  percent: percent,
-                  progressColor: kPrimaryColor,
-                ),
+                if (project.status == 'ACTIVATING')
+                  LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width-52,
+                    lineHeight: 8.0,
+                    percent: percent,
+                    progressColor: kPrimaryColor,
+                  ),
+                if (project.status == 'REACHED')
+                  LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width-52,
+                    lineHeight: 8.0,
+                    percent: percent,
+                    progressColor: kPrimaryHighLightColor,
+                  ),
+
               ],
             ),
           if (project.status == 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 8,
                 ),
                 LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width-60,
+                  width: MediaQuery.of(context).size.width-52,
                   lineHeight: 8.0,
                   percent: percent,
                   progressColor: Colors.grey,
@@ -389,6 +446,8 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
   Row buildInfoDetailsRow(BuildContext context, Project project) {
+    double context_width = MediaQuery.of(context).size.width;
+    double context_height = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -416,32 +475,29 @@ class _HomeScreenState extends State<HomeScreen>{
             SizedBox(
               width: 20,
             ),
-            if(project.status == 'ACTIVATING')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Thời hạn còn",
-                    style: TextStyle(
-                      fontSize: 13,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đạt được",
+                  style: TextStyle(
+                    fontSize: 13,
                   ),
-                  Text(
-                    project.remaining_term.toString()+" Ngày",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-            if(project.status != 'ACTIVATING')
-              Column(),
+                ),
+                Text(
+                  (project.cur_money/project.target_money*100).round().toString()+" %",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
+            ),
           ],
         ),
         if(project.status == 'ACTIVATING')
           Container(
-            width: 125,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: kPrimaryHighLightColor),
@@ -464,7 +520,7 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
         if(project.status == 'REACHED')
           Container(
-            width: 180,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
@@ -472,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen>{
             child:FlatButton(
               onPressed:() => {},
               child: Text(
-                "Đã đạt mục tiêu",
+                "Đạt mục tiêu",
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -482,7 +538,7 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
         if(project.status == 'OVERDUE')
           Container(
-            width: 125,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),

@@ -7,6 +7,7 @@ import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,26 +74,33 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryLightColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(18),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Đã quan tâm',
-          style: const TextStyle(
-            color: kPrimaryHighLightColor,
-            fontSize: 27.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.2,
-          ),
-        ),
-      ),
       body: CustomScrollView(
         slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: kPrimaryLightColor,
+            centerTitle: true,
+            floating: true,
+            title: Text(
+              'quan tâm',
+              style: const TextStyle(
+                fontSize: 27.0,
+                color: kPrimaryHighLightColor,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.5,
+              ),
+            ),
+            actions: <Widget>[
+              IconButton(
+                splashRadius: 20,
+                icon: Icon(
+                  FontAwesomeIcons.search,
+                ),
+                onPressed: () {
+                  // do something
+                },
+              ),
+            ],
+          ),
           favorite_projects.length == 0 ?
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -139,7 +147,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +209,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           child: Container(
             height: MediaQuery.of(context).size.width - 200,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
@@ -244,38 +252,89 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    if (project.status == 'ACTIVATING')
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.clock,
+                            size: 13,
+                            color: kPrimaryHighLightColor,
+                          ),
+                          Text(
+                            " Còn "+project.remaining_term.toString()+" ngày",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
                 SizedBox(
                   height: 8,
                 ),
-                LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width-60,
-                  lineHeight: 8.0,
-                  percent: percent,
-                  progressColor: kPrimaryColor,
-                ),
+                if (project.status == 'ACTIVATING')
+                  LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width-52,
+                    lineHeight: 8.0,
+                    percent: percent,
+                    progressColor: kPrimaryColor,
+                  ),
+                if (project.status == 'REACHED')
+                  LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width-52,
+                    lineHeight: 8.0,
+                    percent: percent,
+                    progressColor: kPrimaryHighLightColor,
+                  ),
+
               ],
             ),
           if (project.status == 'OVERDUE')
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 8,
                 ),
                 LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width-60,
+                  width: MediaQuery.of(context).size.width-52,
                   lineHeight: 8.0,
                   percent: percent,
                   progressColor: Colors.grey,
@@ -286,6 +345,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
   }
 
   Row buildInfoDetailsRow(BuildContext context, Project project) {
+    double context_width = MediaQuery.of(context).size.width;
+    double context_height = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -313,35 +374,32 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             SizedBox(
               width: 20,
             ),
-            if(project.status == 'ACTIVATING')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Thời hạn còn",
-                    style: TextStyle(
-                      fontSize: 13,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đạt được",
+                  style: TextStyle(
+                    fontSize: 13,
                   ),
-                  Text(
-                    project.remaining_term.toString()+" Ngày",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-            if(project.status != 'ACTIVATING')
-              Column(),
+                ),
+                Text(
+                  (project.cur_money/project.target_money*100).round().toString()+" %",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
+            ),
           ],
         ),
         if(project.status == 'ACTIVATING')
           Container(
-            width: 125,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1, color: kPrimaryColor),
+                border: Border.all(width: 1, color: kPrimaryHighLightColor),
                 borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
@@ -355,13 +413,13 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
-                    color: kPrimaryColor),
+                    color: kPrimaryHighLightColor),
               ),
             ),
           ),
         if(project.status == 'REACHED')
           Container(
-            width: 180,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
@@ -369,7 +427,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             child:FlatButton(
               onPressed:() => {},
               child: Text(
-                "Đã đạt mục tiêu",
+                "Đạt mục tiêu",
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -379,7 +437,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           ),
         if(project.status == 'OVERDUE')
           Container(
-            width: 125,
+            width: context_width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),

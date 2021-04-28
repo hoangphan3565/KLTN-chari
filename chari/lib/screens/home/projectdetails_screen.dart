@@ -7,6 +7,7 @@ import 'package:chari/utility/utility.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:video_player/video_player.dart';
 
@@ -114,7 +115,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 45,
-        width: 400,
+        width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
             border: Border.all(width: 1.5, color: kPrimaryColor),
             borderRadius: BorderRadius.circular(8), color: kPrimaryColor),
@@ -284,6 +285,13 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 color: Colors.black),
           ),
           SizedBox(height: 5),
+          Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/loading.gif")
+                  ))
+          ),
           Container(
               child: Column(children: <Widget>[
                 CarouselSlider(
@@ -595,11 +603,29 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được ${MoneyUtility.convertToMoney(project.cur_money.toString())} đ / ${MoneyUtility.convertToMoney(project.target_money.toString())} đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      "Đã quyên góp ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+
+                  ],
                 ),
                 SizedBox(
                   height: 8,
@@ -616,11 +642,29 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Đã quyên góp được "+project.cur_money.toString()+" đ / "+project.target_money.toString()+" đ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    Text(
+                      "Đã quyên góp ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black),
+                    ),
+
+                  ],
                 ),
                 SizedBox(
                   height: 8,

@@ -81,15 +81,7 @@ class _DonateScreenState extends State<DonateScreen> {
                     Container(
                       height: MediaQuery.of(context).size.width - 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(widget.project.image_url),
