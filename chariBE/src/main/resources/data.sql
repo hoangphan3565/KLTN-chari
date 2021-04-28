@@ -67,7 +67,7 @@ values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true
          '
         Rất mong quý nhà hảo tâm cùng Chari chung tay ủng hộ cho các em học sinh biên giới có cơ hội được cắp sách tới trường, thực hiện ước mơ học tập của em, nâng bước các em tới tương lai tươi đẹp hơn.',
 '2020-12-01','2021-05-31',75352000,
-'https://file1.dangcongsan.vn/DATA/0/2016/10/images1068981_hoc_sinh_ngheo-15_12_21_498.jpg',
+'https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
 insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
@@ -181,7 +181,7 @@ insert into project_images(image_url,prj_id) values('https://cdnmedia.baotintuc.
 insert into project_images(image_url,prj_id) values('https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',1);
 insert into project_images(image_url,prj_id) values('https://cdnimg.vietnamplus.vn/t620/uploaded/xpcwvovt/2020_10_29/ttxvn_tau_kiem_ngu.jpg',1);
 
-insert into project_images(image_url,prj_id) values('https://file1.dangcongsan.vn/DATA/0/2016/10/images1068981_hoc_sinh_ngheo-15_12_21_498.jpg',2);
+insert into project_images(image_url,prj_id) values('https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',2);
 insert into project_images(image_url,prj_id) values('https://tamnguyenviet.vn/wp-content/uploads/2019/11/truong.jpg',2);
 insert into project_images(image_url,prj_id) values('https://files.giaoducthoidai.vn/Uploaded/nhungnt/2014_02_17/1_JYGD.jpg',2);
 insert into project_images(image_url,prj_id) values('https://gialai.gov.vn/Lists/TinTucSuKien/Attachments/63615/giao%20duc.jpg',2);
@@ -276,10 +276,6 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',3000000,10);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,10);
 
-insert into donate_activity(dnt_id,prj_id) values(1,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',212000,11);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',122000,11);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',113000,11);
 
 
 insert into push_notification_topic(topic_name,description) values('project_added','Bạn sẽ nhận thông báo khi một chương trình từ thiện mới được thêm');

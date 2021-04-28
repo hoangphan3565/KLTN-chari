@@ -26,7 +26,7 @@ public class DonateDetails {
     private Integer DND_ID;
 
     @Column
-    private Double money;
+    private int money;
 
     @Column
     private String message;

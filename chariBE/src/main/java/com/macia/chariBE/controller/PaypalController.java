@@ -4,20 +4,23 @@ import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Order;
 import com.macia.chariBE.repository.DonateDetailsRepository;
-import com.macia.chariBE.service.DonateActivityService;
-import com.macia.chariBE.service.DonatorService;
-import com.macia.chariBE.service.PaypalService;
-import com.macia.chariBE.service.ProjectService;
+import com.macia.chariBE.service.*;
 import com.macia.chariBE.utility.MoneyUtility;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -44,6 +47,9 @@ public class PaypalController {
     ProjectService projectService;
 
     @Autowired
+    DonateDetailsService donateDetailsService;
+
+    @Autowired
     DonateDetailsRepository donateDetailsRepository;
 
 
@@ -57,7 +63,7 @@ public class PaypalController {
     public String payment(@PathVariable(value = "did") Integer donator_id,
                           @PathVariable(value = "pid") Integer project_id,
                           @RequestBody Order order) {
-        double price = order.getPrice();
+        int price = (int)order.getPrice();
         order.setPrice(MoneyUtility.VNDToUSD(order.getPrice()));
         order.setCurrency("USD");
         order.setMethod("PAYPAL");
@@ -85,40 +91,66 @@ public class PaypalController {
 
     @Transactional
     @GetMapping("/success/donator_id/{did}/project_id/{pid}/money/{money}")
-    public String successPay(
+    public ResponseEntity<?> successPay(
             @PathVariable(value = "did") Integer donator_id,
             @PathVariable(value = "pid") Integer project_id,
-            @PathVariable(value = "money") Double money,
+            @PathVariable(value = "money") int money,
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId) {
+        JSONObject jo = new JSONObject();
         try {
             Payment payment = service.executePayment(paymentId, payerId);
-            System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
-                DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-                if (donateActivity == null) {
-                    donateDetailsRepository.save(DonateDetails.builder()
-                            .donateActivity(donateActivityService.save(DonateActivity.builder()
-                                    .donator(donatorService.findById(donator_id))
-                                    .project(projectService.findProjectById(project_id))
-                                    .build()))
-                            .donateDate(LocalDateTime.now())
-                            .money(money)
-                            .build());
+                if(!checkValid(donator_id,project_id,money)){
+                    jo.put("errorCode", "0");
+                    jo.put("message", "Donate success!");
+                    return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+
+                }else{
+                    this.handleSuccessPayment(donator_id,project_id,money);
+                    jo.put("errorCode", "0");
+                    jo.put("message", "Donate success!");
+                    return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
                 }
-                else {
-                    donateDetailsRepository.save(DonateDetails.builder()
-                            .donateActivity(donateActivity)
-                            .donateDate(LocalDateTime.now())
-                            .money(money)
-                            .build());
-                }
-                return "Quyên góp thành công!";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
-            return "Thanh toán thất bại!";
         }
-        return "Thanh toán thất bại!";
+        jo.put("errorCode", "1");
+        jo.put("message", "Donate fail!");
+        return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+    }
+    public boolean checkValid(Integer donator_id,Integer project_id,int money)
+    {
+        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
+        List<DonateDetails> ls = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
+        DonateDetails temp = ls.get(ls.size()-1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        int temp_minute = temp.getDonateDate().getMinute();
+        int temp_hour = temp.getDonateDate().getHour();
+        int temp_date = temp.getDonateDate().getDayOfYear();
+        LocalDateTime now = LocalDateTime.now();
+        return temp.getMoney() != money || temp_date != now.getDayOfYear() || temp_hour != now.getHour() || (temp_minute != now.getMinute() && temp_minute != now.getMinute() - 1);
+    }
+
+    public void handleSuccessPayment(Integer donator_id, Integer project_id, int money){
+        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
+        if (donateActivity == null) {
+            donateDetailsRepository.save(DonateDetails.builder()
+                    .donateActivity(donateActivityService.save(DonateActivity.builder()
+                            .donator(donatorService.findById(donator_id))
+                            .project(projectService.findProjectById(project_id))
+                            .build()))
+                    .donateDate(LocalDateTime.now())
+                    .money(money)
+                    .build());
+        }
+        else {
+            donateDetailsRepository.save(DonateDetails.builder()
+                    .donateActivity(donateActivity)
+                    .donateDate(LocalDateTime.now())
+                    .money(money)
+                    .build());
+        }
     }
 }

@@ -26,6 +26,7 @@ public class PaypalService {
             String description,
             String cancelUrl,
             String successUrl) throws PayPalRESTException {
+        apiContext.getRequestId();
         Amount amount = new Amount();
         amount.setCurrency(currency);
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -58,6 +59,7 @@ public class PaypalService {
         payment.setId(paymentId);
         PaymentExecution paymentExecute = new PaymentExecution();
         paymentExecute.setPayerId(payerId);
+        apiContext.getRequestId();
         return payment.execute(apiContext, paymentExecute);
     }
 

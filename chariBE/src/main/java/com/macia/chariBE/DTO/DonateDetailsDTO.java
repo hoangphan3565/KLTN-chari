@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class DonateDetailsDTO {
-    private Double money;
+    private int money;
     private LocalDateTime donate_date;
     private Integer project_id;
     private String project_name;
