@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ),
             SliverAppBar(
               backgroundColor: Colors.white,
-              floating: true,
+              pinned: true,
               centerTitle: true,
               title: widget.project_types.length == 0 ? Text(""):
               Text(
@@ -446,8 +446,7 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
   Row buildInfoDetailsRow(BuildContext context, Project project) {
-    double context_width = MediaQuery.of(context).size.width;
-    double context_height = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -497,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen>{
         ),
         if(project.status == 'ACTIVATING')
           Container(
-            width: context_width/3,
+            width: size.width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: kPrimaryHighLightColor),
@@ -520,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
         if(project.status == 'REACHED')
           Container(
-            width: context_width/3,
+            width: size.width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
@@ -538,7 +537,7 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
         if(project.status == 'OVERDUE')
           Container(
-            width: context_width/3,
+            width: size.width/3,
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),

@@ -156,7 +156,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
                           color: kPrimaryHighLightColor,
                         ),
                         Text(
-                          " "+ DateFormat('kk:mm - dd-MM-yyyy').format( DateTime.parse(donate_details.donate_date)),
+                          " "+ DateFormat('kk:mm - dd/MM/yy').format( DateTime.parse(donate_details.donate_date)),
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,

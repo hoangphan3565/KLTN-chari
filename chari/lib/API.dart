@@ -103,6 +103,12 @@ class API {
     var url = baseUrl + donate_details+'/donator/'+donator_id.toString();
     return http.get(url,headers:getHeaderJWT(token));
   }
+
+  static Future getDonateDetailsByProjectId(int project_id) {
+    var url = baseUrl + donate_details+'/project/'+project_id.toString();
+    return http.get(url);
+  }
+
   static Future getDonatorNotificationListByDonatorId(int donator_id,String token) {
     var url = baseUrl + donator_notifications+'/donator/'+donator_id.toString();
     return http.get(url,headers:getHeaderJWT(token));

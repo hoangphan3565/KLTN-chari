@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chari/API.dart';
+import 'package:chari/models/donate_details_of_project_model.dart';
 import 'package:chari/models/project_model.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -13,6 +16,7 @@ import 'package:video_player/video_player.dart';
 
 
 
+
 class ProjectDetailsScreen extends StatefulWidget {
   final Project project;
   ProjectDetailsScreen({@required this.project});
@@ -21,21 +25,38 @@ class ProjectDetailsScreen extends StatefulWidget {
 }
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
+  final dataKey = new GlobalKey();
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
 
   List<String> listProjectIdFavorite = new List<String>();
-
+  var listDonation = new List<DonateDetailsOfProject>();
+  int numViewDonation = 0;
   @override
   void initState() {
     super.initState();
     this.initializePlayer(widget.project.video_url);
+    _getDonation();
   }
 
   @override
   void dispose() {
     super.dispose();
     this._videoPlayerController.dispose();
+  }
+
+  _getDonation() {
+    API.getDonateDetailsByProjectId(widget.project.prj_id).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        listDonation = list.map((model) => DonateDetailsOfProject.fromJson(model)).toList();
+        if(listDonation.length>=5){
+          numViewDonation=5;
+        }else{
+          numViewDonation = listDonation.length;
+        }
+      });
+    });
   }
 
   Future<void> initializePlayer(String video_url) async {
@@ -76,14 +97,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
         ),
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.more_vert,
-          //   ),
-          //   onPressed: () {
-          //     // do something
-          //   },
-          // ),
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            onPressed: () {
+              _getDonation();
+              print(listDonation.length);
+            },
+          ),
         ],
       ),
       body: Column(
@@ -103,7 +125,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     buildProjectInfo(widget.project),   //Thông tin vắn tắt
                     buildProjectDetails(widget.project),
                     buildBestDonatorsList(),
-                    buildRecentDonatorsList(),
+                    buildRecentDonatorsList(context),
                   ],
                 ),
               ),
@@ -346,42 +368,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
 
-  Container buildDonatorInfo2(){
-    return Container(
-      margin: EdgeInsets.fromLTRB(5,0,5,5),
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "TÊN NHÀ HẢO TÂM",
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            "xxxxxxxx231",
-            style: TextStyle(
-                fontSize: 12,
-                color: Colors.black54),
-          ),
-          SizedBox(height:5),
-          Container(
-            height: 1,
-            color: Colors.grey[300],
-            margin: EdgeInsets.symmetric(horizontal: 0),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Row buildDonatorInfo() {
+  Row buildDonationInfo(DonateDetailsOfProject donation) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -395,7 +382,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   height: 5,
                 ),
                 Text(
-                  "NHA HAO TAM",
+                  donation.donator_name,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -403,20 +390,37 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   ),
                 ),
                 Text(
-                  "xxxxxxxx231",
+                  donation.phone,
                   style: TextStyle(
                       fontSize: 12,
                       color: Colors.black54),
                 ),
+                if(donation.message!='')
+                  Row(
+                  children: [
+                    Icon(
+                      Icons.messenger_outline,
+                      size: 13,
+                      color: kPrimaryHighLightColor,
+                    ),
+                    Text(
+                      donation.message,
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
                 SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
               ],
             ),
           ],
         ),
         Text(
-          "10000 VND",
+          MoneyUtility.convertToMoney(donation.money) + " đ",
           style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
@@ -445,20 +449,14 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 color: Colors.black),
           ),
           SizedBox(height:5),
-          Container(
-              child: Column(children: <Widget>[
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-              ],)
-          ),
+
         ],
       ),
     );
   }
 
-  Container buildRecentDonatorsList(){
+  Container buildRecentDonatorsList(BuildContext context){
+    Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.fromLTRB(8,5,8,20),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -470,21 +468,37 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Danh sách nhà hảo tâm",
+            "Hoạt động quyên góp gần đây",
             style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.black),
           ),
           SizedBox(height:5),
-          Container(
-              child: Column(children: <Widget>[
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-                buildDonatorInfo(),
-              ],)
-          ),
+
+          if(!listDonation.isEmpty)
+            for(int i=0;i<numViewDonation;i++)
+              buildDonationInfo(listDonation[i]),
+
+          if(numViewDonation != listDonation.length )
+            Center(
+              child: FlatButton(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                onPressed: ()=>{
+                  setState(() {
+                    if(numViewDonation<=listDonation.length-5){
+                      numViewDonation+=5;
+                    }else{
+                      numViewDonation+= listDonation.length - numViewDonation;
+                    }
+                  })
+                },
+                child: Text(
+                  'Xem thêm',
+                  style: TextStyle(color: kPrimaryHighLightColor,fontSize: 16),
+                ),
+              ),
+            ),
         ],
       ),
     );
