@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DonateDetailsDTO {
+public class DonateDetailsOfProjectDTO {
     private int money;
     private LocalDateTime donate_date;
-    private Integer project_id;
-    private String project_name;
+    private String donator_name;
+    private String phone;
+    private String message;
 }

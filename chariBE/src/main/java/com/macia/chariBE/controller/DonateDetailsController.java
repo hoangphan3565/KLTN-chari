@@ -16,4 +16,9 @@ public class DonateDetailsController {
     public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorId(@PathVariable(value = "dntid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorId(id));
     }
+
+    @GetMapping("project/{prjid}")
+    public ResponseEntity<?> getDonateDetailsByProjectId(@PathVariable(value = "prjid") Integer id) {
+        return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByProjectId(id));
+    }
 }

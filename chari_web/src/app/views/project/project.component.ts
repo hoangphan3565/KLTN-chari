@@ -39,39 +39,39 @@ export class ProjectComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: ProjectDTO) => {
       if(result){
-        if (result.prj_id==null) this.ceateProject(result);
+        if (result.prj_ID==null) this.ceateProject(result);
         else this.saveProject(result,'Cập nhật');
       }
     });
   }
-  openEditDialog(p : ProjectDTO): void {
+  openEditDialog(p : Project): void {
     this.ProjectDTO = {
-      prj_id:p.prj_id,
-      project_name:p.project_name,
-      brief_description:p.brief_description,
+      prj_ID:p.prj_ID,
+      projectName:p.projectName,
+      briefDescription:p.briefDescription,
       description:p.description,
-      image_url:p.image_url,
-      video_url:p.video_url,
+      imageUrl:p.imageUrl,
+      videoUrl:p.videoUrl,
       startDate:p.startDate,
       endDate:p.endDate,
-      target_money:p.target_money,
-      prt_ID:p.prt_ID,
-      stp_ID:p.stp_ID,
-      images:p.images
+      targetMoney:p.targetMoney,
+      prt_ID:p.projectType.prt_ID,
+      stp_ID:p.supportedPeople.stp_ID,
+      images:null
     }; 
     this.openDialog();
   }
   clearData(){
     this.ProjectDTO = {
-      prj_id:null,
-      project_name:'',
-      brief_description:'',
+      prj_ID:null,
+      projectName:'',
+      briefDescription:'',
       description:'',
-      image_url:'',
-      video_url:'',
+      imageUrl:'',
+      videoUrl:'',
       startDate:'',
       endDate:'',
-      target_money:'',
+      targetMoney:'',
       prt_ID:null,
       stp_ID:null,
       images:null

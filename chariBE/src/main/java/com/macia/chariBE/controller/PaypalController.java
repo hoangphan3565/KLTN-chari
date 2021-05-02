@@ -58,12 +58,15 @@ public class PaypalController {
         return "paypal home";
     }
 
+    String messge;
+
     @Transactional
     @PostMapping("/donator_id/{did}/project_id/{pid}/donate")
     public String payment(@PathVariable(value = "did") Integer donator_id,
                           @PathVariable(value = "pid") Integer project_id,
                           @RequestBody Order order) {
         int price = (int)order.getPrice();
+        this.messge=order.getDescription();
         order.setPrice(MoneyUtility.VNDToUSD(order.getPrice()));
         order.setCurrency("USD");
         order.setMethod("PAYPAL");
@@ -124,9 +127,7 @@ public class PaypalController {
     {
         DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
         List<DonateDetails> ls = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
-        DonateDetails temp = ls.get(ls.size()-1);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        int temp_minute = temp.getDonateDate().getMinute();
+        DonateDetails temp = ls.get(ls.size()-1);int temp_minute = temp.getDonateDate().getMinute();
         int temp_hour = temp.getDonateDate().getHour();
         int temp_date = temp.getDonateDate().getDayOfYear();
         LocalDateTime now = LocalDateTime.now();
@@ -143,6 +144,7 @@ public class PaypalController {
                             .build()))
                     .donateDate(LocalDateTime.now())
                     .money(money)
+                    .message(this.messge)
                     .build());
         }
         else {
@@ -150,6 +152,7 @@ public class PaypalController {
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
                     .money(money)
+                    .message(this.messge)
                     .build());
         }
     }

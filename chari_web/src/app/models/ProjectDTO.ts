@@ -1,13 +1,13 @@
 export class ProjectDTO {
-    prj_id: Number;
-    project_name:string;
-    brief_description:string;
+    prj_ID: Number;
+    projectName:string;
+    briefDescription:string;
     description:string;
     startDate:string;
     endDate:string;
-    target_money:string;
-    image_url:string;
-    video_url:string;
+    targetMoney:string;
+    imageUrl:string;
+    videoUrl:string;
     prt_ID:Number;
     stp_ID:Number;
     images:string[];

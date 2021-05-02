@@ -12,15 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProjectDTOForAdmin {
-    private Integer prj_id;
-    private String project_name;
-    private String brief_description;
+    private Integer PRJ_ID;
+    private String projectName;
+    private String briefDescription;
     private String description;
-    private String image_url;
-    private String video_url;
+    private String videoUrl;
+    private String imageUrl;
     private String startDate;
     private String endDate;
-    private Integer target_money;
+    private Integer targetMoney;
     private Integer prt_ID;
     private Integer stp_ID;
     private List<String> images;

@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/api/projects","/api/projects/{id}","/api/project_images/project/{id}",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
+				"/api/donate_details/project/{prjid}",
 				//for admin
 				"/api/push_notification_topics","/api/push_notification_topics/{id}",
 				"/api/push_notifications","/api/push_notifications/{id}",

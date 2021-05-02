@@ -234,47 +234,47 @@ insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom
 
 
 insert into donate_activity(dnt_id,prj_id) values(1,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',5000000,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',5000000,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',5000000,1);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',5000000,1,'Cố lên');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',5000000,1,'Cố lên nha');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',5000000,1,'Cố lên ạ');
 insert into donate_activity(dnt_id,prj_id) values(1,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',5000000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',5000000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-09',5000000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-20',60300000,2);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',5000000,2,'Cố lên!');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',5000000,2,'Cố lên!');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-09',5000000,2,'Cố lên!');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-20',60300000,2,'');
 insert into donate_activity(dnt_id,prj_id) values(1,3);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',5000000,3);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',6000000,3);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-10',7000000,3);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',5000000,3,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',6000000,3,'Cố lên ạ');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-10',7000000,3,'Chúc chương trình thành công');
 insert into donate_activity(dnt_id,prj_id) values(1,4);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',10000000,4);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',20000000,4);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-11',20001000,4);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',10000000,4,'Chúc ctrinh thành công ạ');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',20000000,4,'Mong chương trình sớm thành công');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-11',20001000,4,'Thật xúc động!!');
 insert into donate_activity(dnt_id,prj_id) values(1,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',30000000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-12',10000000,5);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',30000000,5,'Cố lên ạ');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',30000000,5,'Cố lên nha');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-12',10000000,5,'');
 insert into donate_activity(dnt_id,prj_id) values(2,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-01',3000000,6);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,6);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,6);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-01',3000000,6,'Cố lên');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',3000000,6,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,6,'');
 insert into donate_activity(dnt_id,prj_id) values(2,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,7);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-03',3000000,7);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,7);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,7,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-03',3000000,7,'Cố lên!');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,7,'');
 insert into donate_activity(dnt_id,prj_id) values(2,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-13',3000000,8);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',3000000,8);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,8);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-13',3000000,8,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',3000000,8,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,8,'Cố lên');
 
 insert into donate_activity(dnt_id,prj_id) values(2,9);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,9);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-20',3000000,9);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,9);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,9,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-20',3000000,9,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,9,'Cố lên');
 insert into donate_activity(dnt_id,prj_id) values(2,10);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',3000000,10);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-12',3000000,10);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',3000000,10);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,10,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-12',3000000,10,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,10,'Cố lên');
 
 
 

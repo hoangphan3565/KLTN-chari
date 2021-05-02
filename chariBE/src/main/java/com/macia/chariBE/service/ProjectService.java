@@ -163,15 +163,15 @@ public class ProjectService {
         List<ProjectDTOForAdmin> projectDTS = new ArrayList<>();
         for(Project p : this.getAllProjects()){
             projectDTS.add(ProjectDTOForAdmin.builder()
-                    .prj_id(p.getPRJ_ID())
-                    .project_name(p.getProjectName())
-                    .brief_description(p.getBriefDescription())
+                    .PRJ_ID(p.getPRJ_ID())
+                    .projectName(p.getProjectName())
+                    .briefDescription(p.getBriefDescription())
                     .description(p.getDescription())
                     .startDate(p.getStartDate().toString())
                     .endDate(p.getEndDate().toString())
-                    .target_money(p.getTargetMoney())
-                    .video_url(p.getVideoUrl())
-                    .image_url(p.getImageUrl())
+                    .targetMoney(p.getTargetMoney())
+                    .videoUrl(p.getVideoUrl())
+                    .imageUrl(p.getImageUrl())
                     .prt_ID(p.getProjectType().getPRT_ID())
                     .stp_ID(p.getSupportedPeople().getSTP_ID())
                     .images(this.projectImagesService.findProjectImagesByProjectId(p.getPRJ_ID())).build());
@@ -181,14 +181,14 @@ public class ProjectService {
 
     public List<Project> createProject(ProjectDTOForAdmin p,Boolean isAdmin){
         Project np = new Project();
-        np.setProjectName(p.getProject_name());
-        np.setBriefDescription(p.getBrief_description());
+        np.setProjectName(p.getProjectName());
+        np.setBriefDescription(p.getBriefDescription());
         np.setDescription(p.getDescription());
         np.setStartDate(LocalDate.parse(p.getStartDate()));
         np.setEndDate(LocalDate.parse(p.getEndDate()));
-        np.setTargetMoney(p.getTarget_money());
-        np.setImageUrl(p.getImage_url());
-        np.setVideoUrl(p.getVideo_url());
+        np.setTargetMoney(p.getTargetMoney());
+        np.setImageUrl(p.getImageUrl());
+        np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
         np.setVerified(isAdmin);
