@@ -201,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen>{
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Text("Để thực hiện chức năng này bạn hãy đăng nhập trước",
+                    Text("Đăng nhập hoặc đăng ký",
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -209,6 +209,13 @@ class _HomeScreenState extends State<HomeScreen>{
                       ),
                     ),
                     SizedBox(height: 5),
+                    Container(
+                      height: 1.5,
+                      color: Colors.grey[300],
+                      margin: EdgeInsets.symmetric(horizontal: 0),
+                    ),
+                    SizedBox(height: 10),
+                    Text("Bạn cần có tài khoản để thực hiện chức năng này"),
                     RoundedButton(
                         text: "Đăng nhập",
                         press: (){
@@ -216,15 +223,10 @@ class _HomeScreenState extends State<HomeScreen>{
                           Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
                         }
                     ),
-                    Container(
-                      height: 1.5,
-                      color: Colors.grey[300],
-                      margin: EdgeInsets.symmetric(horizontal: 0),
-                    ),
-                    SizedBox(height: 10),
-                    Text("Nếu chưa có tài khoản đăng ký ngay tại đây"),
                     RoundedButton(
                         text: "Đăng ký",
+                        textColor: Colors.black,
+                        color: kPrimaryLightColor,
                         press: (){
                           Navigator.pop(context);
                           Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()));
@@ -358,14 +360,14 @@ class _HomeScreenState extends State<HomeScreen>{
                     Text(
                       MoneyUtility.convertToMoney(project.cur_money.toString()),
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 17,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
                     Text(
                       " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: Colors.black),
                     ),
                     SizedBox(
@@ -376,13 +378,13 @@ class _HomeScreenState extends State<HomeScreen>{
                         children: [
                           Icon(
                             FontAwesomeIcons.clock,
-                            size: 13,
+                            size: 12,
                             color: kPrimaryHighLightColor,
                           ),
                           Text(
                             " Còn "+project.remaining_term.toString()+" ngày",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
@@ -511,7 +513,7 @@ class _HomeScreenState extends State<HomeScreen>{
               child: Text(
                 "Quyên góp",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: FontWeight.normal,
                     color: kPrimaryHighLightColor),
               ),
@@ -529,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen>{
               child: Text(
                 "Đạt mục tiêu",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: FontWeight.normal,
                     color: Colors.grey),
               ),
@@ -545,9 +547,9 @@ class _HomeScreenState extends State<HomeScreen>{
             child:FlatButton(
               onPressed:() => {},
               child: Text(
-                "Đã hết hạn",
+                "Hết hạn",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: FontWeight.normal,
                     color: Colors.grey),
               ),
