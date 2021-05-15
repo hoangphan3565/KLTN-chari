@@ -19,6 +19,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "named.project.findById",
                 query = "SELECT p FROM Project p where p.PRJ_ID =:id"),
+        @NamedQuery(name = "named.project.findByProjectTypeId",
+                query = "SELECT p FROM Project p where p.projectType.PRT_ID =:id"),
 })
 public class Project {
     @Id
@@ -55,6 +57,12 @@ public class Project {
     @Column
     private Boolean verified;
 
+    @Column
+    private Boolean disbursed;
+
+    @Column
+    private Boolean closed;
+
     @ManyToOne
     @JoinColumn(name = "prt_id")
     private ProjectType projectType;
@@ -67,7 +75,6 @@ public class Project {
     @JoinColumn(name = "clb_id")
     private Collaborator collaborator;
 
-    //cascade = {CascadeType.PERSIST, CascadeType.MERGE},
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
     private List<ProjectImages> projectImages;

@@ -146,21 +146,16 @@ class _HistoryScreenState extends State<HistoryScreen>{
                           color: Colors.black),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Row(
                       children: [
-                        Icon(
-                          FontAwesomeIcons.clock,
-                          size: 12,
-                          color: kPrimaryHighLightColor,
-                        ),
                         Text(
-                          " "+ DateFormat('kk:mm - dd/MM/yy').format( DateTime.parse(donate_details.donate_date)),
+                          DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(donate_details.donate_date)),
                           style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.normal,
-                              color: Colors.black),
+                              color: Colors.grey),
                         ),
                       ],
                     ),
@@ -181,7 +176,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
                     )),
               ),
             ],
-          ),
+          )
         )
     );
   }

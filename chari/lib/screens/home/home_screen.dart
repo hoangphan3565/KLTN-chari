@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen>{
                     ),
                     RoundedButton(
                         text: "Đăng ký",
-                        textColor: Colors.black,
+                        textColor: kPrimaryHighLightColor,
                         color: kPrimaryLightColor,
                         press: (){
                           Navigator.pop(context);
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen>{
           padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.grey.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen>{
         Container(
           height: MediaQuery.of(context).size.width - 200,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
@@ -486,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   ),
                 ),
                 Text(
-                  (project.cur_money/project.target_money*100).round().toString()+" %",
+                  (project.cur_money/project.target_money*100).toStringAsFixed(1)+" %",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -502,7 +502,7 @@ class _HomeScreenState extends State<HomeScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: kPrimaryHighLightColor),
-                borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
+                borderRadius: BorderRadius.circular(8), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
                 Navigator.push(
@@ -525,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
+                borderRadius: BorderRadius.circular(8), color: Colors.white),
             child:FlatButton(
               onPressed:() => {},
               child: Text(
@@ -543,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
+                borderRadius: BorderRadius.circular(8), color: Colors.white),
             child:FlatButton(
               onPressed:() => {},
               child: Text(

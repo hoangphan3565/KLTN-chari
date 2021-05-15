@@ -34,6 +34,7 @@ public class ProjectTypeService {
     public ProjectType save(ProjectType pt) {
         return ptRepo.saveAndFlush(pt);
     }
+
     public void removeById(Integer id){
         ptRepo.deleteById(id);
     }

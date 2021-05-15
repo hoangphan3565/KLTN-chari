@@ -1,4 +1,4 @@
-package com.macia.chariBE.DTO;
+package com.macia.chariBE.DTO.DonateDetails;
 
 import lombok.*;
 

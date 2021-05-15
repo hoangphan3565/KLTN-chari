@@ -4,11 +4,10 @@ import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
 @Component({
-  templateUrl: './project-Failed.component.html',
+  templateUrl: './project-closed.component.html',
 })
-export class ProjectFailedComponent implements OnInit {
-  Projects: Project[];
-  Project: Project;
+export class ProjectClosedComponent implements OnInit {
+  Projects: any[];
 
   constructor(
     private ProjectService: ProjectService,
@@ -16,10 +15,11 @@ export class ProjectFailedComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getFailed()
+    this.getClosed()
   }
-  public async getFailed(){
-    // this.Projects = await this.ProjectService.getFailed() as Project[];
+
+  async getClosed(){
+    this.Projects = await this.ProjectService.getClosed() as any[];
   }
 }
 

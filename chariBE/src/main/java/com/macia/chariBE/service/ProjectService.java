@@ -1,7 +1,7 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.DTO.ProjectDTOForAdmin;
-import com.macia.chariBE.DTO.ProjectDTO;
+import com.macia.chariBE.DTO.Project.ProjectDTOForAdmin;
+import com.macia.chariBE.DTO.Project.ProjectDTO;
 import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Project;
@@ -50,6 +50,15 @@ public class ProjectService {
     public Project findProjectById(Integer id) {
         try {
             TypedQuery<Project> query = em.createNamedQuery("named.project.findById", Project.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public Project findProjectByProjectTypeId(Integer id) {
+        try {
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findByProjectTypeId", Project.class);
             query.setParameter("id", id);
             return query.getSingleResult();
         } catch (NoResultException e) {
@@ -109,6 +118,13 @@ public class ProjectService {
     public List<Project> getUnverifiedProjects(){
         return repo.findAll().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
     }
+    public List<Project> getVerifiedProjects(){
+        return repo.findAll().stream().filter(Project::getVerified).filter(p->!p.getClosed()).collect(Collectors.toList());
+    }
+
+    public List<Project> getClosedProjects(){
+        return repo.findAll().stream().filter(Project::getClosed).collect(Collectors.toList());
+    }
 
     public List<Project> approveProject(Integer id){
         Project p = repo.findById(id).orElseThrow();
@@ -117,9 +133,23 @@ public class ProjectService {
         return this.getUnverifiedProjects();
     }
 
+    public List<ProjectDTO> closeProject(Integer id){
+        Project p = repo.findById(id).orElseThrow();
+        p.setClosed(true);
+        repo.saveAndFlush(p);
+        return this.getOverdueProjectDTOs();
+    }
+
+    public List<ProjectDTO> extendProject(Integer id,Integer nod){
+        Project p = repo.findById(id).orElseThrow();
+        p.setEndDate(LocalDate.now().plusDays(nod));
+        repo.saveAndFlush(p);
+        return this.getOverdueProjectDTOs();
+    }
+
     public List<ProjectDTO> getProjectDTOs(){
         List<ProjectDTO> r = new ArrayList<>();
-        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).collect(Collectors.toList());
+        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).filter(p-> !p.getClosed()).collect(Collectors.toList());
         for(Project p : ps){
             r.add(ProjectDTO.builder()
                     .prj_id(p.getPRJ_ID())
@@ -136,6 +166,8 @@ public class ProjectService {
                     .prt_id(p.getProjectType().getPRT_ID())
                     .project_type_name(p.getProjectType().getProjectTypeName())
                     .status(this.findStatusOfProject(p))
+                    .disbursed(p.getDisbursed())
+                    .closed(p.getClosed())
                     .build());
         }
         return r;
@@ -192,6 +224,8 @@ public class ProjectService {
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
         np.setVerified(isAdmin);
+        np.setDisbursed(false);
+        np.setClosed(false);
         this.repo.saveAndFlush(np);
         this.projectImagesService.saveProjectImageToProjectWithListImage(np,p.getImages());
         return this.getAllProjects();

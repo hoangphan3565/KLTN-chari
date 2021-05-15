@@ -1,6 +1,6 @@
 insert into jwt_user(username,password,usertype,status) values('1234567890','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('1231231231','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','BLOCKED');
+insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('web_admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','WebAdmin','ACTIVATED');
@@ -12,14 +12,15 @@ insert into collaborator(full_name,phone_number,email,address,certificate) value
 insert into collaborator(full_name,phone_number,email,address,certificate) values('Đại Minh Trung','76893453','abc@gmail.com','TP Vinh','Có chứng chỉ');
 insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Thành Quang','89341234','abc@gmail.com','TP Hà Nội','Có chứng chỉ');
 
-insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 3 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(full_name,phone_number,address,favorite_project,avatar_url) values('Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
+insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','1 2 3 4 5 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 5 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
 
 insert into project_type(project_type_name) values('Dự án cộng đồng kinh phí thấp');
 insert into project_type(project_type_name) values('Hoàn cảnh khó khăn cần giúp đỡ hằng tháng');
 insert into project_type(project_type_name) values('Nấu cơm từ thiện');
-insert into project_type(project_type_name) values('Hoàn cảnh hiểm nghèo cần tiền gấp để chữa bệnh');
+insert into project_type(project_type_name) values('Quỹ chung Chari');
+
 
 insert into feedback(title,description,contributor) values('Thêm chức năng','Thực hiện quyên góp tiền qua ví Momo','Phan Đình Hoàng');
 insert into feedback(title,description,contributor) values('Ứng dụng lag','Thao tác lướt ở trang chính ko được mượt mà','Nguyễn Văn Qúa');
@@ -29,11 +30,19 @@ insert into feedback(title,description,contributor) values('Làm lazy load','Là
 insert into supported_people(full_name,address,phone_number,bank_account) values('Nguyễn Thị Yên','Bình Dương','4089566413','41347242264');
 insert into supported_people(full_name,address,phone_number,bank_account) values('Nguyễn Thị Thoái','Quảng Bình','4083743757','3324454755762');
 insert into supported_people(full_name,address,phone_number,bank_account) values('Nguyễn Thị Nhược','Long An','4088473876','479619785662983');
+insert into supported_people(full_name,address,phone_number,bank_account) values('Chari','TP HCM','0973465515','31410002593895');
+
+insert into project(prj_id,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id)
+values(0,'G0','Quỹ chung Chari',true,false,false,
+       'Quỹ chung là nơi thuận tiện nhất để mọi người quyên góp,',
+       'Nếu bạn phân vân không biết nên ủng hộ cho hoàn cảnh nào là hợp lý, hãy ủng hộ ở đây chúng tôi sẽ cân nhắc các trường hợp khó khăn nhất hoặc những dự án sắp quyên góp thành công và chuyển số tiền này đến dự án đó. Tất cả số tiền của bạn trong quỹ này đều được thông báo khi được chúng tôi sử dụng, kèm theo những hình ảnh video chân thật nhất. ',
+       '2020-11-01','2030-01-01',100000000,
+       'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quychung.jpeg?alt=media&token=25f6612a-0fec-4eae-af67-3a78485985e4',
+       'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',4,4);
 
 
-
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,false,false,
 'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
 '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
     'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -50,12 +59,12 @@ values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân 
         Qua đây Chari kêu gọi các nhà hảo tâm cùng chung tay ủng hộ, giúp đỡ gia đình các ngư dân bị nạn, cũng như người ' ||
    'dân ở đây vượt qua được tình cảnh khó khăn này.
 ',
-'2020-12-01','2021-05-30',115000000,
+'2020-12-01','2021-03-15',115000000,
 'https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp3?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',1,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,false,false,
 'Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn...',
 '       Trường Tiểu học Cù Chính Lan của huyện Ia Grai, tỉnh Gia Lai là một trường vùng biên giới giáp với Campuchia. Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn.
 ' ||
@@ -66,12 +75,12 @@ values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true
         Tổng số tiền tài trợ là: 75.352.000 đồng.' ||
          '
         Rất mong quý nhà hảo tâm cùng Chari chung tay ủng hộ cho các em học sinh biên giới có cơ hội được cắp sách tới trường, thực hiện ước mơ học tập của em, nâng bước các em tới tương lai tươi đẹp hơn.',
-'2020-12-01','2021-05-31',75352000,
+'2020-12-01','2021-05-31',75350000,
 'https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,false,false,
 'Trong đợt này, thị xã Hương có 30 người khuyết tật được trao tặng xe lăn, mỗi chiếc trị giá hơn 2 triệu đồng...',
 '       Thông qua nguồn tài trợ của tổ chức Trả lại tuổi thơ (Hoa Kỳ), Hội Chữ thập đỏ, Hội Người khuyết tật thị xã Hương Thủy phối hợp với Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh Thừa Thiên Huế và Ứng dụng Chari, dự định tổ chức trao xe lăn cho người khuyết tật trên địa bàn.
 ' ||
@@ -84,8 +93,8 @@ values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại 
 'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,false,false,
 'Trên địa bàn tỉnh Tây Ninh có khoảng 57.000 người khuyết tật...',
 '       Do tình hình của dịch COVID-19 kéo dài đã ảnh hưởng rất nhiều tới đời sống của người dân Việt Nam. Rất nhiều gia đình gặp tình trạng đói kém, mất việc làm và ảnh hưởng tới cuộc sống hằng ngày.
 ' ||
@@ -98,8 +107,8 @@ values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh T
 'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,false,false,
 'Khác với học sinh vùng xuôi, con đường tìm đến con chữ của học sinh miền núi, vùng sâu, vùng xa ở tỉnh Quảng Ngãi còn gặp rất nhiều khó khăn, trắc trở...',
 '       Để “kiếm” con chữ, mỗi ngày, hàng trăm học sinh ở xã vùng cao Ba Vì, huyện miền núi Ba Tơ (Quảng Ngãi) phải bất chấp nguy hiểm lội bộ qua dòng suối chảy xiết để đến trường với bao hiểm họa giăng ra trước mắt.
 ' ||
@@ -116,8 +125,8 @@ values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',tru
 'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp3?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
 'Nín thở đi qua cầu gỗ ọp ẹp tại thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định...',
 '       Nhiều năm qua, người dân xóm 3 (thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định) phải tự sửa chữa, gia cố cây cầu tạm bằng gỗ đã xuống cấp trầm trọng để làm nơi qua lại.
 ' ||
@@ -128,11 +137,11 @@ values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,
 '       Để giúp đỡ cho người dân có cây cầu đi lại an toàn hơn, không xảy ra những vụ việc đáng tiếc mà ta có thể biết trước nhưng không thể ngăn chặn, thì Chari mong muốn góp một phần nhỏ để giúp đỡ cho chính quyền có đủ kinh phí xây dựng, giúp người dân mau chóng có một cây cầu mới để đi lại an toàn. ',
 '2020-11-01','2021-11-29',150000000,
 'https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',1,2,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,
-'Giúp học sinh nghèo vững bước tới trường...',
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
+'Giúp học sinh nghèo vững bước tới trường với một tủ sách khang trang chống mưa...',
 '       Ðầu năm học mới, chi phí mua sắm sách giáo khoa, đồ dùng học tập cho học sinh đến trường  luôn là nỗi lo của những gia đình có điều kiện kinh tế khó khăn. Trong khi học sinh ở thành phố lúc nào cũng đầy đủ sách giáo khoa, đồ dùng học tập thì học sinh ở khu vực nông thôn, miền núi hay vùng cao lại rơi vào cảnh  thiếu sách để học. Nhiều  học sinh phải học chung một quyển sách, có những quyển được tận dụng tới ba, bốn năm, đến khi sách quá cũ, không thể dùng được nữa  mới bỏ đi. Trong khi đó ở thành phố, mỗi năm học sinh lại thay một bộ sách mới, sách giáo khoa cũ  không được tận dụng lại cho các  lớp sau.
 ' ||
 '       Phong trào quyên góp, ủng hộ sách giáo khoa cho học sinh vùng khó khăn từ lâu đã trở thành   cuộc vận động lớn, được thực hiện thường xuyên, liên tục. Tạo điều kiện hỗ trợ học sinh nghèo khó khăn vững bước đến trường không chỉ là việc làm của riêng ngành GD và ÐT, mà cần sự chung tay, góp sức của toàn xã hội.
@@ -140,10 +149,10 @@ values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,
 '       Do đó Chari muốn thay mặt các nhà hảo tâm đóng góp một phần nhỏ vào việc xây dựng tủ sách cho các em học sinh nghèo vùng cao để năm học sắp tới các em có đầy đủ sách giáo khoa mới, và những cuốn sách thuộc nhiều lĩnh vực khác giúp các em thỏa thích tìm hiểu và đọc sách.',
 '2020-9-30','2021-11-30',100000000,
 'https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp3?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp3?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,2,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G20001','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,
 
 'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
 '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
@@ -153,27 +162,25 @@ values('G20001','Xây dựng khu vui chơi trong sân trường cho trường ti
 '       Việc đi học đã khó khăn, thì việc có một khu vui chơi đối với các em nhỏ vùng cao này gần như là không dám mơ ước tới. Khi chúng tôi tới khảo sát và hỏi các em về những thứ các em chơi hàng ngày, thì các em trả lời đó chỉ là vài tàu lá chuối, những cục đá cục sỏi, hay có những em còn không có thời gian để chơi vì phụ giúp bố mẹ nương rẫy.
 ' ||
 '       Với sự ngây ngô của các em, chúng tôi muốn xây dựng cho các em một khu vui chơi nho nhỏ nằm trong sân trường để các em có thể chơi đùa, vận động cùng nhau. Dù chỉ là những trò chơi đơn giản nhưng cũng đủ giúp các em không còn phải nghịch đất sỏi trên đường.',
-'2020-11-20','2021-06-01',83000000,
+'2020-11-20','2021-03-01',83000000,
 'https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp3?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',2,1,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G20002','Xây cầu tình thương cho làng An Phú 9',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-08-01',40000000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',2,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',2,2,1);
 
-insert into project(project_code,project_name,verified,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,true,false,
 'Anh Hùng là đầu bếp có tâm, từng bỏ tiền túi để nấu 100 phần cơm cho bệnh nhân khó khăn ở quận 10',
 'Làng An Phú 10 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-03-01',9000000,
 'https://hieuvetraitim.com/attachments/hoan-canh-gioi-thieu-jpg.1782/',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',3,1,1);
-
-
 
 insert into project_images(image_url,prj_id) values('https://media.laodong.vn/Storage/NewsPortal/2020/10/29/849812/Lai-Dat-Tau-Bi-Nan-B.jpg?w=414&h=276&crop=auto&scale=both',1);
 insert into project_images(image_url,prj_id) values('https://cdnimg.vietnamplus.vn/t620/uploaded/fsmsy/2020_11_03/ttxvn_ngu_dan_binh_dinh_2.jpg',1);
@@ -241,15 +248,15 @@ insert into donate_activity(dnt_id,prj_id) values(1,2);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',5000000,2,'Cố lên!');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',5000000,2,'Cố lên!');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-09',5000000,2,'Cố lên!');
-insert into donate_details(donate_date,money,dna_id,message) values('2020-11-20',60300000,2,'');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-20',51300000,2,'Chúc chương trình thành công');
 insert into donate_activity(dnt_id,prj_id) values(1,3);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',5000000,3,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',6000000,3,'Cố lên ạ');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-10',7000000,3,'Chúc chương trình thành công');
 insert into donate_activity(dnt_id,prj_id) values(1,4);
-insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',10000000,4,'Chúc ctrinh thành công ạ');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',50000000,4,'Chúc ctrinh thành công ạ');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',20000000,4,'Mong chương trình sớm thành công');
-insert into donate_details(donate_date,money,dna_id,message) values('2020-11-11',20001000,4,'Thật xúc động!!');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-11',20000000,4,'Thật xúc động!!');
 insert into donate_activity(dnt_id,prj_id) values(1,5);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',30000000,5,'Cố lên ạ');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',30000000,5,'Cố lên nha');
@@ -258,16 +265,15 @@ insert into donate_activity(dnt_id,prj_id) values(2,1);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-01',3000000,6,'Cố lên');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',3000000,6,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,6,'');
-insert into donate_activity(dnt_id,prj_id) values(2,1);
+insert into donate_activity(dnt_id,prj_id) values(2,2);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,7,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-03',3000000,7,'Cố lên!');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,7,'');
-insert into donate_activity(dnt_id,prj_id) values(2,1);
+insert into donate_activity(dnt_id,prj_id) values(2,3);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-13',3000000,8,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',3000000,8,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,8,'Cố lên');
-
-insert into donate_activity(dnt_id,prj_id) values(2,9);
+insert into donate_activity(dnt_id,prj_id) values(2,4);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,9,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-20',3000000,9,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,9,'Cố lên');
@@ -277,12 +283,10 @@ insert into donate_details(donate_date,money,dna_id,message) values('2020-11-12'
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,10,'Cố lên');
 
 
-
-insert into push_notification_topic(topic_name,description) values('project_added','Bạn sẽ nhận thông báo khi một chương trình từ thiện mới được thêm');
-insert into push_notification_topic(topic_name,description) values('project_overdue','Bạn sẽ nhận thông báo khi chương trình từ thiện bạn từng quyên góp bị thất bại');
-insert into push_notification_topic(topic_name,description) values('project_reached','Bạn sẽ nhận thông báo khi chương trình từ thiện bạn từng quyên góp thành công');
-
-insert into push_notification(title,message,tpc_id) values('Chương trình từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này',1);
-insert into push_notification(title,message,tpc_id) values('Chương trình đã quá hạn','Chương trình mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Nếu bạn muốn chuyển số tiền bạn đã quyên góp tới một chương trình khác, hãy nhấn vào đây!',2);
-insert into push_notification(title,message,tpc_id) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.',3);
+insert into push_notification(title,message,topic) values('Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này','new');
+insert into push_notification(title,message,topic) values('Dự án sắp thành công','Dự án cộng đồng mà bạn đã tham gia quyên góp sắp chạm đến mục tiêu. Hãy xem chia sẻ để dự án thành công tốt đẹp.','close_to_reached');
+insert into push_notification(title,message,topic) values('Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.','overdue');
+insert into push_notification(title,message,topic) values('Xử lý tiền cho dự án quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp sẽ bị đóng vì đã quá hạn và không đạt trên 80% chỉ tiêu của dự án.Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ sẽ được chuyển vào quỹ chung của Chari','closed');
+insert into push_notification(title,message,topic) values('Dự án đã được gia hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.','extended');
+insert into push_notification(title,message,topic) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.','reached');
 

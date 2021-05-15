@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ProjectFailedComponent } from './project-failed.component';
-import { ProjectFailedRoutingModule } from './project-failed-routing.module';
+import { ProjectClosedComponent } from './project-closed.component';
+import { ProjectClosedRoutingModule } from './project-closed-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 @NgModule({
   imports: [
     CommonModule,
-    ProjectFailedRoutingModule,
+    ProjectClosedRoutingModule,
     MatDialogModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
@@ -22,7 +22,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule
   ],
   declarations: [ 
-    ProjectFailedComponent,
+    ProjectClosedComponent,
   ]
 })
-export class ProjectFailedModule { }
+export class ProjectClosedModule { }

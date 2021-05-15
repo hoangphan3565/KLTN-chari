@@ -1,6 +1,6 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.DTO.ProjectDTOForAdmin;
+import com.macia.chariBE.DTO.Project.ProjectDTOForAdmin;
 import com.macia.chariBE.model.*;
 import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.repository.PushNotificationRepository;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -37,6 +38,9 @@ public class ProjectController {
     @Autowired
     private DonatorService donatorService;
 
+    @Autowired
+    private DonateActivityService donateActivityService;
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(projectService.findProjectById(id));
@@ -45,6 +49,11 @@ public class ProjectController {
     @GetMapping()
     public ResponseEntity<?> getAllProjectDTO() {
         return ResponseEntity.ok().body(projectService.getProjectDTOs());
+    }
+
+    @GetMapping("/project_type/{id}")
+    public ResponseEntity<?> getProjectByProjectTypeId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.findProjectByProjectTypeId(id));
     }
 
     @GetMapping("/activating")
@@ -61,10 +70,14 @@ public class ProjectController {
     public ResponseEntity<?> getReachedProjectDTO() {
         return ResponseEntity.ok().body(projectService.getReachedProjectDTOs());
     }
+    @GetMapping("/closed")
+    public ResponseEntity<?> getClosedProjectDTO() {
+        return ResponseEntity.ok().body(projectService.getClosedProjects());
+    }
 
     @GetMapping("/plain")
     public ResponseEntity<?> getAllProject() {
-        return ResponseEntity.ok().body(projectService.getAllProjects());
+        return ResponseEntity.ok().body(projectService.getVerifiedProjects());
     }
 
     @GetMapping("/plain-unverified")
@@ -79,22 +92,73 @@ public class ProjectController {
     @PutMapping("/approve/{id}")
     public ResponseEntity<?> approveProject(@PathVariable(value = "id") Integer id) {
         NotificationObject no = new NotificationObject();
-        PushNotification pn = this.pushNotificationRepository.findById(1).orElseThrow();
+        PushNotification pn = this.pushNotificationRepository.findByTopic("new");
         no.setTitle(pn.getTitle());
         no.setMessage(pn.getMessage());
-        no.setTopic(pn.getNotificationTopic().getTopicName());
+        no.setTopic(pn.getTopic());
         List<Donator> donators = this.donatorService.findAll();
         for(Donator d:donators){
             donatorNotificationService.save(DonatorNotification.builder()
+                    .topic(pn.getTopic())
                     .title(pn.getTitle())
                     .message(pn.getMessage())
-                    .createTime(LocalDateTime.now())
+                    .create_time(LocalDateTime.now())
+                    .is_read(false)
+                    .is_handled(false)
                     .donator(d)
-                    .projectID(id).build());
+                    .project_id(id).build());
         }
         this.pushNotificationController.pushNotificationWithoutDataToTopic(no);
 
         return ResponseEntity.ok().body(projectService.approveProject(id));
+    }
+
+    @PutMapping("/close/{id}")
+    public ResponseEntity<?> closeProject(@PathVariable(value = "id") Integer id) {
+        NotificationObject no = new NotificationObject();
+        PushNotification pn = this.pushNotificationRepository.findByTopic("closed");
+        no.setTitle(pn.getTitle());
+        no.setMessage(pn.getMessage());
+        no.setTopic(pn.getTopic());
+        List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(id);
+        for(DonateActivity lda:listDA){
+            donatorNotificationService.save(DonatorNotification.builder()
+                    .topic(pn.getTopic())
+                    .title(pn.getTitle())
+                    .message(pn.getMessage())
+                    .create_time(LocalDateTime.now())
+                    .is_read(false)
+                    .is_handled(false)
+                    .donator(lda.getDonator())
+                    .project_id(id).build());
+        }
+        this.pushNotificationController.pushNotificationWithoutDataToTopic(no);
+        return ResponseEntity.ok().body(projectService.closeProject(id));
+    }
+
+    @PutMapping("/extend/{id}/num_of_date/{nod}")
+    public ResponseEntity<?> extendProjectDeadline(
+            @PathVariable(value = "id") Integer id,
+            @PathVariable(value = "nod") Integer nod) {
+        NotificationObject no = new NotificationObject();
+        PushNotification pn = this.pushNotificationRepository.findByTopic("extended");
+        no.setTitle(pn.getTitle());
+        no.setMessage(pn.getMessage());
+        no.setTopic(pn.getTopic());
+        List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(id);
+        for(DonateActivity lda:listDA){
+            donatorNotificationService.save(DonatorNotification.builder()
+                    .topic(pn.getTopic())
+                    .title(pn.getTitle())
+                    .message(pn.getMessage())
+                    .create_time(LocalDateTime.now())
+                    .is_read(false)
+                    .is_handled(false)
+                    .donator(lda.getDonator())
+                    .project_id(id).build());
+        }
+        this.pushNotificationController.pushNotificationWithoutDataToTopic(no);
+        return ResponseEntity.ok().body(projectService.extendProject(id,nod));
     }
 
     @PostMapping("/create/is_admin/{isadmin}")
@@ -103,4 +167,5 @@ public class ProjectController {
             @PathVariable(value = "isadmin") Boolean isAdmin) {
         return ResponseEntity.ok().body(projectService.createProject(project,isAdmin));
     }
+
 }

@@ -1,0 +1,12 @@
+<h3 mat-dialog-title>Gia hạn dự án</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Số ngày</mat-label>
+        <input type="number" name="nod" matInput [(ngModel)]="data" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>
+
+

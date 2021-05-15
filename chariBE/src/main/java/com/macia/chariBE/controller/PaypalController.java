@@ -9,7 +9,7 @@ import com.macia.chariBE.utility.MoneyUtility;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -104,35 +104,19 @@ public class PaypalController {
         try {
             Payment payment = service.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                if(!checkValid(donator_id,project_id,money)){
-                    jo.put("errorCode", "0");
-                    jo.put("message", "Donate success!");
-                    return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
-
-                }else{
-                    this.handleSuccessPayment(donator_id,project_id,money);
-                    jo.put("errorCode", "0");
-                    jo.put("message", "Donate success!");
-                    return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
-                }
+                this.handleSuccessPayment(donator_id,project_id,money);
+                jo.put("errorCode", "0");
+                jo.put("message", "Donate success!");
+                return new ResponseEntity<>(jo, HttpStatus.OK);
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
         jo.put("errorCode", "1");
         jo.put("message", "Donate fail!");
-        return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+        return new ResponseEntity<>(jo, HttpStatus.OK);
     }
-    public boolean checkValid(Integer donator_id,Integer project_id,int money)
-    {
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-        List<DonateDetails> ls = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
-        DonateDetails temp = ls.get(ls.size()-1);int temp_minute = temp.getDonateDate().getMinute();
-        int temp_hour = temp.getDonateDate().getHour();
-        int temp_date = temp.getDonateDate().getDayOfYear();
-        LocalDateTime now = LocalDateTime.now();
-        return temp.getMoney() != money || temp_date != now.getDayOfYear() || temp_hour != now.getHour() || (temp_minute != now.getMinute() && temp_minute != now.getMinute() - 1);
-    }
+
 
     public void handleSuccessPayment(Integer donator_id, Integer project_id, int money){
         DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);

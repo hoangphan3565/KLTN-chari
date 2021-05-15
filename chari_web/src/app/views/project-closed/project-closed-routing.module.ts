@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PushNotificationTopicComponent } from './push-notification-topic.component';
+import { ProjectClosedComponent } from './project-closed.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PushNotificationTopicComponent,
+    component: ProjectClosedComponent,
     data: {
-      title: 'Cộng tác viên'
+      title: 'Chờ phê duyệt'
     }
   }
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PushNotificationTopicRoutingModule {}
+export class ProjectClosedRoutingModule {}

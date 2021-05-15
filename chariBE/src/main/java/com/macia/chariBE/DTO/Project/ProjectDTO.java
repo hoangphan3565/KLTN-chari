@@ -1,4 +1,4 @@
-package com.macia.chariBE.DTO;
+package com.macia.chariBE.DTO.Project;
 
 import lombok.*;
 
@@ -23,4 +23,6 @@ public class ProjectDTO {
     private Integer prt_id;
     private String project_type_name;
     private String status;
+    private Boolean disbursed;
+    private Boolean closed;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Pipe } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
@@ -7,8 +7,7 @@ import { ProjectService } from '../../services/Project.service';
   templateUrl: './project-activating.component.html',
 })
 export class ProjectActivatingComponent implements OnInit {
-  Projects: Project[];
-  Project: Project;
+  Projects: any[];
 
   constructor(
     private ProjectService: ProjectService,
@@ -19,7 +18,6 @@ export class ProjectActivatingComponent implements OnInit {
     this.getActivating()
   }
   public async getActivating(){
-    // this.Projects = await this.ProjectService.getActivating() as Project[];
+    this.Projects = await this.ProjectService.getActivating() as any[];
   }
 }
-

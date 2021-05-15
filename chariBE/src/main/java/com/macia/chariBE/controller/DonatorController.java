@@ -2,8 +2,9 @@ package com.macia.chariBE.controller;
 
 import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.repository.DonatorRepository;
+import com.macia.chariBE.service.DonatorNotificationService;
 import com.macia.chariBE.service.DonatorService;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class DonatorController {
     @Autowired
     DonatorRepository donatorRepo;
 
+    @Autowired
+    DonatorNotificationService donatorNotificationService;
+
     @GetMapping()
     public ResponseEntity<?> getAllDonator() {
         return ResponseEntity.ok().body(donatorRepo.findAll());
@@ -27,6 +31,10 @@ public class DonatorController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getDonatorById(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(donatorService.findById(id));
+    }
+    @GetMapping("/favorite_notification_list/{id}")
+    public ResponseEntity<?> getNotificationListByDonatorId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(donatorService.getFavoriteNotificationOfDonator(id));
     }
 
     @PostMapping()
@@ -59,6 +67,7 @@ public class DonatorController {
         donatorService.removeProjectIdFromFavoriteList(prtid, dntid);
         return ResponseEntity.ok(donatorService.findById(dntid));
     }
+
     @PostMapping("/update/id/{id}")
     public ResponseEntity<?> updateDonatorDetails(@PathVariable(value = "id") Integer id,@RequestBody Donator donator)    {
         JSONObject jo = new JSONObject();
@@ -71,16 +80,35 @@ public class DonatorController {
             jo.put("errorCode", "0");
             jo.put("data", dnt);
             jo.put("message", "Cập nhật thông tin thành công!");
-            return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+            return new ResponseEntity<>(jo, HttpStatus.OK);
         }
         else{
             jo.put("errorCode", "1");
             jo.put("data", "");
             jo.put("message", "Cập nhật thông tin thất bại!");
-            return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
         }
 
     }
 
+    @PutMapping("/move_money_to_general_fund/project/{prjid}/donator/{dntid}")
+    public ResponseEntity<?> moveDonationOfProjectToGeneralFund(
+            @PathVariable(value = "prjid") Integer prjid,
+            @PathVariable(value = "dntid") Integer dntid)    {
+        JSONObject jo = new JSONObject();
+        donatorService.moveDonationOfProjectToGeneralFund(prjid,dntid);
+        donatorNotificationService.handleCloseProjectNotification(prjid,dntid);
+        jo.put("errorCode", "0");
+        jo.put("message", "Chuyển tiền thành công!");
+        return new ResponseEntity<>(jo, HttpStatus.OK);
+    }
 
+    @PutMapping("/change_state_notification_list/{dntid}/nof_id/{nof_id}/value/{value}")
+    public ResponseEntity<?> changeStateFavoriteNotificationList(
+            @PathVariable(value = "dntid") Integer dntid,
+            @PathVariable(value = "nof_id") Integer nof_id,
+            @PathVariable(value = "value") boolean value)    {
+        donatorService.changeStateFavoriteNotificationList(dntid,nof_id,value);
+        return ResponseEntity.ok().body(donatorService.findById(dntid).getFavoriteNotification());
+    }
 }

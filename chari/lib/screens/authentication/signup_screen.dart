@@ -114,24 +114,29 @@ class _SignUpScreenState extends State<SignUpScreen>{
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title:  Text(
+          "Đăng ký",
+          style: TextStyle(
+            color: kPrimaryHighLightColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            letterSpacing: -1.2,
+          ),
+        ),
+      ),
       body: Background(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Đăng ký",
-                style: TextStyle(
-                  color: kPrimaryHighLightColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
-              ),
-              SizedBox(height: size.height * 0.03),
               Image.asset(
-                "assets/icons/signup.png",
-                height: size.height * 0.25,
+                "assets/icons/logo.png",
+                height: size.height * 0.13,
               ),
+              SizedBox(height: size.height * 0.06),
               RoundedInputField(
                 hintText: "Nhập Số điện thoại",
                 icon: FontAwesomeIcons.phone,
@@ -183,6 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
                   Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
                 },
               ),
+              SizedBox(height: size.height * 0.03),
             ],
           ),
         ),

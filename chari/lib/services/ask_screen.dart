@@ -1,6 +1,7 @@
 
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
+import 'package:chari/utility/constants.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,37 +23,30 @@ class AskScreen extends StatelessWidget {
                           child: Center(
                               child: Column(
                                 children: [
-                                  Text("Để thực hiện chức năng này hãy đăng nhập",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
                                   RoundedButton(
-                                    text: "Đăng nhập",
+                                    textColor: kPrimaryHighLightColor,
+                                    text: "Đóng góp ý kiến",
+                                    color: kPrimaryLightColor,
                                     fontsize: 16,
                                     press: (){
-                                      Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
+                                      FeedBackService.showSendFeedbackDialog(context);
+                                      //Navigator.pop(context);
                                     },
                                   ),
-                                  SizedBox(height: 10),
-                                  Text("Nếu chưa có tài khoản đăng ký ngay tại đây"),
                                   RoundedButton(
+                                    textColor: kPrimaryHighLightColor,
                                     text: "Đăng ký",
+                                    color: kPrimaryLightColor,
                                     fontsize: 16,
                                     press: (){
                                       Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()));
                                     },
                                   ),
-                                  Text("Hoặc có thể đóng góp ý kiến tại đây"),
                                   RoundedButton(
-                                    text: "Đóng góp ý kiến",
+                                    text: "Đăng nhập",
                                     fontsize: 16,
                                     press: (){
-                                      FeedBackService.showSendFeedbackDialog(context);
-                                      //Navigator.pop(context);
+                                      Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
                                     },
                                   ),
                                 ],

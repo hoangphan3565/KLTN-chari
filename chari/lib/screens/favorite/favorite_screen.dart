@@ -81,7 +81,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             centerTitle: true,
             floating: true,
             title: Text(
-              'quan tâm',
+              'Yêu thích',
               style: const TextStyle(
                 fontSize: 27.0,
                 color: kPrimaryHighLightColor,
@@ -147,7 +147,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(13),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +209,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           child: Container(
             height: MediaQuery.of(context).size.width - 200,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(13),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
@@ -400,7 +400,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: kPrimaryHighLightColor),
-                borderRadius: BorderRadius.circular(10), color: kPrimaryLightColor),
+                borderRadius: BorderRadius.circular(13), color: kPrimaryLightColor),
             child:FlatButton(
               onPressed:() => {
                 Navigator.push(
@@ -423,7 +423,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
+                borderRadius: BorderRadius.circular(13), color: Colors.white),
             child:FlatButton(
               onPressed:() => {},
               child: Text(
@@ -441,7 +441,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
             height: 35,
             decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.grey),
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
+                borderRadius: BorderRadius.circular(13), color: Colors.white),
             child:FlatButton(
               onPressed:() => {},
               child: Text(

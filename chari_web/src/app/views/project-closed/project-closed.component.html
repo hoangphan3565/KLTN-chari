@@ -1,0 +1,30 @@
+<div class="col-lg">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h3 class="card-title">
+            <small class="text-muted"> danh sách </small> Chương trình đã đóng
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên chương trình</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of Projects;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.projectName}}</td>
+        </tbody>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

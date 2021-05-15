@@ -124,7 +124,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     SizedBox(height: 8),
                     buildProjectInfo(widget.project),   //Thông tin vắn tắt
                     buildProjectDetails(widget.project),
-                    buildBestDonatorsList(),
+                    // buildBestDonatorsList(),
                     buildRecentDonatorsList(context),
                   ],
                 ),

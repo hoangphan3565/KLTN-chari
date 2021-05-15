@@ -182,6 +182,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     SizedBox(height: kSpacingUnit.toDouble() * 5),
                     RoundedButton(
                       text: 'Đóng góp ý kiến',
+                      color: kPrimaryLightColor,
+                      textColor: kPrimaryHighLightColor,
                       fontsize: 17,
                       press: ()=>{
                         FeedBackService.showSendFeedbackDialog(context)
@@ -189,6 +191,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     ),
                     RoundedButton(
                       text: 'Cập nhật thông tin',
+                      color: kPrimaryLightColor,
+                      textColor: kPrimaryHighLightColor,
                       fontsize: 17,
                       press: ()=>{
                         _showChangeInformationDialog(context)
@@ -196,6 +200,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     ),
                     RoundedButton(
                       text: 'Đổi mật khẩu',
+                      color: kPrimaryLightColor,
+                      textColor: kPrimaryHighLightColor,
                       fontsize: 17,
                       press: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();

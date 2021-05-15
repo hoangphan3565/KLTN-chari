@@ -80,8 +80,8 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
           'Xác thực OPT',
           style: const TextStyle(
             color: kPrimaryHighLightColor,
-            fontSize: 20.0,
             fontWeight: FontWeight.bold,
+            fontSize: 25.0,
             letterSpacing: -1.2,
           ),
         ),
@@ -92,8 +92,8 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                "assets/icons/activate.png",
-                height: size.height * 0.3,
+                "assets/icons/logo.png",
+                height: size.height * 0.13,
               ),
               SizedBox(height: size.height * 0.03),
               Text(

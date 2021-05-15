@@ -59,23 +59,27 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title:  Text(
+          "Lấy lại mật khẩu",
+          style: TextStyle(
+            color: kPrimaryHighLightColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            letterSpacing: -1.2,
+          ),
+        ),
+      ),
       body: Background(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Lấy lại mật khẩu",
-                style: TextStyle(
-                  color: kPrimaryHighLightColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
-              ),
-              SizedBox(height: size.height * 0.01),
               Image.asset(
-                "assets/icons/change-password.jpg",
-                height: size.height * 0.25,
+                "assets/icons/logo.png",
+                height: size.height * 0.13,
               ),
               SizedBox(height: size.height * 0.01),
               Text(

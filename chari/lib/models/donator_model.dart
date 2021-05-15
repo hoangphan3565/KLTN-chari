@@ -5,15 +5,9 @@ class Donator {
   String phone_number;
   String avatar_url;
   String favorite_project;
+  String favorite_notification;
 
-  Donator(int id, String full_name,String address, String phone_number,String avatar_url,String favorite_project) {
-    this.id = id;
-    this.full_name = full_name;
-    this.address = address;
-    this.phone_number = phone_number;
-    this.avatar_url = avatar_url;
-    this.favorite_project = favorite_project;
-  }
+  Donator(this.id, this.full_name,this.address, this.phone_number,this.avatar_url,this.favorite_project,this.favorite_notification) {}
 
   Donator.fromJson(Map json)
       : id = json['dnt_ID'],
@@ -21,16 +15,7 @@ class Donator {
         address = json['address'],
         phone_number = json['phoneNumber'],
         avatar_url = json['avatarUrl'],
-        favorite_project = json['favoriteProject'];
+        favorite_project = json['favoriteProject'],
+        favorite_notification = json['favoriteNotification'];
 
-  Map toJson() {
-    return {
-      'dnt_ID': id,
-      'fullName': full_name,
-      'address': address,
-      'phoneNumber': phone_number,
-      'avatarUrl': avatar_url,
-      'favoriteProject': favorite_project,
-    };
-  }
 }

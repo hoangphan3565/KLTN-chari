@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 
 //local ip và port server đang deploy
 // const baseUrl = "http://192.168.137.45:8080/api";
-const baseUrl = "http://192.168.43.202:8080/api";
 // const baseUrl = "http://192.168.0.102:8080/api";
 // const baseUrl = "http://192.168.1.114:8080/api";
+const baseUrl = "http://192.168.43.202:8080/api";
 
 const login = "/login";
 const register = "/register";
@@ -18,6 +18,7 @@ const project_images = "/project_images/project/";
 const donators = "/donators";
 const donate_details = "/donate_details";
 const donator_notifications = "/donator_notifications";
+const push_notifications = "/push_notifications";
 const project_types = "/project_types";
 
 const header = {'Content-Type': 'application/json; charset=UTF-8',};
@@ -133,5 +134,25 @@ class API {
   static Future postRemoveProjectFromFavorite(int project_id,int donator_id,String token) {
     var url = baseUrl + donators + "/remove_favorite/project/"+project_id.toString()+"/donator_id/"+donator_id.toString();
     return http.post(url,headers:getHeaderJWT(token));
+  }
+
+  static Future putMoveMoneyToGeneralFund(int project_id,int donator_id,String token) {
+    var url = baseUrl + donators + "/move_money_to_general_fund/project/"+project_id.toString()+"/donator/"+donator_id.toString();
+    return http.put(url,headers:getHeaderJWT(token));
+  }
+
+  static Future getFavoriteNotificationList(int donator_id,String token) {
+    var url = baseUrl + donators+"/favorite_notification_list/"+donator_id.toString();
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+
+  static Future changeStateFavoriteNotificationList(int donator_id,int nof_id,bool value,String token) {
+    var url = baseUrl + donators+"/change_state_notification_list/"+donator_id.toString()+"/nof_id/"+nof_id.toString()+"/value/"+value.toString();
+    return http.put(url,headers:getHeaderJWT(token));
+  }
+
+  static Future getPushNotification() {
+    var url = baseUrl + push_notifications;
+    return http.get(url);
   }
 }

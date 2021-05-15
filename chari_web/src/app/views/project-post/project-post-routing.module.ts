@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ProjectFailedComponent } from './project-failed.component';
+import { ProjectPostComponent } from './project-post.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProjectFailedComponent,
+    component: ProjectPostComponent,
     data: {
-      title: 'Chờ phê duyệt'
+      title: 'Bài viết'
     }
   }
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProjectFailedRoutingModule {}
+export class ProjectPostRoutingModule {}

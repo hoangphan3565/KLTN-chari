@@ -12,7 +12,28 @@
 
     <div class="card-body">
       <table class="table table-light">
-
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên chương trình</th>
+            <th>Mục tiêu (Triệu đồng)</th>
+            <th>Đã quyên góp (Triệu đồng)</th>
+            <th>Đạt được (%)</th>
+            <th>Thời hạn còn (Ngày)</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of Projects;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.project_name}}</td>
+          <td>{{data.target_money/1000000}}</td>
+          <td>{{data.cur_money/1000000}}</td>
+          <td>{{data.cur_money/data.target_money * 100}}</td>
+          <td>{{data.remaining_term}}</td>        
+          <td>
+            <button type="button" class="btn btn-block btn-outline-primary">Đăng bài</button>
+          </td>
+        </tbody>
+        <tbody>
       </table>
     </div>
   </div>

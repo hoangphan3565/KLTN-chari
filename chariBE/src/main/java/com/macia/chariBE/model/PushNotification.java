@@ -20,13 +20,9 @@ public class PushNotification {
     @Column(length = 100)
     private String title;
 
-    @Column(length = 400)
+    @Column(length = 1000)
     private String message;
 
-    @Transient
-    private String token;
-
-    @ManyToOne
-    @JoinColumn(name = "tpc_id")
-    private PushNotificationTopic notificationTopic;
+    @Column(length = 30)
+    private String topic;
 }

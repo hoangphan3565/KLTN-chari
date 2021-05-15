@@ -28,11 +28,14 @@ public class Donator {
     @Column(length = 10)
     private String phoneNumber;
 
-    @Column()
+    @Column(length = 400)
     private String avatarUrl;
 
-    @Column
+    @Column(length = 200)
     private String favoriteProject;
+
+    @Column(length = 300)
+    private String favoriteNotification;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donator")

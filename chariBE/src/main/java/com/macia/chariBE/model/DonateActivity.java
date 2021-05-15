@@ -38,3 +38,4 @@ public class DonateActivity {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donateActivity")
     private List<DonateDetails> donateDetails;
 }
+

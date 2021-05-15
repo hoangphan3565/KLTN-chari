@@ -65,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen>{
         }
         _prefs.setString('donator_phone',jsRes2['phoneNumber'].toString());
         _prefs.setString('donator_favorite_project',jsRes2['favoriteProject'].toString());
+        _prefs.setString('donator_favorite_notification',jsRes2['favoriteNotification'].toString());
 
         //Chuyển hướng đến trang chính và xóa tất cả context trước đó
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
@@ -196,25 +197,30 @@ class _LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title:  Text(
+          "Đăng nhập",
+          style: TextStyle(
+            color: kPrimaryHighLightColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            letterSpacing: -1.2,
+          ),
+        ),
+      ),
         body: Background(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  "Đăng nhập",
-                  style: TextStyle(
-                    color: kPrimaryHighLightColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.06),
                 Image.asset(
-                  "assets/icons/login.png",
-                  height: size.height * 0.2,
+                  "assets/icons/logo.png",
+                  height: size.height * 0.13,
                 ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.06),
                 RoundedInputField(
                   hintText: "Nhập Số điện thoại",
                   icon: FontAwesomeIcons.phone,
@@ -269,6 +275,7 @@ class _LoginScreenState extends State<LoginScreen>{
                     Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => SignUpScreen()));
                   },
                 ),
+                SizedBox(height: size.height * 0.03),
               ],
             ),
           ),

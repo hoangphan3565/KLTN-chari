@@ -3,17 +3,20 @@ package com.macia.chariBE.controller;
 import com.macia.chariBE.DTO.JwtUserDTO;
 import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.Donator;
+import com.macia.chariBE.model.DonatorNotification;
 import com.macia.chariBE.model.JwtUser;
+import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.JwtUserRepository;
 import com.macia.chariBE.security.JwtRequest;
 import com.macia.chariBE.security.JwtResponse;
 import com.macia.chariBE.security.JwtTokenUtil;
 import com.macia.chariBE.security.JwtUserDetailsService;
 import com.macia.chariBE.service.CollaboratorService;
+import com.macia.chariBE.service.DonatorNotificationService;
 import com.macia.chariBE.service.DonatorService;
 import com.macia.chariBE.utility.UserStatus;
 import com.macia.chariBE.utility.UserType;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +41,18 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
+
 	@Autowired
 	private JwtUserRepository jwtuserRepo;
+
 	@Autowired
 	private CollaboratorService collaboratorService;
 
 	@Autowired
 	private DonatorService donatorService;
+
+	@Autowired
+	private PushNotificationService pushNotificationService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -57,7 +65,7 @@ public class JwtAuthenticationController {
 		jo.put("token",new JwtResponse(token).getToken());
 		jo.put("data", user);
 		jo.put("message", "Đăng nhập thành công!");
-		return new ResponseEntity<>(jo.toMap(),HttpStatus.OK);
+		return new ResponseEntity<>(jo,HttpStatus.OK);
 	}
 	
 	@PostMapping("/register")
@@ -75,12 +83,12 @@ public class JwtAuthenticationController {
 			jo.put("errorCode", 0);
 			jo.put("data", newuser);
 			jo.put("message", "Đăng ký thành công!\nMã xác thực sẽ được gửi!");
-			return ResponseEntity.ok(jo.toMap());
+			return ResponseEntity.ok(jo);
 		}else{
 			jo.put("errorCode", 1);
 			jo.put("message", "Số điện thoại này đã được đăng ký!");
 			jo.put("data", "");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.ALREADY_REPORTED);
+			return new ResponseEntity<>(jo, HttpStatus.ALREADY_REPORTED);
 		}
 	}
 
@@ -94,13 +102,13 @@ public class JwtAuthenticationController {
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
 			jo.put("message", "Kích hoạt thành công!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+			return new ResponseEntity<>(jo, HttpStatus.OK);
 		}
 		else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không thể tìm thấy người dùng với username: "+usn+ " !");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 	@GetMapping("/users")
@@ -129,7 +137,10 @@ public class JwtAuthenticationController {
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){
 			if(user.getUsertype().equals(UserType.Donator)){
-				donatorService.save(Donator.builder().phoneNumber(user.getUsername()).favoriteProject("").build());
+				donatorService.save(Donator.builder()
+						.phoneNumber(user.getUsername())
+						.favoriteNotification(pushNotificationService.findAllIdAsString())
+						.favoriteProject("").build());
 			}else if(user.getUsertype().equals(UserType.Collaborator)){
 				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
 			}
@@ -137,20 +148,20 @@ public class JwtAuthenticationController {
 				jo.put("errorCode", 1);
 				jo.put("data", "");
 				jo.put("message", "Kích hoạt thất bại!");
-				return new ResponseEntity<>(jo.toMap(),HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(jo,HttpStatus.BAD_REQUEST);
 			}
 			appUser.setStatus("ACTIVATED");
 			jwtuserRepo.save(appUser);
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
 			jo.put("message", "Kích hoạt thành công!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+			return new ResponseEntity<>(jo, HttpStatus.OK);
 		}
 		else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không thể tìm thấy người dùng với username: "+user.getUsername()+ " !");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -167,26 +178,26 @@ public class JwtAuthenticationController {
 				jo.put("errorCode", 0);
 				jo.put("data", appUser);
 				jo.put("message", "Đổi mật khẩu thành công!");
-				return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+				return new ResponseEntity<>(jo, HttpStatus.OK);
 			}
 			else{
 				jo.put("errorCode", 1);
 				jo.put("data", "");
 				jo.put("message", "Không thể tìm thấy người dùng với username: "+user.getUsername()+ " !");
-				return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 			}
 		}
 		else if(user.getUsertype().equals(UserType.Collaborator)) {
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Đổi mật khẩu cho "+UserType.Collaborator.toString()+" chưa có sẵn!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 		else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không thể tìm thấy loại người dùng: "+user.getUsertype());
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -197,13 +208,13 @@ public class JwtAuthenticationController {
 			jo.put("errorCode", 0);
 			jo.put("data", jwtuserRepo.findByUsername(usn));
 			jo.put("message", "Mã xác thực sẽ được gửi!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+			return new ResponseEntity<>(jo, HttpStatus.OK);
 		}
 		else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", usn+" Chưa được đăng ký!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -215,13 +226,13 @@ public class JwtAuthenticationController {
 			jo.put("data", jwtuserRepo.findByUsername(usn));
 			jo.put("message", "Xóa thành công!");
 			jwtuserRepo.delete(jwtuserRepo.findByUsername(usn));
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+			return new ResponseEntity<>(jo, HttpStatus.OK);
 		}
 		else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không tìm thấy người dùng có username: "+usn+" !");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -235,12 +246,12 @@ public class JwtAuthenticationController {
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
 			jo.put("message", "Cập nhật thành công!");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+			return new ResponseEntity<>(jo, HttpStatus.OK);
 		}else{
 			jo.put("errorCode", 1);
 			jo.put("data", "");
 			jo.put("message", "Không thể tìm thấy người dùng với username: "+user.getUsername()+ " !");
-			return new ResponseEntity<>(jo.toMap(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
 

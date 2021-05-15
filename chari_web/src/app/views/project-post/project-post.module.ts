@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PushNotificationTopicComponent } from './push-notification-topic.component';
-import { PushNotificationTopicRoutingModule } from './push-notification-topic-routing.module';
-import { DialogPushNotificationTopicComponent } from './dialog-push-notification-topic/dialog-push-notification-topic.component';
+import { ProjectPostComponent } from './project-post.component';
+import { ProjectPostRoutingModule } from './project-post-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -14,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 @NgModule({
   imports: [
     CommonModule,
-    PushNotificationTopicRoutingModule,
+    ProjectPostRoutingModule,
     MatDialogModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
@@ -23,7 +22,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule
   ],
   declarations: [ 
-    PushNotificationTopicComponent,
-    DialogPushNotificationTopicComponent ]
+    ProjectPostComponent,
+  ]
 })
-export class PushNotificationTopicModule { }
+export class ProjectPostModule { }

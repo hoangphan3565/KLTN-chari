@@ -40,7 +40,44 @@ export class ProjectService {
     }  
   } 
 
-  public  createProject = async (ProjectDTO: ProjectDTO,isAdmin: boolean) => {
+  public getActivating = async () => {
+    try {
+        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/activating');
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
+  } 
+  public getReached = async () => {
+    try {
+        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/reached');
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
+  }   
+  public getOverdue = async () => {
+    try {
+      const Projects = await this.http.get(Api.baseUrl+Api.projects+'/overdue');
+      return await Projects.toPromise();
+    }
+    catch (error) {
+      console.log(error);
+    }  
+  }   
+  public getClosed = async () => {
+    try {
+      const Projects = await this.http.get(Api.baseUrl+Api.projects+'/closed');
+      return await Projects.toPromise();
+    }
+    catch (error) {
+      console.log(error);
+    }  
+  } 
+
+  public createProject = async (ProjectDTO: ProjectDTO,isAdmin: boolean) => {
     try {
         const Projects = await this.http.post(Api.baseUrl+Api.projects+'/create/is_admin/'+isAdmin,ProjectDTO);
         return await Projects.toPromise();
@@ -50,7 +87,7 @@ export class ProjectService {
     }  
   }
 
-  public  saveProject = async (Project: Project) => {
+  public saveProject = async (Project: Project) => {
     try {
         const Projects = await this.http.post(Api.baseUrl+Api.projects,Project);
         return await Projects.toPromise();
@@ -72,6 +109,25 @@ export class ProjectService {
   public approveProject = async (id: Number) => {
     try {
         const Projects = await this.http.put(Api.baseUrl+Api.projects+'/approve/'+id,null);
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
+  }  
+  public closeProject = async (id: Number) => {
+    try {
+        const Projects = await this.http.put(Api.baseUrl+Api.projects+'/close/'+id,null);
+        return await Projects.toPromise();
+    }
+    catch (error) {
+       console.log(error);
+    }  
+  }
+
+  public extendProject = async (id: Number,nod:Number) => {
+    try {
+        const Projects = await this.http.put(Api.baseUrl+Api.projects+'/extend/'+id+'/num_of_date/'+nod,null);
         return await Projects.toPromise();
     }
     catch (error) {

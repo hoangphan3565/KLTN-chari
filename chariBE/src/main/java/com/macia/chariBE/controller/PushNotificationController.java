@@ -7,7 +7,7 @@ import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.JwtUserRepository;
 import com.macia.chariBE.repository.PushNotificationRepository;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,18 +64,18 @@ public class PushNotificationController {
                 jo.put("errorCode", 0);
                 jo.put("data", appUser);
                 jo.put("message", "Gửi tin nhắn đến user:"+username+" thành công !");
-                return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+                return new ResponseEntity<>(jo, HttpStatus.OK);
             }else{
                 jo.put("errorCode", 2);
                 jo.put("data", "");
                 jo.put("message", "User: "+username+ " chưa đăng nhập trên bất kỳ thiết bị nào!");
-                return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+                return new ResponseEntity<>(jo, HttpStatus.OK);
             }
         }else{
             jo.put("errorCode", 1);
             jo.put("data", "");
             jo.put("message", "Không thể tìm thấy người dùng với username: "+username+ " !");
-            return new ResponseEntity<>(jo.toMap(), HttpStatus.OK);
+            return new ResponseEntity<>(jo, HttpStatus.OK);
         }
     }
     /*************************************************************************************************888*/

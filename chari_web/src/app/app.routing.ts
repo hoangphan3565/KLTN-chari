@@ -63,12 +63,20 @@ export const routes: Routes = [
         loadChildren: () => import('./views/project-reached/project-reached.module').then(m => m.ProjectReachedModule)
       }, 
       {
-        path: 'project-failed',
-        loadChildren: () => import('./views/project-failed/project-failed.module').then(m => m.ProjectFailedModule)
+        path: 'project-overdue',
+        loadChildren: () => import('./views/project-overdue/project-overdue.module').then(m => m.ProjectOverdueModule)
       },   
       {
         path: 'project-unverified',
         loadChildren: () => import('./views/project-unverified/project-unverified.module').then(m => m.ProjectUnverifiedModule)
+      },
+      {
+        path: 'project-closed',
+        loadChildren: () => import('./views/project-closed/project-closed.module').then(m => m.ProjectClosedModule)
+      },
+      {
+        path: 'project-post',
+        loadChildren: () => import('./views/project-post/project-post.module').then(m => m.ProjectPostModule)
       },
       {
         path: 'project-type',
@@ -97,10 +105,6 @@ export const routes: Routes = [
       {
         path: 'push-notification',
         loadChildren: () => import('./views/push-notification/push-notification.module').then(m => m.PushNotificationModule)
-      },
-      {
-        path: 'push-notification-topic',
-        loadChildren: () => import('./views/push-notification-topic/push-notification-topic.module').then(m => m.PushNotificationTopicModule)
       },
       {
         path: 'base',

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PushNotificationRepository extends JpaRepository<PushNotification, Integer> {
+    PushNotification findByTopic(String topicName);
 }

@@ -35,7 +35,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     Container(
                       height: MediaQuery.of(context).size.width - 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(13),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(project.image_url),
@@ -88,7 +88,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
                     Container(
                       height: MediaQuery.of(context).size.width - 200,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(13),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(project.image_url),

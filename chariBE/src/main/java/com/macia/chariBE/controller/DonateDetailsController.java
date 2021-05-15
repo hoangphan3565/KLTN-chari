@@ -12,12 +12,12 @@ public class DonateDetailsController {
     @Autowired
     DonateDetailsService donateDetailsService;
 
-    @GetMapping("donator/{dntid}")
+    @GetMapping("/donator/{dntid}")
     public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorId(@PathVariable(value = "dntid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorId(id));
     }
 
-    @GetMapping("project/{prjid}")
+    @GetMapping("/project/{prjid}")
     public ResponseEntity<?> getDonateDetailsByProjectId(@PathVariable(value = "prjid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByProjectId(id));
     }

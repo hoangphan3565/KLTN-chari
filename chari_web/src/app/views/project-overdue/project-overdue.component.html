@@ -1,0 +1,45 @@
+<div class="col-lg">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h3 class="card-title">
+            <small class="text-muted"> danh sách </small> Chương trình đã quá hạn
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên chương trình</th>
+            <th>Mục tiêu (Triệu đồng)</th>
+            <th>Đã quyên góp (Triệu đồng)</th>
+            <th>Đạt được (%)</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of Projects;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.project_name}}</td>
+          <td>{{data.target_money/1000000}}</td>
+          <td>{{data.cur_money/1000000}}</td>
+          <td>{{data.cur_money/data.target_money * 100}}</td>
+          <td *ngIf="data.cur_money/data.target_money>0.8">
+            <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_id)">Gia hạn</button>
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_id)">Đóng</button>
+          </td>          
+          <td *ngIf="data.cur_money/data.target_money < 0.8">
+            <button type="button" class="btn btn-block btn-outline-success" disabled>Gia hạn</button>
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_id)">Đóng</button>
+          </td>
+        </tbody>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

@@ -1,8 +1,8 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.DTO.DonateDetailsOfDonatorDTO;
-import com.macia.chariBE.DTO.DonateDetailsOfProjectDTO;
-import com.macia.chariBE.DTO.DonateDetailsTopDTO;
+import com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfDonatorDTO;
+import com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfProjectDTO;
+import com.macia.chariBE.DTO.DonateDetails.DonateDetailsTopDTO;
 import com.macia.chariBE.model.DonateDetails;
 import org.springframework.stereotype.Service;
 

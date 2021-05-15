@@ -12,8 +12,10 @@ export 'history/donate_history_screen.dart';
 export 'home/home_screen.dart';
 export 'home/projectdetails_screen.dart';
 export 'notification/notifications_screen.dart';
+export 'notification/notifications_setting.dart';
 export 'personal/change_password_screen.dart';
 export 'personal/personal_screen.dart';
+
 
 
 

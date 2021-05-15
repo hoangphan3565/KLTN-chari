@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: ProjectReachedComponent,
     data: {
-      title: 'Chờ phê duyệt'
+      title: 'Đã thành công'
     }
   }
 ];

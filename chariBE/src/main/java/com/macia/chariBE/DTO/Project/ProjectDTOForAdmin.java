@@ -1,8 +1,7 @@
-package com.macia.chariBE.DTO;
+package com.macia.chariBE.DTO.Project;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data

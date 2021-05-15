@@ -7,8 +7,7 @@ import { ProjectService } from '../../services/Project.service';
   templateUrl: './project-reached.component.html',
 })
 export class ProjectReachedComponent implements OnInit {
-  Projects: Project[];
-  Project: Project;
+  Projects: any[];
 
   constructor(
     private ProjectService: ProjectService,
@@ -19,7 +18,8 @@ export class ProjectReachedComponent implements OnInit {
     this.getReached()
   }
   public async getReached(){
-    // this.Projects = await this.ProjectService.getReached() as Project[];
+    this.Projects = await this.ProjectService.getReached() as any[];
   }
+  
 }
 

@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.donator_notification.findByDonatorId",
-                query = "SELECT NEW com.macia.chariBE.DTO.DonatorNotificationDTO(dn.title,dn.message,dn.createTime,dn.projectID) FROM DonatorNotification dn where dn.donator.DNT_ID =:dnt_id"),
+                query = "SELECT dn FROM DonatorNotification dn where dn.donator.DNT_ID =:dnt_id"),
+        @NamedQuery(name = "named.donator_notification.findClosedNotiByProjectIdAndDonatorId",
+                query = "SELECT dn FROM DonatorNotification dn where dn.project_id =:prj_id and dn.donator.DNT_ID =:dnt_id and dn.topic='closed'"),
 })
 public class DonatorNotification {
     @Id
@@ -24,20 +26,26 @@ public class DonatorNotification {
     private Integer DNO_ID;
 
     @Column(length = 100)
+    private String topic;
+
+    @Column(length = 100)
     private String title;
 
-    @Column(length = 200)
+    @Column(length = 1000)
     private String message;
 
-    @Column(length = 200)
-    private Integer projectID;
+    @Column(length = 5)
+    private Integer project_id;
 
     @CreationTimestamp
     @Column(length = 50)
-    private LocalDateTime createTime;
+    private LocalDateTime create_time;
 
-    @Column(length = 200)
-    private Boolean isRead;
+    @Column()
+    private Boolean is_read;
+
+    @Column()
+    private Boolean is_handled;
 
     @ManyToOne
     @JoinColumn(name = "dnt_id")

@@ -22,6 +22,18 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer POS_ID;
 
+    @Column(length = 200)
+    private String name;
+
+    @Column(length = 200)
+    private String projectId;
+
+    @Column(length = 200)
+    private String projectName;
+
+    @Column(length = 20)
+    private String projectStatus;
+
     @Column(length = 4000)
     private String content;
 
@@ -33,7 +45,11 @@ public class Post {
     @UpdateTimestamp
     private LocalDate updateDate;
 
+    @Column(length = 500)
+    private String videoUrl;
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
     private List<PostImages> postImages;
+
 }

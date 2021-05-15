@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:chari/API.dart';
 import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
+import 'package:chari/models/push_notification.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -36,8 +37,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
   var projects = new List<Project>();
   var project_types = new List<ProjectType>();
   var donate_details_list = new List<DonateDetails>();
+  var push_notification_list = new List<PushNofitication>();
   var donator_notification_list = new List<DonatorNofitication>();
-  var donator = new Donator(null,null,null,null,null,null);
+  var donator = new Donator(null,null,null,null,null,null,null);
 
   List<String> listProjectIdFavorite = new List<String>();
 
@@ -46,24 +48,23 @@ class _AppBarScreenState extends State<AppBarScreen> {
     super.initState();
     _checkLogin();
     _getDatas();
+    _getPushNotification();
     if(this.islogin==true){
       _getDonateHistory();
     }
+
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
     _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
       setState(() {
         _getDatas();
-        if(this.islogin){
+        if(this.islogin==true){
           _getDonateHistory();
         }
         _checkLogin();
       });
     });
 
-    _fcm.subscribeToTopic('project_added');
-    // _fcm.subscribeToTopic('project_overdue');
-    // _fcm.subscribeToTopic('project_reached');
-
+    _checkAndSubscribeFavoriteNotificationOfDonator();
     if(Platform.isIOS){
       iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
       _fcm.requestNotificationPermissions(IosNotificationSettings());
@@ -94,6 +95,29 @@ class _AppBarScreenState extends State<AppBarScreen> {
   dispose() {
     super.dispose();
     _getNewDataAfter.cancel();
+  }
+
+
+  _checkAndSubscribeFavoriteNotificationOfDonator() async {
+    for(int i=0;i<push_notification_list.length;i++){
+      _fcm.unsubscribeFromTopic(push_notification_list.elementAt(i).topic.toString());
+    }
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String favorite_notification = _prefs.getString('donator_favorite_notification');
+    for(int i=0;i<push_notification_list.length;i++){
+      if(favorite_notification.contains(push_notification_list.elementAt(i).nof_ID.toString())){
+        _fcm.subscribeToTopic(push_notification_list.elementAt(i).topic.toString());
+      }
+    }
+  }
+
+  _getPushNotification() async{
+    API.getPushNotification().then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        push_notification_list = list.map((model) => PushNofitication.fromJson(model)).toList();
+      });
+    });
   }
 
   _getDonateHistory() async{
@@ -145,7 +169,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         project_types = list.map((model) => ProjectType.fromJson(model)).toList();
-        project_types.insert(0, ProjectType(0, 'Tất cả bài viết'));
+        project_types.insert(0, ProjectType(0, 'Tất cả dự án'));
       });
     });
   }
@@ -184,54 +208,68 @@ class _AppBarScreenState extends State<AppBarScreen> {
   Widget build(BuildContext context) {
     return this.islogin==false ?
     Scaffold(
-        bottomNavigationBar:
-        CurvedNavigationBar(
+        bottomNavigationBar: BottomNavigationBar(
           key: _bottomNavigationKeyUnLogged,
-          index: 0,
-          height: 50.0,
-          items: <Widget>[
-            Icon(Icons.home, size: 30,color: kPrimaryHighLightColor,),
-            Icon(Icons.account_circle, size: 30,color: kPrimaryHighLightColor,),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Trang chủ',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Cá nhân',
+            ),
           ],
-          color: kPrimaryLightColor,
-          buttonBackgroundColor: kPrimaryLightColor,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 300),
-          onTap: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
+          currentIndex: _page,
+          selectedItemColor: kPrimaryHighLightColor,
+          onTap:  (index) {
+              setState(() {
+                _page = index;
+              });
+            },
         ),
+
         body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,) : AskScreen()
     )
         :
     Scaffold(
-        bottomNavigationBar: CurvedNavigationBar(
+        bottomNavigationBar: BottomNavigationBar(
           key: _bottomNavigationKeyLogged,
-          index: 0,
-          height: 50.0,
-          items: <Widget>[
-            Icon(Icons.home, size: 30,color: kPrimaryHighLightColor,),
-            Icon(Icons.favorite, size: 30,color: kPrimaryHighLightColor,),
-            Icon(Icons.notifications, size: 30,color: kPrimaryHighLightColor,),
-            Icon(Icons.history, size: 30,color: kPrimaryHighLightColor,),
-            Icon(Icons.account_circle, size: 30,color: kPrimaryHighLightColor,),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Trang chủ',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'Bản tin',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: 'Thông báo',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'Lịch sử',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Cá nhân',
+            ),
           ],
-          color: kPrimaryLightColor,
-          buttonBackgroundColor: kPrimaryLightColor,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 300),
+          currentIndex: _page,
+          selectedItemColor: kPrimaryHighLightColor,
           onTap: (index) {
             setState(() {
               if(index == 0){
                 _getDatas();
+                _checkAndSubscribeFavoriteNotificationOfDonator();
               }
               else if(islogin==true && index == 2){
                 _getDatas();
                 _getNotification();
+                _getPushNotification();
+                _checkAndSubscribeFavoriteNotificationOfDonator();
               }
               else if(islogin==true && index == 3){
                 _getDonateHistory();
@@ -241,7 +279,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
           },
         ),
         body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,isLogin: this.islogin)
-            : _page == 1 ? FavoriteScreen(projects: this.projects)
+            : _page == 1 ? Scaffold()
             : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects)
             : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
             : PersonalScreen(donator: this.donator))
