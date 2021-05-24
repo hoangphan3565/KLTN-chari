@@ -173,9 +173,15 @@ public class ProjectService {
         return r;
     }
 
+    public List<ProjectDTO> getProjectReadyToMoveMoney(int money){
+        return this.getActivatingProjectDTOs().stream()
+                .filter(p->p.getTarget_money()-p.getCur_money()>=money)
+                .collect(Collectors.toList());
+    }
+
     public List<ProjectDTO> getActivatingProjectDTOs(){
-        return this.getProjectDTOs().stream().
-                filter(p->p.getStatus().equals(ProjectStatus.ACTIVATING.toString()))
+        return this.getProjectDTOs().stream()
+                .filter(p->p.getStatus().equals(ProjectStatus.ACTIVATING.toString()))
                 .collect(Collectors.toList());
     }
 

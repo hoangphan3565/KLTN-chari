@@ -16,8 +16,10 @@ import java.time.LocalDateTime;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.donator_notification.findByDonatorId",
-                query = "SELECT dn FROM DonatorNotification dn where dn.donator.DNT_ID =:dnt_id"),
-        @NamedQuery(name = "named.donator_notification.findClosedNotiByProjectIdAndDonatorId",
+                query = "SELECT dn FROM DonatorNotification dn where dn.donator.DNT_ID =:dnt_id order by dn.create_time desc "),
+        @NamedQuery(name = "named.donator_notification.findAllClosedAndUnHandledNotification",
+                query = "SELECT dn FROM DonatorNotification dn where dn.handled=false and dn.topic='closed'"),
+        @NamedQuery(name = "named.donator_notification.findClosedNotificationByProjectIdAndDonatorId",
                 query = "SELECT dn FROM DonatorNotification dn where dn.project_id =:prj_id and dn.donator.DNT_ID =:dnt_id and dn.topic='closed'"),
 })
 public class DonatorNotification {
@@ -42,10 +44,13 @@ public class DonatorNotification {
     private LocalDateTime create_time;
 
     @Column()
-    private Boolean is_read;
+    private Boolean read;
 
     @Column()
-    private Boolean is_handled;
+    private Boolean handled;
+
+    @Column()
+    private int total_money;
 
     @ManyToOne
     @JoinColumn(name = "dnt_id")

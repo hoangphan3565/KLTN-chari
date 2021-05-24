@@ -1,49 +1,57 @@
 import 'dart:convert';
-
 import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/models/project_model.dart';
 import 'package:chari/screens/home/projectdetails_screen.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../API.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  final List<DonatorNofitication> donator_notification_list;
-  final List<Project> projects;
-
-  NotificationsScreen({Key key, @required this.donator_notification_list,this.projects}) : super(key: key);
+  List<DonatorNotification> donator_notification_list;
+  List<Project> projects;
+  Donator donator;
+  NotificationsScreen({Key key, @required this.donator_notification_list,this.projects,this.donator}) : super(key: key);
   @override
   _NotificationsScreenState createState()=> _NotificationsScreenState();
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen>{
 
-  var push_notification_list = new List<PushNofitication>();
+  var push_notification_list = new List<PushNotification>();
   var favorite_notification_list = new List<bool>();
+  var projects_ready_to_move_money = new List<Project>();
 
-  _getPushNotification() async{
+  _getProjectReadyToMoveMoney(int money) async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    API.getPushNotification().then((response) {
+    String token = _prefs.getString('token');
+    API.getProjectReadyToMoveMoney(money, token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        push_notification_list = list.map((model) => PushNofitication.fromJson(model)).toList();
+        projects_ready_to_move_money = list.map((model) => Project.fromJson(model)).toList();
       });
     });
   }
+
+  _getPushNotification() async{
+    API.getPushNotification().then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        push_notification_list = list.map((model) => PushNotification.fromJson(model)).toList();
+      });
+    });
+  }
+
   _getFavoriteNotification() async{
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    int donator_id = _prefs.getInt('donator_id');
-    String token = _prefs.getString('token');
-    API.getFavoriteNotificationList(donator_id, token).then((response) {
+    API.getFavoriteNotificationList(widget.donator.id, widget.donator.token).then((response) {
       setState(() {
         List<bool> list = (json.decode(response.body) as List<dynamic>).cast<bool>();
         favorite_notification_list = list;
@@ -132,8 +140,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (context, index){
-                    return buildNotificationInfo(widget.donator_notification_list[index]);},
-                  childCount:  widget.donator_notification_list.length,
+                    return buildNotificationInfo(widget.donator_notification_list[index],index);},
+                  childCount: widget.donator_notification_list.length,
                 ),
               )
             ],
@@ -142,7 +150,86 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
     );
   }
 
-  _showAskForMoveMoneyDialog(BuildContext context,int project_id,int donator_id,String token){
+  Container buildProjectInfo(Project project,int handling_project_id,int donator_id,int money,String token,int index){
+    return Container(
+            margin: EdgeInsets.fromLTRB(0,5,0,5),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(width: 1, color: Colors.black),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        project.project_name,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Đạt được ',
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            (project.cur_money/project.target_money*100).toStringAsFixed(1)+" %",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      RoundedButton(
+                          text: "Chuyển",
+                          textColor: kPrimaryHighLightColor,
+                          color: kPrimaryLightColor,
+                          press: () async {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            var res = await API.putMoveMoney(handling_project_id,donator_id,project.prj_id,money,token);
+                            var jsRes = json.decode(utf8.decode(res.bodyBytes));
+                            Fluttertoast.showToast(
+                                msg: jsRes['message'],
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: kPrimaryColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            if(jsRes['errorCode']==0){
+                              widget.donator_notification_list.elementAt(index).handled=true;
+                              initState();
+                            }
+                          }
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+        );
+  }
+
+
+  _showProjectsReadyToMoveMoneyDialog(BuildContext context,List<Project> projects,int handling_project_id,int donator_id,int money,String token,int index){
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -153,7 +240,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Text("Xử lý chuyển dời tiền đã ủng hộ",
+                    Text("Chọn dự án muốn chuyển",
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -167,17 +254,65 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                       margin: EdgeInsets.symmetric(horizontal: 0),
                     ),
                     SizedBox(height: 10),
-                    Text("Chuyển tất cả số tiền mà bạn đã ủng hộ đến dự án khác mà bạn muốn",
+                    for(int i=0;i<projects.length;i++)
+                      buildProjectInfo(projects.elementAt(i),handling_project_id,donator_id,money,token,index),
+                    RoundedButton(
+                        text: "Quay lại",
+                        press: (){
+                          Navigator.pop(context);
+                        }
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  _showAskForMoveMoneyDialog(BuildContext context,int project_id,int donator_id,int money,String token,int index){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(
+            content: Container(
+              width: MediaQuery.of(context).size.width / 1,
+              color: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Text("Xử lý chuyển dời tiền",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Container(
+                      height: 1.5,
+                      color: Colors.grey[300],
+                      margin: EdgeInsets.symmetric(horizontal: 0),
+                    ),
+                    SizedBox(height: 10),
+                    Text("Tổng số tiền",
+                      style: TextStyle(
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(MoneyUtility.convertToMoney(money.toString())+" đ",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
                     RoundedButton(
                         text: "Chuyển đến dự án khác",
                         press: (){
-                          Navigator.pop(context);
+                          _showProjectsReadyToMoveMoneyDialog(context,projects_ready_to_move_money,project_id,donator_id,money,token,index);
                         }
                     ),
                     Text("Hoặc",
@@ -193,7 +328,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                         color: kPrimaryLightColor,
                         press: () async {
                           Navigator.pop(context);
-                          var res = await API.putMoveMoneyToGeneralFund(project_id, donator_id, token);
+                          var res = await API.putMoveMoney(project_id, donator_id, 0, money, token);
                           var jsRes = json.decode(utf8.decode(res.bodyBytes));
                           Fluttertoast.showToast(
                               msg: jsRes['message'],
@@ -204,6 +339,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                               textColor: Colors.white,
                               fontSize: 16.0
                           );
+                          if(jsRes['errorCode']==0){
+                            widget.donator_notification_list.elementAt(index).handled=true;
+                            initState();
+                          }
                         }
                     ),
                   ],
@@ -253,22 +392,23 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         });
   }
 
-  GestureDetector buildNotificationInfo(DonatorNofitication nofitication){
+  GestureDetector buildNotificationInfo(DonatorNotification notification,int index){
     return GestureDetector(
         onTap: () async {
-          if(nofitication.topic!='closed'){
+          _getProjectReadyToMoveMoney(notification.total_money);
+          if(notification.topic!='closed'){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: widget.projects.where((p) => p.prj_id==nofitication.project_id).elementAt(0),)),
+              MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: widget.projects.where((p) => p.prj_id==notification.project_id).elementAt(0),)),
             );
           }
-          if(nofitication.topic=='closed'){
-            if(nofitication.is_handled==true){
+          if(notification.topic=='closed'){
+            if(notification.handled==true){
               _showInformDialog(context);
             }
-            if(nofitication.is_handled!=true){
+            if(notification.handled!=true){
               SharedPreferences _prefs = await SharedPreferences.getInstance();
-              _showAskForMoveMoneyDialog(context,nofitication.project_id,_prefs.getInt('donator_id'),_prefs.getString('token'));
+              _showAskForMoveMoneyDialog(context,notification.project_id,_prefs.getInt('donator_id'),notification.total_money,_prefs.getString('token'),index);
             }
           }
         },
@@ -279,7 +419,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: nofitication.topic!='closed' ?
+          child: notification.topic!='closed' ?
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -292,17 +432,17 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                       height: 5,
                     ),
                     Text(
-                      nofitication.title,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
+                        notification.title,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
                     SizedBox(
                       height: 5,
                     ),
                     Text(
-                      nofitication.message,
+                      notification.message,
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
@@ -312,7 +452,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                       height: 10,
                     ),
                     Text(
-                      DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(nofitication.create_time)),
+                      DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(notification.create_time)),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
@@ -321,7 +461,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                   ],
                 ),
               ),
-              widget.projects.where((p) => p.prj_id==nofitication.project_id).length != 0 ?
+              widget.projects.where((p) => p.prj_id==notification.project_id).length != 0 ?
               Container(
                 height: 90,
                 width: 75,
@@ -337,7 +477,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     ],
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(widget.projects.where((p) => p.prj_id==nofitication.project_id).elementAt(0).image_url)
+                        image: NetworkImage(widget.projects.where((p) => p.prj_id==notification.project_id).elementAt(0).image_url)
                     )),
               )
                   :
@@ -363,18 +503,37 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      nofitication.title,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                    Row(
+                      children: [
+                        Text(
+                          notification.title,
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        notification.handled==true ?
+                        Text(
+                          ' (Đã xử lý)',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green),
+                        ) :
+                        Text(
+                          ' (Chưa xử lý)',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     Text(
-                      nofitication.message,
+                      notification.message,
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
@@ -384,7 +543,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                       height: 10,
                     ),
                     Text(
-                      DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(nofitication.create_time)),
+                      DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(notification.create_time)),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.normal,

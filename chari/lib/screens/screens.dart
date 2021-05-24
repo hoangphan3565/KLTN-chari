@@ -1,4 +1,4 @@
-export '../services/ask_screen.dart';
+export 'ask_screen.dart';
 export 'appbar_screen.dart';
 export 'authentication/enter_code_screen.dart';
 export 'authentication/forgot_password_screen.dart';

@@ -6,8 +6,9 @@ class Donator {
   String avatar_url;
   String favorite_project;
   String favorite_notification;
+  String token;
 
-  Donator(this.id, this.full_name,this.address, this.phone_number,this.avatar_url,this.favorite_project,this.favorite_notification) {}
+  Donator(this.id, this.full_name,this.address, this.phone_number,this.avatar_url,this.favorite_project,this.favorite_notification,this.token) {}
 
   Donator.fromJson(Map json)
       : id = json['dnt_ID'],

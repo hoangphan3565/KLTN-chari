@@ -90,15 +90,16 @@ public class DonatorController {
         }
 
     }
-
-    @PutMapping("/move_money_to_general_fund/project/{prjid}/donator/{dntid}")
+    @PutMapping("/move_money/project/{prjid}/donator/{dntid}/to_project/{tarprjid}/money/{money}")
     public ResponseEntity<?> moveDonationOfProjectToGeneralFund(
             @PathVariable(value = "prjid") Integer prjid,
-            @PathVariable(value = "dntid") Integer dntid)    {
+            @PathVariable(value = "dntid") Integer dntid,
+            @PathVariable(value = "tarprjid") Integer tarprjid,
+            @PathVariable(value = "money") Integer money)    {
         JSONObject jo = new JSONObject();
-        donatorService.moveDonationOfProjectToGeneralFund(prjid,dntid);
+        donatorService.moveMoney(dntid,tarprjid,money);
         donatorNotificationService.handleCloseProjectNotification(prjid,dntid);
-        jo.put("errorCode", "0");
+        jo.put("errorCode", 0);
         jo.put("message", "Chuyển tiền thành công!");
         return new ResponseEntity<>(jo, HttpStatus.OK);
     }

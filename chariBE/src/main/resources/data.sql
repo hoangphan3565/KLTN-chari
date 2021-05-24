@@ -182,6 +182,43 @@ values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 q
 'https://hieuvetraitim.com/attachments/hoan-canh-gioi-thieu-jpg.1782/',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp3',3,1,1);
 
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
+       'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
+       '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
+       'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
+
+           Chiều 27.10, khi tàu BĐ 96388 TS đang di chuyển tránh bão số 9 thì bị sóng đánh chìm, 12 ngư dân mất liên lạc cho ' ||
+       'đến nay. Ngay trong đêm ấy, vợ chồng ông Xang nhận được tin tàu BĐ 96388 TS bị chìm, còn tàu cá mà anh Mãi và anh Thơi đang đánh bắt không thể di chuyển vì sóng gió quá mạnh, phải thả phao đứng im tại chỗ. Khi biết các con đang gặp nguy hiểm, bà Dốn đã ngất lịm. “Từ ngày đó đến nay, ngày nào gia đình cũng gọi điện đến đồn biên phòng và các cơ quan chức năng để hỏi về việc tìm kiếm các ngư dân mất tích, mà chưa ra”, ông Xang vừa khóc vừa kể.
+
+           Không khí tang thương bao trùm lên ngôi nhà của thuyền trưởng tàu cá BĐ 96388 TS - ông Nguyễn Văn Minh (ở P.Tam ' ||
+       'Quan Nam, TX.Hoài Nhơn). Vợ ông Minh là bà Trương Thị Nhung nằm mê man vì kiệt sức, hai đứa con mới 15 và 12 tuổi chỉ biết ôm mẹ mà khóc. Gia đình em gái ruột của bà Nhung là bà Trương Thị Kim Vân (ở KP.1, P.Tam Quan, H.Hoài Nhơn) cũng tràn ngập tang thương. Chồng bà Vân là ông Nguyễn Thanh Sỹ, thuyền viên tàu cá BĐ 96388 TS, hiện đang mất tích. Hầu hết các ngư dân trên tàu cá BĐ 96388 TS đều có hoàn cảnh khó khăn, nhiều người có con còn nhỏ hoặc có tuổi đời rất trẻ như: Võ Khôi Quốc mới 18 tuổi, Nguyễn Chí Khanh 19 tuổi…
+
+            Ông Trương Đề, Phó chủ tịch UBND TX.Hoài Nhơn, cho biết chính quyền địa phương đã động viên, hỗ trợ gia đình các ' ||
+       'ngư dân, hiện các tàu cứu hộ của lực lượng Kiểm ngư và Hải quân vùng 4 đang tiếp tục tổ chức tìm kiếm các ngư dân còn lại.
+
+            Qua đây Chari kêu gọi các nhà hảo tâm cùng chung tay ủng hộ, giúp đỡ gia đình các ngư dân bị nạn, cũng như người ' ||
+       'dân ở đây vượt qua được tình cảnh khó khăn này.
+    ',
+       '2020-12-01','2021-03-15',115000000,
+       'https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',
+       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp3?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',1,1,1);
+
+insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('G10010','Xây dựng sân trường cho trường tiểu học Quảng Thành',true,false,true,
+
+       'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
+       '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
+       ' ||
+       '       Theo chia sẻ của thầy Nguyễn Đắc Chiến (Phó hiệu trưởng phụ trách trường Tiểu học Thanh Kim), năm học mới, trường có 267 học sinh, chia thành 16 lớp từ lớp 1-5. 99% học sinh là dân tộc Dao, Mông; 1/3 trong số đó thuộc hộ nghèo, cận nghèo.
+       ' ||
+       '       Việc đi học đã khó khăn, thì việc có một khu vui chơi đối với các em nhỏ vùng cao này gần như là không dám mơ ước tới. Khi chúng tôi tới khảo sát và hỏi các em về những thứ các em chơi hàng ngày, thì các em trả lời đó chỉ là vài tàu lá chuối, những cục đá cục sỏi, hay có những em còn không có thời gian để chơi vì phụ giúp bố mẹ nương rẫy.
+       ' ||
+       '       Với sự ngây ngô của các em, chúng tôi muốn xây dựng cho các em một khu vui chơi nho nhỏ nằm trong sân trường để các em có thể chơi đùa, vận động cùng nhau. Dù chỉ là những trò chơi đơn giản nhưng cũng đủ giúp các em không còn phải nghịch đất sỏi trên đường.',
+       '2020-11-20','2021-03-01',83000000,
+       'https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',
+       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp3?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',2,1,1);
+
 insert into project_images(image_url,prj_id) values('https://media.laodong.vn/Storage/NewsPortal/2020/10/29/849812/Lai-Dat-Tau-Bi-Nan-B.jpg?w=414&h=276&crop=auto&scale=both',1);
 insert into project_images(image_url,prj_id) values('https://cdnimg.vietnamplus.vn/t620/uploaded/fsmsy/2020_11_03/ttxvn_ngu_dan_binh_dinh_2.jpg',1);
 insert into project_images(image_url,prj_id) values('https://cdnmedia.baotintuc.vn/Upload/DmtgOUlHWBO5POIHzIwr1A/files/2020/11/03/ngu-dan-031120.jpg',1);
@@ -238,6 +275,13 @@ insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/s
 insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',10);
 insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',10);
 
+insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',11);
+insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',11);
+insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',11);
+
+insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',12);
+insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',12);
+insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',12);
 
 
 insert into donate_activity(dnt_id,prj_id) values(1,1);
@@ -281,7 +325,21 @@ insert into donate_activity(dnt_id,prj_id) values(2,10);
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',3000000,10,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-12',3000000,10,'');
 insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',3000000,10,'Cố lên');
+insert into donate_activity(dnt_id,prj_id) values(1,11);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',1000000,11,'Cố lên');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',2000000,11,'Cố lên nha');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',5000000,11,'Cố lên ạ');
+insert into donate_activity(dnt_id,prj_id) values(1,8);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',1000000,12,'Cố lên');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',2000000,12,'Cố lên nha');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',5000000,12,'Cố lên ạ');
+insert into donate_activity(dnt_id,prj_id) values(1,12);
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-05',1000000,13,'Cố lên');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-07',1000000,13,'Cố lên nha');
+insert into donate_details(donate_date,money,dna_id,message) values('2020-11-08',2000000,13,'Cố lên ạ');
 
+insert into donator_notification(create_time,read,handled,message,title,topic,total_money,project_id,dnt_id) values ('2021-05-13 20:50:40.075187',false,false,'Test chức năng tự động chuyển tiền khi quá 7 ngày','Testing đã quá 7 ngày...','closed',8000000,8,1);
+insert into donator_notification(create_time,read,handled,message,title,topic,total_money,project_id,dnt_id) values ('2021-09-13 20:50:40.075187',false,false,'Test chức năng tự động chuyển tiền khi quá 7 ngày','Testing chưa quá 7 ngày...','closed',4000000,12,1);
 
 insert into push_notification(title,message,topic) values('Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này','new');
 insert into push_notification(title,message,topic) values('Dự án sắp thành công','Dự án cộng đồng mà bạn đã tham gia quyên góp sắp chạm đến mục tiêu. Hãy xem chia sẻ để dự án thành công tốt đẹp.','close_to_reached');

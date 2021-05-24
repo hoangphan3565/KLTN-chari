@@ -1,12 +1,13 @@
 
 import 'dart:convert';
 
-import 'package:chari/API.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,8 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class PersonalScreen extends StatefulWidget {
-  final Donator donator;
-  PersonalScreen({Key key, @required this.donator}) : super(key: key);
+  Donator donator;
+  List<PushNotification> push_notification_list;
+  PersonalScreen({Key key, @required this.donator,this.push_notification_list}) : super(key: key);
   @override
   _PersonalScreenState createState()=> _PersonalScreenState();
 }
@@ -25,6 +27,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
   String fullname;
   String address;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
 
 
   initState() {
@@ -36,11 +39,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
     super.dispose();
   }
 
-  _getDonatorDetails() async{
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+  _getDonatorDetails(){
     setState(() {
-      fullname=_prefs.getString('donator_full_name');
-      address=_prefs.getString('donator_address');
+      fullname=widget.donator.full_name;
+      address=widget.donator.address;
     });
   }
 
@@ -124,9 +126,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
                     RoundedButton(
                       text: "Xác nhận",
-                      press: ()async{
-                        SharedPreferences _prefs = await SharedPreferences.getInstance();
-                        _updateInformation(_prefs.getInt('donator_id'),_fullnameField.text,_addressField.text);
+                      press: (){
+                        _updateInformation(widget.donator.id,_fullnameField.text,_addressField.text);
                       },
                     ),
 
@@ -151,8 +152,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   children: [
                     SizedBox(height: kSpacingUnit.toDouble() * 2),
                     Container(
-                      height: kSpacingUnit.toDouble() * 18,
-                      width: kSpacingUnit.toDouble() * 18,
+                      height: kSpacingUnit.toDouble() * 15,
+                      width: kSpacingUnit.toDouble() * 15,
                       margin: EdgeInsets.only(top: kSpacingUnit.toDouble() * 3),
                       child: Stack(
                         children: <Widget>[
@@ -214,7 +215,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       press: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         API.saveFCMToken(prefs.getString('username'), null);
+                        for(int i=0;i<widget.push_notification_list.length;i++){
+                          _fcm.unsubscribeFromTopic(widget.push_notification_list.elementAt(i).topic.toString());
+                        }
                         await prefs.clear();
+                        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
                         Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => AppBarScreen()));
                       },
                     ),

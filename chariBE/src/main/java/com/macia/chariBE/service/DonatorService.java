@@ -97,23 +97,31 @@ public class DonatorService {
         donatorRepo.saveAndFlush(donator);
     }
 
-    public void moveDonationOfProjectToGeneralFund(Integer project_id, Integer donator_id) {
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, 0);
-        DonateActivity oldDonateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-        List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(oldDonateActivity.getDNA_ID());
+    public int getTotalDonateMoneyOfDonatorByProjectId(Integer prjid,Integer dntid){
+        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(dntid, prjid);
+        List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
         int money=0;
-        for(DonateDetails details: donateDetails){
-            money+=details.getMoney();
+        if(donateDetails.isEmpty()){
+            return 0;
+        }else{
+            for(DonateDetails details: donateDetails){
+                money+=details.getMoney();
+            }
+            return money;
         }
+    }
+
+    public void moveMoney(Integer donator_id,Integer targetProjectId,Integer money) {
+        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, targetProjectId);
         if (donateActivity == null) {
             donateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(this.findById(donator_id))
-                            .project(projectService.findProjectById(0))
+                            .project(projectService.findProjectById(targetProjectId))
                             .build()))
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message("Chuyển tiền từ dự án cũ sang quỹ chung")
+                    .message("Chuyển tiền từ dự án cũ sang dự án khác")
                     .build());
         }
         else {
@@ -121,7 +129,7 @@ public class DonatorService {
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message("Chuyển tiền từ dự án cũ sang quỹ chung")
+                    .message("Chuyển tiền từ dự án cũ sang dự án khác")
                     .build());
         }
     }

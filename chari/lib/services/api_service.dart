@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 
 //local ip và port server đang deploy
 // const baseUrl = "http://192.168.137.45:8080/api";
-// const baseUrl = "http://192.168.0.102:8080/api";
 // const baseUrl = "http://192.168.1.114:8080/api";
+// const baseUrl = "http://192.168.0.103:8080/api";
 const baseUrl = "http://192.168.43.202:8080/api";
 
 const login = "/login";
@@ -111,13 +111,28 @@ class API {
     return http.get(url);
   }
 
+
   static Future getDonatorNotificationListByDonatorId(int donator_id,String token) {
     var url = baseUrl + donator_notifications+'/donator/'+donator_id.toString();
     return http.get(url,headers:getHeaderJWT(token));
   }
+  static Future putReadDonatorNotificationsByDonatorId(int donator_id,String token) {
+    var url = baseUrl + donator_notifications+'/read/donator/'+donator_id.toString();
+    return http.put(url,headers:getHeaderJWT(token));
+  }
+  static Future getCheckNewDonatorNotificationsByDonatorId(int donator_id,String token) {
+    var url = baseUrl + donator_notifications+'/check_new/donator/'+donator_id.toString();
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+
 
   static Future getDonatorDetailsByPhone(String phone,String token) {
     var url = baseUrl + donators +'/phone/'+phone;
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+
+  static Future getAvailableProjectToMoveMoney(int money,String token) {
+    var url = baseUrl + projects +'/ready_to_move_money/'+money.toString();
     return http.get(url,headers:getHeaderJWT(token));
   }
 
@@ -136,8 +151,14 @@ class API {
     return http.post(url,headers:getHeaderJWT(token));
   }
 
-  static Future putMoveMoneyToGeneralFund(int project_id,int donator_id,String token) {
-    var url = baseUrl + donators + "/move_money_to_general_fund/project/"+project_id.toString()+"/donator/"+donator_id.toString();
+  static Future getProjectReadyToMoveMoney(int money,String token) {
+    var url = baseUrl + projects +'/ready_to_move_money/'+money.toString();
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+
+  static Future putMoveMoney(int project_id,int donator_id,int target_project_id,int money,String token) {
+    ///move_money/project/{prjid}/donator/{dntid}/to_project/{tarprjid}/money/{money}
+    var url = baseUrl + donators + "/move_money/project/"+project_id.toString()+"/donator/"+donator_id.toString()+"/to_project/"+target_project_id.toString()+"/money/"+money.toString();
     return http.put(url,headers:getHeaderJWT(token));
   }
 

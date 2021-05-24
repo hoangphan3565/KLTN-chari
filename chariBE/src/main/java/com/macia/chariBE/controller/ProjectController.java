@@ -21,12 +21,6 @@ public class ProjectController {
     private ProjectService projectService;
 
     @Autowired
-    private ProjectTypeService projectTypeService;
-
-    @Autowired
-    private SupportedPeopleService supportedPeopleService;
-
-    @Autowired
     private PushNotificationController pushNotificationController;
 
     @Autowired
@@ -75,6 +69,11 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getClosedProjects());
     }
 
+    @GetMapping("/ready_to_move_money/{money}")
+    public ResponseEntity<?> getProjectReadyToMoveMoney(@PathVariable(value = "money") Integer money) {
+        return ResponseEntity.ok().body(projectService.getProjectReadyToMoveMoney(money));
+    }
+
     @GetMapping("/plain")
     public ResponseEntity<?> getAllProject() {
         return ResponseEntity.ok().body(projectService.getVerifiedProjects());
@@ -103,8 +102,8 @@ public class ProjectController {
                     .title(pn.getTitle())
                     .message(pn.getMessage())
                     .create_time(LocalDateTime.now())
-                    .is_read(false)
-                    .is_handled(false)
+                    .read(false)
+                    .handled(false)
                     .donator(d)
                     .project_id(id).build());
         }
@@ -121,15 +120,16 @@ public class ProjectController {
         no.setMessage(pn.getMessage());
         no.setTopic(pn.getTopic());
         List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(id);
-        for(DonateActivity lda:listDA){
+        for(DonateActivity da:listDA){
             donatorNotificationService.save(DonatorNotification.builder()
                     .topic(pn.getTopic())
                     .title(pn.getTitle())
                     .message(pn.getMessage())
                     .create_time(LocalDateTime.now())
-                    .is_read(false)
-                    .is_handled(false)
-                    .donator(lda.getDonator())
+                    .read(false)
+                    .handled(false)
+                    .total_money(donatorService.getTotalDonateMoneyOfDonatorByProjectId(id,da.getDonator().getDNT_ID()))
+                    .donator(da.getDonator())
                     .project_id(id).build());
         }
         this.pushNotificationController.pushNotificationWithoutDataToTopic(no);
@@ -152,8 +152,8 @@ public class ProjectController {
                     .title(pn.getTitle())
                     .message(pn.getMessage())
                     .create_time(LocalDateTime.now())
-                    .is_read(false)
-                    .is_handled(false)
+                    .read(false)
+                    .handled(false)
                     .donator(lda.getDonator())
                     .project_id(id).build());
         }

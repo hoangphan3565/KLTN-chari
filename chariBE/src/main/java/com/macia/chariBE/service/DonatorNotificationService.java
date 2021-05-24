@@ -11,13 +11,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
 public class DonatorNotificationService {
     @Autowired
     private DonatorNotificationRepository repo;
+
+    @Autowired
+    private DonatorService donatorService;
 
     @PersistenceContext
     private EntityManager em;
@@ -35,15 +40,44 @@ public class DonatorNotificationService {
             return null;
         }
     }
+
     public void handleCloseProjectNotification(int project_id,int donator_id){
         try {
-            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findClosedNotiByProjectIdAndDonatorId", DonatorNotification.class);
+            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findClosedNotificationByProjectIdAndDonatorId", DonatorNotification.class);
             query.setParameter("prj_id", project_id);
             query.setParameter("dnt_id", donator_id);
             DonatorNotification d = query.getSingleResult();
-            d.setIs_handled(true);
+            d.setHandled(true);
             repo.saveAndFlush(d);
         } catch (NoResultException ignored) {
         }
+    }
+
+    public void handleAllMoneyOfClosedProjectOverSevenDay(){
+        List<DonatorNotification> ldn;
+        try {
+            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findAllClosedAndUnHandledNotification", DonatorNotification.class);
+            ldn = query.getResultList();
+            for(DonatorNotification dn:ldn){
+                if(ChronoUnit.DAYS.between(LocalDate.now(), dn.getCreate_time().toLocalDate())>7){
+                    donatorService.moveMoney(dn.getDonator().getDNT_ID(),0, dn.getTotal_money());
+                    dn.setHandled(true);
+                }
+            }
+            repo.saveAll(ldn);
+        } catch (NoResultException ignored) {
+        }
+    }
+
+    public List<DonatorNotification> putReadUnreadNotification(Integer donator_id){
+        List<DonatorNotification> ldn = repo.findByReadFalse();
+        for(DonatorNotification dn:ldn){
+            dn.setRead(true);
+        }
+        repo.saveAll(ldn);
+        return ldn;
+    }
+    public boolean checkHaveNewNotificationUnread(Integer donator_id){
+       return !repo.findByReadFalse().isEmpty(); //list thông báo chưa đọc rỗng -> đã đọc hết -> không có thông báo mới
     }
 }

@@ -12,6 +12,8 @@ import java.sql.Statement;
 @SpringBootApplication
 public class chariBEApplication implements CommandLineRunner {
 
+
+
 	public static void main(String[] args)  throws SQLException {
 		SpringApplication.run(chariBEApplication.class, args);
 
@@ -29,6 +31,7 @@ public class chariBEApplication implements CommandLineRunner {
 		//Executing the query
 		stmt.execute(query_add_donator);
 	}
+
 
 	@Override
 	public void run(String... args) throws Exception {

@@ -1,12 +1,12 @@
-class PushNofitication {
+class PushNotification {
   String topic;
   String title;
   String message;
   int nof_ID;
 
-  PushNofitication(this.topic,this.title,this.message,this.nof_ID) {}
+  PushNotification(this.topic,this.title,this.message,this.nof_ID) {}
 
-  PushNofitication.fromJson(Map json)
+  PushNotification.fromJson(Map json)
       : topic = json['topic'],
         title = json['title'],
         message = json['message'],
