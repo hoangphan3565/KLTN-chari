@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: ProjectActivatingComponent,
     data: {
-      title: 'Đang hoạt động'
+      title: 'Dự án đang hoạt động'
     }
   }
 ];

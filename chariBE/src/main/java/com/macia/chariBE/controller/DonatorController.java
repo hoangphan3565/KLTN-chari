@@ -97,7 +97,7 @@ public class DonatorController {
             @PathVariable(value = "tarprjid") Integer tarprjid,
             @PathVariable(value = "money") Integer money)    {
         JSONObject jo = new JSONObject();
-        donatorService.moveMoney(dntid,tarprjid,money);
+        donatorService.moveMoney(prjid,dntid,tarprjid,money);
         donatorNotificationService.handleCloseProjectNotification(prjid,dntid);
         jo.put("errorCode", 0);
         jo.put("message", "Chuyển tiền thành công!");

@@ -48,7 +48,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
   //Khi mở ứng dụng lên thì tất cả các widget sẽ được build ngay lập tức dữ liệu lấy từ API chậm hơn do đó biến isNewNotification vẫn là false
   //-> lợi dụng hàm CountdownTimer để gán lại biến isNewNotification
-  int _start = 1;
+  int _start = 2;
   void getDataAfterBuildWidget() {
     CountdownTimer countDownTimer = new CountdownTimer(
       new Duration(seconds: _start),
@@ -56,7 +56,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
     );
     var sub = countDownTimer.listen(null);
     sub.onDone(() {
-      _checkNewNotificationsByDonatorId();
+      if(this.islogin==true){
+        _checkNewNotificationsByDonatorId();
+      }
       sub.cancel();
     });
   }
@@ -73,9 +75,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
       _getPushNotification();
       _checkAndSubscribeFavoriteNotificationOfDonator();
     }
-
     getDataAfterBuildWidget();
-
 
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
     _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
@@ -250,10 +250,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
           currentIndex: _page,
           selectedItemColor: kPrimaryHighLightColor,
           onTap:  (index) {
-              setState(() {
-                _page = index;
-              });
-            },
+            setState(() {
+              _page = index;
+            });
+          },
         ),
 
         body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,) : AskScreen()
@@ -304,7 +304,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
                 _checkAndSubscribeFavoriteNotificationOfDonator();
                 _checkNewNotificationsByDonatorId();
               }
-              else if(islogin==true && index == 2){
+              else if(index == 2){
                 _getDatas();
                 _getNotification();
                 _getPushNotification();
@@ -314,16 +314,16 @@ class _AppBarScreenState extends State<AppBarScreen> {
                   API.putReadDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);
                 });
               }
-              else if(islogin==true && index == 3){
+              else if(index == 3){
                 _getDonateHistory();
               }
               _page = index;
             });
           },
         ),
-        body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,isLogin: this.islogin)
-            : _page == 1 ? Scaffold()
-            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects)
+        body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,donator: this.donator,isLogin: this.islogin)
+            : _page == 1 ? PostScreen(projects: this.projects,donator: this.donator,)
+            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects,donator: this.donator,)
             : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
             : PersonalScreen(donator: this.donator,push_notification_list: this.push_notification_list))
     );

@@ -38,12 +38,12 @@ public class DonateDetailsService {
         }
     }
 
-    public List<DonateDetailsTopDTO> findTop4DonationOfProjectById(Integer id){
-        List<DonateDetailsOfProjectDTO> details = this.findDonateDetailsByProjectId(id);
-        List<DonateDetailsTopDTO> tops = new ArrayList<>();
-
-        return tops;
-    }
+//    public List<DonateDetailsTopDTO> findTop4DonationOfProjectById(Integer id){
+//        List<DonateDetailsOfProjectDTO> details = this.findDonateDetailsByProjectId(id);
+//        List<DonateDetailsTopDTO> tops = new ArrayList<>();
+//
+//        return tops;
+//    }
 
     public List<DonateDetails> findDonateDetailByDonateActivityId(Integer id) {
         try {

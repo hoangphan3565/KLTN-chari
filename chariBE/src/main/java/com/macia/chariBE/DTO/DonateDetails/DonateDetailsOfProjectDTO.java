@@ -15,5 +15,5 @@ public class DonateDetailsOfProjectDTO {
     private LocalDateTime donate_date;
     private String donator_name;
     private String phone;
-    private String message;
+    private String status;
 }

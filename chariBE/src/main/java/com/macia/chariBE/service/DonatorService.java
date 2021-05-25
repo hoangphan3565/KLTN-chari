@@ -7,6 +7,7 @@ import com.macia.chariBE.model.PushNotification;
 import com.macia.chariBE.repository.DonateDetailsRepository;
 import com.macia.chariBE.repository.DonatorRepository;
 import com.macia.chariBE.repository.PushNotificationRepository;
+import com.macia.chariBE.utility.DonateActivityStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,17 +112,20 @@ public class DonatorService {
         }
     }
 
-    public void moveMoney(Integer donator_id,Integer targetProjectId,Integer money) {
+    public void moveMoney(Integer project_id,Integer donator_id,Integer targetProjectId,Integer money) {
+        DonateActivity oldDonateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
+        oldDonateActivity.setStatus(DonateActivityStatus.FAILED.toString());
+        donateActivityService.save(oldDonateActivity);
         DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, targetProjectId);
         if (donateActivity == null) {
             donateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(this.findById(donator_id))
                             .project(projectService.findProjectById(targetProjectId))
+                            .status(DonateActivityStatus.SUCCESSFUL.toString())
                             .build()))
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message("Chuyển tiền từ dự án cũ sang dự án khác")
                     .build());
         }
         else {
@@ -129,7 +133,6 @@ public class DonatorService {
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message("Chuyển tiền từ dự án cũ sang dự án khác")
                     .build());
         }
     }

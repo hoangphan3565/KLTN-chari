@@ -148,8 +148,8 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getProjectDTOs(){
-        List<ProjectDTO> r = new ArrayList<>();
-        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).filter(p-> !p.getClosed()).collect(Collectors.toList());
+        List<ProjectDTO> r = new ArrayList<>();//filter(p-> !p.getClosed()).
+        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).collect(Collectors.toList());
         for(Project p : ps){
             r.add(ProjectDTO.builder()
                     .prj_id(p.getPRJ_ID())
@@ -181,18 +181,21 @@ public class ProjectService {
 
     public List<ProjectDTO> getActivatingProjectDTOs(){
         return this.getProjectDTOs().stream()
+                .filter(p-> !p.getClosed())
                 .filter(p->p.getStatus().equals(ProjectStatus.ACTIVATING.toString()))
                 .collect(Collectors.toList());
     }
 
     public List<ProjectDTO> getReachedProjectDTOs(){
         return this.getProjectDTOs().stream().
+                filter(p-> !p.getClosed()).
                 filter(p->p.getStatus().equals(ProjectStatus.REACHED.toString()))
                 .collect(Collectors.toList());
     }
 
     public List<ProjectDTO> getOverdueProjectDTOs(){
         return this.getProjectDTOs().stream().
+                filter(p-> !p.getClosed()).
                 filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
                 .collect(Collectors.toList());
     }

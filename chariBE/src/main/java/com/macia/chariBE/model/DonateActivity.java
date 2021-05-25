@@ -1,6 +1,8 @@
 package com.macia.chariBE.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.protobuf.Enum;
+import com.macia.chariBE.utility.DonateActivityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +35,9 @@ public class DonateActivity {
     @ManyToOne
     @JoinColumn(name = "prj_id")
     private Project project;
+
+    @Column
+    private String status;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donateActivity")

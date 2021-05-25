@@ -5,6 +5,7 @@ import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Order;
 import com.macia.chariBE.repository.DonateDetailsRepository;
 import com.macia.chariBE.service.*;
+import com.macia.chariBE.utility.DonateActivityStatus;
 import com.macia.chariBE.utility.MoneyUtility;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -58,7 +59,6 @@ public class PaypalController {
         return "paypal home";
     }
 
-    String messge;
 
     @Transactional
     @PostMapping("/donator_id/{did}/project_id/{pid}/donate")
@@ -66,7 +66,6 @@ public class PaypalController {
                           @PathVariable(value = "pid") Integer project_id,
                           @RequestBody Order order) {
         int price = (int)order.getPrice();
-        this.messge=order.getDescription();
         order.setPrice(MoneyUtility.VNDToUSD(order.getPrice()));
         order.setCurrency("USD");
         order.setMethod("PAYPAL");
@@ -94,27 +93,22 @@ public class PaypalController {
 
     @Transactional
     @GetMapping("/success/donator_id/{did}/project_id/{pid}/money/{money}")
-    public ResponseEntity<?> successPay(
+    public String successPay(
             @PathVariable(value = "did") Integer donator_id,
             @PathVariable(value = "pid") Integer project_id,
             @PathVariable(value = "money") int money,
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId) {
-        JSONObject jo = new JSONObject();
         try {
             Payment payment = service.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
                 this.handleSuccessPayment(donator_id,project_id,money);
-                jo.put("errorCode", "0");
-                jo.put("message", "Donate success!");
-                return new ResponseEntity<>(jo, HttpStatus.OK);
+                return "Ủng hộ thành công";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
-        jo.put("errorCode", "1");
-        jo.put("message", "Donate fail!");
-        return new ResponseEntity<>(jo, HttpStatus.OK);
+        return "Ủng hộ thất bại";
     }
 
 
@@ -125,10 +119,10 @@ public class PaypalController {
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(donatorService.findById(donator_id))
                             .project(projectService.findProjectById(project_id))
+                            .status(DonateActivityStatus.SUCCESSFUL.toString())
                             .build()))
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message(this.messge)
                     .build());
         }
         else {
@@ -136,7 +130,6 @@ public class PaypalController {
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
                     .money(money)
-                    .message(this.messge)
                     .build());
         }
     }

@@ -15,6 +15,7 @@ export 'notification/notifications_screen.dart';
 export 'notification/notifications_setting.dart';
 export 'personal/change_password_screen.dart';
 export 'personal/personal_screen.dart';
+export 'post/post_screen.dart';
 
 
 

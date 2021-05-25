@@ -24,13 +24,10 @@ class AskScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   RoundedButton(
-                                    textColor: kPrimaryHighLightColor,
-                                    text: "Đóng góp ý kiến",
-                                    color: kPrimaryLightColor,
+                                    text: "Đăng nhập",
                                     fontsize: 16,
                                     press: (){
-                                      FeedBackService.showSendFeedbackDialog(context);
-                                      //Navigator.pop(context);
+                                      Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
                                     },
                                   ),
                                   RoundedButton(
@@ -43,10 +40,13 @@ class AskScreen extends StatelessWidget {
                                     },
                                   ),
                                   RoundedButton(
-                                    text: "Đăng nhập",
+                                    textColor: kPrimaryHighLightColor,
+                                    text: "Đóng góp ý kiến",
+                                    color: kPrimaryLightColor,
                                     fontsize: 16,
                                     press: (){
-                                      Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
+                                      FeedBackService.showSendFeedbackDialog(context);
+                                      //Navigator.pop(context);
                                     },
                                   ),
                                 ],

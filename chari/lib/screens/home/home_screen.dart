@@ -15,8 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeScreen extends StatefulWidget {
   final List<Project> projects;
   final List<ProjectType> project_types;
+  final Donator donator;
   final bool isLogin;
-  HomeScreen({Key key, @required this.projects,this.project_types,this.isLogin}) : super(key: key);
+  HomeScreen({Key key, @required this.projects,this.project_types,this.donator,this.isLogin}) : super(key: key);
 
   @override
   _HomeScreenState createState()=> _HomeScreenState();
@@ -48,9 +49,9 @@ class _HomeScreenState extends State<HomeScreen>{
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: kPrimaryLightColor,
-              centerTitle: true,
+              backgroundColor: Colors.white,
               floating: true,
+              centerTitle: false,
               title: Text(
                 'chari',
                 style: const TextStyle(
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   splashRadius: 20,
                   icon: Icon(
                     FontAwesomeIcons.search,
+                    size: 18,
                   ),
                   onPressed: () {
                     // do something
@@ -73,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen>{
               ],
             ),
             SliverAppBar(
-              backgroundColor: Colors.white,
+              backgroundColor:  Colors.white,
               pinned: true,
               centerTitle: true,
               title: widget.project_types.length == 0 ? Text(""):
@@ -135,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>{
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                           "Chưa có bài viết nào!",
+                           "Chưa có dự án nào!",
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: kPrimaryHighLightColor,
@@ -242,64 +244,72 @@ class _HomeScreenState extends State<HomeScreen>{
 
   GestureDetector buildPostSection(Project project) {
     return GestureDetector(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: project,)),
-          );
-        },
-        child: Container(
-          margin: EdgeInsets.fromLTRB(8,4,8,4),
-          padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildPostPicture(project),
-              SizedBox(
-                height: 10,
-              ),
-              //Tên dự án
-              Text(
-                project.project_name,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              //Thông tin vắn tắt
-              Text(
-                project.brief_description,
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black26),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              //Dấu phân tách
-              Container(
-                height: 1.5,
-                color: Colors.grey[300],
-                margin: EdgeInsets.symmetric(horizontal: 0),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              buildProgressPercentRow(project),
-              SizedBox(
-                height: 5,
-              ),
-              buildInfoDetailsRow(context,project),
-            ],
-          ),
-        )
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: project,donator: widget.donator,)),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(8,4,8,4),
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 20,
+              offset: Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildPostPicture(project),
+            SizedBox(
+              height: 10,
+            ),
+            //Tên dự án
+            Text(
+              project.project_name,
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            //Thông tin vắn tắt
+            Text(
+              project.brief_description,
+              style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black45),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            //Dấu phân tách
+            Container(
+              height: 1.5,
+              color: Colors.grey[300],
+              margin: EdgeInsets.symmetric(horizontal: 0),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            buildProgressPercentRow(project),
+            SizedBox(
+              height: 5,
+            ),
+            buildInfoDetailsRow(context,project),
+          ],
+        ),
+      ),
     );
   }
 
@@ -358,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 Row(
                   children: [
                     Text(
-                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      MoneyUtility.convertToMoney(project.cur_money.toString()) + " đ",
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -419,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 Row(
                   children: [
                     Text(
-                      MoneyUtility.convertToMoney(project.cur_money.toString()),
+                      MoneyUtility.convertToMoney(project.cur_money.toString())  + " đ",
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -501,13 +511,22 @@ class _HomeScreenState extends State<HomeScreen>{
             width: size.width/3,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1, color: kPrimaryHighLightColor),
-                borderRadius: BorderRadius.circular(8), color: kPrimaryLightColor),
+              border: Border.all(width: 1, color: kPrimaryHighLightColor),
+              borderRadius: BorderRadius.circular(8), color: kPrimaryLightColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 20,
+                  offset: Offset(0, 10),
+                ),
+              ],
+            ),
             child:FlatButton(
               onPressed:() => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,)),
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
                 ),
               },
               child: Text(

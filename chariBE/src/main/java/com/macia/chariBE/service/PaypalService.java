@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class PaypalService {
 
+    static Integer RequestId = 1;
     @Autowired
     private APIContext apiContext;
 
@@ -26,7 +27,8 @@ public class PaypalService {
             String description,
             String cancelUrl,
             String successUrl) throws PayPalRESTException {
-        apiContext.getRequestId();
+        RequestId++;
+        apiContext.setRequestId(RequestId.toString());
         Amount amount = new Amount();
         amount.setCurrency(currency);
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();

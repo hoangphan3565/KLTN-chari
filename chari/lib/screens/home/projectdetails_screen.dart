@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chari/models/models.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/models/donate_details_of_project_model.dart';
 import 'package:chari/models/project_model.dart';
@@ -19,7 +20,8 @@ import 'package:video_player/video_player.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   final Project project;
-  ProjectDetailsScreen({@required this.project});
+  final Donator donator;
+  ProjectDetailsScreen({@required this.project,this.donator});
   @override
   _ProjectDetailsScreenState createState() => _ProjectDetailsScreenState();
 }
@@ -125,7 +127,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     buildProjectInfo(widget.project),   //Thông tin vắn tắt
                     buildProjectDetails(widget.project),
                     // buildBestDonatorsList(),
-                    buildRecentDonatorsList(context),
+                    buildRecentDonatorList(context),
                   ],
                 ),
               ),
@@ -146,7 +148,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             onPressed:()=> {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonateScreen(project: widget.project,)),
+                MaterialPageRoute(builder: (context) => DonateScreen(project: widget.project,donator: widget.donator,)),
               ),
             },
             child: Text(
@@ -395,23 +397,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                       fontSize: 12,
                       color: Colors.black54),
                 ),
-                if(donation.message!='')
-                  Row(
-                  children: [
-                    Icon(
-                      Icons.messenger_outline,
-                      size: 13,
-                      color: kPrimaryHighLightColor,
-                    ),
-                    Text(
-                      donation.message,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -426,36 +411,52 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               fontWeight: FontWeight.bold,
               color: Colors.black),
         ),
+        if(donation.status=='FAILED')
+          Text(
+            " (Đã chuyển dời tiền)",
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: Colors.red),
+          ),
+        if(donation.status=='SUCCESSFUL')
+          Text(
+            " (Ủng hộ thành công)",
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: Colors.green),
+          ),
       ],
     );
   }
 
-  Container buildBestDonatorsList(){
-    return Container(
-      margin: EdgeInsets.fromLTRB(8,5,8,5),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Nhà hảo tâm hàng đầu",
-            style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
-          ),
-          SizedBox(height:5),
+  // Container buildBestDonatorsList(){
+  //   return Container(
+  //     margin: EdgeInsets.fromLTRB(8,5,8,5),
+  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(5),
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           "Nhà hảo tâm hàng đầu",
+  //           style: TextStyle(
+  //               fontSize: 17,
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.black),
+  //         ),
+  //         SizedBox(height:5),
+  //
+  //       ],
+  //     ),
+  //   );
+  // }
 
-        ],
-      ),
-    );
-  }
-
-  Container buildRecentDonatorsList(BuildContext context){
+  Container buildRecentDonatorList(BuildContext context){
     Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.fromLTRB(8,5,8,20),

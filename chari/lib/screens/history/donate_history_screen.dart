@@ -22,14 +22,12 @@ class _HistoryScreenState extends State<HistoryScreen>{
     return Scaffold(
       body: Container(
           decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
-              borderRadius:
-              BorderRadius.vertical(top: Radius.circular(0))),
+              color: Colors.grey.withOpacity(0.2)),
           child: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                backgroundColor: kPrimaryLightColor,
-                centerTitle: true,
+                backgroundColor:  Colors.white,
+                centerTitle: false,
                 floating: true,
                 title: Text(
                   'Lịch sử',
@@ -45,6 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
                     splashRadius: 20,
                     icon: Icon(
                       FontAwesomeIcons.search,
+                      size: 18,
                     ),
                     onPressed: () {
                       // do something
@@ -101,11 +100,19 @@ class _HistoryScreenState extends State<HistoryScreen>{
           );
         },
         child: Container(
-          margin: EdgeInsets.fromLTRB(8,5,8,5),
+          margin: EdgeInsets.fromLTRB(5,5,5,0),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 20,
+                offset: Offset(0, 10),
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,6 +139,14 @@ class _HistoryScreenState extends State<HistoryScreen>{
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
+                        if(donate_details.status=='FAILED')
+                          Text(
+                            " (Đã chuyển dời tiền!)",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
                       ],
                     ),
 

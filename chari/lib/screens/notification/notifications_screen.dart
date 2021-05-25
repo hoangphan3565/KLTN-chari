@@ -71,14 +71,11 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
     return Scaffold(
         body: Container(
           decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.2),
-          borderRadius:
-          BorderRadius.vertical(top: Radius.circular(0))),
+          color: Colors.grey.withOpacity(0.2),),
           child: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                backgroundColor: kPrimaryLightColor,
-                centerTitle: true,
+                backgroundColor: Colors.white,
                 floating: true,
                 title: Text(
                   'Thông báo',
@@ -94,6 +91,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     splashRadius: 20,
                     icon: Icon(
                       FontAwesomeIcons.search,
+                      size: 18,
                     ),
                     onPressed: () {
                       // do something
@@ -413,11 +411,19 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           }
         },
         child:  Container(
-          margin: EdgeInsets.fromLTRB(8,5,8,5),
+          margin: EdgeInsets.fromLTRB(5,5,5,0),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 20,
+                offset: Offset(0, 10),
+              ),
+            ],
           ),
           child: notification.topic!='closed' ?
           Row(

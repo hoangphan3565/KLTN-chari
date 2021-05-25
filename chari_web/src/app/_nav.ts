@@ -8,7 +8,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'chương trình từ thiện'
+    name: 'Dự án từ thiện'
   },
   {
     name: 'Danh sách chung',
@@ -41,6 +41,10 @@ export const navItems: INavData[] = [
     icon: 'icon-ban',
   },
   {
+    title: true,
+    name: 'Bài viết từ thiện'
+  },
+  {
     name: 'Bài viết',
     url: '/project-post',
     icon: 'icon-layers',
@@ -71,14 +75,18 @@ export const navItems: INavData[] = [
     icon: 'icon-heart'
   },
   {
-    name: 'Người dùng',
-    url: '/user',
-    icon: 'icon-user',
-  },
-  {
     name: 'Thông báo đẩy',
     url: '/push-notification',
     icon: 'icon-bell',
+  },
+  {
+    title: true,
+    name: 'quản lý người dùng'
+  },
+  {
+    name: 'Người dùng',
+    url: '/user',
+    icon: 'icon-user',
   },
   {
     name: 'Phản hồi',

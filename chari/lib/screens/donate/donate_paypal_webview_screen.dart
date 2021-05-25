@@ -162,15 +162,8 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
         WebView(
           onPageFinished: (page) async {
             if(page.contains('/success')){
-              var res = await http.get(page);
-              var jsRes = json.decode(utf8.decode(res.bodyBytes));
-              if(jsRes["errorCode"]=="0"){
-                Navigator.pop(context);
-                _showDonateSuccessDialog(context,widget.project);
-              }else{
-                Navigator.pop(context);
-                _showDonateFailDialog(context,widget.project);
-              }
+              Navigator.pop(context);
+              _showDonateSuccessDialog(context,widget.project);
             }
           },
           javascriptMode: JavascriptMode.unrestricted,

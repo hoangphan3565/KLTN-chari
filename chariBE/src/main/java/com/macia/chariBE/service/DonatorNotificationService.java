@@ -60,7 +60,7 @@ public class DonatorNotificationService {
             ldn = query.getResultList();
             for(DonatorNotification dn:ldn){
                 if(ChronoUnit.DAYS.between(LocalDate.now(), dn.getCreate_time().toLocalDate())>7){
-                    donatorService.moveMoney(dn.getDonator().getDNT_ID(),0, dn.getTotal_money());
+                    donatorService.moveMoney(dn.getProject_id(),dn.getDonator().getDNT_ID(),0, dn.getTotal_money());
                     dn.setHandled(true);
                 }
             }
