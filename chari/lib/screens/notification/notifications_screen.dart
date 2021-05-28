@@ -68,6 +68,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -77,21 +78,16 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
               SliverAppBar(
                 backgroundColor: Colors.white,
                 floating: true,
-                title: Text(
-                  'Thông báo',
-                  style: const TextStyle(
-                    fontSize: 27.0,
-                    color: kPrimaryHighLightColor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
-                  ),
+                title: Image.asset(
+                  "assets/icons/logo.png",
+                  height: size.height * 0.04,
                 ),
                 actions: <Widget>[
                   IconButton(
                     splashRadius: 20,
                     icon: Icon(
                       FontAwesomeIcons.search,
-                      size: 18,
+                      size: 19,
                     ),
                     onPressed: () {
                       // do something
@@ -425,8 +421,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
               ),
             ],
           ),
-          child: notification.topic!='closed' ?
-          Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
@@ -437,13 +432,33 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     SizedBox(
                       height: 5,
                     ),
-                    Text(
-                        notification.title,
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          notification.title,
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        if(notification.topic=='closed' && notification.handled==true)
+                          Text(
+                            ' (Đã xử lý)',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                        if(notification.topic=='closed' && notification.handled==false)
+                          Text(
+                            ' (Chưa xử lý)',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                      ],
+                    ),
                     SizedBox(
                       height: 5,
                     ),
@@ -496,70 +511,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
               )
 
             ],
-          )
-              :
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width*0.9,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          notification.title,
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        notification.handled==true ?
-                        Text(
-                          ' (Đã xử lý)',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green),
-                        ) :
-                        Text(
-                          ' (Chưa xử lý)',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      notification.message,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      DateFormat('kk:mm dd-MM-yy').format(DateTime.parse(notification.create_time)),
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
+          ),
         )
     );
   }

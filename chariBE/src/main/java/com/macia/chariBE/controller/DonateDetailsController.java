@@ -1,9 +1,14 @@
 package com.macia.chariBE.controller;
 
+import com.macia.chariBE.DTO.DonateDetails.DonateDetailsWithBankDTO;
+import com.macia.chariBE.model.Feedback;
 import com.macia.chariBE.service.DonateDetailsService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -20,5 +25,12 @@ public class DonateDetailsController {
     @GetMapping("/project/{prjid}")
     public ResponseEntity<?> getDonateDetailsByProjectId(@PathVariable(value = "prjid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByProjectId(id));
+    }
+
+    @PostMapping("/donate_with_bank")
+    public int saveDonateDetailsWithBank(@RequestBody List<DonateDetailsWithBankDTO> donations) {
+        donateDetailsService.saveDonateDetailsWithBank(donations);
+        donateDetailsService.disbursedProjectWithBank(donations);
+        return 1;
     }
 }

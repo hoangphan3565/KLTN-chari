@@ -109,9 +109,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
   _checkAndSubscribeFavoriteNotificationOfDonator() async {
     if(Platform.isIOS){
-      iosSubscription = _fcm.onIosSettingsRegistered.listen((event) {_saveDeviceToken();});
       _fcm.requestNotificationPermissions(IosNotificationSettings());
-    } else { _saveDeviceToken();}
+    }
     _fcm.configure(
       onMessage: (Map<String,dynamic> message) async{
         Fluttertoast.showToast(
@@ -179,21 +178,12 @@ class _AppBarScreenState extends State<AppBarScreen> {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         projects = list.map((model) => Project.fromJson(model)).toList();
       });
-      //Lấy dữ liệu hình ảnh của tất cả dự án
-      for (int i = 0;i<projects.length;i++) {
-        API.getImageByProjectID(projects[i].prj_id).then((response) {
-          setState(() {
-            List<String> imglist = (json.decode(response.body) as List<dynamic>).cast<String>();
-            projects[i].imgList = imglist;
-          });
-        });
-      }
     });
     API.getProjectTypes().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         project_types = list.map((model) => ProjectType.fromJson(model)).toList();
-        project_types.insert(0, ProjectType(0, 'Tất cả dự án'));
+        project_types.insert(0, ProjectType(0, 'Tất cả dự án','',''));
       });
     });
   }
@@ -224,13 +214,6 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
-  _saveDeviceToken() async{
-    String fcmToken = await _fcm.getToken();
-    if(islogin==true){
-      API.saveFCMToken(this.donator.phone_number, fcmToken);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (this.islogin==false) {
@@ -241,6 +224,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Trang chủ',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'Bản tin',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
@@ -256,7 +243,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
           },
         ),
 
-        body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,) : AskScreen()
+        body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,)
+            : _page == 1 ? PostScreen(projects: this.projects)
+            : AskScreen()
     );
     } else {
       return Scaffold(

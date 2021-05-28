@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireStorageModule } from "@angular/fire/storage";
+import { environment } from '../../../environments/environment';
 
 import { ProjectComponent } from './project.component';
 import { ProjectRoutingModule } from './project-routing.module';
@@ -8,10 +11,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { AllMaterialModule } from '../../material-module';
+import { DragDropDirective } from './drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -21,13 +22,14 @@ import { MatOptionModule } from '@angular/material/core';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
+    AllMaterialModule,
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
   ],
   declarations: [ 
     ProjectComponent,
-    DialogProjectComponent ]
+    DialogProjectComponent,
+    DragDropDirective,
+  ]
 })
 export class ProjectModule { }

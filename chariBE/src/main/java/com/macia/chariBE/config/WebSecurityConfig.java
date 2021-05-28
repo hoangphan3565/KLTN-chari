@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/api/projects/close/{id}","/api/projects/extend/{id}/num_of_date/{nod}",
 				"/api/project_types","/api/project_types/{id}",
 				"/api/donators","/api/donators/{id}",
+				"/api/donate_details/donate_with_bank",
 				"/api/collaborators","/api/collaborators/{id}",
 				"/api/feedbacks","/api/feedbacks/{id}","/api/users","/api/users/{id}",
 				"/api/supported_peoples","/api/supported_peoples/{id}").permitAll().

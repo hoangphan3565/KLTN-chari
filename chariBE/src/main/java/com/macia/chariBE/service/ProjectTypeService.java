@@ -16,15 +16,15 @@ public class ProjectTypeService {
     @PersistenceContext
     private EntityManager em;
     @Autowired
-    private ProjectTypeRepository ptRepo;
+    private ProjectTypeRepository repo;
     public List<ProjectType> findAll() {
-        TypedQuery<ProjectType> query = em.createNamedQuery("named.projecttype.findAll", ProjectType.class);
+        TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findAll", ProjectType.class);
         return query.getResultList();
     }
 
     public ProjectType findById(Integer id) {
         try {
-            TypedQuery<ProjectType> query = em.createNamedQuery("named.projecttype.findById", ProjectType.class);
+            TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findById", ProjectType.class);
             query.setParameter("id", id);
             return query.getSingleResult();
         } catch (NoResultException e) {
@@ -32,10 +32,10 @@ public class ProjectTypeService {
         }
     }
     public ProjectType save(ProjectType pt) {
-        return ptRepo.saveAndFlush(pt);
+        return repo.saveAndFlush(pt);
     }
 
     public void removeById(Integer id){
-        ptRepo.deleteById(id);
+        repo.deleteById(id);
     }
 }

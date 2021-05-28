@@ -11,9 +11,14 @@ export const navItems: INavData[] = [
     name: 'Dự án từ thiện'
   },
   {
-    name: 'Danh sách chung',
+    name: 'Đã phê duyệt',
     url: '/project',
     icon: 'icon-list',
+  },
+  {
+    name: 'Chờ phê duyệt',
+    url: '/project-unverified',
+    icon: 'icon-reload',
   },
   {
     name: 'Đang hoạt động',
@@ -29,11 +34,6 @@ export const navItems: INavData[] = [
     name: 'Đã quá hạn',
     url: '/project-overdue',
     icon: 'icon-close',
-  },
-  {
-    name: 'Chờ phê duyệt',
-    url: '/project-unverified',
-    icon: 'icon-reload',
   },
   {
     name: 'Đã đóng',

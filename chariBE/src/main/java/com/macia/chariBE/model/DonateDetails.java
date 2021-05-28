@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
                 query = "SELECT NEW com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfProjectDTO(dd.money,dd.donateDate,dd.donateActivity.donator.fullName,dd.donateActivity.donator.phoneNumber,dd.donateActivity.status) FROM DonateDetails dd where dd.donateActivity.project.PRJ_ID =:prjid order by dd.donateDate desc"),
         @NamedQuery(name = "named.donate_details.findByDonateActivityId",
                 query = "SELECT dd FROM DonateDetails dd where dd.donateActivity.DNA_ID =: id"),
+        @NamedQuery(name = "named.donate_details.findByDonateActivityIdAndDateTime",
+                query = "SELECT dd FROM DonateDetails dd where dd.donateActivity.DNA_ID =: id and dd.donateDate =: datetime"),
 })
 public class DonateDetails {
     @Id

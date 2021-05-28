@@ -24,17 +24,16 @@
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
-          <td>{{data.project_name}}</td>
-          <td>{{data.target_money/1000000}}</td>
-          <td>{{data.cur_money/1000000}}</td>
-          <td>{{data.cur_money/data.target_money * 100}}</td>
-          <td *ngIf="data.cur_money/data.target_money>0.8">
-            <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_id)">Gia hạn</button>
-            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_id)">Đóng</button>
+          <td>{{data.projectName}}</td>
+          <td>{{data.targetMoney/1000000}}</td>
+          <td>{{data.curMoney/1000000}}</td>
+          <td>{{data.curMoney/data.targetMoney * 100}}</td>
+          <td *ngIf="data.curMoney/data.targetMoney>0.8">
+            <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_ID)">Gia hạn</button>
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
           </td>          
-          <td *ngIf="data.cur_money/data.target_money < 0.8">
-            <button type="button" class="btn btn-block btn-outline-success" disabled>Gia hạn</button>
-            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_id)">Đóng</button>
+          <td *ngIf="data.curMoney/data.targetMoney < 0.8">
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
           </td>
         </tbody>
         <tbody>

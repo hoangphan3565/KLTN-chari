@@ -1,5 +1,6 @@
-<h3 mat-dialog-title *ngIf="data.prj_id==undefined">Thêm Chương trình từ thiện</h3>
-<h3 mat-dialog-title *ngIf="data.prj_id!=undefined">Cập nhật Chương trình từ thiện</h3>
+<h3 mat-dialog-tile *ngIf="data.prj_ID==undefined">Thêm Chương trình từ thiện</h3>
+<h3 mat-dialog-tile *ngIf="data.prj_ID!=undefined">Cập nhật Chương trình từ thiện</h3>
+
 <mat-dialog-content>
     <mat-form-field>
         <mat-label>Tên chương trình</mat-label>
@@ -11,23 +12,19 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Nội dung</mat-label>
-        <input name="description" matInput [(ngModel)]="data.description" required>
-    </mat-form-field>    
-    <mat-form-field>
-        <mat-label>Ảnh bìa</mat-label>
-        <input name="image_url" matInput [(ngModel)]="data.imageUrl" required>
-    </mat-form-field>    
-    <mat-form-field>
-        <mat-label>Video giới thiệu</mat-label>
-        <input name="video_url" matInput [(ngModel)]="data.videoUrl" required>
-    </mat-form-field>
+        <textarea matInput name="description" [(ngModel)]="data.description" required></textarea>
+    </mat-form-field>   
     <mat-form-field>
         <mat-label>Ngày bắt đầu</mat-label>
-        <input name="startDate" matInput [(ngModel)]="data.startDate" required>
+        <input matInput [matDatepicker]="pickerStartDate" name="startDate" [(ngModel)]="data.startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStartDate></mat-datepicker>
     </mat-form-field>   
     <mat-form-field>
         <mat-label>Ngày kết thúc</mat-label>
-        <input name="endDate" matInput [(ngModel)]="data.endDate" required>
+        <input matInput [matDatepicker]="pickerEndDate" name="endDate" [(ngModel)]="data.endDate" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEndDate></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Mục tiêu quyên góp</mat-label>
@@ -48,11 +45,24 @@
                 {{spt.fullName}}
             </mat-option>
         </mat-select>
-    </mat-form-field>  
-    
+    </mat-form-field>
+      
+
+    <label>Tải video và hình ảnh cho dự án</label>
+    <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (files)="uploadFile($event)">
+        <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+    </div>
+    <div class="files-list" *ngFor="let file of files;let i=index" >
+        <p>{{ file }}</p>
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteAttachment(i)">
+            <i class="fa fa-remove"></i>
+        </button>
+    </div>
+
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="test()">test</button>
+    <button mat-button mat-dialog-close>Hủy</button>
+    <button mat-button (click)="save()" cdkFocusInitial>Lưu</button>
 </mat-dialog-actions>
-
-

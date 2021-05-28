@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: ProjectComponent,
     data: {
-      title: 'Chương trình từ thiện'
+      title: 'Dự án đã phê duyệt'
     }
   }
 ];

@@ -13,26 +13,17 @@ export class ProjectService {
 
   public getProjects = async () => {
     try {
-        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/plain');
+        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/verified');
         return await Projects.toPromise();
     }
     catch (error) {
        console.log(error);
     }  
   }    
-  public getProjectDTOs = async () => {
-    try {
-        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/dto_for_admin');
-        return await Projects.toPromise();
-    }
-    catch (error) {
-       console.log(error);
-    }  
-  }  
 
   public getUnverified = async () => {
     try {
-        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/plain-unverified');
+        const Projects = await this.http.get(Api.baseUrl+Api.projects+'/unverified');
         return await Projects.toPromise();
     }
     catch (error) {
@@ -87,9 +78,9 @@ export class ProjectService {
     }  
   }
 
-  public saveProject = async (Project: Project) => {
+  public updateProject = async (Project: Project) => {
     try {
-        const Projects = await this.http.post(Api.baseUrl+Api.projects,Project);
+        const Projects = await this.http.put(Api.baseUrl+Api.projects+'/update',Project);
         return await Projects.toPromise();
     }
     catch (error) {

@@ -1,7 +1,7 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.DTO.Project.ProjectDTOForAdmin;
-import com.macia.chariBE.DTO.Project.ProjectDTO;
+//import com.macia.chariBE.DTO.Project.ProjectDTOForAdmin;
+import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Project;
@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+
+
+
     @PersistenceContext
     private EntityManager em;
 
@@ -35,6 +38,9 @@ public class ProjectService {
     private DonateDetailsService donateDetailsService;
 
     @Autowired
+    private DonatorNotificationService donatorNotificationService;
+
+    @Autowired
     private ProjectImagesService projectImagesService;
 
     @Autowired
@@ -42,6 +48,9 @@ public class ProjectService {
 
     @Autowired
     private SupportedPeopleService supportedPeopleService;
+
+    @Autowired
+    private CollaboratorService collaboratorService;
 
     public Project save(Project project) {
         return repo.saveAndFlush(project);
@@ -56,7 +65,7 @@ public class ProjectService {
             return null;
         }
     }
-    public Project findProjectByProjectTypeId(Integer id) {
+    public Project findProjectByCharityProgramId(Integer id) {
         try {
             TypedQuery<Project> query = em.createNamedQuery("named.project.findByProjectTypeId", Project.class);
             query.setParameter("id", id);
@@ -115,18 +124,18 @@ public class ProjectService {
         return repo.findAll();
     }
 
-    public List<Project> getUnverifiedProjects(){
-        return repo.findAll().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
+    public List<ProjectDTO> getUnverifiedProjects(){
+        return getProjectDTOs().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
     }
-    public List<Project> getVerifiedProjects(){
-        return repo.findAll().stream().filter(Project::getVerified).filter(p->!p.getClosed()).collect(Collectors.toList());
+    public List<ProjectDTO> getVerifiedProjects(){
+        return getProjectDTOs().stream().filter(ProjectDTO::getVerified).filter(p->!p.getClosed()).collect(Collectors.toList());
     }
 
     public List<Project> getClosedProjects(){
         return repo.findAll().stream().filter(Project::getClosed).collect(Collectors.toList());
     }
 
-    public List<Project> approveProject(Integer id){
+    public List<ProjectDTO> approveProject(Integer id){
         Project p = repo.findById(id).orElseThrow();
         p.setVerified(true);
         repo.saveAndFlush(p);
@@ -147,27 +156,42 @@ public class ProjectService {
         return this.getOverdueProjectDTOs();
     }
 
+    private float findPriorityPoint(Project p){
+        float point=1000;
+        String curMoney = String.valueOf(findCurMoneyOfProject(p));
+        if(findStatusOfProject(p).equals((ProjectStatus.ACTIVATING).toString())){
+            if(curMoney.equals("0")){
+                point=999;
+            }else{
+                point-=(Float.parseFloat(curMoney) /Float.parseFloat(p.getTargetMoney().toString()))*Integer.parseInt(String.valueOf(findRemainingTermOfProject(p)));
+            }
+        }
+        if(findStatusOfProject(p).equals((ProjectStatus.REACHED).toString())){
+            point=300;
+        }
+        if(findStatusOfProject(p).equals((ProjectStatus.OVERDUE).toString())){
+            point=0;
+        }
+        return  point;
+    }
     public List<ProjectDTO> getProjectDTOs(){
-        List<ProjectDTO> r = new ArrayList<>();//filter(p-> !p.getClosed()).
-        List<Project> ps = repo.findAll().stream().filter(Project::getVerified).collect(Collectors.toList());
+        List<ProjectDTO> r = new ArrayList<>();
+        List<Project> ps = repo.findAll();
         for(Project p : ps){
             r.add(ProjectDTO.builder()
-                    .prj_id(p.getPRJ_ID())
-                    .project_code(p.getProjectCode())
-                    .project_name(p.getProjectName())
-                    .brief_description(p.getBriefDescription())
-                    .description(p.getDescription())
-                    .image_url(p.getImageUrl())
-                    .video_url(p.getVideoUrl())
-                    .target_money(p.getTargetMoney())
-                    .cur_money(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
-                    .num_of_donations(this.findNumOfDonationOfProject(p))
-                    .remaining_term(Integer.valueOf(String.valueOf(this.findRemainingTermOfProject(p))))
-                    .prt_id(p.getProjectType().getPRT_ID())
-                    .project_type_name(p.getProjectType().getProjectTypeName())
-                    .status(this.findStatusOfProject(p))
-                    .disbursed(p.getDisbursed())
-                    .closed(p.getClosed())
+                    .PRJ_ID(p.getPRJ_ID()).projectCode(p.getProjectCode()).projectName(p.getProjectName())
+                    .briefDescription(p.getBriefDescription()).description(p.getDescription())
+                    .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
+                    .images(this.projectImagesService.findProjectImagesByProjectId(p.getPRJ_ID()))
+                    .targetMoney(p.getTargetMoney()).curMoney(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
+                    .numOfDonations(findNumOfDonationOfProject(p))
+                    .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
+                    .remainingTerm(Integer.valueOf(String.valueOf(findRemainingTermOfProject(p))))
+                    .verified(p.getVerified()).status(findStatusOfProject(p)).disbursed(p.getDisbursed()).closed(p.getClosed())
+                    .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
+                    .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
+                    .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
+                    .priorityPoint(findPriorityPoint(p))
                     .build());
         }
         return r;
@@ -175,7 +199,7 @@ public class ProjectService {
 
     public List<ProjectDTO> getProjectReadyToMoveMoney(int money){
         return this.getActivatingProjectDTOs().stream()
-                .filter(p->p.getTarget_money()-p.getCur_money()>=money)
+                .filter(p->p.getTargetMoney()-p.getCurMoney()>=money)
                 .collect(Collectors.toList());
     }
 
@@ -200,43 +224,41 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProjectDTOForAdmin> getProjectDTOForAdmin(){
-        List<ProjectDTOForAdmin> projectDTS = new ArrayList<>();
-        for(Project p : this.getAllProjects()){
-            projectDTS.add(ProjectDTOForAdmin.builder()
-                    .PRJ_ID(p.getPRJ_ID())
-                    .projectName(p.getProjectName())
-                    .briefDescription(p.getBriefDescription())
-                    .description(p.getDescription())
-                    .startDate(p.getStartDate().toString())
-                    .endDate(p.getEndDate().toString())
-                    .targetMoney(p.getTargetMoney())
-                    .videoUrl(p.getVideoUrl())
-                    .imageUrl(p.getImageUrl())
-                    .prt_ID(p.getProjectType().getPRT_ID())
-                    .stp_ID(p.getSupportedPeople().getSTP_ID())
-                    .images(this.projectImagesService.findProjectImagesByProjectId(p.getPRJ_ID())).build());
-        }
-        return projectDTS;
-    }
-
-    public List<Project> createProject(ProjectDTOForAdmin p,Boolean isAdmin){
+    public List<Project> createProject(ProjectDTO p,Boolean isAdmin){
         Project np = new Project();
         np.setProjectName(p.getProjectName());
         np.setBriefDescription(p.getBriefDescription());
         np.setDescription(p.getDescription());
-        np.setStartDate(LocalDate.parse(p.getStartDate()));
-        np.setEndDate(LocalDate.parse(p.getEndDate()));
+        np.setStartDate(LocalDate.parse(p.getStartDate().split("T")[0]));
+        np.setEndDate(LocalDate.parse(p.getEndDate().split("T")[0]));
         np.setTargetMoney(p.getTargetMoney());
         np.setImageUrl(p.getImageUrl());
         np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        np.setCollaborator(this.collaboratorService.findById(0));
         np.setVerified(isAdmin);
         np.setDisbursed(false);
         np.setClosed(false);
         this.repo.saveAndFlush(np);
         this.projectImagesService.saveProjectImageToProjectWithListImage(np,p.getImages());
+        this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),"new");
+        return this.getAllProjects();
+    }
+
+    public List<Project> updateProject(ProjectDTO p) {
+        Project np = this.findProjectById(p.getPRJ_ID());
+        np.setProjectName(p.getProjectName());
+        np.setBriefDescription(p.getBriefDescription());
+        np.setDescription(p.getDescription());
+        np.setStartDate(LocalDate.parse(p.getStartDate().split("T")[0]));
+        np.setEndDate(LocalDate.parse(p.getEndDate().split("T")[0]));
+        np.setTargetMoney(p.getTargetMoney());
+        np.setImageUrl(p.getImageUrl());
+        np.setVideoUrl(p.getVideoUrl());
+        np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
+        np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        this.repo.saveAndFlush(np);
         return this.getAllProjects();
     }
 }

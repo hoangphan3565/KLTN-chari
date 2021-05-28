@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
@@ -52,62 +53,67 @@ class _HomeScreenState extends State<HomeScreen>{
               backgroundColor: Colors.white,
               floating: true,
               centerTitle: false,
-              title: Text(
-                'chari',
-                style: const TextStyle(
-                  fontSize: 27.0,
-                  color: kPrimaryHighLightColor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                ),
+              title: Image.asset(
+                "assets/icons/logo.png",
+                height: size.height * 0.04,
               ),
               actions: <Widget>[
                 IconButton(
                   splashRadius: 20,
                   icon: Icon(
                     FontAwesomeIcons.search,
-                    size: 18,
+                    size: 19,
                   ),
                   onPressed: () {
                     // do something
                   },
                 ),
-              ],
-            ),
-            SliverAppBar(
-              backgroundColor:  Colors.white,
-              pinned: true,
-              centerTitle: true,
-              title: widget.project_types.length == 0 ? Text(""):
-              Text(
-                widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
+                IconButton(
+                  splashRadius: 20,
+                  icon: Icon(
+                    FontAwesomeIcons.filter,
+                    size: 18,
+                  ),
+                  onPressed: () {
+                    _showBottomSheet();
+                  },
                 ),
-              ),
-              actions: <Widget>[
-                widget.project_types.length == 0 ? Text(""):
-                PopupMenuButton<ProjectType>(
-                  icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
-                  onSelected: (ProjectType result) {
-                    setState(() {
-                      _selectedProjectType = result.id;
-                    });
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return widget.project_types.map((ProjectType choice) {
-                      return PopupMenuItem(
-                        value: choice,
-                        child: Text(choice.name),
-                      );
-                    }).toList();
-                  },
-                )
               ],
             ),
-            _selectedProjectType == 0 ?
+            // SliverAppBar(
+            //   backgroundColor:  Colors.white,
+            //   pinned: true,
+            //   centerTitle: true,
+            //   title: widget.project_types.length == 0 ? Text(""):
+            //   Text(
+            //     widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
+            //     style: const TextStyle(
+            //       fontSize: 16.0,
+            //       fontWeight: FontWeight.bold,
+            //       letterSpacing: -0.5,
+            //     ),
+            //   ),
+            //   actions: <Widget>[
+            //     widget.project_types.length == 0 ? Text(""):
+            //     PopupMenuButton<ProjectType>(
+            //       icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
+            //       onSelected: (ProjectType result) {
+            //         setState(() {
+            //           _selectedProjectType = result.id;
+            //         });
+            //       },
+            //       itemBuilder: (BuildContext context) {
+            //         return widget.project_types.map((ProjectType choice) {
+            //           return PopupMenuItem(
+            //             value: choice,
+            //             child: Text(choice.name),
+            //           );
+            //         }).toList();
+            //       },
+            //     )
+            //   ],
+            // ),
+             _selectedProjectType == 0 ?
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -575,6 +581,26 @@ class _HomeScreenState extends State<HomeScreen>{
             ),
           ),
       ],
+    );
+  }
+
+  void _showBottomSheet(){
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        builder: (BuildContext context){
+          return Wrap(
+            children: [
+              Filter(),
+            ],
+          );
+        }
     );
   }
 

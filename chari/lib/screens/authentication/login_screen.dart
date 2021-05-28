@@ -5,6 +5,7 @@ import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +23,12 @@ class _LoginScreenState extends State<LoginScreen>{
   TextEditingController _passwordController = TextEditingController();
   bool notSeePassword = true;
 
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  _saveDeviceToken(String username) async{
+    String fcmToken = await _fcm.getToken();
+    API.saveFCMToken(username, fcmToken);
+  }
 
   _login(String username, String password) async{
     var res = await API.signin(username, password);
@@ -117,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 _sendCodeToUser("+84"+username.substring(1),password,context);
               }
               else{
+                _saveDeviceToken(_usernameController.text);
                 _login(_usernameController.text,_passwordController.text);
               }
             }else{

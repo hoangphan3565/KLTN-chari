@@ -9,6 +9,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
   ],
   declarations: [ 
     ProjectReachedComponent,
+    DialogDisburseProjectComponent,
   ]
 })
 export class ProjectReachedModule { }

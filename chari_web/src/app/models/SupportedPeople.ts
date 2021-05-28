@@ -3,5 +3,6 @@ export class SupportedPeople {
     fullName:string;
     address:string;
     phoneNumber:string;
+    bankName:string;
     bankAccount:string;
 }

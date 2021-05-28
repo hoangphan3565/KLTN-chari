@@ -33,9 +33,9 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   void initState() {
     if(widget.donator==null){
-      this.donateCode = 'unghox'+widget.project.prj_id.toString()+'x0z';
+      this.donateCode = 'CHARI0T'+widget.project.prj_id.toString();
     }else{
-      this.donateCode = 'unghox'+widget.project.prj_id.toString()+'x'+widget.donator.id.toString();
+      this.donateCode = 'CHARI'+widget.donator.id.toString()+'T'+widget.project.prj_id.toString();
     }
     super.initState();
   }
@@ -249,7 +249,7 @@ class _DonateScreenState extends State<DonateScreen> {
                 if(int.parse(_moneyControllerField.text)<=lessMoney && int.parse(_moneyControllerField.text) <= 1000000000){
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   int donator_id = prefs.getInt('donator_id');
-                  if(donator_id==null){donator_id = -1;}  //nếu chưa đăng nhập***** Vấn đề là lỡ có nhiều lượt quyên góp ko đăng nhập thì sao ******
+                  if(donator_id==null){donator_id = 0;}  //nếu chưa đăng nhập***** Vấn đề là lỡ có nhiều lượt quyên góp ko đăng nhập thì sao ******
                   String url = baseUrl+"/paypal/donator_id/${donator_id}/project_id/${widget.project.prj_id}/donate";
                   final body = jsonEncode(<String, String>{
                     "price": _moneyControllerField.text,

@@ -44,6 +44,7 @@ export class SupportedPeopleComponent implements OnInit {
       fullName:sp.fullName,
       address:sp.address,
       phoneNumber:sp.phoneNumber,
+      bankName:sp.bankName,
       bankAccount:sp.bankAccount,
     }
     this.openDialog();

@@ -12,7 +12,11 @@ export class Project {
     targetMoney:string;
     videoUrl:string;
     imageUrl:string;
+    images:string[];
+    prt_ID:Number;
     projectType:ProjectType;
+    stp_ID:Number;
     supportedPeople:SupportedPeople;
-    collaborator:Collaborator;
+    // clb_ID:Number;
+    // collaborator:Collaborator;
 }

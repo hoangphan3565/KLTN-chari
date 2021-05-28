@@ -16,22 +16,21 @@ public class FCMService {
 
     final private Logger logger = LoggerFactory.getLogger(FCMService.class);
 
-    public void sendMessage(Map<String, String> data, NotificationObject request) throws InterruptedException, ExecutionException {
-        Message message = getPreconfiguredMessageWithData(data, request);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonOutput = gson.toJson(message);
-        String response = sendAndGetResponse(message);
-        logger.info("Sent message with data. Topic: " + request.getTopic() + ", " + response+ " msg "+jsonOutput);
-    }
-
-    public void sendMessageCustomDataWithTopic(Map<String, String> data, NotificationObject request) throws InterruptedException, ExecutionException {
-        Message message = getPreconfiguredMessageWithDataCustomWithTopic(data, request);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonOutput = gson.toJson(message);
-        String response = sendAndGetResponse(message);
-        logger.info("Sent message with data. Topic: " + data.get("topic") + ", " + response+ " msg "+jsonOutput);
-    }
-
+//    public void sendMessage(Map<String, String> data, NotificationObject request) throws InterruptedException, ExecutionException {
+//        Message message = getPreconfiguredMessageWithData(data, request);
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        String jsonOutput = gson.toJson(message);
+//        String response = sendAndGetResponse(message);
+//        logger.info("Sent message with data. Topic: " + request.getTopic() + ", " + response+ " msg "+jsonOutput);
+//    }
+//
+//    public void sendMessageCustomDataWithTopic(Map<String, String> data, NotificationObject request) throws InterruptedException, ExecutionException {
+//        Message message = getPreconfiguredMessageWithDataCustomWithTopic(data, request);
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        String jsonOutput = gson.toJson(message);
+//        String response = sendAndGetResponse(message);
+//        logger.info("Sent message with data. Topic: " + data.get("topic") + ", " + response+ " msg "+jsonOutput);
+//    }
 
     public void sendMessageWithoutData(NotificationObject request)
             throws InterruptedException, ExecutionException {
@@ -47,6 +46,13 @@ public class FCMService {
         String jsonOutput = gson.toJson(message);
         String response = sendAndGetResponse(message);
         logger.info("Sent message to token. Device token: " + request.getToken() + ", " + response+ " msg "+jsonOutput);
+    }
+
+    public void sendMessageTopicAndToken(NotificationObject request)
+            throws InterruptedException, ExecutionException {
+        Message message = getPreconfiguredMessageToTopicAndToken(request);
+        String response = sendAndGetResponse(message);
+        logger.info("Sent message to Topic: " + request.getTopic() + ", "+" Device token: " + request.getToken() + response);
     }
 
     private String sendAndGetResponse(Message message) throws InterruptedException, ExecutionException {
@@ -74,9 +80,13 @@ public class FCMService {
         return getPreconfiguredMessageBuilder(request).setTopic(request.getTopic()).build();
     }
 
-    private Message getPreconfiguredMessageWithData(Map<String, String> data, NotificationObject request) {
-        return getPreconfiguredMessageBuilder(request).putAllData(data).setToken(request.getToken()).build();
+    private Message getPreconfiguredMessageToTopicAndToken(NotificationObject request) {
+        return getPreconfiguredMessageBuilder(request).setTopic(request.getTopic()).setToken(request.getToken()).build();
     }
+
+//    private Message getPreconfiguredMessageWithData(Map<String, String> data, NotificationObject request) {
+//        return getPreconfiguredMessageBuilder(request).putAllData(data).setToken(request.getToken()).build();
+//    }
 
     private Message.Builder getPreconfiguredMessageBuilder(NotificationObject request) {
         AndroidConfig androidConfig = getAndroidConfig(request.getTopic());
@@ -87,9 +97,10 @@ public class FCMService {
     }
 
 
-    private Message getPreconfiguredMessageWithDataCustomWithTopic(Map<String, String> data, NotificationObject request) {
-        return getPreconfiguredMessageBuilderCustomDataWithTopic(data, request).putAllData(data).setTopic(request.getTopic()).build();
-    }
+//    private Message getPreconfiguredMessageWithDataCustomWithTopic(Map<String, String> data, NotificationObject request) {
+//        return getPreconfiguredMessageBuilderCustomDataWithTopic(data, request).putAllData(data).setTopic(request.getTopic()).build();
+//    }
+
 
     private Message.Builder getPreconfiguredMessageBuilderCustomDataWithTopic(Map<String, String> data, NotificationObject request) {
         AndroidConfig androidConfig = getAndroidConfig(request.getTopic());

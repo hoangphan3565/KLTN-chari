@@ -1,0 +1,19 @@
+<h3 mat-dialog-title>Thông tin giải ngân</h3>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tên đầy đủ</mat-label>
+        <input name="fullname" matInput [(ngModel)]="data.supportedPeople.fullName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Tên ngân hàng</mat-label>
+        <input name="bankName" matInput [(ngModel)]="data.supportedPeople.bankName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Số tài khoản</mat-label>
+        <input name="bankAccount" matInput [(ngModel)]="data.supportedPeople.bankAccount">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Nội dung chuyển khoảng</mat-label>
+        <input name="disbureCode" matInput [(ngModel)]="disburseCode">
+    </mat-form-field>
+</mat-dialog-content>

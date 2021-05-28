@@ -19,6 +19,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
           decoration: BoxDecoration(
@@ -29,21 +30,16 @@ class _HistoryScreenState extends State<HistoryScreen>{
                 backgroundColor:  Colors.white,
                 centerTitle: false,
                 floating: true,
-                title: Text(
-                  'Lịch sử',
-                  style: const TextStyle(
-                    fontSize: 27.0,
-                    color: kPrimaryHighLightColor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
+                title: Image.asset(
+                    "assets/icons/logo.png",
+                    height: size.height * 0.04,
                   ),
-                ),
                 actions: <Widget>[
                   IconButton(
                     splashRadius: 20,
                     icon: Icon(
                       FontAwesomeIcons.search,
-                      size: 18,
+                      size: 19,
                     ),
                     onPressed: () {
                       // do something

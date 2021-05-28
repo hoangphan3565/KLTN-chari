@@ -102,35 +102,12 @@ public class PaypalController {
         try {
             Payment payment = service.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                this.handleSuccessPayment(donator_id,project_id,money);
+                donateDetailsService.saveDonateDetails(donator_id,project_id,money,LocalDateTime.now());
                 return "Ủng hộ thành công";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
         return "Ủng hộ thất bại";
-    }
-
-
-    public void handleSuccessPayment(Integer donator_id, Integer project_id, int money){
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-        if (donateActivity == null) {
-            donateDetailsRepository.save(DonateDetails.builder()
-                    .donateActivity(donateActivityService.save(DonateActivity.builder()
-                            .donator(donatorService.findById(donator_id))
-                            .project(projectService.findProjectById(project_id))
-                            .status(DonateActivityStatus.SUCCESSFUL.toString())
-                            .build()))
-                    .donateDate(LocalDateTime.now())
-                    .money(money)
-                    .build());
-        }
-        else {
-            donateDetailsRepository.save(DonateDetails.builder()
-                    .donateActivity(donateActivity)
-                    .donateDate(LocalDateTime.now())
-                    .money(money)
-                    .build());
-        }
     }
 }

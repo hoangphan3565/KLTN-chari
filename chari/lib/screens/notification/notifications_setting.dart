@@ -43,12 +43,12 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
-          'Cài đặt thông ',
+          'Cài đặt thông báo',
           style: const TextStyle(
             color: kPrimaryColor,
-            fontSize: 20.0,
+            fontSize: 17.0,
             fontWeight: FontWeight.bold,
             letterSpacing: -1.2,
           ),

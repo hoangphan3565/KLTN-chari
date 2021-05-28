@@ -32,6 +32,8 @@ public class ProjectTypeController {
     public List<ProjectType> updateProjectType(@PathVariable(value = "id") Integer id, @RequestBody ProjectType pt) {
         ProjectType p = projectTypeService.findById(id);
         p.setProjectTypeName(pt.getProjectTypeName());
+        p.setDescription(pt.getDescription());
+        p.setImageUrl(pt.getImageUrl());
         projectTypeService.save(p);
         return projectTypeService.findAll();
     }

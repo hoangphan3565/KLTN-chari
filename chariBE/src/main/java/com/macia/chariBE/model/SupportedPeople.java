@@ -34,6 +34,9 @@ public class SupportedPeople {
     @Column(length = 10)
     private String phoneNumber;
 
+    @Column(length = 200)
+    private String bankName;
+
     @Column(length = 50)
     private String bankAccount;
 

@@ -1,8 +1,11 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.model.Donator;
-import com.macia.chariBE.model.DonatorNotification;
+import com.macia.chariBE.model.*;
+import com.macia.chariBE.pushnotification.NotificationObject;
+import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.DonatorNotificationRepository;
+import com.macia.chariBE.repository.JwtUserRepository;
+import com.macia.chariBE.repository.PushNotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,18 @@ public class DonatorNotificationService {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    private PushNotificationService pushNotificationService;
+
+    @Autowired
+    private PushNotificationRepository pushNotificationRepository;
+
+    @Autowired
+    private DonateActivityService donateActivityService;
+
+    @Autowired
+    private JwtUserRepository jwtUserRepository;
 
     public void save(DonatorNotification notification) {
         repo.saveAndFlush(notification);
@@ -79,5 +94,43 @@ public class DonatorNotificationService {
     }
     public boolean checkHaveNewNotificationUnread(Integer donator_id){
        return !repo.findByReadFalse().isEmpty(); //list thông báo chưa đọc rỗng -> đã đọc hết -> không có thông báo mới
+    }
+
+    public void saveAndPushNotificationToUser(PushNotification pn,Integer project_id) {
+        NotificationObject no = new NotificationObject();
+        no.setTitle(pn.getTitle());
+        no.setMessage(pn.getMessage());
+        no.setTopic(pn.getTopic());
+        List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(project_id);
+        for(DonateActivity da:listDA){
+            JwtUser appUser = jwtUserRepository.findByUsername(da.getDonator().getPhoneNumber());
+            if(da.getDonator().getDNT_ID()!=0){
+                if(appUser.getFcmToken() != null){
+                    no.setToken(appUser.getFcmToken());
+                    pushNotificationService.sendMessageToToken(no);
+                }
+                this.save(DonatorNotification.builder().topic(pn.getTopic()).title(pn.getTitle())
+                        .message(pn.getMessage()).create_time(LocalDateTime.now()).read(false).handled(false)
+                        .total_money(donatorService.getTotalDonateMoneyOfDonatorByProjectId(project_id,da.getDonator().getDNT_ID()))
+                        .donator(da.getDonator())
+                        .project_id(project_id).build());
+            }
+        }
+    }
+
+    public void saveAndPushNotificationToAllUser(Integer id,String topic) {
+        NotificationObject no = new NotificationObject();
+        PushNotification pn = this.pushNotificationRepository.findByTopic(topic);
+        no.setTitle(pn.getTitle());
+        no.setMessage(pn.getMessage());
+        no.setTopic(pn.getTopic());
+        List<Donator> donators = this.donatorService.findAll();
+        for(Donator d:donators){
+            this.save(DonatorNotification.builder()
+                    .topic(pn.getTopic()).title(pn.getTitle()).message(pn.getMessage())
+                    .create_time(LocalDateTime.now()).read(false).handled(false)
+                    .donator(d).project_id(id).build());
+        }
+        this.pushNotificationService.sendMessageWithoutData(no);
     }
 }

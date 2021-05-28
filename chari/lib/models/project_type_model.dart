@@ -1,13 +1,14 @@
 class ProjectType {
   int id;
   String name;
+  String description;
+  String image_url;
 
-  ProjectType(int id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+  ProjectType(this.id, this.name,this.description,this.image_url) {}
 
   ProjectType.fromJson(Map json)
       : id = json['prt_ID'],
-        name = json['projectTypeName'];
+        name = json['projectTypeName'],
+        description = json['description'],
+        image_url = json['imageUrl'];
 }

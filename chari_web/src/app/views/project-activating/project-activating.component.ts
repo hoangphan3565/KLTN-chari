@@ -7,7 +7,7 @@ import { ProjectService } from '../../services/Project.service';
   templateUrl: './project-activating.component.html',
 })
 export class ProjectActivatingComponent implements OnInit {
-  Projects: any[];
+  Projects: Project[];
 
   constructor(
     private ProjectService: ProjectService,
@@ -18,6 +18,6 @@ export class ProjectActivatingComponent implements OnInit {
     this.getActivating()
   }
   public async getActivating(){
-    this.Projects = await this.ProjectService.getActivating() as any[];
+    this.Projects = await this.ProjectService.getActivating() as Project[];
   }
 }

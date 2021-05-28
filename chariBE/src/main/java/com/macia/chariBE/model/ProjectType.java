@@ -16,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
-        @NamedQuery(name = "named.projecttype.findAll",
+        @NamedQuery(name = "named.projectType.findAll",
                 query = "SELECT p FROM ProjectType p"),
-        @NamedQuery(name = "named.projecttype.findById",
+        @NamedQuery(name = "named.projectType.findById",
                 query = "SELECT p FROM ProjectType p where p.PRT_ID =:id"),
 })
 public class ProjectType {
@@ -27,7 +27,13 @@ public class ProjectType {
     private Integer PRT_ID;
 
     @Column(length = 50)
-    private String ProjectTypeName;
+    private String projectTypeName;
+
+    @Column(length = 500)
+    private String description;
+
+    @Column(length = 300)
+    private String imageUrl;
 
     @JsonIgnore
     @OneToMany(mappedBy = "projectType")

@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DonateDetailsTopDTO {
-    private int money;
-    private String donator_name;
-    private String phone;
+public class DonateDetailsWithBankDTO {
+    private String amount;
+    private String date;
+    private String details;
 }

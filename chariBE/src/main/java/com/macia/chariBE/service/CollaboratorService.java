@@ -30,4 +30,11 @@ public class CollaboratorService {
         }
     }
 
+    public Collaborator findById(Integer clb_id) {
+        try {
+            return repo.findById(clb_id).orElseThrow();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

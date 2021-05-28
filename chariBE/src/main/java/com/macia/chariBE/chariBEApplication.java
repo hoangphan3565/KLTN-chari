@@ -26,7 +26,7 @@ public class chariBEApplication implements CommandLineRunner {
 		//Creating the Statement
 		Statement stmt = conn.createStatement();
 		//Query to create a function
-		String query_add_donator="insert into donator(dnt_id,full_name,phone_number,address) values (-1,'Khách hảo tâm','N/A','N/A');";
+		String query_add_donator="insert into donator(dnt_id,full_name,phone_number,address) values (0,'Khách hảo tâm','N/A','N/A');";
 
 		//Executing the query
 		stmt.execute(query_add_donator);

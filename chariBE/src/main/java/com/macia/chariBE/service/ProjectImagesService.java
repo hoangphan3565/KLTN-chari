@@ -32,8 +32,10 @@ public class ProjectImagesService {
     }
 
     public void saveProjectImageToProjectWithListImage(Project p, List<String> images){
-        for(String s:images){
-            this.repo.saveAndFlush(ProjectImages.builder().project(p).imageUrl(s).build());
+        if(images!=null){
+            for(String s:images){
+                this.repo.saveAndFlush(ProjectImages.builder().project(p).imageUrl(s).build());
+            }
         }
     }
 }
