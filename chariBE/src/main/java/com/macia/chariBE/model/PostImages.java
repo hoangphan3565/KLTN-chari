@@ -12,10 +12,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedQueries({
+        @NamedQuery(name = "named.postImages.findByPostId",
+                query = "SELECT p FROM PostImages p where p.post.POS_ID =:id"),
+})
 public class PostImages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer PRI_ID;
+    private Integer POI_ID;
 
     @Column(length = 500)
     private String imageUrl;

@@ -49,9 +49,13 @@ public class DonatorController {
         return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
-    @GetMapping("phone/{phone}")
+    @GetMapping("/phone/{phone}")
     public ResponseEntity<?> getDonatorByPhone(@PathVariable(value = "phone") String phone) {
         return ResponseEntity.ok().body(donatorService.findByPhone(phone));
+    }
+    @GetMapping("/facebook/{facebookId}")
+    public ResponseEntity<?> getDonatorDetailsByFacebookId(@PathVariable(value = "facebookId") String facebookId) {
+        return ResponseEntity.ok().body(donatorService.findByFacebookId(facebookId));
     }
 
     @PostMapping("/add_favorite/project/{prjid}/donator_id/{dntid}")

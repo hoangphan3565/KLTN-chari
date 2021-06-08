@@ -8,6 +8,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { ProjectTypeDragDropDirective } from './drag-drop.directive';
+import { AllMaterialModule } from '../../material-module';
+
 
 @NgModule({
   imports: [
@@ -16,11 +19,13 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    AllMaterialModule,
   ],
   declarations: [ 
     ProjectTypeComponent,
     DialogProjectTypeComponent,
+    ProjectTypeDragDropDirective,
   ]
 })
 export class ProjectTypeModule { }

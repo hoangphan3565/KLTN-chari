@@ -18,9 +18,8 @@ import { map, finalize } from "rxjs/operators";
 })
 export class DialogProjectComponent implements OnInit {
 
-  files: any = [];
-  urls: any = [];
-  fb;
+  imageUrls: any = [];
+  videoUrl: any;
   downloadURL: Observable<string>;
   ProjectTypes: ProjectType[];
   SupportedPeoples: SupportedPeople[];
@@ -36,10 +35,11 @@ export class DialogProjectComponent implements OnInit {
   ngOnInit(): void {
     this.getProjectType();
     this.getSupportedPeople();
-    this.urls = this.data.images;
+    this.imageUrls = this.data.images;
+    this.videoUrl = this.data.videoUrl;
   }  
 
-  uploadFile(event) {
+  uploadImages(event) {
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -53,11 +53,34 @@ export class DialogProjectComponent implements OnInit {
             this.downloadURL = fileRef.getDownloadURL();
             this.downloadURL.subscribe(url => {
               if (url) {
-                this.fb = url;
-                this.urls.push(url);
-                this.files.push(file.name);
+                this.imageUrls.push(url);
               }
-              console.log(this.fb);
+            });
+          })
+        )
+        .subscribe(url => {
+          if (url) {
+            console.log(url);
+          }
+        });
+    }
+  }  
+  uploadVideo(event) {
+    for (let index = 0; index < event.length; index++) {
+      var n = Date.now();
+      const file = event[index];
+      const filePath = `chari_video/${n}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(`chari_video/${n}`, file);
+      task
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            this.downloadURL = fileRef.getDownloadURL();
+            this.downloadURL.subscribe(url => {
+              if (url) {
+                this.videoUrl=(url);
+              }
             });
           })
         )
@@ -69,13 +92,12 @@ export class DialogProjectComponent implements OnInit {
     }
   }
 
-  test(){
-    console.log(this.urls);
-  }
 
   deleteAttachment(index) {
-    this.files.splice(index, 1)
-    this.urls.splice(index, 1);
+    this.imageUrls.splice(index, 1);
+  }  
+  deleteVideo() {
+    this.videoUrl=null;
   }
   
   public async getProjectType(){
@@ -86,9 +108,9 @@ export class DialogProjectComponent implements OnInit {
   }
   
   save(){
-    this.data.videoUrl=this.urls[0];
-    this.data.imageUrl=this.urls[0];
-    this.data.images=this.urls;
+    this.data.videoUrl=this.videoUrl;
+    this.data.imageUrl=this.imageUrls[0];
+    this.data.images=this.imageUrls;
     this.dialogRef.close(this.data);
   }
 }

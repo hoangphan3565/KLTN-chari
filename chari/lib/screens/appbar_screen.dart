@@ -41,7 +41,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
   var donate_details_list = new List<DonateDetails>();
   var push_notification_list = new List<PushNotification>();
   var donator_notification_list = new List<DonatorNotification>();
-  var donator = new Donator(null,null,null,null,null,null,null,null);
+  var donator = new Donator(null,null,null,null,null,null,null,null,null);
 
   List<String> listProjectIdFavorite = new List<String>();
 
@@ -206,6 +206,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
         donator.full_name = prefs.getString('donator_full_name');
         donator.address = prefs.getString('donator_address');
         donator.phone_number = prefs.getString('donator_phone');
+        donator.facebook_id = prefs.getString('donator_facebook_id');
         donator.avatar_url = prefs.getString('donator_avatar_url');
         donator.favorite_project=prefs.getString('donator_favorite_project');
         donator.favorite_notification=prefs.getString('donator_favorite_notification');

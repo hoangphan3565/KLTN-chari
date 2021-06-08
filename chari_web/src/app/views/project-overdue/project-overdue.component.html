@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col">
           <h3 class="card-title">
-            <small class="text-muted"> danh sách </small> Chương trình đã quá hạn
+            <small class="text-muted"> danh sách </small> Dự án đã quá hạn
           </h3>
         </div>
       </div>
@@ -15,11 +15,11 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Tên chương trình</th>
+            <th>Tên Dự án</th>
             <th>Mục tiêu (Triệu đồng)</th>
             <th>Đã quyên góp (Triệu đồng)</th>
             <th>Đạt được (%)</th>
-            <th>Hành động</th>
+            <th>Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
@@ -27,13 +27,15 @@
           <td>{{data.projectName}}</td>
           <td>{{data.targetMoney/1000000}}</td>
           <td>{{data.curMoney/1000000}}</td>
-          <td>{{data.curMoney/data.targetMoney * 100}}</td>
+          <td>{{data.achieved}}</td>
+          <td>
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
+          </td>
           <td *ngIf="data.curMoney/data.targetMoney>0.8">
             <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_ID)">Gia hạn</button>
-            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
-          </td>          
-          <td *ngIf="data.curMoney/data.targetMoney < 0.8">
-            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
+          </td>                 
+          <td *ngIf="data.projectType.canDisburseWhenOverdue == true">
+            <button type="button" class="btn btn-block btn-outline-info" (click)="openDisburseDialog(data)">Giải ngân</button>
           </td>
         </tbody>
         <tbody>

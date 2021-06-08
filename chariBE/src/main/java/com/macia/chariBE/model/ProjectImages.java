@@ -17,7 +17,6 @@ import javax.persistence.*;
         @NamedQuery(name = "named.projectImages.findByProjectId",
                 query = "SELECT p FROM ProjectImages p where p.project.PRJ_ID =:id"),
 })
-
 public class ProjectImages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

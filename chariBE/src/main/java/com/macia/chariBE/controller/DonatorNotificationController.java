@@ -19,12 +19,6 @@ public class DonatorNotificationController {
         return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorId(id));
     }
 
-    @PutMapping("/handle_all")
-    public ResponseEntity<?> handleAllCloseAndUnHandled() {
-        service.handleAllMoneyOfClosedProjectOverSevenDay();
-        return ResponseEntity.ok().body("Xử lý thành công");
-    }
-
     @PutMapping("/read/donator/{id}")
     public ResponseEntity<?> putReadUnreadNotification(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(service.putReadUnreadNotification(id));

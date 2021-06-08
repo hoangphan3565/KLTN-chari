@@ -11,11 +11,7 @@ const httpOptions = {
 export class Api {  
     constructor() { };
 
-    // static baseUrl ='http://192.168.137.45:8080/api';
-    // static baseUrl ='http://192.168.1.114:8080/api';
-    // static baseUrl ='http://192.168.43.202:8080/api';
-    static baseUrl ='http://192.168.37.102:8080/api';
-    
+    static baseUrl ='http://192.168.1.18:8080/api';    
     static projects = '/projects';
     static push_notifications = '/push_notifications';
     static projectTypes = '/project_types';

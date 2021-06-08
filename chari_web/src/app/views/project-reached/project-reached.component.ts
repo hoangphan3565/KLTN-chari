@@ -10,7 +10,7 @@ import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog
 })
 export class ProjectReachedComponent implements OnInit {
 
-  Projects: any[];
+  Projects: Project[];
 
   constructor(
     private ProjectService: ProjectService,
@@ -21,7 +21,7 @@ export class ProjectReachedComponent implements OnInit {
     this.getReached()
   }
   public async getReached(){
-    this.Projects = await this.ProjectService.getReached() as any[];
+    this.Projects = await this.ProjectService.getReached() as Project[];
   }
 
   openDisburseDialog(data): void {

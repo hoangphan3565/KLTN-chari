@@ -24,6 +24,7 @@ public class ProjectDTO {
     private String videoUrl;
     private Integer curMoney;
     private Integer targetMoney;
+    private double achieved;
     private Integer numOfDonations;
     private String startDate;
     private String endDate;
@@ -32,6 +33,7 @@ public class ProjectDTO {
     private String status;
     private Boolean disbursed;
     private Boolean closed;
+    private double moveMoneyProgress;
     private Integer prt_ID;
     private ProjectType projectType;
     private Integer stp_ID;

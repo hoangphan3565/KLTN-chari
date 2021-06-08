@@ -54,7 +54,7 @@ export const navItems: INavData[] = [
     name: 'các danh mục khác'
   },
   {
-    name: 'Gói từ thiện',
+    name: 'Chương trình từ thiện',
     url: '/project-type',
     icon: 'icon-cursor',
   },

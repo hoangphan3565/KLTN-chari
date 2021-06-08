@@ -1,5 +1,6 @@
 package com.macia.chariBE.controller;
 
+import com.macia.chariBE.DTO.FaceBookUser;
 import com.macia.chariBE.DTO.JwtUserDTO;
 import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.Donator;
@@ -14,6 +15,7 @@ import com.macia.chariBE.security.JwtUserDetailsService;
 import com.macia.chariBE.service.CollaboratorService;
 import com.macia.chariBE.service.DonatorNotificationService;
 import com.macia.chariBE.service.DonatorService;
+import com.macia.chariBE.utility.NumberUtility;
 import com.macia.chariBE.utility.UserStatus;
 import com.macia.chariBE.utility.UserType;
 import net.minidev.json.JSONObject;
@@ -67,7 +69,42 @@ public class JwtAuthenticationController {
 		jo.put("message", "Đăng nhập thành công!");
 		return new ResponseEntity<>(jo,HttpStatus.OK);
 	}
-	
+
+	@PostMapping("/login_facebook")
+	public ResponseEntity<?> loginWithFaceBook(@RequestBody FaceBookUser fb_user) throws Exception {
+		JSONObject jo = new JSONObject();
+		if(jwtuserRepo.findByUsername(fb_user.getId())==null){
+			JwtUser new_user = new JwtUser();
+			new_user.setUsername(fb_user.getId());
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String ps = passwordEncoder.encode("facebook");
+			new_user.setPassword(ps);
+			new_user.setUsertype(fb_user.getUsertype());
+			new_user.setStatus(UserStatus.ACTIVATED.toString());
+			jwtuserRepo.save(new_user);
+			Donator curDonator = donatorService.findByFacebookId(fb_user.getId());
+			if(curDonator==null){
+				donatorService.save(Donator.builder()
+						.fullName(fb_user.getName())
+						.facebookId(fb_user.getId())
+						.favoriteNotification(pushNotificationService.findAllIdAsString())
+						.favoriteProject("").build());
+			}else{
+				curDonator.setFullName(fb_user.getName());
+				donatorService.save(curDonator);
+			}
+		}
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(fb_user.getId());
+		authenticate(fb_user.getId(), "facebook");
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		JwtUser fbUser = jwtuserRepo.findByUsername(fb_user.getId());
+		jo.put("errorCode", 0);
+		jo.put("token",new JwtResponse(token).getToken());
+		jo.put("data", fbUser);
+		jo.put("message", "Đăng nhập thành công!");
+		return new ResponseEntity<>(jo,HttpStatus.OK);
+	}
+
 	@PostMapping("/register")
 	public ResponseEntity<?> saveUser(@RequestBody JwtUserDTO user) {
 		JSONObject jo = new JSONObject();
@@ -137,10 +174,13 @@ public class JwtAuthenticationController {
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){
 			if(user.getUsertype().equals(UserType.Donator)){
-				donatorService.save(Donator.builder()
-						.phoneNumber(user.getUsername())
-						.favoriteNotification(pushNotificationService.findAllIdAsString())
-						.favoriteProject("").build());
+				if(donatorService.findByPhone(user.getUsername())==null){
+					donatorService.save(Donator.builder()
+							.phoneNumber(user.getUsername())
+							.favoriteNotification(pushNotificationService.findAllIdAsString())
+							.favoriteProject("").build());
+				}
+
 			}else if(user.getUsertype().equals(UserType.Collaborator)){
 				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
 			}

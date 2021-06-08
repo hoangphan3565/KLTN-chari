@@ -1,39 +1,71 @@
 .uploadfilecontainer {
-    background-image: url("../../../../assets/img/upload.png");
-    background-repeat: no-repeat;
-    background-size: 100px;
-    background-position: center;
-    height: 100px;
-    width: 80%;
-    margin: 20px auto;
-    border: 2px dashed #1C8ADB;
-    border-radius: 6px;
-  }
-  
-  .uploadfilecontainer:hover {
-    cursor: pointer;
-    background-color: #9ecbec !important;
-    opacity: 0.8;
-  }
-  
-  .files-list {
-    display: flex;
-    justify-content: space-between;
-    height: 35px;
-    width: 80%;
-    margin: 10px auto;
-    background: #ffffff;
-    border: 1px dashed;
-    border-radius: 3px;
-    padding: 3px;
-    color: #1c8adb;
-  }
-  
-  .files-list .delete-file {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  .files-list .delete-file img{
-    width:30px;
-  }
+  background-image: url("../../../../assets/img/upload.png");
+  background-repeat: no-repeat;
+  background-size: 100px;
+  background-position: center;
+  height: 100px;
+  width: 80%;
+  margin: 20px auto;
+  border: 2px dashed #1C8ADB;
+  border-radius: 6px;
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
+}
+
+.files-list {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  width: 80%;
+  margin: 10px auto;
+  background: #ffffff;
+  border: 1px dashed;
+  border-radius: 3px;
+  padding: 3px;
+  color: #1c8adb;
+}
+
+.files-list .delete-file {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.files-list .delete-file img{
+  width:30px;
+}
+
+
+/* Container needed to position the button. Adjust the width as needed */
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* Make the image responsive */
+.container img {
+  width: 100%;
+  height: auto;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  position: absolute;
+  top: 5%;
+  right: 0%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.container .btn:hover {
+  background-color: red;
+}

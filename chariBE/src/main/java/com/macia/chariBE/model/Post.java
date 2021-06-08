@@ -17,6 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedQueries({
+        @NamedQuery(name = "named.post.findAll",
+                query = "SELECT p FROM Post p order by p.createDate desc"),
+        @NamedQuery(name = "named.post.findById",
+                query = "SELECT p FROM Post p where p.POS_ID =:id"),
+})
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +31,14 @@ public class Post {
     @Column(length = 200)
     private String name;
 
-    @Column(length = 200)
-    private String projectId;
-
-    @Column(length = 200)
-    private String projectName;
-
-    @Column(length = 20)
-    private String projectStatus;
-
     @Column(length = 4000)
     private String content;
+
+    @Column()
+    private Integer projectId;
+
+    @Column()
+    private Boolean isPublic;
 
     @Column
     @CreationTimestamp
@@ -46,10 +49,13 @@ public class Post {
     private LocalDate updateDate;
 
     @Column(length = 500)
+    private String imageUrl;
+
+    @Column(length = 500)
     private String videoUrl;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "post",orphanRemoval = true)
     private List<PostImages> postImages;
 
 }

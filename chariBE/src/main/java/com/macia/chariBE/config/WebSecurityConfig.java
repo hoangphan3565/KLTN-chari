@@ -47,9 +47,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(
-						"/api/login","/api/register","/api/activate/{usn}",
+						"/api/login","/api/login_facebook","/api/register","/api/activate/{usn}",
 				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
-				"/api/projects","/api/projects/{id}","/api/project_images/project/{id}",
+				"/api/projects","/api/projects/{id}",
+				"/api/posts","/api/posts/{id}",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
 				"/api/donate_details/project/{prjid}",

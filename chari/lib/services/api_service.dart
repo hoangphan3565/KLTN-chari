@@ -4,12 +4,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //local ip và port server đang deploy
-// const baseUrl = "http://192.168.137.45:8080/api";
-// const baseUrl = "http://192.168.1.114:8080/api";
-const baseUrl = "http://192.168.37.102:8080/api";
-// const baseUrl = "http://192.168.43.202:8080/api";
+const baseUrl = "http://192.168.1.15:8080/api";
 
 const login = "/login";
+const login_facebook = "/login_facebook";
 const register = "/register";
 const save_user = "/save_user";
 const activate = "/activate";
@@ -33,6 +31,15 @@ class API {
     final body = jsonEncode(<String, String>{
       "username":username,
       "password":password,
+    });
+    return http.post(url,headers:header,body: body);
+  }
+  static loginFB(String name,String id) {
+    String url = baseUrl+login_facebook;
+    final body = jsonEncode(<String, String>{
+      "name":name,
+      "id":id,
+      "usertype":"Donator"
     });
     return http.post(url,headers:header,body: body);
   }
@@ -128,6 +135,10 @@ class API {
 
   static Future getDonatorDetailsByPhone(String phone,String token) {
     var url = baseUrl + donators +'/phone/'+phone;
+    return http.get(url,headers:getHeaderJWT(token));
+  }
+  static Future getDonatorDetailsByFacebookId(String facebookId,String token) {
+    var url = baseUrl + donators +'/facebook/'+facebookId;
     return http.get(url,headers:getHeaderJWT(token));
   }
 

@@ -32,7 +32,7 @@ export class ProjectTypeComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogProjectTypeComponent, {
-      width: '250px',
+      width: '300px',
       data: this.projectType,
     });
     dialogRef.afterClosed().subscribe((result: ProjectType) => {
@@ -49,7 +49,9 @@ export class ProjectTypeComponent implements OnInit {
   openEditDialog(pt : ProjectType): void {
     this.projectType = {
       prt_ID:pt.prt_ID,
-      projectTypeName:pt.projectTypeName
+      projectTypeName:pt.projectTypeName,
+      description:pt.description,
+      imageUrl:pt.imageUrl
     }
     this.isEdit=true;
     this.openDialog();
@@ -61,12 +63,12 @@ export class ProjectTypeComponent implements OnInit {
       const result = await this.projectTypeService.saveProjectType(project);
       if (result)
       {
-        this.notificationService.success(state+' gói từ thiện thành công');
+        this.notificationService.success(state+' chương trình từ thiện thành công');
         this.projectTypes = result as ProjectType[];
       }    
     }
     catch (e) {
-      alert(state+' gói từ thiện thất bại');
+      alert(state+' chương trình từ thiện thất bại');
     }
   };
 
@@ -74,11 +76,11 @@ export class ProjectTypeComponent implements OnInit {
   deleteProjectType = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá gói từ thiện này?')){
+      if(confirm('Bạn có thực sự muốn xoá chương trình từ thiện này?')){
         const result = await this.projectTypeService.deleteProjectType(id);
         if (result)
         {
-          this.notificationService.warn('Xoá gói từ thiện thành công');
+          this.notificationService.warn('Xoá chương trình từ thiện thành công');
           this.projectTypes = result as ProjectType[];
         }  
       }
@@ -91,6 +93,14 @@ export class ProjectTypeComponent implements OnInit {
   clearData(){
     this.projectType = new ProjectType;
     this.projectType.prt_ID=null;
+    this.projectType.description=null;
+    this.projectType.imageUrl=null;
+  }
+
+  onFileChange(evt: any) {
+    const target : DataTransfer =  <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+
   }
 
 }

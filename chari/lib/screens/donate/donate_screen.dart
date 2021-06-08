@@ -33,9 +33,10 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   void initState() {
     if(widget.donator==null){
-      this.donateCode = 'CHARI0T'+widget.project.prj_id.toString();
+      this.donateCode = 'chari'+widget.project.prj_id.toString()+'_[SĐT]';
     }else{
-      this.donateCode = 'CHARI'+widget.donator.id.toString()+'T'+widget.project.prj_id.toString();
+      this.donateCode = 'chari'+widget.project.prj_id.toString()+'_'+widget.donator.phone_number.toString()+widget.donator.facebook_id.toString();
+
     }
     super.initState();
   }
@@ -77,7 +78,7 @@ class _DonateScreenState extends State<DonateScreen> {
         children: [
           Expanded(
             child: Container(
-              margin: EdgeInsets.fromLTRB(30,10,30,10),
+              margin: EdgeInsets.fromLTRB(15,10,15,10),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius:
@@ -356,9 +357,9 @@ class _DonateScreenState extends State<DonateScreen> {
         ),
         Row(
           children: [
-            Text('Nội dung chuyển tiền: ',
+            Text('Nội dung chuyển: ',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -381,7 +382,7 @@ class _DonateScreenState extends State<DonateScreen> {
                   Text(
                     this.donateCode,
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.red,
                     ),
@@ -397,20 +398,14 @@ class _DonateScreenState extends State<DonateScreen> {
             ),
           ],
         ),
-        Text('Vui lòng nhập đúng nội dung khi ',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        if(widget.donator==null)
+          Text('Ví dụ: chari0_0771234321 ',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
-        ),
-        Text('chuyển khoản.',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
       ],
     );
   }

@@ -2,6 +2,8 @@ package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.Project;
 import com.macia.chariBE.model.ProjectImages;
+import com.macia.chariBE.model.Project;
+import com.macia.chariBE.model.ProjectImages;
 import com.macia.chariBE.repository.ProjectImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,21 +22,35 @@ public class ProjectImagesService {
     @Autowired
     private ProjectImagesRepository repo;
 
-    public List<String> findProjectImagesByProjectId(Integer id) {
+    public List<ProjectImages> findProjectImagesByProjectId(Integer id) {
         TypedQuery<ProjectImages> query = em.createNamedQuery("named.projectImages.findByProjectId", ProjectImages.class);
         query.setParameter("id", id);
-        List<ProjectImages> projectImages = query.getResultList();
+        return query.getResultList();
+    }
+
+    public List<String> findListStringProjectImagesByProjectId(Integer id) {
+        List<ProjectImages> projectImages = findProjectImagesByProjectId(id);
         List<String> list = new ArrayList<>();
-        for (var ImageDTO : projectImages) {
-            list.add(ImageDTO.getImageUrl());
+        for (var projectImage : projectImages) {
+            list.add(projectImage.getImageUrl());
         }
         return list;
     }
 
-    public void saveProjectImageToProjectWithListImage(Project p, List<String> images){
+    public List<ProjectImages> createListProjectImage(Project p, List<String> images) {
+        List<ProjectImages> projectImages = new ArrayList<>();
         if(images!=null){
             for(String s:images){
-                this.repo.saveAndFlush(ProjectImages.builder().project(p).imageUrl(s).build());
+                projectImages.add(ProjectImages.builder().project(p).imageUrl(s).build());
+            }
+        }
+        return projectImages;
+    }
+    public void updateListProjectImage(Project p, List<String> images) {
+        repo.deleteInBatch(this.findProjectImagesByProjectId(p.getPRJ_ID()));
+        if(images!=null){
+            for(String s:images){
+                repo.saveAndFlush(ProjectImages.builder().project(p).imageUrl(s).build());
             }
         }
     }

@@ -249,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
   GestureDetector buildPostSection(Project project) {
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
         Navigator.push(
@@ -287,30 +288,63 @@ class _HomeScreenState extends State<HomeScreen>{
                   color: Colors.black),
             ),
             SizedBox(
-              height: 5,
+              height: 10,
             ),
-            //Thông tin vắn tắt
-            Text(
-              project.brief_description,
-              style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.black45),
+            Row(
+              children: [
+                // CircleAvatar(
+                //   backgroundImage: NetworkImage(project.project_type_image_url),
+                // ),
+                Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff7c94b6),
+                    image: DecorationImage(
+                      image: NetworkImage(project.project_type_image_url),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    border: Border.all(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  project.project_type_name,
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  width: size.width *0.23,
+                ),
+                if (project.status == 'ACTIVATING' && project.prj_id!=0)
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5), color: Colors.orange.withOpacity(0.3),
+                    ),
+                    child:Text(
+                      " Còn "+project.remaining_term.toString()+" Ngày",
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
+                          color: kPrimaryHighLightColor),
+                    ),
+                  ),
+              ],
             ),
+
             SizedBox(
-              height: 5,
-            ),
-            //Dấu phân tách
-            Container(
-              height: 1.5,
-              color: Colors.grey[300],
-              margin: EdgeInsets.symmetric(horizontal: 0),
-            ),
-            SizedBox(
-              height: 5,
+              height: 10,
             ),
             buildProgressPercentRow(project),
             SizedBox(
-              height: 5,
+              height: 15,
             ),
             buildInfoDetailsRow(context,project),
           ],
@@ -372,11 +406,12 @@ class _HomeScreenState extends State<HomeScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       MoneyUtility.convertToMoney(project.cur_money.toString()) + " đ",
                       style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -384,46 +419,26 @@ class _HomeScreenState extends State<HomeScreen>{
                       " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
                       style: TextStyle(
                           fontSize: 13,
-                          color: Colors.black),
+                          color: Colors.black54),
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    if (project.status == 'ACTIVATING')
-                      Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.clock,
-                            size: 12,
-                            color: kPrimaryHighLightColor,
-                          ),
-                          Text(
-                            " Còn "+project.remaining_term.toString()+" ngày",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
                   ],
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 5,
                 ),
                 if (project.status == 'ACTIVATING')
                   LinearPercentIndicator(
                     width: MediaQuery.of(context).size.width-52,
-                    lineHeight: 8.0,
+                    lineHeight: 7.0,
                     percent: percent,
                     progressColor: kPrimaryColor,
                   ),
                 if (project.status == 'REACHED')
                   LinearPercentIndicator(
                     width: MediaQuery.of(context).size.width-52,
-                    lineHeight: 8.0,
+                    lineHeight: 7.0,
                     percent: percent,
-                    progressColor: kPrimaryHighLightColor,
+                    progressColor: Colors.green,
                   ),
 
               ],
@@ -433,6 +448,7 @@ class _HomeScreenState extends State<HomeScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       MoneyUtility.convertToMoney(project.cur_money.toString())  + " đ",
@@ -444,17 +460,17 @@ class _HomeScreenState extends State<HomeScreen>{
                     Text(
                       " / "+ MoneyUtility.convertToMoney(project.target_money.toString()) + " đ",
                       style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black),
+                          fontSize: 13,
+                          color: Colors.black54),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 5,
                 ),
                 LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width-52,
-                  lineHeight: 8.0,
+                  lineHeight: 7.0,
                   percent: percent,
                   progressColor: Colors.grey,
                 ),
@@ -502,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   ),
                 ),
                 Text(
-                  (project.cur_money/project.target_money*100).toStringAsFixed(1)+" %",
+                  project.achieved.toString()+" %",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -549,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen>{
             width: size.width/3,
             height: 35,
             decoration: BoxDecoration(
-                border: Border.all(width: 1.5, color: Colors.grey),
+                border: Border.all(width: 1.5, color: Colors.black54),
                 borderRadius: BorderRadius.circular(8), color: Colors.white),
             child:FlatButton(
               onPressed:() => {},
@@ -558,7 +574,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.normal,
-                    color: Colors.grey),
+                    color: Colors.black54),
               ),
             ),
           ),

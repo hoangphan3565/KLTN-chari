@@ -57,10 +57,21 @@ export class ProjectService {
     catch (error) {
       console.log(error);
     }  
-  }   
+  }  
+
   public getClosed = async () => {
     try {
       const Projects = await this.http.get(Api.baseUrl+Api.projects+'/closed');
+      return await Projects.toPromise();
+    }
+    catch (error) {
+      console.log(error);
+    }  
+  }   
+
+  public updateMoveMoneyProgress = async () => {
+    try {
+      const Projects = await this.http.put(Api.baseUrl+Api.projects+'/handle_all_money',null);
       return await Projects.toPromise();
     }
     catch (error) {

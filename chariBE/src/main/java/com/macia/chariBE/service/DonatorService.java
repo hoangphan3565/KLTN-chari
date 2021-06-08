@@ -4,6 +4,7 @@ import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.model.PushNotification;
+import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.DonateDetailsRepository;
 import com.macia.chariBE.repository.DonatorRepository;
 import com.macia.chariBE.repository.PushNotificationRepository;
@@ -37,6 +38,9 @@ public class DonatorService {
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
 
+    @Autowired
+    private PushNotificationService pushNotificationService;
+
     public void save(Donator donator) {
         donatorRepo.saveAndFlush(donator);
     }
@@ -53,6 +57,36 @@ public class DonatorService {
             return donatorRepo.findByPhoneNumber(phone);
         } catch (NoResultException e) {
             return null;
+        }
+    }
+    public Donator findByFacebookId(String facebookId) {
+        try {
+            return donatorRepo.findByFacebookId(facebookId);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public Integer getDonatorIdByPhone(String s){
+        Donator d = donatorRepo.findByPhoneNumber(s);
+        if(d!=null){
+            return d.getDNT_ID();
+        }else{
+            donatorRepo.saveAndFlush(Donator.builder()
+                    .phoneNumber(s).favoriteNotification(pushNotificationService.findAllIdAsString())
+                    .favoriteProject("").build());
+            return donatorRepo.findByPhoneNumber(s).getDNT_ID();
+        }
+    }
+    public Integer getDonatorIdByFacebookId(String s){
+        Donator d = donatorRepo.findByFacebookId(s);
+        if(d!=null){
+            return d.getDNT_ID();
+        }else{
+            donatorRepo.saveAndFlush(Donator.builder()
+                    .facebookId(s).favoriteNotification(pushNotificationService.findAllIdAsString())
+                    .favoriteProject("").build());
+            return donatorRepo.findByFacebookId(s).getDNT_ID();
         }
     }
 

@@ -21,5 +21,14 @@ export class ProjectClosedComponent implements OnInit {
   async getClosed(){
     this.Projects = await this.ProjectService.getClosed() as any[];
   }
+
+  async updateMoveMoneyProgress(){
+    const result = await this.ProjectService.updateMoveMoneyProgress() as any[];
+    if (result)
+      {
+        this.notificationService.success(' Cập nhật thành công');
+        this.Projects = result as any[];
+      }   
+  }
 }
 

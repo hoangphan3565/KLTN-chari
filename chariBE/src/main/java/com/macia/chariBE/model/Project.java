@@ -76,7 +76,7 @@ public class Project {
     private Collaborator collaborator;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.EAGER, mappedBy = "project",orphanRemoval = true)
     private List<ProjectImages> projectImages;
 
     @JsonIgnore

@@ -99,8 +99,16 @@ public class ProjectController {
     @PutMapping("/close/{id}")
     public ResponseEntity<?> closeProject(@PathVariable(value = "id") Integer id) {
         PushNotification pn = this.pushNotificationRepository.findByTopic("closed");
-        donatorNotificationService.saveAndPushNotificationToUser(pn,id);
+        if(!projectService.findProjectById(id).getProjectType().getCanDisburseWhenOverdue()){
+            donatorNotificationService.saveAndPushNotificationToUser(pn,id);
+        }
         return ResponseEntity.ok().body(projectService.closeProject(id));
+    }
+
+    @PutMapping("/handle_all_money")
+    public ResponseEntity<?> handleAllCloseAndUnHandled() {
+        donatorNotificationService.handleAllMoneyOfClosedProjectOverSevenDay();
+        return ResponseEntity.ok().body(projectService.getClosedProjects());
     }
 
     @PutMapping("/extend/{id}/num_of_date/{nod}")

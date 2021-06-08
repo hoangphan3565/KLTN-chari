@@ -1,14 +1,16 @@
 
 import 'dart:convert';
-
+import 'package:quiver/async.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -28,15 +30,24 @@ class _PersonalScreenState extends State<PersonalScreen> {
   String fullname;
   String address;
   final FirebaseMessaging _fcm = FirebaseMessaging();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FacebookLogin facebookLogin = FacebookLogin();
 
-
-  initState() {
+  initState(){
     _getDonatorDetails();
     super.initState();
   }
 
   dispose() {
     super.dispose();
+  }
+
+  Future<void> fbLogOut() async {
+    await _firebaseAuth.signOut().then((onValue) {
+      setState(() {
+        facebookLogin.logOut();
+      });
+    });
   }
 
   _getDonatorDetails(){
@@ -166,7 +177,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     ),
                     SizedBox(height: kSpacingUnit.toDouble() * 2),
                     Text(
-                      this.fullname == null ? '' : this.fullname,
+                      this.fullname,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -206,20 +217,32 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       fontsize: 17,
                       press: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => ChangePasswordScreen(username: prefs.getString('username'),password: prefs.getString('password'))));
+                        if(prefs.getString('fb_token')!=null){
+                          Fluttertoast.showToast(
+                              msg: 'Bạn đang đăng nhập bằng Facebook! Không thể đổi mật khẩu!',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.orange,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }else{
+                          Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => ChangePasswordScreen(username: prefs.getString('username'),password: prefs.getString('password'))));
+                        }
                       },
                     ),
                     RoundedButton(
                       text: 'Đăng xuất',
                       fontsize: 17,
                       press: () async {
+                        fbLogOut();
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         API.saveFCMToken(prefs.getString('username'), null);
                         for(int i=0;i<widget.push_notification_list.length;i++){
                           _fcm.unsubscribeFromTopic(widget.push_notification_list.elementAt(i).topic.toString());
                         }
                         await prefs.clear();
-                        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
                         Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => AppBarScreen()));
                       },
                     ),

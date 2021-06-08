@@ -22,6 +22,8 @@ import java.util.List;
                 query = "SELECT da FROM DonateActivity da where da.donator.DNT_ID =:did and da.project.PRJ_ID =:pid"),
         @NamedQuery(name = "named.donate_activity.findByProjectId",
                 query = "SELECT da FROM DonateActivity da where da.project.PRJ_ID =:id"),
+        @NamedQuery(name = "named.donate_activity.findByProjectIdAndClosedNonDisburse",
+                query = "SELECT da FROM DonateActivity da where da.project.PRJ_ID =:id and da.project.projectType.canDisburseWhenOverdue=false and da.status='FAILED'"),
 })
 public class DonateActivity {
     @Id

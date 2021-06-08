@@ -10,6 +10,7 @@ class Project {
   String video_url;
   int target_money;
   int cur_money;
+  double achieved;
   int num_of_donations;
   int remaining_term;
   int prt_id;
@@ -21,8 +22,9 @@ class Project {
   List<dynamic> imgList;
 
   Project(this.prj_id, this.project_name, this.brief_description,this.description,
-      this.image_url,this.video_url,this.imgList,this.cur_money,this.target_money,this.num_of_donations,
-      this.remaining_term,this.prt_id, this.project_type_name,this.project_type_image_url,
+      this.image_url,this.video_url,this.imgList,this.cur_money,this.target_money,
+      this.achieved,this.num_of_donations, this.remaining_term,
+      this.prt_id, this.project_type_name,this.project_type_image_url,
       this.clb_id,this.collaborator_name, this.status, ) {}
 
 
@@ -38,6 +40,7 @@ class Project {
         imgList = json['images'],
         cur_money = json['curMoney'],
         target_money = json['targetMoney'],
+        achieved = json['achieved'],
         num_of_donations = json['numOfDonations'],
         remaining_term = json['remainingTerm'],
         prt_id = json['prt_ID'],

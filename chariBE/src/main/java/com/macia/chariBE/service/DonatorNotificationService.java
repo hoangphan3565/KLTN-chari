@@ -74,7 +74,7 @@ public class DonatorNotificationService {
             TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findAllClosedAndUnHandledNotification", DonatorNotification.class);
             ldn = query.getResultList();
             for(DonatorNotification dn:ldn){
-                if(ChronoUnit.DAYS.between(LocalDate.now(), dn.getCreate_time().toLocalDate())>7){
+                if(ChronoUnit.DAYS.between(dn.getCreate_time().toLocalDate(),LocalDate.now())>7){
                     donatorService.moveMoney(dn.getProject_id(),dn.getDonator().getDNT_ID(),0, dn.getTotal_money());
                     dn.setHandled(true);
                 }

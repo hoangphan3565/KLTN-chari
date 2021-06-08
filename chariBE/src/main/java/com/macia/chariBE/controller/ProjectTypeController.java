@@ -19,6 +19,7 @@ public class ProjectTypeController {
     public List<ProjectType> getAllProjectType() {
         return projectTypeService.findAll();
     }
+
     @GetMapping("/{id}")
     public ProjectType getProjectTypeById(@PathVariable(value = "id") Integer id) {
         return projectTypeService.findById(id);

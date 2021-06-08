@@ -17,8 +17,12 @@ import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.macia.chariBE.utility.Round.round;
+
 
 @Service
 public class ProjectService {
@@ -89,6 +93,20 @@ public class ProjectService {
         return curMoney;
     }
 
+    public int findCurMoneyOfProjectById(Integer id){
+        int curMoney = 0;
+        List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(id);
+        if(!donateActivityList.isEmpty()){
+            for(DonateActivity donateActivity:donateActivityList){
+                List<DonateDetails> donateDetailsList = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
+                for(DonateDetails donateDetails: donateDetailsList){
+                    curMoney+=donateDetails.getMoney();
+                }
+            }
+        }
+        return curMoney;
+    }
+
     public Integer findNumOfDonationOfProject(Project p){
         Integer numOfDonate = 0;
         List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(p.getPRJ_ID());
@@ -120,8 +138,27 @@ public class ProjectService {
         return ProjectStatus.ACTIVATING.toString();
     }
 
-    public List<Project> getAllProjects(){
-        return repo.findAll();
+    private float findPriorityPoint(Project p){
+        float point=1000;
+        String curMoney = String.valueOf(findCurMoneyOfProject(p));
+        if(findStatusOfProject(p).equals((ProjectStatus.ACTIVATING).toString())){
+            if(curMoney.equals("0")){
+                point=999;
+            }else{
+                point-=(Float.parseFloat(curMoney) /Float.parseFloat(p.getTargetMoney().toString()))*Integer.parseInt(String.valueOf(findRemainingTermOfProject(p)));
+            }
+        }
+        if(findStatusOfProject(p).equals((ProjectStatus.REACHED).toString())){
+            point=300;
+        }
+        if(findStatusOfProject(p).equals((ProjectStatus.OVERDUE).toString())){
+            point=0;
+        }
+        return  point;
+    }
+
+    private double findAchieved(Project p){
+        return round(findCurMoneyOfProject(p)/p.getTargetMoney().doubleValue()*100,1);
     }
 
     public List<ProjectDTO> getUnverifiedProjects(){
@@ -131,8 +168,26 @@ public class ProjectService {
         return getProjectDTOs().stream().filter(ProjectDTO::getVerified).filter(p->!p.getClosed()).collect(Collectors.toList());
     }
 
-    public List<Project> getClosedProjects(){
-        return repo.findAll().stream().filter(Project::getClosed).collect(Collectors.toList());
+    public int findMovedMoneyOfClosedProject(Integer prjid){
+        int money=0;
+        List<DonateActivity> donateActivities = donateActivityService.findByProjectIdAndClosedNonDisburse(prjid);
+        for(DonateActivity da:donateActivities){
+            List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(da.getDNA_ID());
+            for(DonateDetails details: donateDetails){
+                money+=details.getMoney();
+            }
+        }
+        return money;
+    }
+
+    public List<ProjectDTO> getClosedProjects(){
+        List<ProjectDTO> ls = getProjectDTOs().stream().filter(ProjectDTO::getClosed).collect(Collectors.toList());
+        for(ProjectDTO p:ls){
+            float curMoney = findCurMoneyOfProjectById(p.getPRJ_ID());
+            float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
+            p.setMoveMoneyProgress(round(movedMoney/curMoney*100,1));
+        }
+        return ls;
     }
 
     public List<ProjectDTO> approveProject(Integer id){
@@ -156,24 +211,7 @@ public class ProjectService {
         return this.getOverdueProjectDTOs();
     }
 
-    private float findPriorityPoint(Project p){
-        float point=1000;
-        String curMoney = String.valueOf(findCurMoneyOfProject(p));
-        if(findStatusOfProject(p).equals((ProjectStatus.ACTIVATING).toString())){
-            if(curMoney.equals("0")){
-                point=999;
-            }else{
-                point-=(Float.parseFloat(curMoney) /Float.parseFloat(p.getTargetMoney().toString()))*Integer.parseInt(String.valueOf(findRemainingTermOfProject(p)));
-            }
-        }
-        if(findStatusOfProject(p).equals((ProjectStatus.REACHED).toString())){
-            point=300;
-        }
-        if(findStatusOfProject(p).equals((ProjectStatus.OVERDUE).toString())){
-            point=0;
-        }
-        return  point;
-    }
+
     public List<ProjectDTO> getProjectDTOs(){
         List<ProjectDTO> r = new ArrayList<>();
         List<Project> ps = repo.findAll();
@@ -182,8 +220,9 @@ public class ProjectService {
                     .PRJ_ID(p.getPRJ_ID()).projectCode(p.getProjectCode()).projectName(p.getProjectName())
                     .briefDescription(p.getBriefDescription()).description(p.getDescription())
                     .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
-                    .images(this.projectImagesService.findProjectImagesByProjectId(p.getPRJ_ID()))
+                    .images(this.projectImagesService.findListStringProjectImagesByProjectId(p.getPRJ_ID()))
                     .targetMoney(p.getTargetMoney()).curMoney(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
+                    .achieved(findAchieved(p))
                     .numOfDonations(findNumOfDonationOfProject(p))
                     .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
                     .remainingTerm(Integer.valueOf(String.valueOf(findRemainingTermOfProject(p))))
@@ -218,13 +257,14 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getOverdueProjectDTOs(){
-        return this.getProjectDTOs().stream().
-                filter(p-> !p.getClosed()).
-                filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
+        return this.getProjectDTOs().stream()
+                .filter(p-> !p.getClosed())
+                .filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
+                .sorted(Comparator.comparing(ProjectDTO::getCurMoney).reversed())
                 .collect(Collectors.toList());
     }
 
-    public List<Project> createProject(ProjectDTO p,Boolean isAdmin){
+    public List<ProjectDTO> createProject(ProjectDTO p,Boolean isAdmin){
         Project np = new Project();
         np.setProjectName(p.getProjectName());
         np.setBriefDescription(p.getBriefDescription());
@@ -237,16 +277,16 @@ public class ProjectService {
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
         np.setCollaborator(this.collaboratorService.findById(0));
+        np.setProjectImages(this.projectImagesService.createListProjectImage(np,p.getImages()));
         np.setVerified(isAdmin);
         np.setDisbursed(false);
         np.setClosed(false);
         this.repo.saveAndFlush(np);
-        this.projectImagesService.saveProjectImageToProjectWithListImage(np,p.getImages());
         this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),"new");
-        return this.getAllProjects();
+        return this.getVerifiedProjects();
     }
 
-    public List<Project> updateProject(ProjectDTO p) {
+    public List<ProjectDTO> updateProject(ProjectDTO p) {
         Project np = this.findProjectById(p.getPRJ_ID());
         np.setProjectName(p.getProjectName());
         np.setBriefDescription(p.getBriefDescription());
@@ -258,7 +298,8 @@ public class ProjectService {
         np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        this.projectImagesService.updateListProjectImage(np,p.getImages());
         this.repo.saveAndFlush(np);
-        return this.getAllProjects();
+        return this.getVerifiedProjects();
     }
 }

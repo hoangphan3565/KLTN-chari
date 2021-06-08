@@ -25,20 +25,29 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>Logo</th>
               <th>Tên gói</th>
-              <th>Hành động</th>
+              <th>Mô tả</th>
+              <th>Loại chương trình</th>
+              <th>Tác vụ</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of projectTypes;let i=index;">
             <td>{{i+1}}</td>
+            <td>  
+              <img [src]="data.imageUrl" style="border-radius: 25px" width="50px" height="50px">           
+            </td>
             <td>{{data.projectTypeName}}</td>
+            <td>{{data.description}}</td>
+            <td *ngIf="data.canDisburseWhenOverdue==true">Có thể giải ngân khi quá hạn</td>
+            <td *ngIf="data.canDisburseWhenOverdue!=true">Không thể giải ngân khi quá hạn</td>
             <td>
                 <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
                   <i class="fa fa-edit"></i>
                 </button>
-                <!-- <button type="button" class="btn btn-danger btn-sm" (click)="deleteProjectType(data.prt_ID)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteProjectType(data.prt_ID)">
                   <i class="fa fa-remove"></i>
-                </button> -->
+                </button>
             </td>
           </tbody>
           <tbody>

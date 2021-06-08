@@ -13,6 +13,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
 import { AllMaterialModule } from '../../material-module';
 import { DragDropDirective } from './drag-drop.directive';
+import { VideoDragDropDirective } from './video-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { DragDropDirective } from './drag-drop.directive';
     ProjectComponent,
     DialogProjectComponent,
     DragDropDirective,
+    VideoDragDropDirective,
   ]
 })
 export class ProjectModule { }

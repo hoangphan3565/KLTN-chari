@@ -35,6 +35,9 @@ public class ProjectType {
     @Column(length = 300)
     private String imageUrl;
 
+    @Column()
+    private Boolean canDisburseWhenOverdue;
+
     @JsonIgnore
     @OneToMany(mappedBy = "projectType")
     private List<Project> projects;

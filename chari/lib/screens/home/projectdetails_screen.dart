@@ -122,12 +122,16 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildPostVideo(),                //Video giới thiệu của bài viết
+                    if(widget.project.video_url!=null)
+                      buildProjectVideo(),
+                    if(widget.project.video_url==null)
+                      buildMainImage(widget.project),
                     SizedBox(height: 8),
-                    buildProjectInfo(widget.project),   //Thông tin vắn tắt
+                    buildProjectInfo(widget.project),  
                     buildProjectDetails(widget.project),
                     // buildBestDonatorsList(),
-                    buildRecentDonatorList(context),
+                    if(!listDonation.isEmpty)
+                      buildRecentDonatorList(context),
                   ],
                 ),
               ),
@@ -202,7 +206,25 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-  Container buildPostVideo() {
+  Container buildMainImage(Project project) {
+    return Container(
+      height: MediaQuery.of(context).size.width - 180,
+      decoration: BoxDecoration(
+        color: const Color(0xff7c94b6),
+        image: DecorationImage(
+          image: NetworkImage(project.image_url),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        border: Border.all(
+          color: Colors.orange.withOpacity(0.3),
+          width: 1.0,
+        ),
+      ),
+    );
+  }
+  
+  Container buildProjectVideo() {
     return Container(
       height: MediaQuery.of(context).size.width - 180,
       child: _chewieController != null &&_chewieController.videoPlayerController.value.initialized ? Chewie( controller: _chewieController,) :
@@ -383,20 +405,31 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                Text(
-                  donation.donator_name,
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
+                if(donation.donator_name!=null)
+                  Text(
+                    donation.donator_name,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                    ),
                   ),
-                ),
-                Text(
-                  donation.phone,
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54),
-                ),
+                if(donation.donator_name==null)
+                  Text(
+                    "Nhà hảo tâm",
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                    ),
+                  ),
+                if(donation.phone!=null)
+                  Text(
+                    donation.phone,
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54),
+                  ),
                 SizedBox(
                   height: 10,
                 ),
@@ -419,42 +452,34 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 fontWeight: FontWeight.normal,
                 color: Colors.red),
           ),
-        if(donation.status=='SUCCESSFUL')
-          Text(
-            " (Ủng hộ thành công)",
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                color: Colors.green),
-          ),
       ],
     );
   }
 
-  // Container buildBestDonatorsList(){
-  //   return Container(
-  //     margin: EdgeInsets.fromLTRB(8,5,8,5),
-  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(5),
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Text(
-  //           "Nhà hảo tâm hàng đầu",
-  //           style: TextStyle(
-  //               fontSize: 17,
-  //               fontWeight: FontWeight.bold,
-  //               color: Colors.black),
-  //         ),
-  //         SizedBox(height:5),
-  //
-  //       ],
-  //     ),
-  //   );
-  // }
+  Container buildBestDonatorsList(){
+    return Container(
+      margin: EdgeInsets.fromLTRB(8,5,8,5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Nhà hảo tâm hàng đầu",
+            style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+          ),
+          SizedBox(height:5),
+
+        ],
+      ),
+    );
+  }
 
   Container buildRecentDonatorList(BuildContext context){
     Size size = MediaQuery.of(context).size;

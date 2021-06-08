@@ -44,4 +44,14 @@ public class DonateActivityService {
             return null;
         }
     }
+
+    public List<DonateActivity> findByProjectIdAndClosedNonDisburse(Integer id) {
+        try {
+            TypedQuery<DonateActivity> query = em.createNamedQuery("named.donate_activity.findByProjectIdAndClosedNonDisburse", DonateActivity.class);
+            query.setParameter("id", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

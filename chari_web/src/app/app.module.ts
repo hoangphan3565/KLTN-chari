@@ -46,7 +46,7 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
-import { MaterialModule } from './material/material.module';
+import { AllMaterialModule } from './material-module';
 
 
 @NgModule({
@@ -66,7 +66,7 @@ import { MaterialModule } from './material/material.module';
     IconModule,
     IconSetModule.forRoot(),
     HttpClientModule,
-    MaterialModule,
+    AllMaterialModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
   ],

@@ -3,12 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
+import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 import { DialogExtendComponent } from './dialog-extend/dialog-extend.component';
 @Component({
   templateUrl: './project-overdue.component.html',
 })
 export class ProjectOverdueComponent implements OnInit {
-  Projects: any[];
+  Projects: Project[];
     
   constructor(
     private ProjectService: ProjectService,
@@ -19,7 +20,7 @@ export class ProjectOverdueComponent implements OnInit {
     this.getOverdue()
   }
   public async getOverdue(){
-    this.Projects = await this.ProjectService.getOverdue() as any[];
+    this.Projects = await this.ProjectService.getOverdue() as Project[];
   }
   public closeProject = async (id) => {
     try 
@@ -29,7 +30,7 @@ export class ProjectOverdueComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Đóng dự án thành công');
-          this.Projects = result as any[];
+          this.Projects = result as Project[];
         }  
       }
     }
@@ -47,6 +48,13 @@ export class ProjectOverdueComponent implements OnInit {
       if(result){
         this.extendProject(id,result);
       }
+    });
+  }
+  
+  openDisburseDialog(data): void {
+    const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
+      width: '250px',
+      data: data
     });
   }
 

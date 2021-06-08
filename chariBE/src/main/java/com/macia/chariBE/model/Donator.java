@@ -37,6 +37,9 @@ public class Donator {
     @Column(length = 300)
     private String favoriteNotification;
 
+    @Column(length = 50)
+    private String facebookId;
+
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "donator")
     private List<DonateActivity> donateActivities;

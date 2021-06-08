@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DonatorRepository extends JpaRepository<Donator, Integer> {
     Donator findByPhoneNumber(String phone);
+    Donator findByFacebookId(String facebookId);
 }

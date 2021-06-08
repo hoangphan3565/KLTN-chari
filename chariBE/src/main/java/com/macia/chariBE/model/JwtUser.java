@@ -19,7 +19,7 @@ public class JwtUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true,length = 10)
+    @Column()
     private String username;
 
     @Column(length=500)
