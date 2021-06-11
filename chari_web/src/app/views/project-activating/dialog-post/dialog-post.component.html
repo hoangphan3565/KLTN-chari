@@ -1,0 +1,55 @@
+<h3 mat-dialog-tile>Thêm Tin từ thiện</h3>
+
+<mat-dialog-content>
+     <mat-form-field appearance="outline">
+        <mat-label>Tên Tin</mat-label>
+        <input name="post_name" matInput [(ngModel)]="data.name" required>
+    </mat-form-field>
+     <mat-form-field appearance="outline">
+        <mat-label>Nội dung</mat-label>
+        <textarea matInput name="content" [(ngModel)]="data.content" required></textarea>
+    </mat-form-field>   
+    
+    <mat-form-field appearance="outline">
+        <mat-label>Dự án liên quan</mat-label>
+        <input matInput name="content" [(ngModel)]="data.projectName">
+    </mat-form-field> 
+ 
+    <mat-checkbox name="publicPost" [(ngModel)]="data.isPublic">Công bố Tin</mat-checkbox>
+
+      
+
+    <label>Tải hình ảnh cho Tin (chỉ hỗ trợ định dạng .jpg,jpeg và png)</label>
+    <div class="uploadfilecontainer" (click)="imageInput.click()" postImageDragDrop (files)="uploadImages($event)">
+        <input hidden type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg,jpeg,png">
+    </div>
+
+    <mat-grid-list cols="3">
+        <mat-grid-tile *ngFor="let imageUrl of imageUrls;let i=index">
+            <div class="container">
+                <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 5px">
+                <button *ngIf="imageUrl" type="button" class="btn" (click)="deleteAttachment(i)">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <label>Tải video cho Tin (chỉ hỗ trợ định dạng .mp4)</label>
+    <div class="uploadfilecontainer" (click)="videoInput.click()" postVideoDragDrop (files)="uploadVideo($event)">
+        <input hidden type="file" #videoInput (change)="uploadVideo($event.target.files)" multiple="false" accept=".mp4">
+    </div>
+    <div>
+        <video *ngIf="videoUrl" [src]="videoUrl" width="400" controls>
+            <source src="videoUrl" type="video/mp4">
+        </video>        
+        <button *ngIf="videoUrl" type="button" class="btn btn-outline-danger btn-sm" (click)="deleteVideo()">
+            <i class="fa fa-remove"></i>
+        </button>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Hủy</button>
+    <button mat-button (click)="save()" cdkFocusInitial>Lưu</button>
+</mat-dialog-actions>

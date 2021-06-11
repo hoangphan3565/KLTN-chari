@@ -1,0 +1,42 @@
+<div class="col-lg">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h3 class="card-title">
+            <small class="text-muted"> danh sách </small> Dự án đã đóng
+          </h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên Dự án</th>
+            <th>Cho phép giải ngân</th>
+            <th>Tiến độ xử lý tiền thừa (%)</th>
+            <th>Tình trạng giải ngân</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of Projects;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.projectName}}</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">N/A</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">{{data.moveMoneyProgress}}</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==true">Đã giải ngân</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">Chưa giải ngân</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed!=true">N/A</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">
+            <button type="button" class="btn btn-block btn-outline-primary" (click)="openDisburseDialog(data)">Giải ngân</button>
+          </td>   
+        </tbody>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.post.findAll",
-                query = "SELECT p FROM Post p order by p.createDate desc"),
+                query = "SELECT p FROM Post p order by p.publicTime desc"),
         @NamedQuery(name = "named.post.findById",
                 query = "SELECT p FROM Post p where p.POS_ID =:id"),
 })
@@ -41,18 +42,18 @@ public class Post {
     private Boolean isPublic;
 
     @Column
-    @CreationTimestamp
-    private LocalDate createDate;
-
-    @Column
     @UpdateTimestamp
-    private LocalDate updateDate;
+    private LocalDateTime publicTime;
 
     @Column(length = 500)
     private String imageUrl;
 
     @Column(length = 500)
     private String videoUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "clb_id")
+    private Collaborator collaborator;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "post",orphanRemoval = true)

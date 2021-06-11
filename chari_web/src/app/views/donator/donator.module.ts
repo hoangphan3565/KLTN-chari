@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { DonatorComponent } from './donator.component';
 import { DonatorRoutingModule } from './donator-routing.module';
-import { DialogDonatorComponent } from './dialog-donator/dialog-donator.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -24,6 +23,6 @@ import { MatInputModule } from '@angular/material/input';
   ],
   declarations: [ 
     DonatorComponent,
-    DialogDonatorComponent ]
+  ]
 })
 export class DonatorModule { }

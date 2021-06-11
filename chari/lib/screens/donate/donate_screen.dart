@@ -33,9 +33,9 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   void initState() {
     if(widget.donator==null){
-      this.donateCode = 'chari'+widget.project.prj_id.toString()+'_[SĐT]';
+      this.donateCode = 'chari'+widget.project.prj_id.toString()+'x[SĐT]';
     }else{
-      this.donateCode = 'chari'+widget.project.prj_id.toString()+'_'+widget.donator.phone_number.toString()+widget.donator.facebook_id.toString();
+      this.donateCode = 'chari'+widget.project.prj_id.toString()+'x'+widget.donator.phone_number.toString()+widget.donator.facebook_id.toString();
 
     }
     super.initState();

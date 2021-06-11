@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import Cookies from 'js-cookie'
 
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
@@ -7,12 +8,12 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
+const loginInfoStr = Cookies.get("loginInfo");
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: loginInfoStr!=''?'dashboard':'login',
     pathMatch: 'full',
   },
   {
@@ -34,13 +35,6 @@ export const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Trang đăng nhập'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Trang đăng ký'
     }
   },
   {
@@ -75,8 +69,8 @@ export const routes: Routes = [
         loadChildren: () => import('./views/project-closed/project-closed.module').then(m => m.ProjectClosedModule)
       },
       {
-        path: 'project-post',
-        loadChildren: () => import('./views/project-post/project-post.module').then(m => m.ProjectPostModule)
+        path: 'posts',
+        loadChildren: () => import('./views/post/post.module').then(m => m.ProjectPostModule)
       },
       {
         path: 'project-type',

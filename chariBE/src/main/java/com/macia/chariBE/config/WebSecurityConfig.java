@@ -50,11 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/api/login","/api/login_facebook","/api/register","/api/activate/{usn}",
 				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
 				"/api/projects","/api/projects/{id}",
-				"/api/posts","/api/posts/{id}",
+				"/api/post/public",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
 				"/api/donate_details/project/{prjid}",
 				//for admin
+				"/api/posts","/api/posts/public/{id}","/api/posts/un_public/{id}","/api/posts/{id}",
 				"/api/push_notifications","/api/push_notifications/{id}",
 				"/api/push_notifications/topic","/api/notification/username/{usn}","/api/notification/data",
 				"/api/projects/approve/{id}","/api/projects/create/is_admin/{isadmin}",

@@ -11,8 +11,9 @@ const httpOptions = {
 export class Api {  
     constructor() { };
 
-    static baseUrl ='http://192.168.1.18:8080/api';    
+    static baseUrl ='http://192.168.1.11:8080/api';    
     static projects = '/projects';
+    static posts = '/posts';
     static push_notifications = '/push_notifications';
     static projectTypes = '/project_types';
     static donators = '/donators'
@@ -21,4 +22,6 @@ export class Api {
     static supportedPeoples = '/supported_peoples';
     static feedbacks = '/feedbacks';
     static users = '/users';
+    static login = '/login';
+
 }

@@ -11,33 +11,13 @@ import { DonateDetailsService } from '../../services/donate-details.service';
 })
 export class DashboardComponent implements OnInit {
   data: [][];
+  DonateDetail: DonateDetail;
+
   constructor(
     private DonateDetailsService: DonateDetailsService,
     private notificationService: NotificationService,
   ) { }
-  DonateDetail: DonateDetail;
 
-
-
-  // onFileChange(evt: any) {
-  //   const target : DataTransfer =  <DataTransfer>(evt.target);
-  //   if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-  //   const reader: FileReader = new FileReader();
-  //   reader.onload = (e: any) => {
-  //     const bstr: string = e.target.result;
-  //     const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-  //     const wsname : string = wb.SheetNames[0];
-  //     const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-  //     this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  //     this.data = this.data.slice(12);
-  //     for(let i=0; i<this.data.length; i++){
-  //       for(let j=1;j<=4;j++){
-  //         console.log(this.data[i][j]);
-  //       }
-  //     }
-  //   };
-  //   reader.readAsBinaryString(target.files[0]);
-  // }
 
   onFileChange(evt: any) {
     const target : DataTransfer =  <DataTransfer>(evt.target);

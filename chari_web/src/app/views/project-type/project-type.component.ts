@@ -51,6 +51,7 @@ export class ProjectTypeComponent implements OnInit {
       prt_ID:pt.prt_ID,
       projectTypeName:pt.projectTypeName,
       description:pt.description,
+      canDisburseWhenOverdue:pt.canDisburseWhenOverdue,
       imageUrl:pt.imageUrl
     }
     this.isEdit=true;
@@ -95,6 +96,7 @@ export class ProjectTypeComponent implements OnInit {
     this.projectType.prt_ID=null;
     this.projectType.description=null;
     this.projectType.imageUrl=null;
+    this.projectType.canDisburseWhenOverdue=null;
   }
 
   onFileChange(evt: any) {

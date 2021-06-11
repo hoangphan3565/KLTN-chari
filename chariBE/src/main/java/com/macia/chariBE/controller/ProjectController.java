@@ -53,7 +53,7 @@ public class ProjectController {
 
     @GetMapping("/project_type/{id}")
     public ResponseEntity<?> getProjectByProjectTypeId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.findProjectByCharityProgramId(id));
+        return ResponseEntity.ok().body(projectService.findProjectByProjectTypeId(id));
     }
 
     @GetMapping("/activating")

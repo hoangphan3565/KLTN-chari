@@ -37,4 +37,8 @@ public class Collaborator {
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "collaborator")
     private List<Project> projects;
+
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "collaborator",orphanRemoval = true)
+    private List<Post> posts;
 }

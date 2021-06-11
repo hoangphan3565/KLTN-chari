@@ -11,7 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
-import { AllMaterialModule } from '../../material-module';
+import { MaterialModule } from '../../material-module';
 import { DragDropDirective } from './drag-drop.directive';
 import { VideoDragDropDirective } from './video-drag-drop.directive';
 
@@ -23,7 +23,7 @@ import { VideoDragDropDirective } from './video-drag-drop.directive';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    AllMaterialModule,
+    MaterialModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
   ],

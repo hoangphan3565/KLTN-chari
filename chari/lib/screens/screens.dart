@@ -1,4 +1,3 @@
-export 'ask_screen.dart';
 export 'appbar_screen.dart';
 export 'authentication/enter_code_screen.dart';
 export 'authentication/forgot_password_screen.dart';
@@ -17,6 +16,7 @@ export 'notification/notifications_setting.dart';
 export 'personal/change_password_screen.dart';
 export 'personal/personal_screen.dart';
 export 'post/post_screen.dart';
+export 'post/post_details_screen.dart';
 
 
 

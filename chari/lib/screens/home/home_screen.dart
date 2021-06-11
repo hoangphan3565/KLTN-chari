@@ -80,44 +80,44 @@ class _HomeScreenState extends State<HomeScreen>{
                 ),
               ],
             ),
-            // SliverAppBar(
-            //   backgroundColor:  Colors.white,
-            //   pinned: true,
-            //   centerTitle: true,
-            //   title: widget.project_types.length == 0 ? Text(""):
-            //   Text(
-            //     widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
-            //     style: const TextStyle(
-            //       fontSize: 16.0,
-            //       fontWeight: FontWeight.bold,
-            //       letterSpacing: -0.5,
-            //     ),
-            //   ),
-            //   actions: <Widget>[
-            //     widget.project_types.length == 0 ? Text(""):
-            //     PopupMenuButton<ProjectType>(
-            //       icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
-            //       onSelected: (ProjectType result) {
-            //         setState(() {
-            //           _selectedProjectType = result.id;
-            //         });
-            //       },
-            //       itemBuilder: (BuildContext context) {
-            //         return widget.project_types.map((ProjectType choice) {
-            //           return PopupMenuItem(
-            //             value: choice,
-            //             child: Text(choice.name),
-            //           );
-            //         }).toList();
-            //       },
-            //     )
-            //   ],
-            // ),
+            SliverAppBar(
+              backgroundColor:  Colors.white,
+              pinned: true,
+              centerTitle: true,
+              title: widget.project_types.length == 0 ? Text(""):
+              Text(
+                widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              actions: <Widget>[
+                widget.project_types.length == 0 ? Text(""):
+                PopupMenuButton<ProjectType>(
+                  icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
+                  onSelected: (ProjectType result) {
+                    setState(() {
+                      _selectedProjectType = result.id;
+                    });
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return widget.project_types.map((ProjectType choice) {
+                      return PopupMenuItem(
+                        value: choice,
+                        child: Text(choice.name),
+                      );
+                    }).toList();
+                  },
+                )
+              ],
+            ),
              _selectedProjectType == 0 ?
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                  return buildPostSection(widget.projects[index]);
+                  return buildProjectSection(widget.projects[index]);
                 },
                 childCount: widget.projects.length,
               ),
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen>{
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                  return buildPostSection(widget.projects.where((i) => i.prt_id==_selectedProjectType).elementAt(index));
+                  return buildProjectSection(widget.projects.where((i) => i.prt_id==_selectedProjectType).elementAt(index));
                 },
                 childCount: widget.projects.where((i) => i.prt_id==_selectedProjectType).length,
               ),
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen>{
         });
   }
 
-  GestureDetector buildPostSection(Project project) {
+  GestureDetector buildProjectSection(Project project) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildPostPicture(project),
+            buildProjectPicture(project),
             SizedBox(
               height: 10,
             ),
@@ -292,9 +292,6 @@ class _HomeScreenState extends State<HomeScreen>{
             ),
             Row(
               children: [
-                // CircleAvatar(
-                //   backgroundImage: NetworkImage(project.project_type_image_url),
-                // ),
                 Container(
                   width: 40.0,
                   height: 40.0,
@@ -353,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen>{
     );
   }
 
-  Stack buildPostPicture(Project project) {
+  Stack buildProjectPicture(Project project) {
     return Stack(
       children: [
         Container(

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/donators")
@@ -28,25 +30,10 @@ public class DonatorController {
         return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getDonatorById(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(donatorService.findById(id));
-    }
+
     @GetMapping("/favorite_notification_list/{id}")
     public ResponseEntity<?> getNotificationListByDonatorId(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(donatorService.getFavoriteNotificationOfDonator(id));
-    }
-
-    @PostMapping()
-    public ResponseEntity<?> saveDonator(@RequestBody Donator donator) {
-        donatorService.save(donator);
-        return ResponseEntity.ok().body(donatorRepo.findAll());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeDonatorById(@PathVariable(value = "id") Integer id) {
-        donatorRepo.deleteById(id);
-        return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
     @GetMapping("/phone/{phone}")

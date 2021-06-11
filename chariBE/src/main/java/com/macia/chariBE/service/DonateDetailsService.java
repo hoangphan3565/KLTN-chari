@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class DonateDetailsService {
-    final static String donateCode = "CHARI";
-    final static String disburseCode = "GIAINGAN";
+    final static String donateCode = "chari";
+    final static String disburseCode = "giaingan";
 
     @PersistenceContext
     private EntityManager em;
@@ -101,21 +101,23 @@ public class DonateDetailsService {
 
     public Integer cutProjectIdFromDonateDetails(String s){
         String code = handleDonateDetails(s);
-        return Integer.valueOf(code.split("_")[0]); //xoá hết ở sau _
+        return Integer.valueOf(code.split("x")[0]); //xoá hết ở sau X
     }
 
     public Integer findDonatorIdFromDonateDetails(String s){
         String details = cutPhoneFromDonateDetails(s);
         if(details.length()==10){
             return donatorService.getDonatorIdByPhone(details);
-        }else{
+        }else if(details.length()==16){
             return donatorService.getDonatorIdByFacebookId(details);
+        }else{
+            return 0;
         }
     }
 
     public String cutPhoneFromDonateDetails(String s){
         String code = handleDonateDetails(s);
-        return code.substring(code.indexOf("_")+1).trim(); //xoá hết ở trước _
+        return code.substring(code.indexOf("x")+1).trim(); //xoá hết ở trước X
     }
 
     public Integer getDonateMoney(String s){
@@ -123,22 +125,16 @@ public class DonateDetailsService {
         return Integer.valueOf(r);
     }
     public void saveDonateDetailsWithBank(List<DonateDetailsWithBankDTO> donations) {
-        List<DonateDetailsWithBankDTO> ds = donations.stream().filter(dn->dn.getDetails().toUpperCase().contains(donateCode)).collect(Collectors.toList());
-        // s = "19/05/2021 08:06:17"
+        List<DonateDetailsWithBankDTO> ds = donations.stream()
+                .filter(dn->dn.getDetails()!=null)
+                .filter(dn->dn.getDetails().toLowerCase().contains(donateCode))
+                .collect(Collectors.toList());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         for(DonateDetailsWithBankDTO d:ds){
-            Integer donator_id = findDonatorIdFromDonateDetails(d.getDetails().toUpperCase());
-            Integer project_id = cutProjectIdFromDonateDetails(d.getDetails().toUpperCase());
-            String phone = cutPhoneFromDonateDetails(d.getDetails().toUpperCase());
+            Integer donator_id = findDonatorIdFromDonateDetails(d.getDetails().toLowerCase());
+            Integer project_id = cutProjectIdFromDonateDetails(d.getDetails().toLowerCase());
             Integer money = getDonateMoney(d.getAmount());
             saveDonateDetails(donator_id,project_id,money,LocalDateTime.parse(d.getDate(), formatter));
-
-            System.out.println("Donator ID: "+donator_id);
-            System.out.println("Project ID: "+project_id);
-            System.out.println("Phone Or Facebook: "+phone);
-            System.out.println("Money: "+money);
-            System.out.println("======================");
-
         }
     }
 
@@ -154,34 +150,50 @@ public class DonateDetailsService {
                     .donateDate(dateTime)
                     .money(money)
                     .build());
-            sendDonateNotification(project_id);
+            sendDonateNotificationToDonator(donator_id,project_id);
         }
         else {
-            //Để tránh lưu lại những lượt chuyển tiền đã được lưu
             if(this.findByDonateActivityIdAndDateTime(donateActivity.getDNA_ID(),dateTime).isEmpty()){
                 donateDetailsRepository.save(DonateDetails.builder()
                         .donateActivity(donateActivity)
                         .donateDate(dateTime)
                         .money(money)
                         .build());
-                sendDonateNotification(project_id);
+                sendDonateNotificationToDonator(donator_id,project_id);
             }
         }
     }
 
-    public void sendDonateNotification(Integer project_id){
+    public void sendDonateNotificationToDonator(Integer donator_id,Integer project_id){
         String title = "Chari đã nhận được tiền quyên góp.";
         String message = "Cám ơn bạn đã đóng góp cho dự án: ";
-        saveAndPushNotificationToDonator(project_id,message,title);
+        NotificationObject no = new NotificationObject();
+        no.setTitle(title);
+        JwtUser appUser;
+        DonateActivity da = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id,project_id);
+        if(da.getDonator().getPhoneNumber()!=null){
+            appUser = jwtUserRepository.findByUsername(da.getDonator().getPhoneNumber());
+        }else{
+            appUser = jwtUserRepository.findByUsername(da.getDonator().getFacebookId());
+        }
+        no.setMessage(message+projectService.findProjectById(project_id).getProjectName());
+        if(appUser!=null){
+            if(da.getDonator().getDNT_ID()!=0){
+                if(appUser.getFcmToken() != null){
+                    no.setToken(appUser.getFcmToken());
+                    pushNotificationService.sendMessageToToken(no);
+                }
+                donatorNotificationService.save(DonatorNotification.builder()
+                        .create_time(LocalDateTime.now()).donator(da.getDonator()).project_id(project_id)
+                        .title(title).message(message+projectService.findProjectById(project_id).getProjectName())
+                        .read(false).build());
+            }
+        }
     }
 
-    public void sendDisburedNotification(Integer project_id){
+    public void sendDisburseNotificationToDonators(Integer project_id){
         String title = "Chari đã giải ngân tiền quyên góp.";
         String message = "Cám ơn bạn đã đóng góp cho dự án: ";
-        saveAndPushNotificationToDonator(project_id,message,title);
-    }
-
-    private void saveAndPushNotificationToDonator(Integer project_id, String message, String title) {
         NotificationObject no = new NotificationObject();
         no.setTitle(title);
         List<DonateActivity> das = donateActivityService.findDonateActivityByProjectID(project_id);
@@ -208,15 +220,19 @@ public class DonateDetailsService {
         }
     }
 
+
     public void disbursedProjectWithBank(List<DonateDetailsWithBankDTO> donations) {
-        List<DonateDetailsWithBankDTO> ds = donations.stream().filter(dn->dn.getDetails().toUpperCase().contains(disburseCode)).collect(Collectors.toList());
+        List<DonateDetailsWithBankDTO> ds = donations.stream()
+                .filter(dn->dn.getDetails()!=null)
+                .filter(dn->dn.getDetails().toLowerCase().contains(disburseCode))
+                .collect(Collectors.toList());
         for(DonateDetailsWithBankDTO d:ds){
-            Integer project_id = Integer.valueOf(handleDonateDetails(d.getDetails()));
+            Integer project_id = Integer.valueOf(handleDonateDetails(d.getDetails().toLowerCase()));
             Project p = projectService.findProjectById(project_id);
             if(!p.getDisbursed()){
                 p.setDisbursed(true);
                 projectService.save(p);
-                sendDisburedNotification(project_id);
+                sendDisburseNotificationToDonators(project_id);
             }
         }
     }

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -20,6 +22,10 @@ public class PostController {
     public ResponseEntity<?> getAllPost() {
         return ResponseEntity.ok().body(PostService.getPostDTOs());
     }
+    @GetMapping("/public")
+    public ResponseEntity<?> getPublicPost() {
+        return ResponseEntity.ok().body(PostService.getPostDTOs().stream().filter(PostDTO::getIsPublic).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable(value = "id") Integer id) {
@@ -29,19 +35,6 @@ public class PostController {
     @PostMapping()
     public ResponseEntity<?> savePost(@RequestBody PostDTO p) {
         return ResponseEntity.ok().body(PostService.savePost(p));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable(value = "id") Integer id, @RequestBody Post pt) {
-        Post p = PostService.findById(id);
-        p.setName(pt.getName());
-        p.setContent(pt.getContent());
-        p.setProjectId(pt.getProjectId());
-        p.setIsPublic(pt.getIsPublic());
-        p.setImageUrl(pt.getImageUrl());
-        p.setVideoUrl(pt.getVideoUrl());
-        PostService.save(p);
-        return ResponseEntity.ok().body(PostService.getPostDTOs());
     }
 
     @PutMapping("/public/{id}")

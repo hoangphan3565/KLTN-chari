@@ -1,15 +1,15 @@
 <h3 mat-dialog-title *ngIf="data.prt_ID==undefined">Thêm Chương trình từ thiện</h3>
 <h3 mat-dialog-title *ngIf="data.prt_ID!=undefined">Cập nhật Chương trình từ thiện</h3>
 <mat-dialog-content>
-    <mat-form-field>
+     <mat-form-field appearance="outline">
         <mat-label>Tên chương trình</mat-label>
         <input name="project_type_name" matInput [(ngModel)]="data.projectTypeName" required>
     </mat-form-field>
-    <mat-form-field>
+     <mat-form-field appearance="outline">
         <mat-label>Mô tả</mat-label>
         <input name="project_type_name" matInput [(ngModel)]="data.description" required>
     </mat-form-field>
-    <mat-checkbox name="canDisburseWhenOverdue" [(ngModel)]="data.canDisburseWhenOverdue">Có thể giải ngân khi hết hạn</mat-checkbox>
+    <mat-checkbox name="canDisburseWhenOverdue" [(ngModel)]="data.canDisburseWhenOverdue">Cho phép giải ngân khi hết hạn</mat-checkbox>
 </mat-dialog-content>
 
 <label>Logo</label>

@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/push_notifications")
@@ -29,19 +32,17 @@ public class PushNotificationController {
 
     @GetMapping()
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok().body(repo.findAll());
+        return ResponseEntity.ok().body(repo.findAll().stream()
+                .sorted(Comparator.comparing(PushNotification::getNOF_ID))
+                .collect(Collectors.toList()));
     }
 
     @PostMapping()
     public ResponseEntity<?> savePushNotification(@RequestBody PushNotification notification) {
         repo.save(notification);
-        return ResponseEntity.ok().body(repo.findAll());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removePushNotificationTopicById(@PathVariable(value = "id") Integer id) {
-        repo.deleteById(id);
-        return ResponseEntity.ok().body(repo.findAll());
+        return ResponseEntity.ok().body(repo.findAll().stream()
+                .sorted(Comparator.comparing(PushNotification::getNOF_ID))
+                .collect(Collectors.toList()));
     }
 
     /*==========================================================================================*/

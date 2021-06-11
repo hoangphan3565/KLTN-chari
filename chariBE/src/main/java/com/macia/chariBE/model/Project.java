@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SuppressWarnings("ALL")
@@ -62,6 +64,10 @@ public class Project {
 
     @Column
     private Boolean closed;
+
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 
     @ManyToOne
     @JoinColumn(name = "prt_id")

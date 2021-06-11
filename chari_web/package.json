@@ -53,6 +53,7 @@
     "flag-icon-css": "^3.5.0",
     "font-awesome": "^4.7.0",
     "jquery": "^1.9.1",
+    "js-cookie": "^2.2.1",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^6.2.0",
     "ngx-perfect-scrollbar": "^10.1.0",

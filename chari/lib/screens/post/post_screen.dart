@@ -17,8 +17,9 @@ import 'package:intl/intl.dart';
 
 class PostScreen extends StatefulWidget {
   List<Project> projects;
+  List<Post> posts;
   Donator donator;
-  PostScreen({Key key, @required this.projects,this.donator}) : super(key: key);
+  PostScreen({Key key, @required this.projects,this.posts,this.donator}) : super(key: key);
   @override
   _PostScreenState createState()=> _PostScreenState();
 }
@@ -94,14 +95,83 @@ class _PostScreenState extends State<PostScreen>{
                   :
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (context, index){
-                    return Text('Test');},
-                  childCount: 3,
+                      (context, index) {
+                    return buildPostSection(widget.posts[index]);
+                  },
+                  childCount: widget.posts.length,
                 ),
               )
             ],
           )
       ),
+    );
+  }
+
+  GestureDetector buildPostSection(Post post) {
+    Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PostDetailsScreen(post: post,project: widget.projects.where((p) => p.prj_id==post.projectId).elementAt(0),donator: widget.donator,)),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(8,4,8,4),
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 20,
+              offset: Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildPostPicture(post),
+            SizedBox(
+              height: 10,
+            ),
+            //Tên dự án
+            Text(
+              post.post_name,
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Stack buildPostPicture(Post post) {
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.width - 200,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 20,
+                  offset: Offset(0, 10),
+                ),
+              ],
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(post.image_url),
+              )),
+        ),
+      ],
     );
   }
 }

@@ -7,12 +7,6 @@
               <small class="text-muted"> danh sách </small> Thông báo đẩy
             </h3>
           </div>
-          <div class="col-auto">
-            <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" >
-              <i class="fa fa-plus"></i>
-              <a>Thêm</a>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -23,14 +17,13 @@
               <th>#</th>
               <th>Tiêu đề</th>
               <th>Nội dung</th>
-              <th>Topic</th>
+              <th>Tác vụ</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of PushNotifications;let i=index;">
             <td>{{i+1}}</td>
             <td>{{data.title}}</td>
             <td>{{data.message}}</td>
-            <td>{{data.topic}}</td>
             <td>
               <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
                 <i class="fa fa-edit"></i>

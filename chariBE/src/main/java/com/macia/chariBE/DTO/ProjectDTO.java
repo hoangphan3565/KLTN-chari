@@ -5,6 +5,7 @@ import com.macia.chariBE.model.ProjectType;
 import com.macia.chariBE.model.SupportedPeople;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -41,4 +42,5 @@ public class ProjectDTO {
     private Integer clb_ID;
     private Collaborator collaborator;
     private float priorityPoint;
+    private LocalDateTime updateTime;
 }

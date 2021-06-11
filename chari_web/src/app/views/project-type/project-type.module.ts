@@ -9,18 +9,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ProjectTypeDragDropDirective } from './drag-drop.directive';
-import { AllMaterialModule } from '../../material-module';
+import { MaterialModule } from '../../material-module';
 
 
 @NgModule({
   imports: [
-  CommonModule,
+    CommonModule,
     ProjectTypeRoutingModule,
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    AllMaterialModule,
+    MaterialModule,
   ],
   declarations: [ 
     ProjectTypeComponent,

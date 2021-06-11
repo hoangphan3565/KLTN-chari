@@ -3,7 +3,6 @@ insert into jwt_user(username,password,usertype,status) values('1231231231','$2a
 insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('web_admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','WebAdmin','ACTIVATED');
 
 insert into collaborator(clb_id,full_name,phone_number,email,address,certificate) values(0,'Chari','Admin','Admin','TP Hà Nội','Admin');
 insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Minh Anh','413412312','abc@gmail.com','TP Hà Nội','Tự nguyện');
@@ -32,16 +31,16 @@ insert into feedback(title,description,contributor) values('Làm lazy load','Là
 insert into supported_people(full_name,address,phone_number,bank_name,bank_account) values('TRAN THI BICH NGOC','Biên Hoà','0773453819','BIDV','31410004127254');
 insert into supported_people(full_name,address,phone_number,bank_name,bank_account) values('PHAN DINH HOANG','TP HCM','0973465515','BIDV','31410002593895');
 
-insert into project(prj_id,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,prt_id,stp_id,clb_id)
-values(0,'G0','Quỹ chung Chari',true,false,false,
+insert into project(update_time,prj_id,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187',0,'G0','Quỹ chung Chari',true,false,false,
        'Quỹ chung là nơi thuận tiện nhất để mọi người quyên góp,',
        'Nếu bạn phân vân không biết nên ủng hộ cho hoàn cảnh nào là hợp lý, hãy ủng hộ ở đây chúng tôi sẽ cân nhắc các trường hợp khó khăn nhất hoặc những dự án sắp quyên góp thành công và chuyển số tiền này đến dự án đó. Tất cả số tiền của bạn trong quỹ này đều được thông báo khi được chúng tôi sử dụng, kèm theo những hình ảnh video chân thật nhất. ',
        '2020-11-01','2030-01-01',10000000,
        'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quy-chung-chari.jpeg?alt=media&token=e68a9642-dd1f-4f16-9138-95668c822403',6,2,0);
 
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,false,false,
 'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
 '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
     'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -62,8 +61,8 @@ values('G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân 
 'https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp4?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,false,false,
 'Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn...',
 '       Trường Tiểu học Cù Chính Lan của huyện Ia Grai, tỉnh Gia Lai là một trường vùng biên giới giáp với Campuchia. Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn.
 ' ||
@@ -78,8 +77,8 @@ values('G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true
 'https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,false,false,
 'Trong đợt này, thị xã Hương có 30 người khuyết tật được trao tặng xe lăn, mỗi chiếc trị giá hơn 2 triệu đồng...',
 '       Thông qua nguồn tài trợ của tổ chức Trả lại tuổi thơ (Hoa Kỳ), Hội Chữ thập đỏ, Hội Người khuyết tật thị xã Hương Thủy phối hợp với Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh Thừa Thiên Huế và Ứng dụng Chari, dự định tổ chức trao xe lăn cho người khuyết tật trên địa bàn.
 ' ||
@@ -92,8 +91,8 @@ values('G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại 
 'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,false,false,
 'Trên địa bàn tỉnh Tây Ninh có khoảng 57.000 người khuyết tật...',
 '       Do tình hình của dịch COVID-19 kéo dài đã ảnh hưởng rất nhiều tới đời sống của người dân Việt Nam. Rất nhiều gia đình gặp tình trạng đói kém, mất việc làm và ảnh hưởng tới cuộc sống hằng ngày.
 ' ||
@@ -106,8 +105,8 @@ values('G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh T
 'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,true,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,true,false,
 'Khác với học sinh vùng xuôi, con đường tìm đến con chữ của học sinh miền núi, vùng sâu, vùng xa ở tỉnh Quảng Ngãi còn gặp rất nhiều khó khăn, trắc trở...',
 '       Để “kiếm” con chữ, mỗi ngày, hàng trăm học sinh ở xã vùng cao Ba Vì, huyện miền núi Ba Tơ (Quảng Ngãi) phải bất chấp nguy hiểm lội bộ qua dòng suối chảy xiết để đến trường với bao hiểm họa giăng ra trước mắt.
 ' ||
@@ -124,8 +123,8 @@ values('G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',tru
 'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
 'Nín thở đi qua cầu gỗ ọp ẹp tại thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định...',
 '       Nhiều năm qua, người dân xóm 3 (thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định) phải tự sửa chữa, gia cố cây cầu tạm bằng gỗ đã xuống cấp trầm trọng để làm nơi qua lại.
 ' ||
@@ -138,8 +137,8 @@ values('G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,fal
 'https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
 'Giúp học sinh nghèo vững bước tới trường với một tủ sách khang trang chống mưa...',
 '       Ðầu năm học mới, chi phí mua sắm sách giáo khoa, đồ dùng học tập cho học sinh đến trường  luôn là nỗi lo của những gia đình có điều kiện kinh tế khó khăn. Trong khi học sinh ở thành phố lúc nào cũng đầy đủ sách giáo khoa, đồ dùng học tập thì học sinh ở khu vực nông thôn, miền núi hay vùng cao lại rơi vào cảnh  thiếu sách để học. Nhiều  học sinh phải học chung một quyển sách, có những quyển được tận dụng tới ba, bốn năm, đến khi sách quá cũ, không thể dùng được nữa  mới bỏ đi. Trong khi đó ở thành phố, mỗi năm học sinh lại thay một bộ sách mới, sách giáo khoa cũ  không được tận dụng lại cho các  lớp sau.
 ' ||
@@ -150,8 +149,8 @@ values('G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,f
 'https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp4?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,
 
 'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
 '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
@@ -165,24 +164,24 @@ values('G10008','Xây dựng khu vui chơi trong sân trường cho trường ti
 'https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp4?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-08-01',400000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',2,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,false,false,
 'Anh Hùng là đầu bếp có tâm, từng bỏ tiền túi để nấu 100 phần cơm cho bệnh nhân khó khăn ở quận 10',
 'Làng An Phú 10 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-03-01',200000,
 'https://hieuvetraitim.com/attachments/hoan-canh-gioi-thieu-jpg.1782/',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',3,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
        'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
        '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
        'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -203,8 +202,8 @@ values('G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do
        'https://thukyluat.vn/uploads/image/2020/11/06/Ho-so-thu-tuc-nhan-tien-ho-tro-sap-nha-o-do-thien-tai-bao-lut-gay-ra.jpg',
        'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp4?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
 
-insert into project(project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('G10010','Xây dựng sân trường cho trường tiểu học Quảng Thành',true,false,true,
+insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
+values('2021-05-13 20:50:40.075187','G10010','Xây dựng sân trường cho trường tiểu học Quảng Thành',true,false,true,
 
        'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
        '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
@@ -219,125 +218,89 @@ values('G10010','Xây dựng sân trường cho trường tiểu học Quảng T
        'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp4?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
 
 insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quy-chung-chari.jpeg?alt=media&token=e68a9642-dd1f-4f16-9138-95668c822403',0);
-
 insert into project_images(image_url,prj_id) values('https://media.laodong.vn/Storage/NewsPortal/2020/10/29/849812/Lai-Dat-Tau-Bi-Nan-B.jpg?w=414&h=276&crop=auto&scale=both',1);
 insert into project_images(image_url,prj_id) values('https://cdnimg.vietnamplus.vn/t620/uploaded/fsmsy/2020_11_03/ttxvn_ngu_dan_binh_dinh_2.jpg',1);
 insert into project_images(image_url,prj_id) values('https://cdnmedia.baotintuc.vn/Upload/DmtgOUlHWBO5POIHzIwr1A/files/2020/11/03/ngu-dan-031120.jpg',1);
 insert into project_images(image_url,prj_id) values('https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',1);
 insert into project_images(image_url,prj_id) values('https://cdnimg.vietnamplus.vn/t620/uploaded/xpcwvovt/2020_10_29/ttxvn_tau_kiem_ngu.jpg',1);
-
 insert into project_images(image_url,prj_id) values('https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',2);
 insert into project_images(image_url,prj_id) values('https://tamnguyenviet.vn/wp-content/uploads/2019/11/truong.jpg',2);
 insert into project_images(image_url,prj_id) values('https://files.giaoducthoidai.vn/Uploaded/nhungnt/2014_02_17/1_JYGD.jpg',2);
 insert into project_images(image_url,prj_id) values('https://gialai.gov.vn/Lists/TinTucSuKien/Attachments/63615/giao%20duc.jpg',2);
 insert into project_images(image_url,prj_id) values('https://www.bienphong.com.vn//images/media/oldimages/qajf_5a_w550.JPG',2);
 insert into project_images(image_url,prj_id) values('https://vnn-imgs-f.vgcloud.vn/2020/09/05/09/bac-ly-10.jpg',2);
-
 insert into project_images(image_url,prj_id) values('https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',3);
 insert into project_images(image_url,prj_id) values('https://baothuathienhue.vn/image/fckeditor/upload/2019/20190517/images/x2.jpg',3);
 insert into project_images(image_url,prj_id) values('https://baothuathienhue.vn/image/fckeditor/upload/2017/20171202/images/giup-nguoi.jpg',3);
 insert into project_images(image_url,prj_id) values('https://thoidai.com.vn/stores/news_dataimages/anh.van/052020/20/13/sen-vang-berlin-trao-tang-10-xe-lan-cho-nguoi-khuyet-tat-tinh-thua-thien-hue.jpg',3);
-
 insert into project_images(image_url,prj_id) values('https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',4);
 insert into project_images(image_url,prj_id) values('https://baotayninh.vn/image/fckeditor/upload/2020/20200814/images/diem-tin-3.jpg',4);
 insert into project_images(image_url,prj_id) values('https://baolongan.vn/image/news/2020/20200108/thumbnail/510x286/839_1578488896.jpg',4);
 insert into project_images(image_url,prj_id) values('https://baogialai.com.vn/dataimages/201904/original/images2761149_1.jpghttps://baogialai.com.vn/dataimages/201904/original/images2761149_1.jpg',4);
-
 insert into project_images(image_url,prj_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',5);
 insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',5);
 insert into project_images(image_url,prj_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',5);
 insert into project_images(image_url,prj_id) values('https://anh.eva.vn//upload/3-2015/images/2015-09-08/1441684268-11992496_1627825204133394_783327606_n.jpg',5);
 insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2015/09/kinh-so-canh-hang-tram-nguoi-dan-lieu-minh-du-day-cap-vuot-suoi.jpg',5);
 insert into project_images(image_url,prj_id) values('https://anh.24h.com.vn/upload/4-2014/images/2014-11-30/1417327823-vuot-suoi-den-truong-1.jpg',5);
-
 insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',6);
 insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3453_cau-hu-hong-2.jpg',6);
 insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2018/06/3456_cau-hu-hong-4.jpg',6);
 insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3457_cau-hu-hong-5.jpg',6);
-
 insert into project_images(image_url,prj_id) values('https://sites.google.com/site/phanthingochang290118/_/rsrc/1517397505028/tham-khao/hang9.jpg',7);
 insert into project_images(image_url,prj_id) values('https://vnn-imgs-f.vgcloud.vn/2018/02/08/17/canh-hoc-sinh-vung-cao-an-com-tron-mi-tom-ngon-lanh-khien-nhieu-nguoi-xot-xa-7.jpg',7);
 insert into project_images(image_url,prj_id) values('https://giacmovietnam.files.wordpress.com/2013/12/008.jpg',7);
 insert into project_images(image_url,prj_id) values('https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',7);
 insert into project_images(image_url,prj_id) values('https://image.sggp.org.vn/w580/Uploaded/2020/evesfnbfjpy/2019_10_19/s3b_rncg.jpg',7);
-
-
 insert into project_images(image_url,prj_id) values('http://tinhdoannghean.vn/images/news/yenthanh_khuvuichoi_1_8_2018.jpg',8);
 insert into project_images(image_url,prj_id) values('http://tinhdoannghean.vn/images/news/yenthanh_khuvuichoi_3_8_2018.jpg',8);
 insert into project_images(image_url,prj_id) values('http://tinhdoannghean.vn/images/news/yenthanh_khuvuichoi_4_8_2018.jpg',8);
 insert into project_images(image_url,prj_id) values('https://tuoitrebudop.org.vn/uploads/news/2019_10/h17.jpg',8);
 insert into project_images(image_url,prj_id) values('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',8);
-
 insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',9);
 insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',9);
 insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',9);
-
 insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',10);
 insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',10);
 insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',10);
-
 insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',11);
 insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',11);
 insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',11);
-
 insert into project_images(image_url,prj_id) values('https://baoxaydung.com.vn/stores/news_dataimages/vananh/102020/24/12/in_article/5733_image001.jpg',12);
 insert into project_images(image_url,prj_id) values('https://media.truyenhinhdulich.vn/upload/news/2127_cau_khi_viet_nam_lot_top_nhung_cay_cau_dang_so_nha.jpg',12);
 insert into project_images(image_url,prj_id) values('https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',12);
 
 
 insert into donate_activity(dnt_id,prj_id,status) values(1,1,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',50000,1);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',50000,1);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',150000,1);
 insert into donate_activity(dnt_id,prj_id,status) values(1,2,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',50000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-09',50000,2);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-20',500000,2);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',10000,2);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-20',150000,2);
 insert into donate_activity(dnt_id,prj_id,status) values(1,3,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,3);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',60000,3);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-10',70000,3);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',180000,3);
 insert into donate_activity(dnt_id,prj_id,status) values(1,4,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',500000,4);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',200000,4);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-11',200000,4);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',900000,4);
 insert into donate_activity(dnt_id,prj_id,status) values(1,5,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',300000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',300000,5);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-12',100000,5);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',700000,5);
 insert into donate_activity(dnt_id,prj_id,status) values(2,1,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-01',30000,6);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',30000,6);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',30000,6);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-01',90000,6);
 insert into donate_activity(dnt_id,prj_id,status) values(2,2,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000,7);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-03',30000,7);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',30000,7);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',12000,7);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-03',3000,7);
 insert into donate_activity(dnt_id,prj_id,status) values(2,3,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-13',30000,8);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',30000,8);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',30000,8);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-13',90000,8);
 insert into donate_activity(dnt_id,prj_id,status) values(2,4,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000,9);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-20',30000,9);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',30000,9);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',90000,9);
 insert into donate_activity(dnt_id,prj_id,status) values(2,10,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',30000,10);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-12',30000,10);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',60000,10);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-08',40000,10);
 insert into donate_activity(dnt_id,prj_id,status) values(1,11,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',10000,11);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',20000,11);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',50000,11);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',800000,11);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-07',250000,11);
 insert into donate_activity(dnt_id,prj_id,status) values(1,8,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',10000,12);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',20000,12);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',50000,12);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-08',80000,12);
 insert into donate_activity(dnt_id,prj_id,status) values(1,12,'SUCCESSFUL');
-insert into donate_details(donate_date,money,dna_id) values('2020-11-05',10000,13);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-07',10000,13);
-insert into donate_details(donate_date,money,dna_id) values('2020-11-08',20000,13);
+insert into donate_details(donate_date,money,dna_id) values('2020-11-05',40000,13);
 insert into donate_activity(dnt_id,prj_id,status) values(1,10,'SUCCESSFUL');
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,14);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',50000,14);
@@ -346,16 +309,15 @@ insert into donator_notification(create_time,read,handled,title,message,topic,to
 insert into donator_notification(create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','closed',40000,12,1);
 
 insert into push_notification(title,message,topic) values('Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này','new');
-insert into push_notification(title,message,topic) values('Dự án sắp thành công','Dự án cộng đồng mà bạn đã tham gia quyên góp sắp chạm đến mục tiêu. Hãy chia sẻ để dự án thành công tốt đẹp.','close_to_reached');
 insert into push_notification(title,message,topic) values('Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.','overdue');
 insert into push_notification(title,message,topic) values('Xử lý tiền dự án quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari','closed');
 insert into push_notification(title,message,topic) values('Dự án đã được gia hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.','extended');
 insert into push_notification(title,message,topic) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.','reached');
 
-insert into post(name,content,project_id,image_url,video_url,is_public,create_date,update_date) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
+insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'
-,5,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
-,'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',true,'2021-09-13 20:50:40.075187','2021-09-13 20:50:40.075187');
+,5,0,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
+,'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',true,'2021-05-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',1);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',1);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',1);
@@ -363,10 +325,11 @@ insert into post_images(image_url,pos_id) values('https://anh.eva.vn//upload/3-2
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/09/kinh-so-canh-hang-tram-nguoi-dan-lieu-minh-du-day-cap-vuot-suoi.jpg',1);
 insert into post_images(image_url,pos_id) values('https://anh.24h.com.vn/upload/4-2014/images/2014-11-30/1417327823-vuot-suoi-den-truong-1.jpg',1);
 
-insert into post(name,content,project_id,image_url,is_public,create_date,update_date) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10 đã thành công'
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10 đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-,11,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
-,true,'2021-09-13 20:50:40.075187','2021-09-13 20:50:40.075187');
+,11,0,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
+,true,'2021-04-13 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',2);
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',2);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',2);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',2);

@@ -38,6 +38,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
   var projects = new List<Project>();
   var project_types = new List<ProjectType>();
+  var posts = new List<Post>();
   var donate_details_list = new List<DonateDetails>();
   var push_notification_list = new List<PushNotification>();
   var donator_notification_list = new List<DonatorNotification>();
@@ -67,7 +68,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
   initState() {
     super.initState();
     _checkLogin();
-    _getDatas();
+    _getProjectAndType();
+    _getPosts();
 
     if(this.islogin==true){
       _checkNewNotificationsByDonatorId();
@@ -80,7 +82,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
     _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
       setState(() {
-        _getDatas();
+        _getProjectAndType();
+        _getPosts();
         if(this.islogin==true){
           _checkNewNotificationsByDonatorId();
           _getDonateHistory();
@@ -168,7 +171,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
-  _getDatas() async{
+  _getProjectAndType(){
     String temp = this.donator.favorite_project;
     if(temp!=null){
       listProjectIdFavorite = temp.split(" ");
@@ -184,6 +187,14 @@ class _AppBarScreenState extends State<AppBarScreen> {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         project_types = list.map((model) => ProjectType.fromJson(model)).toList();
         project_types.insert(0, ProjectType(0, 'Tất cả dự án','',''));
+      });
+    });
+  }
+  _getPosts(){
+    API.getPost().then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        posts = list.map((model) => Post.fromJson(model)).toList();
       });
     });
   }
@@ -231,22 +242,27 @@ class _AppBarScreenState extends State<AppBarScreen> {
               label: 'Bản tin',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'Cá nhân',
+              icon: Icon(Icons.login),
+              label: 'Đăng nhập',
             ),
           ],
           currentIndex: _page,
           selectedItemColor: kPrimaryHighLightColor,
           onTap:  (index) {
+            if(index==2){
+              Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
+            }
             setState(() {
               _page = index;
+              _getProjectAndType();
+              _getPosts();
             });
           },
         ),
 
         body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,)
-            : _page == 1 ? PostScreen(projects: this.projects)
-            : AskScreen()
+            : PostScreen(projects: this.projects,posts: this.posts)
+
     );
     } else {
       return Scaffold(
@@ -290,12 +306,12 @@ class _AppBarScreenState extends State<AppBarScreen> {
           onTap: (index)  {
             setState(() {
               if(index == 0){
-                _getDatas();
+                _getProjectAndType();
                 _checkAndSubscribeFavoriteNotificationOfDonator();
                 _checkNewNotificationsByDonatorId();
               }
               else if(index == 2){
-                _getDatas();
+                _getPosts();
                 _getNotification();
                 _getPushNotification();
                 _checkAndSubscribeFavoriteNotificationOfDonator();
@@ -312,7 +328,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
           },
         ),
         body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,donator: this.donator,isLogin: this.islogin)
-            : _page == 1 ? PostScreen(projects: this.projects,donator: this.donator,)
+            : _page == 1 ? PostScreen(projects: this.projects,posts: this.posts,donator: this.donator,)
             : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects,donator: this.donator,)
             : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
             : PersonalScreen(donator: this.donator,push_notification_list: this.push_notification_list))

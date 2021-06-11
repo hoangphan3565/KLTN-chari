@@ -69,7 +69,8 @@ public class ProjectService {
             return null;
         }
     }
-    public Project findProjectByCharityProgramId(Integer id) {
+
+    public Project findProjectByProjectTypeId(Integer id) {
         try {
             TypedQuery<Project> query = em.createNamedQuery("named.project.findByProjectTypeId", Project.class);
             query.setParameter("id", id);
@@ -162,10 +163,17 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getUnverifiedProjects(){
-        return getProjectDTOs().stream().filter(p-> !p.getVerified()).collect(Collectors.toList());
+        return getProjectDTOs().stream()
+                .filter(p-> !p.getVerified())
+                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
+                .collect(Collectors.toList());
     }
     public List<ProjectDTO> getVerifiedProjects(){
-        return getProjectDTOs().stream().filter(ProjectDTO::getVerified).filter(p->!p.getClosed()).collect(Collectors.toList());
+        return getProjectDTOs().stream()
+                .filter(ProjectDTO::getVerified)
+                .filter(p->!p.getClosed())
+                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
+                .collect(Collectors.toList());
     }
 
     public int findMovedMoneyOfClosedProject(Integer prjid){
@@ -181,7 +189,10 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getClosedProjects(){
-        List<ProjectDTO> ls = getProjectDTOs().stream().filter(ProjectDTO::getClosed).collect(Collectors.toList());
+        List<ProjectDTO> ls = getProjectDTOs().stream()
+                .filter(ProjectDTO::getClosed)
+                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
+                .collect(Collectors.toList());
         for(ProjectDTO p:ls){
             float curMoney = findCurMoneyOfProjectById(p.getPRJ_ID());
             float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
@@ -230,7 +241,7 @@ public class ProjectService {
                     .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
                     .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
                     .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
-                    .priorityPoint(findPriorityPoint(p))
+                    .priorityPoint(findPriorityPoint(p)).updateTime(p.getUpdateTime())
                     .build());
         }
         return r;

@@ -91,4 +91,4 @@ import {OverlayModule} from '@angular/cdk/overlay';
     ScrollingModule,
   ]
 })
-export class AllMaterialModule {}
+export class MaterialModule {}

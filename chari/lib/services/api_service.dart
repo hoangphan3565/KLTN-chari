@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //local ip và port server đang deploy
-const baseUrl = "http://192.168.1.15:8080/api";
+const baseUrl = "http://192.168.1.11:8080/api";
 
 const login = "/login";
 const login_facebook = "/login_facebook";
@@ -12,6 +12,7 @@ const register = "/register";
 const save_user = "/save_user";
 const activate = "/activate";
 const projects = "/projects";
+const posts = "/posts/public";
 const project_images = "/project_images/project/";
 const donators = "/donators";
 const donate_details = "/donate_details";
@@ -168,7 +169,6 @@ class API {
   }
 
   static Future putMoveMoney(int project_id,int donator_id,int target_project_id,int money,String token) {
-    ///move_money/project/{prjid}/donator/{dntid}/to_project/{tarprjid}/money/{money}
     var url = baseUrl + donators + "/move_money/project/"+project_id.toString()+"/donator/"+donator_id.toString()+"/to_project/"+target_project_id.toString()+"/money/"+money.toString();
     return http.put(url,headers:getHeaderJWT(token));
   }
@@ -185,6 +185,10 @@ class API {
 
   static Future getPushNotification() {
     var url = baseUrl + push_notifications;
+    return http.get(url);
+  }
+  static Future getPost() {
+    var url = baseUrl + posts;
     return http.get(url);
   }
 }

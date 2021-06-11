@@ -25,10 +25,9 @@
             <td>{{i+1}}</td>
             <td>{{data.username}}</td>
             <td>
-              <span *ngIf="data.usertype=='Donator'" class="badge badge-light">Nhà từ thiện</span>
+              <span *ngIf="data.usertype=='Donator'" class="badge badge-light">Nhà hảo tâm</span>
               <span *ngIf="data.usertype=='Collaborator'" class="badge badge-primary">Cộng tác viên</span>
               <span *ngIf="data.usertype=='Admin'" class="badge badge-warning">Quản trị viên</span>
-              <span *ngIf="data.usertype=='WebAdmin'" class="badge badge-info">Quản lý hệ thống</span>
             </td>
             <td>
               <span *ngIf="data.status=='ACTIVATED'" class="badge badge-success">Đã kích hoạt</span>

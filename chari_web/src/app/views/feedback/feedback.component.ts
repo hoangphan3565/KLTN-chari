@@ -12,7 +12,7 @@ export class FeedbackComponent implements OnInit {
 
 
   Feedbacks: Feedback[];
-  // Feedback: Feedback;
+  Feedback: Feedback;
   isEdit: boolean;
 
   constructor(

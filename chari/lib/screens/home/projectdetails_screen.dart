@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/services/services.dart';
-import 'package:chari/models/donate_details_of_project_model.dart';
-import 'package:chari/models/project_model.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chewie/chewie.dart';

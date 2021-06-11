@@ -7,6 +7,18 @@
             <small class="text-muted"> danh sách </small> Dự án đã thành công
           </h3>
         </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-success" >
+            <i class="icon-cloud-download"></i>
+            <a style="color:white;" href="https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/SaoKeMau.xlsx?alt=media&token=adc45da4-c97b-4ee2-9499-8770b78c26d5" download>Tải xuống sao kê mẫu</a>
+          </button>
+
+          <input #excelInput hidden="true" type="file" onclick="this.value=null" (change)="onFileChange($event)" multiple="false" accept=".xls,.xlsx"/>
+          <button class="btn btn-primary" (click)="excelInput.click()">
+            <i class="icon-cloud-upload"></i>
+            <a>Cập nhật sao kê</a>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -18,7 +30,7 @@
             <th>Tên Dự án</th>
             <th>Gói từ thiện</th>
             <th>Mục tiêu (Triệu đồng)</th>
-            <th>Số bài viết liên quan</th>
+            <th>Số Tin liên quan</th>
             <th>Giải ngân</th>
             <th>Tác vụ</th>
           </tr>
@@ -32,11 +44,11 @@
           <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
           <td *ngIf="data.disbursed==true">Đã giải ngân</td>
           <td *ngIf="data.disbursed==false">
-            <button type="button" class="btn btn-block btn-outline-success" (click)="openDisburseDialog(data)">Giải ngân</button>
-            <button type="button" class="btn btn-block btn-outline-primary">Đăng bài</button>
+            <button type="button" class="btn btn-block btn-outline-primary" (click)="openDisburseDialog(data)">Giải ngân</button>
+            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
           </td>          
           <td *ngIf="data.disbursed==true">
-            <button type="button" class="btn btn-block btn-outline-primary">Đăng bài</button>
+            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
           </td>
         </tbody>
         <tbody>
