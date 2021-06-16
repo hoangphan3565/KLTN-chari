@@ -97,7 +97,7 @@ export class DialogPostComponent implements OnInit {
   }
   
   public async getProject(){
-    this.Projects = await this.projectService.getProjects() as Project[];
+    this.Projects = await (await this.projectService.getProjects()).data as Project[];
   }
 
   

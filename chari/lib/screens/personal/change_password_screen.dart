@@ -36,7 +36,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           if(new_password1!=password){
             if(CheckString.isMyCustomPassword(new_password1)){
               SharedPreferences _prefs = await SharedPreferences.getInstance();
-              var res = await API.changeUserPassword(username, new_password1, new_password2);
+              var res = await UserService.changeUserPassword(username, new_password1, new_password2);
               var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
               message = jsonResponse['message'];
               errorCode = jsonResponse['errorCode'];
@@ -106,10 +106,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Image.asset(
-                    //   "assets/icons/change-password.jpg",
-                    //   height: size.height * 0.2,
-                    // ),
                     TextFieldContainer(
                       child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
                         style: TextStyle(

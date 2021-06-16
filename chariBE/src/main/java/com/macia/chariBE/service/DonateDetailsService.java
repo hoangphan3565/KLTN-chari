@@ -64,6 +64,18 @@ public class DonateDetailsService {
         }
     }
 
+    public List<DonateDetailsOfDonatorDTO> findDonateDetailsByDonatorIdFromAToB(Integer donator_id,Integer a,Integer b) {
+        try {
+            TypedQuery<DonateDetailsOfDonatorDTO> query = em.createNamedQuery("named.donate_details.findByDonatorId", DonateDetailsOfDonatorDTO.class)
+                    .setFirstResult(a)
+                    .setMaxResults(b-a);
+            query.setParameter("dntid", donator_id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public List<DonateDetailsOfProjectDTO> findDonateDetailsByProjectId(Integer id) {
         try {
             TypedQuery<DonateDetailsOfProjectDTO> query = em.createNamedQuery("named.donate_details.findByProjectId", DonateDetailsOfProjectDTO.class);

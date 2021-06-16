@@ -20,7 +20,7 @@ export class ProjectUnverifiedComponent implements OnInit {
   }
 
   async getUnverified(){
-    this.Projects = await this.ProjectService.getUnverified() as Project[];
+    this.Projects = await (await this.ProjectService.getUnverified()).data as Project[];
   }
 
   public approveProject = async (id) => {
@@ -31,7 +31,7 @@ export class ProjectUnverifiedComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Phê duyệt thành công');
-          this.Projects = result as Project[];
+          this.Projects = result.data as Project[];
         }  
       }
     }

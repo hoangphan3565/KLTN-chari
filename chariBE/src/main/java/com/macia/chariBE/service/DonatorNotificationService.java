@@ -56,6 +56,18 @@ public class DonatorNotificationService {
         }
     }
 
+    public List<DonatorNotification> findDonatorNotificationByDonatorIdFromAToB(Integer id, Integer a, Integer b) {
+        try {
+            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findByDonatorId", DonatorNotification.class)
+                    .setFirstResult(a)
+                    .setMaxResults(b-a);
+            query.setParameter("dnt_id", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public void handleCloseProjectNotification(int project_id,int donator_id){
         try {
             TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findClosedNotificationByProjectIdAndDonatorId", DonatorNotification.class);
@@ -133,4 +145,6 @@ public class DonatorNotificationService {
         }
         this.pushNotificationService.sendMessageWithoutData(no);
     }
+
+
 }

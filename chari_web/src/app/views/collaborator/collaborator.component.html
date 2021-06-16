@@ -17,8 +17,10 @@
               <th>#</th>
               <th>Tên đầy đủ</th>
               <th>Địa chỉ</th>
+              <th>Email</th>
               <th>Số điện thoại</th>
               <th>Chứng chỉ</th>
+              <th>Tình tạng</th>
               <th>Tác vụ</th>
             </tr>
           </thead>
@@ -26,16 +28,29 @@
             <td>{{i+1}}</td>
             <td>{{data.fullName}}</td>
             <td>{{data.address}}</td>
+            <td>{{data.email}}</td>
             <td>{{data.phoneNumber}}</td>
-            <td>{{data.certificate}}</td>
-            <td>
-                <button type="button" class="btn btn-success btn-sm" (click)="openEditDialog(data)">
+            <td>              
+              <img [src]="data.certificate" style="border-radius: 5px" width="80px" height="50px">           
+            </td>
+            <td *ngIf="data.isAccept==true">Đã phê duyệt</td>
+            <td *ngIf="data.isAccept!=true">Chưa phê duyệt</td>
+            <td *ngIf="data.isAccept!=true">
+                <button type="button" class="btn btn-success btn-sm" (click)="acceptCollaborator(data)">
                   <i class="fa fa-check"></i>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" (click)="deleteCollaborator(data.clb_ID)">
-                  <i class="fa fa-remove"></i>
+                  <i class="fa fa-trash-o"></i>
                 </button>
             </td>
+            <td *ngIf="data.isAccept==true">
+              <button type="button" class="btn btn-warning btn-sm" (click)="blockCollaborator(data)">
+                <i class="fa fa-remove"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteCollaborator(data.clb_ID)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+          </td>
           </tbody>
           <tbody>
         </table>

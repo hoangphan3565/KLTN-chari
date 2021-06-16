@@ -7,6 +7,13 @@
             <small class="text-muted"> danh sách </small> Dự án đã đóng
           </h3>
         </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-secondary" (click)="updateMoveMoneyProgress()">
+            <i class="icon-reload"></i>
+            <a>Cập nhật tiến độ</a>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="card-body">
@@ -30,9 +37,6 @@
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==true">Đã giải ngân</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">Chưa giải ngân</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed!=true">N/A</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">
-            <button type="button" class="btn btn-block btn-outline-primary" (click)="openDisburseDialog(data)">Giải ngân</button>
-          </td>   
         </tbody>
         <tbody>
       </table>

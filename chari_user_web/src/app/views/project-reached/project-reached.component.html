@@ -16,7 +16,7 @@
           <tr>
             <th>#</th>
             <th>Tên Dự án</th>
-            <th>Gói từ thiện</th>
+            <th>Chương trình từ thiện</th>
             <th>Mục tiêu (Triệu đồng)</th>
             <th>Số Tin liên quan</th>
             <th>Giải ngân</th>
@@ -31,13 +31,9 @@
           <td>{{0}}</td>
           <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
           <td *ngIf="data.disbursed==true">Đã giải ngân</td>
-          <td *ngIf="data.disbursed==false">
-            <button type="button" class="btn btn-block btn-outline-primary" (click)="openDisburseDialog(data)">Giải ngân</button>
+          <td>
             <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
-          </td>          
-          <td *ngIf="data.disbursed==true">
-            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
-          </td>
+          </td>      
         </tbody>
         <tbody>
       </table>

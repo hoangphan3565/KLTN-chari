@@ -6,12 +6,15 @@ import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import Cookies from 'js-cookie'
+
 @Component({
   templateUrl: './project-activating.component.html',
 })
 export class ProjectActivatingComponent implements OnInit {
   Projects: Project[];
   Post: Post;
+  clb_id: Number;
 
   constructor(
     private projectService: ProjectService,
@@ -20,10 +23,11 @@ export class ProjectActivatingComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getActivating()
   }
   public async getActivating(){
-    this.Projects = await this.projectService.getActivating() as Project[];
+    this.Projects = await (await this.projectService.getActivating(this.clb_id)).data as Project[];
   }
 
   openDialog(): void {
@@ -45,7 +49,7 @@ export class ProjectActivatingComponent implements OnInit {
       content: '',
       projectId:p.prj_ID,
       projectName:p.projectName,
-      isPublic: null,
+      isPublic: true,
       imageUrl: '',
       videoUrl: '',
       collaboratorId:0,

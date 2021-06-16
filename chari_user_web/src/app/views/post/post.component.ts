@@ -5,6 +5,7 @@ import { Post } from '../../models/Post';
 import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import Cookies from 'js-cookie'
 
 
 @Component({
@@ -15,6 +16,7 @@ export class PostComponent implements OnInit {
   
   Posts: Post[];
   Post: Post;
+  clb_id: Number;
 
   constructor(
     private PostService: PostService,
@@ -23,11 +25,12 @@ export class PostComponent implements OnInit {
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getPost();
   }
 
   public async getPost(){
-    this.Posts = await this.PostService.getPosts() as Post[];
+    this.Posts = await (await this.PostService.getPosts(this.clb_id)).data as Post[];
   }
 
 
@@ -65,7 +68,7 @@ export class PostComponent implements OnInit {
       content: '',
       projectId:null,
       projectName:'',
-      isPublic: null,
+      isPublic: true,
       imageUrl: '',
       videoUrl: '',
       collaboratorId:0,
@@ -80,7 +83,7 @@ export class PostComponent implements OnInit {
       if (result)
       {
         this.notificationService.success(state+' tin tức thành công');
-        this.Posts = result as Post[];
+        this.Posts = result.data as Post[];
       }    
     }
     catch (e) {
@@ -98,7 +101,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Xoá tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }
@@ -115,7 +118,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Huỷ công bố tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }
@@ -131,7 +134,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Công bố tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }

@@ -1,6 +1,5 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.service.CollaboratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,13 @@ public class CollaboratorController {
         return ResponseEntity.ok().body(service.findAll());
     }
 
-    @PostMapping()
-    public ResponseEntity<?> saveCollaborator(@RequestBody Collaborator Collaborator) {
-        service.save(Collaborator);
-        return ResponseEntity.ok().body(service.findAll());
+    @PutMapping("/accept/{id}")
+    public ResponseEntity<?> acceptCollaborator(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(service.accept(id));
+    }
+    @PutMapping("/block/{id}")
+    public ResponseEntity<?> blockCollaborator(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(service.block(id));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeCollaboratorById(@PathVariable(value = "id") Integer id) {

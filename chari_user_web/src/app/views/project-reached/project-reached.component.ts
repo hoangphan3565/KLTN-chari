@@ -6,7 +6,7 @@ import { SupportedPeople } from '../../models/SupportedPeople';
 import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
+import Cookies from 'js-cookie'
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 
 
@@ -16,6 +16,7 @@ import { DialogPostComponent } from './dialog-post/dialog-post.component';
 export class ProjectReachedComponent implements OnInit {
   Post: Post;
   Projects: Project[];
+  clb_id: Number;
 
 
   constructor(
@@ -25,18 +26,13 @@ export class ProjectReachedComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getReached()
   }
   public async getReached(){
-    this.Projects = await this.ProjectService.getReached() as Project[];
+    this.Projects = await (await this.ProjectService.getReached(this.clb_id)).data as Project[];
   }
 
-  openDisburseDialog(data): void {
-    const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
-      width: '250px',
-      data: data
-    });
-  }
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostComponent, {
       width: '900px',
@@ -56,7 +52,7 @@ export class ProjectReachedComponent implements OnInit {
       content: '',
       projectId:p.prj_ID,
       projectName:p.projectName,
-      isPublic: null,
+      isPublic: true,
       imageUrl: '',
       videoUrl: '',
       collaboratorId:0,

@@ -19,6 +19,18 @@ public class DonatorNotificationController {
         return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorId(id));
     }
 
+    @GetMapping("/donator/{dntid}/count")
+    public ResponseEntity<?> getTotalDonateDetailsOfDonator(@PathVariable(value = "dntid") Integer id) {
+        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorId(id).size());
+    }
+
+    @GetMapping("/donator/{dntid}/from/{a}/to/{b}")
+    public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorIdWithNumOfRecord(@PathVariable(value = "dntid") Integer id,
+                                                                                 @PathVariable(value = "a") Integer a,
+                                                                                 @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorIdFromAToB(id,a,b));
+    }
+
     @PutMapping("/read/donator/{id}")
     public ResponseEntity<?> putReadUnreadNotification(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(service.putReadUnreadNotification(id));

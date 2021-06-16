@@ -21,7 +21,7 @@ export class UserComponent implements OnInit {
     this.getUser()
   }
   public async getUser(){
-    this.Users = await this.UserService.getUsers() as User[];
+    this.Users = await (await this.UserService.getUsers()).data as User[];
   }
 
 
@@ -33,7 +33,7 @@ export class UserComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Khoá người dùng thành công');
-          this.Users = result as User[];
+          this.Users = result.data as User[];
         }  
       }
     }
@@ -49,7 +49,7 @@ export class UserComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Mở khoá người dùng thành công');
-          this.Users = result as User[];
+          this.Users = result.data as User[];
         }  
       }
     }

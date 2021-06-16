@@ -1,10 +1,8 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.DTO.FaceBookUser;
-import com.macia.chariBE.DTO.JwtUserDTO;
+import com.macia.chariBE.DTO.UserDTO;
 import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.Donator;
-import com.macia.chariBE.model.DonatorNotification;
 import com.macia.chariBE.model.JwtUser;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.JwtUserRepository;
@@ -13,9 +11,7 @@ import com.macia.chariBE.security.JwtResponse;
 import com.macia.chariBE.security.JwtTokenUtil;
 import com.macia.chariBE.security.JwtUserDetailsService;
 import com.macia.chariBE.service.CollaboratorService;
-import com.macia.chariBE.service.DonatorNotificationService;
 import com.macia.chariBE.service.DonatorService;
-import com.macia.chariBE.utility.NumberUtility;
 import com.macia.chariBE.utility.UserStatus;
 import com.macia.chariBE.utility.UserType;
 import net.minidev.json.JSONObject;
@@ -62,6 +58,10 @@ public class JwtAuthenticationController {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		JwtUser user = jwtuserRepo.findByUsername(authenticationRequest.getUsername());
+		Collaborator c = collaboratorService.findByUsername(authenticationRequest.getUsername());
+		if(c!=null){ jo.put("info", c); }
+		Donator d = donatorService.findByPhone(authenticationRequest.getUsername());
+		if(d!=null){ jo.put("info", d); }
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		jo.put("errorCode", 0);
 		jo.put("token",new JwtResponse(token).getToken());
@@ -71,7 +71,7 @@ public class JwtAuthenticationController {
 	}
 
 	@PostMapping("/login_facebook")
-	public ResponseEntity<?> loginWithFaceBook(@RequestBody FaceBookUser fb_user) throws Exception {
+	public ResponseEntity<?> loginWithFaceBook(@RequestBody UserDTO fb_user) throws Exception {
 		JSONObject jo = new JSONObject();
 		if(jwtuserRepo.findByUsername(fb_user.getId())==null){
 			JwtUser new_user = new JwtUser();
@@ -80,7 +80,7 @@ public class JwtAuthenticationController {
 			String ps = passwordEncoder.encode("facebook");
 			new_user.setPassword(ps);
 			new_user.setUsertype(fb_user.getUsertype());
-			new_user.setStatus(UserStatus.ACTIVATED.toString());
+			new_user.setStatus(UserStatus.ACTIVATED);
 			jwtuserRepo.save(new_user);
 			Donator curDonator = donatorService.findByFacebookId(fb_user.getId());
 			if(curDonator==null){
@@ -98,6 +98,8 @@ public class JwtAuthenticationController {
 		authenticate(fb_user.getId(), "facebook");
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		JwtUser fbUser = jwtuserRepo.findByUsername(fb_user.getId());
+		Donator d = donatorService.findByFacebookId(fb_user.getId());
+		if(d!=null){ jo.put("info", d); }
 		jo.put("errorCode", 0);
 		jo.put("token",new JwtResponse(token).getToken());
 		jo.put("data", fbUser);
@@ -106,7 +108,7 @@ public class JwtAuthenticationController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> saveUser(@RequestBody JwtUserDTO user) {
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
 		JSONObject jo = new JSONObject();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if(jwtuserRepo.findByUsername(user.getUsername())==null){
@@ -115,13 +117,31 @@ public class JwtAuthenticationController {
 			newuser.setUsername(user.getUsername());
 			newuser.setPassword(p);
             newuser.setUsertype(user.getUsertype());
-			newuser.setStatus(UserStatus.NOT_ACTIVATED.toString());
+			newuser.setStatus(UserStatus.NOT_ACTIVATED);
 			jwtuserRepo.save(newuser);
-			jo.put("errorCode", 0);
-			jo.put("data", newuser);
-			jo.put("message", "Đăng ký thành công!\nMã xác thực sẽ được gửi!");
-			return ResponseEntity.ok(jo);
+			if(user.getUsertype().equals(UserType.Collaborator)){
+				collaboratorService.save(Collaborator.builder()
+						.fullName(user.getName()).address(user.getAddress())
+						.email(user.getEmail()).phoneNumber(user.getPhone())
+						.certificate(user.getCertificate()).isAccept(false)
+						.username(user.getUsername()).build());
+				jo.put("errorCode", 0);
+				jo.put("data", newuser);
+				jo.put("message", "Đăng ký thành công! Hãy quay lại khi nhận được mail xác nhận của chúng tôi!");
+				return ResponseEntity.ok(jo);
+			}else{
+				jo.put("errorCode", 0);
+				jo.put("data", newuser);
+				jo.put("message", "Đăng ký thành công!\nMã xác thực sẽ được gửi!");
+				return ResponseEntity.ok(jo);
+			}
 		}else{
+			if(user.getUsertype().equals(UserType.Collaborator)){
+				jo.put("errorCode", 1);
+				jo.put("message", "Tên đăng nhập đã tồn tại!");
+				jo.put("data", "");
+				return new ResponseEntity<>(jo, HttpStatus.ALREADY_REPORTED);
+			}
 			jo.put("errorCode", 1);
 			jo.put("message", "Số điện thoại này đã được đăng ký!");
 			jo.put("data", "");
@@ -129,12 +149,13 @@ public class JwtAuthenticationController {
 		}
 	}
 
+
 	@PostMapping("/activate/{usn}")
 	public ResponseEntity<?> activateUser(@PathVariable(value = "usn") String usn) {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(usn);
 		if(appUser!=null){
-			appUser.setStatus(UserStatus.ACTIVATED.toString());
+			appUser.setStatus(UserStatus.ACTIVATED);
 			jwtuserRepo.save(appUser);
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
@@ -148,6 +169,7 @@ public class JwtAuthenticationController {
 			return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@GetMapping("/users")
 	public ResponseEntity<?> getAllUser() {
 		return ResponseEntity.ok().body(jwtuserRepo.findAll());
@@ -156,20 +178,31 @@ public class JwtAuthenticationController {
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> blockUser(@PathVariable(value = "id") Integer id) {
 		JwtUser user = jwtuserRepo.findById(id).orElseThrow();
-		user.setStatus(UserStatus.BLOCKED.toString());
+		user.setStatus(UserStatus.BLOCKED);
+		if(user.getUsertype().equals(UserType.Collaborator)){
+			Collaborator c = collaboratorService.findByUsername(user.getUsername());
+			c.setIsAccept(false);
+			collaboratorService.save(c);
+		}
 		jwtuserRepo.save(user);
 		return ResponseEntity.ok().body(jwtuserRepo.findAll());
 	}
+
 	@PutMapping("/users/{id}")
 	public ResponseEntity<?> unblockUser(@PathVariable(value = "id") Integer id) {
 		JwtUser user = jwtuserRepo.findById(id).orElseThrow();
-		user.setStatus(UserStatus.ACTIVATED.toString());
+		user.setStatus(UserStatus.ACTIVATED);
+		if(user.getUsertype().equals(UserType.Collaborator)){
+			Collaborator c = collaboratorService.findByUsername(user.getUsername());
+			c.setIsAccept(true);
+			collaboratorService.save(c);
+		}
 		jwtuserRepo.save(user);
 		return ResponseEntity.ok().body(jwtuserRepo.findAll());
 	}
 
 	@PostMapping("/save_user")
-	public ResponseEntity<?> saveUserInfo(@RequestBody JwtUserDTO user) {
+	public ResponseEntity<?> saveUserInfo(@RequestBody UserDTO user) {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){
@@ -180,9 +213,6 @@ public class JwtAuthenticationController {
 							.favoriteNotification(pushNotificationService.findAllIdAsString())
 							.favoriteProject("").build());
 				}
-
-			}else if(user.getUsertype().equals(UserType.Collaborator)){
-				collaboratorService.save(Collaborator.builder().phoneNumber(user.getUsername()).build());
 			}
 			else{
 				jo.put("errorCode", 1);
@@ -190,7 +220,7 @@ public class JwtAuthenticationController {
 				jo.put("message", "Kích hoạt thất bại!");
 				return new ResponseEntity<>(jo,HttpStatus.BAD_REQUEST);
 			}
-			appUser.setStatus("ACTIVATED");
+			appUser.setStatus(UserStatus.ACTIVATED);
 			jwtuserRepo.save(appUser);
 			jo.put("errorCode", 0);
 			jo.put("data", appUser);
@@ -206,7 +236,7 @@ public class JwtAuthenticationController {
 	}
 
     @PostMapping("/change/password")
-	public ResponseEntity<?> changePassword(@RequestBody JwtUserDTO user) {
+	public ResponseEntity<?> changePassword(@RequestBody UserDTO user) {
 		JSONObject jo = new JSONObject();
 		if(user.getUsertype().equals(UserType.Donator)){
 			JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
@@ -277,7 +307,7 @@ public class JwtAuthenticationController {
 	}
 
 	@PostMapping("/save_fcmtoken")
-	public ResponseEntity<?> saveFCMTokenToUser(@RequestBody JwtUserDTO user) {
+	public ResponseEntity<?> saveFCMTokenToUser(@RequestBody UserDTO user) {
 		JSONObject jo = new JSONObject();
 		JwtUser appUser = jwtuserRepo.findByUsername(user.getUsername());
 		if(appUser!=null){

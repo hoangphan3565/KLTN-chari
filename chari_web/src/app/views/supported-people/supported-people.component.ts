@@ -23,7 +23,7 @@ export class SupportedPeopleComponent implements OnInit {
     this.getSupportedPeople()
   }
   public async getSupportedPeople(){
-    this.SupportedPeoples = await this.SupportedPeopleService.getSupportedPeoples() as SupportedPeople[];
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples()).data as SupportedPeople[];
   }
 
   openDialog(): void {
@@ -59,12 +59,12 @@ export class SupportedPeopleComponent implements OnInit {
       const result = await this.SupportedPeopleService.saveSupportedPeople(data);
       if (result)
       {
-        this.notificationService.success(state+' cá nhân thụ hưởng thành công');
-        this.SupportedPeoples = result as SupportedPeople[];
+        this.notificationService.success(state+' Đơn vị thụ hưởng thành công');
+        this.SupportedPeoples = result.data as SupportedPeople[];
       }    
     }
     catch (e) {
-      alert(state+' cá nhân thụ hưởng thất bại');
+      alert(state+' Đơn vị thụ hưởng thất bại');
     }
   };
 
@@ -72,12 +72,12 @@ export class SupportedPeopleComponent implements OnInit {
   public deleteSupportedPeople = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá cá nhân thụ hưởng này?')){
+      if(confirm('Bạn có thực sự muốn xoá Đơn vị thụ hưởng này?')){
         const result = await this.SupportedPeopleService.deleteSupportedPeople(id);
         if (result)
         {
-          this.notificationService.warn('Xoá cá nhân thụ hưởng thành công');
-          this.SupportedPeoples = result as SupportedPeople[];
+          this.notificationService.warn('Xoá Đơn vị thụ hưởng thành công');
+          this.SupportedPeoples = result.data as SupportedPeople[];
         }  
       }
     }

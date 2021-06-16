@@ -58,12 +58,12 @@
   right: 0%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  background-color: #555;
+  background-color: rgb(152, 152, 152);
   color: white;
   font-size: 15px;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 15px;
 }
 
 .container .btn:hover {

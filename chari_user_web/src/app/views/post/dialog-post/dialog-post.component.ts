@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { map, finalize } from "rxjs/operators";
 import { Project } from '../../../models/Project';
 import { ProjectService } from '../../../services/Project.service';
+import Cookies from 'js-cookie'
 
 @Component({
     selector: 'app-dialog-post',
@@ -20,7 +21,7 @@ export class DialogPostComponent implements OnInit {
   videoUrl: any;
   downloadURL: Observable<string>;
   Projects: Project[];
-
+  clb_id: Number;
 
   constructor(
     private notificationService: NotificationService,
@@ -30,6 +31,7 @@ export class DialogPostComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Post) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getProject();
     this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
@@ -97,7 +99,7 @@ export class DialogPostComponent implements OnInit {
   }
   
   public async getProject(){
-    this.Projects = await this.projectService.getProjects() as Project[];
+    this.Projects = await (await this.projectService.getProjects(this.clb_id)).data as Project[];
   }
 
   

@@ -28,7 +28,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     int donator_id = _prefs.getInt('donator_id');
     String token = _prefs.getString('token');
-    API.changeStateFavoriteNotificationList(donator_id, nof_id, value, token).then((value) =>
+    DonatorService.changeStateFavoriteNotificationList(donator_id, nof_id, value, token).then((value) =>
         _prefs.setString('donator_favorite_notification',value.toString())
     );
     if(value==true){

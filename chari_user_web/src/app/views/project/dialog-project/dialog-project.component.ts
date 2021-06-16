@@ -10,7 +10,7 @@ import { ProjectTypeService } from '../../../services/project-type.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map, finalize } from "rxjs/operators";
-
+import Cookies from 'js-cookie'
 @Component({
     selector: 'app-dialog-project',
     templateUrl: './dialog-project.component.html',
@@ -23,7 +23,9 @@ export class DialogProjectComponent implements OnInit {
   downloadURL: Observable<string>;
   ProjectTypes: ProjectType[];
   SupportedPeoples: SupportedPeople[];
+  canDisburseWhenOverdue:boolean=true;
 
+  clb_id: Number;
   constructor(
     private notificationService: NotificationService,
     private SupportedPeopleService: SupportedPeopleService,
@@ -33,6 +35,7 @@ export class DialogProjectComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Project) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getProjectType();
     this.getSupportedPeople();
     this.imageUrls = this.data.images;
@@ -101,11 +104,23 @@ export class DialogProjectComponent implements OnInit {
   }
   
   public async getProjectType(){
-    this.ProjectTypes = await this.projectTypeService.getProjectTypes() as ProjectType[];
+    this.ProjectTypes = await (await this.projectTypeService.getProjectTypes()).data as ProjectType[];
   }
   public async getSupportedPeople(){
-    this.SupportedPeoples = await this.SupportedPeopleService.getSupportedPeoples() as SupportedPeople[];
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(this.clb_id)).data as SupportedPeople[];
   }
+  changeState(){
+    if(this.canDisburseWhenOverdue==true){
+      this.canDisburseWhenOverdue=false;
+    }else{
+      this.canDisburseWhenOverdue=true;
+    }
+  }
+
+  filterProjectType(){
+    return this.ProjectTypes.filter(x => x.canDisburseWhenOverdue == this.canDisburseWhenOverdue);
+  }
+  
   
   save(){
     this.data.videoUrl=this.videoUrl;

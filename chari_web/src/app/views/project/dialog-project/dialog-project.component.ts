@@ -23,7 +23,7 @@ export class DialogProjectComponent implements OnInit {
   downloadURL: Observable<string>;
   ProjectTypes: ProjectType[];
   SupportedPeoples: SupportedPeople[];
-
+  canDisburseWhenOverdue:boolean=true;
   constructor(
     private notificationService: NotificationService,
     private SupportedPeopleService: SupportedPeopleService,
@@ -101,10 +101,22 @@ export class DialogProjectComponent implements OnInit {
   }
   
   public async getProjectType(){
-    this.ProjectTypes = await this.projectTypeService.getProjectTypes() as ProjectType[];
+    this.ProjectTypes = await (await this.projectTypeService.getProjectTypes()).data as ProjectType[];
   }
   public async getSupportedPeople(){
-    this.SupportedPeoples = await this.SupportedPeopleService.getSupportedPeoples() as SupportedPeople[];
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples()).data as SupportedPeople[];
+  }
+
+  changeState(){
+    if(this.canDisburseWhenOverdue==true){
+      this.canDisburseWhenOverdue=false;
+    }else{
+      this.canDisburseWhenOverdue=true;
+    }
+  }
+
+  filterProjectType(){
+    return this.ProjectTypes.filter(x => x.canDisburseWhenOverdue == this.canDisburseWhenOverdue);
   }
   
   save(){

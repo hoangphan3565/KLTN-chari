@@ -27,21 +27,22 @@ export class ProjectOverdueComponent implements OnInit {
     this.getOverdue()
   }
   public async getOverdue(){
-    this.Projects = await this.ProjectService.getOverdue() as Project[];
+    this.Projects = await (await this.ProjectService.getOverdue()).data as Project[];
   }
   public closeProject = async (id) => {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const result = await this.ProjectService.closeProject(id);
+        const result = await this.ProjectService.closeProject(id,0);
         if (result)
         {
           this.notificationService.warn('Đóng dự án thành công');
-          this.Projects = result as Project[];
+          this.Projects = result.data as Project[];
         }  
       }
     }
     catch (e) {
+      this.notificationService.warn('Đóng dự án thất bại');
       console.log(e);
     }
   }
@@ -68,14 +69,15 @@ export class ProjectOverdueComponent implements OnInit {
   public extendProject = async (id,nod) => {
     try 
     {
-      const result = await this.ProjectService.extendProject(id,nod);
+      const result = await this.ProjectService.extendProject(id,nod,0);
       if (result)
       {
         this.notificationService.warn('Gia hạn dự án thành công');
-        this.Projects = result as any[];
+        this.Projects = result.data as any[];
       }  
     }
     catch (e) {
+      this.notificationService.warn('Gia hạn dự án thất bại');
       console.log(e);
     }
   }
@@ -100,7 +102,7 @@ export class ProjectOverdueComponent implements OnInit {
   public saveDonateWithBankDetail = async (data: any[]) => {
     try 
     {
-      const result = await this.DonateDetailsService.saveDonateWithBankDetail(data);
+      const result = await (await this.DonateDetailsService.saveDonateWithBankDetail(data)).data;
       if (result==1)
       {
         this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');

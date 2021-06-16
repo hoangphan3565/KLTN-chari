@@ -79,28 +79,4 @@ public class PushNotificationController {
             return new ResponseEntity<>(jo, HttpStatus.OK);
         }
     }
-
-
-//    @PostMapping("/data")
-//    public String pushDataNotification(@RequestBody NotificationObject request) {
-//        pushNotificationService.sendMessage(request);
-//        return "Notification has been sent";
-//    }
-//
-//    @PostMapping("/data/customdatawithtopic")
-//    public String pushDataNotificationCustom(@RequestBody NotificationObject request) {
-//        pushNotificationService.sendMessageCustomDataWithTopic(request);
-//        return "Notification has been sent";
-//    }
-//    @PostMapping("/data/customdatawithtopicjson")
-//    public String pushDataNotificationCustomWithSpecificJson(@RequestBody NotificationObject request) {
-//        pushNotificationService.sendMessageCustomDataWithTopicWithSpecificJson(request);
-//        return "Notification has been sent";
-//    }
-//
-//    public void pushAutomaticNotification(){
-//        NotificationObject request = new NotificationObject();
-//        request.setTopic("global");
-//        pushNotificationService.sendMessageCustomDataWithTopicWithSpecificJson(request);
-//    }
 }

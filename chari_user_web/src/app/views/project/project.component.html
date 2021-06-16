@@ -23,9 +23,9 @@
             <th>#</th>
             <th>Tên dự án</th>
             <th>Mục tiêu (Triệu đồng)</th>
-            <th>Gói từ thiện</th>
+            <th>Chương trình từ thiện</th>
             <th>Người thụ hưởng</th>
-            <th>Đăng bởi</th>
+            <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Tác vụ</th>
           </tr>
@@ -36,7 +36,8 @@
           <td>{{data.targetMoney/1000000}}</td>
           <td>{{data.projectType.projectTypeName}}</td>
           <td>{{data.supportedPeople.fullName}}</td>
-          <td>{{data.collaborator.fullName}}</td>
+          <td *ngIf="data.verified==true">Đã phê duyệt</td>
+          <td *ngIf="data.verified!=true">Chưa phê duyệt</td>
           <td>
             <img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px">
           </td>

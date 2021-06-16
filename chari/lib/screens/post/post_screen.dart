@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/models/project_model.dart';
-import 'package:chari/screens/home/projectdetails_screen.dart';
+import 'package:chari/screens/home/project_details_screen.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';

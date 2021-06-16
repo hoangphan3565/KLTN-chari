@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chari/screens/home/project_filter.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
@@ -182,14 +183,14 @@ class _HomeScreenState extends State<HomeScreen>{
       return;
     }
     if(curstate){
-      API.postRemoveProjectFromFavorite(project_id, _prefs.get("donator_id"),_prefs.getString('token')).then((response) {
+      DonatorService.postRemoveProjectFromFavorite(project_id, _prefs.get("donator_id"),_prefs.getString('token')).then((response) {
         setState(() {
           _prefs.setString('donator_favorite_project',json.decode(response.body)['favoriteProject']);
         });
       });
       listProjectIdFavorite.remove(project_id.toString());
     }else{
-      API.postAddProjectToFavorite(project_id, _prefs.get("donator_id"),_prefs.getString('token')).then((response) {
+      DonatorService.postAddProjectToFavorite(project_id, _prefs.get("donator_id"),_prefs.getString('token')).then((response) {
         setState(() {
           _prefs.setString('donator_favorite_project',json.decode(response.body)['favoriteProject']);
         });
@@ -199,14 +200,20 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
   _showDialogAskForLoginOrRegister(BuildContext context){
-    showDialog(
+    showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return CustomAlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width / 1,
-              color: Colors.white,
-              child: SingleChildScrollView(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        builder: (BuildContext context){
+          return Wrap(
+            children: [
+              Container(
+                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
                 child: Column(
                   children: <Widget>[
                     Text("Đăng nhập hoặc đăng ký",
@@ -243,9 +250,10 @@ class _HomeScreenState extends State<HomeScreen>{
                   ],
                 ),
               ),
-            ),
+            ],
           );
-        });
+        }
+    );
   }
 
   GestureDetector buildProjectSection(Project project) {

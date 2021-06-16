@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import { navItems } from '../../_nav';
+import Cookies from 'js-cookie'
 
 @Component({
   selector: 'app-dashboard',
@@ -11,5 +12,8 @@ export class DefaultLayoutComponent {
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;
+  }
+  logout() {
+    Cookies.set("loginInfo",'');
   }
 }

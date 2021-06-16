@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
   bool notSeePassword1=true;
   bool notSeePassword2=true;
 
-  //Hàm xử lý đăng ký bằng API
+  //Hàm xử lý đăng ký bằng UserService
   _singUp(String username, String password1,String password2) async{
     String message='';
     int errorCode=1;
@@ -32,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
       if(username.length==10 && CheckString.onlyNumber(username)) {
         if(password1==password2) {
           if(CheckString.isMyCustomPassword(password1)) {
-            var res = await API.signup(username, password1, password2);
+            var res = await UserService.signup(username, password1, password2);
             var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
             message = jsonResponse['message'];
             errorCode = jsonResponse['errorCode'];
@@ -69,8 +69,8 @@ class _SignUpScreenState extends State<SignUpScreen>{
         _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result) async {
           Navigator.of(context).pop(); // to pop the dialog box
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
-          await API.activateUser(NavitePhone);
-          await API.saveUser(NavitePhone);
+          await UserService.activateUser(NavitePhone);
+          await UserService.saveUser(NavitePhone);
           Fluttertoast.showToast(
                 msg: "Đăng ký thành công!",
                 toastLength: Toast.LENGTH_LONG,
@@ -94,15 +94,15 @@ class _SignUpScreenState extends State<SignUpScreen>{
           textColor: Colors.white,
           fontSize: 16.0
         );
-        API.deleteUserByUserName(NavitePhone);
+        UserService.deleteUserByUserName(NavitePhone);
         return "error";
       },
       codeSent: (String verificationId, [int forceResendingToken]) async {
         final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
         if(await result=='successful'){
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> LoginScreen()));
-          await API.activateUser(NavitePhone);
-          await API.saveUser(NavitePhone);
+          await UserService.activateUser(NavitePhone);
+          await UserService.saveUser(NavitePhone);
         }
       },
       codeAutoRetrievalTimeout: (String verificationId) {

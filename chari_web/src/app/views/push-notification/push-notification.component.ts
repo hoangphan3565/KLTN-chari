@@ -24,7 +24,7 @@ export class PushNotificationComponent implements OnInit {
   }
 
   public async getPushNotification(){
-    this.PushNotifications = await this.PushNotificationService.getPushNotifications() as PushNotification[];
+    this.PushNotifications = await (await this.PushNotificationService.getPushNotifications()).data as PushNotification[];
   }
 
   openDialog(): void {
@@ -64,29 +64,11 @@ export class PushNotificationComponent implements OnInit {
       if (result)
       {
         this.notificationService.success(state+' thông báo đẩy thành công');
-        this.PushNotifications = result as PushNotification[];
+        this.PushNotifications = result.data as PushNotification[];
       }    
     }
     catch (e) {
       alert(state+' thông báo đẩy thất bại');
     }
   };
-
-
-  public deletePushNotification = async (id) => {
-    try 
-    {
-      if(confirm('Bạn có thực sự muốn xoá thông báo đẩy này?')){
-        const result = await this.PushNotificationService.deletePushNotification(id);
-        if (result)
-        {
-          this.notificationService.warn('Xoá thông báo đẩy thành công');
-          this.PushNotifications = result as PushNotification[];
-        }  
-      }
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
 }

@@ -49,23 +49,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers(
 						"/api/login","/api/login_facebook","/api/register","/api/activate/{usn}",
 				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
-				"/api/projects","/api/projects/{id}",
-				"/api/post/public",
+				"/api/projects", "/api/post/public",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
-				"/api/donate_details/project/{prjid}",
-				//for admin
+				"/api/donate_details/project/{prjid}","/api/comments/project/{id}","/api/comments/{id}/project/{pid}",
+
+				"/api/projects/collaborator/{id}","/api/projects/activating/collaborator/{id}",
+				"/api/projects/overdue/collaborator/{id}","/api/projects/reached/collaborator/{id}","/api/projects/closed/collaborator/{id}",
+				"/api/posts/collaborator/{id}","/api/supported_peoples/collaborator/{id}",
+
 				"/api/posts","/api/posts/public/{id}","/api/posts/un_public/{id}","/api/posts/{id}",
 				"/api/push_notifications","/api/push_notifications/{id}",
 				"/api/push_notifications/topic","/api/notification/username/{usn}","/api/notification/data",
-				"/api/projects/approve/{id}","/api/projects/create/is_admin/{isadmin}",
-				"/api/projects/close/{id}","/api/projects/extend/{id}/num_of_date/{nod}",
+				"/api/projects/verified","/api/projects/unverified","/api/projects/activating",
+				"/api/projects/overdue","/api/projects/reached","/api/projects/closed","/api/projects/update","/api/projects/handle_all_money",
+				"/api/projects/approve/{id}",
+				"/api/projects/create/collaborator/{id}", "/api/projects/close/{id}/collaborator/{clb_id}","/api/projects/extend/{id}/num_of_date/{nod}/collaborator/{clb_id}",
 				"/api/project_types","/api/project_types/{id}",
 				"/api/donators","/api/donators/{id}",
 				"/api/donate_details/donate_with_bank",
-				"/api/collaborators","/api/collaborators/{id}",
+				"/api/collaborators","/api/collaborators/{id}","/api/collaborators/accept/{id}","/api/collaborators/block/{id}",
 				"/api/feedbacks","/api/feedbacks/{id}","/api/users","/api/users/{id}",
-				"/api/supported_peoples","/api/supported_peoples/{id}").permitAll().
+				"/api/supported_peoples","/api/supported_peoples/{id}"
+				).permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to

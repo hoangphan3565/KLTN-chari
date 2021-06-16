@@ -14,7 +14,6 @@ import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
 import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +23,7 @@ import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
   ],
   declarations: [ 
     ProjectReachedComponent,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:convert' show utf8;
 import 'dart:io';
+import 'package:chari/services/project_service.dart';
 import 'package:quiver/async.dart';
 
 import 'package:chari/services/services.dart';
@@ -40,6 +41,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
   var project_types = new List<ProjectType>();
   var posts = new List<Post>();
   var donate_details_list = new List<DonateDetails>();
+  int totalDonate;
   var push_notification_list = new List<PushNotification>();
   var donator_notification_list = new List<DonatorNotification>();
   var donator = new Donator(null,null,null,null,null,null,null,null,null);
@@ -81,17 +83,15 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
     _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
-      setState(() {
-        _getProjectAndType();
-        _getPosts();
-        if(this.islogin==true){
-          _checkNewNotificationsByDonatorId();
-          _getDonateHistory();
-          _getPushNotification();
-          _checkAndSubscribeFavoriteNotificationOfDonator();
-        }
-        _checkLogin();
-      });
+      _getProjectAndType();
+      _getPosts();
+      if(this.islogin==true){
+        _checkNewNotificationsByDonatorId();
+        _getDonateHistory();
+        _getPushNotification();
+        _checkAndSubscribeFavoriteNotificationOfDonator();
+      }
+      _checkLogin();
     });
 
   }
@@ -103,7 +103,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
   }
 
   _checkNewNotificationsByDonatorId() async {
-    var res = await API.getCheckNewDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);
+    var res = await DonatorNotificationService.getCheckNewDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);
     var jsRes = json.decode(utf8.decode(res.bodyBytes));
     setState(() {
       this.isNewNotification=jsRes;
@@ -117,7 +117,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
     _fcm.configure(
       onMessage: (Map<String,dynamic> message) async{
         Fluttertoast.showToast(
-            msg: message['notification']['title']+": "+message['notification']['body'],
+            msg: message['notification']['title'],
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 3,
@@ -145,7 +145,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
   }
 
   _getPushNotification() async{
-    API.getPushNotification().then((response) {
+    DonatorNotificationService.getPushNotification().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         push_notification_list = list.map((model) => PushNotification.fromJson(model)).toList();
@@ -153,17 +153,30 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
+
   _getDonateHistory() async{
-    API.getDonateDetailsListByDonatorId(this.donator.id,this.donator.token).then((response) {
+    DonateDetailsService.getTotalDonateDetailsListByDonatorId(this.donator.id,this.donator.token).then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
       setState(() {
-        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
+        totalDonate = int.tryParse(res);
+      });
+      int min;
+      if(int.tryParse(res)>=5){
+        min=5;
+      }else{
+        min=int.tryParse(res);
+      }
+      DonateDetailsService.getDonateDetailsListByDonatorIdFromAToB(this.donator.id,0,min,this.donator.token).then((response) {
+        setState(() {
+          List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+          donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
+        });
       });
     });
   }
 
   _getNotification() async{
-    API.getDonatorNotificationListByDonatorId(this.donator.id,this.donator.token).then((response) {
+    DonatorNotificationService.getDonatorNotificationListByDonatorId(this.donator.id,this.donator.token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         donator_notification_list = list.map((model) => DonatorNotification.fromJson(model)).toList();
@@ -176,13 +189,13 @@ class _AppBarScreenState extends State<AppBarScreen> {
     if(temp!=null){
       listProjectIdFavorite = temp.split(" ");
     }
-    API.getProjects().then((response) {
+    ProjectService.getProjects().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         projects = list.map((model) => Project.fromJson(model)).toList();
       });
     });
-    API.getProjectTypes().then((response) {
+    ProjectService.getProjectTypes().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         project_types = list.map((model) => ProjectType.fromJson(model)).toList();
@@ -191,7 +204,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
   _getPosts(){
-    API.getPost().then((response) {
+    PostService.getPost().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         posts = list.map((model) => Post.fromJson(model)).toList();
@@ -317,7 +330,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
                 _checkAndSubscribeFavoriteNotificationOfDonator();
                 setState(() {
                   isNewNotification=false;
-                  API.putReadDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);
+                  DonatorNotificationService.putReadDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);
                 });
               }
               else if(index == 3){
@@ -329,8 +342,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
         ),
         body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,donator: this.donator,isLogin: this.islogin)
             : _page == 1 ? PostScreen(projects: this.projects,posts: this.posts,donator: this.donator,)
-            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects,donator: this.donator,)
-            : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects)
+            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects,donator: this.donator)
+            : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects,donator: this.donator,total: totalDonate,)
             : PersonalScreen(donator: this.donator,push_notification_list: this.push_notification_list))
     );
     }

@@ -5,6 +5,7 @@ import com.macia.chariBE.model.ProjectType;
 import com.macia.chariBE.model.SupportedPeople;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 

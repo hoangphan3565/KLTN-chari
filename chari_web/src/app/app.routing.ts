@@ -5,15 +5,15 @@ import Cookies from 'js-cookie'
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
+import { P404Component } from './pages/error/404.component';
+import { P500Component } from './pages/error/500.component';
+import { LoginComponent } from './pages/login/login.component';
 
-const loginInfoStr = Cookies.get("loginInfo");
+const islogged = Cookies.get("loginInfo");
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: loginInfoStr!=''?'dashboard':'login',
+    redirectTo: islogged==''?'login':'dashboard',
     pathMatch: 'full',
   },
   {
@@ -45,59 +45,63 @@ export const routes: Routes = [
     },
     children: [
       {
-        path: 'project',
+        path: islogged==''?'login':'dashboard',
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+      {
+        path: islogged==''?'login':'project',
         loadChildren: () => import('./views/project/project.module').then(m => m.ProjectModule)
       }, 
       {
-        path: 'project-activating',
+        path: islogged==''?'login':'project-activating',
         loadChildren: () => import('./views/project-activating/project-activating.module').then(m => m.ProjectActivatingModule)
       },   
       {
-        path: 'project-reached',
+        path: islogged==''?'login':'project-reached',
         loadChildren: () => import('./views/project-reached/project-reached.module').then(m => m.ProjectReachedModule)
       }, 
       {
-        path: 'project-overdue',
+        path: islogged==''?'login':'project-overdue',
         loadChildren: () => import('./views/project-overdue/project-overdue.module').then(m => m.ProjectOverdueModule)
       },   
       {
-        path: 'project-unverified',
+        path: islogged==''?'login':'project-unverified',
         loadChildren: () => import('./views/project-unverified/project-unverified.module').then(m => m.ProjectUnverifiedModule)
       },
       {
-        path: 'project-closed',
+        path: islogged==''?'login':'project-closed',
         loadChildren: () => import('./views/project-closed/project-closed.module').then(m => m.ProjectClosedModule)
       },
       {
-        path: 'posts',
+        path: islogged==''?'login':'posts',
         loadChildren: () => import('./views/post/post.module').then(m => m.ProjectPostModule)
       },
       {
-        path: 'project-type',
+        path: islogged==''?'login':'project-type',
         loadChildren: () => import('./views/project-type/project-type.module').then(m => m.ProjectTypeModule)
       },
       {
-        path: 'donator',
+        path: islogged==''?'login':'donator',
         loadChildren: () => import('./views/donator/donator.module').then(m => m.DonatorModule)
       },
       {
-        path: 'supported-people',
+        path: islogged==''?'login':'supported-people',
         loadChildren: () => import('./views/supported-people/supported-people.module').then(m => m.SupportedPeopleModule)
       },
       {
-        path: 'collaborator',
+        path: islogged==''?'login':'collaborator',
         loadChildren: () => import('./views/collaborator/collaborator.module').then(m => m.CollaboratorModule)
       },
       {
-        path: 'user',
+        path: islogged==''?'login':'user',
         loadChildren: () => import('./views/user/user.module').then(m => m.UserModule)
       },
       {
-        path: 'feedback',
+        path: islogged==''?'login':'feedback',
         loadChildren: () => import('./views/feedback/feedback.module').then(m => m.FeedbackModule)
       },
       {
-        path: 'push-notification',
+        path: islogged==''?'login':'push-notification',
         loadChildren: () => import('./views/push-notification/push-notification.module').then(m => m.PushNotificationModule)
       },
       {
@@ -112,10 +116,7 @@ export const routes: Routes = [
         path: 'charts',
         loadChildren: () => import('./temp/chartjs/chartjs.module').then(m => m.ChartJSModule)
       },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
-      },
+
       {
         path: 'icons',
         loadChildren: () => import('./temp/icons/icons.module').then(m => m.IconsModule)

@@ -23,7 +23,7 @@ export class ProjectTypeComponent implements OnInit {
     this.getProjectType()
   }
   public async getProjectType(){
-    this.projectTypes = await this.projectTypeService.getProjectTypes() as ProjectType[];
+    this.projectTypes = await (await this.projectTypeService.getProjectTypes()).data as ProjectType[];
   }
 
   getID(data){
@@ -65,7 +65,7 @@ export class ProjectTypeComponent implements OnInit {
       if (result)
       {
         this.notificationService.success(state+' chương trình từ thiện thành công');
-        this.projectTypes = result as ProjectType[];
+        this.projectTypes = result.data as ProjectType[];
       }    
     }
     catch (e) {
@@ -82,7 +82,7 @@ export class ProjectTypeComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Xoá chương trình từ thiện thành công');
-          this.projectTypes = result as ProjectType[];
+          this.projectTypes = result.data as ProjectType[];
         }  
       }
     }
@@ -96,7 +96,7 @@ export class ProjectTypeComponent implements OnInit {
     this.projectType.prt_ID=null;
     this.projectType.description=null;
     this.projectType.imageUrl=null;
-    this.projectType.canDisburseWhenOverdue=null;
+    this.projectType.canDisburseWhenOverdue=true;
   }
 
   onFileChange(evt: any) {

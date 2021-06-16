@@ -6,6 +6,8 @@ import { ProjectDTO } from '../../models/ProjectDTO';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogProjectComponent } from './dialog-project/dialog-project.component';
+import Cookies from 'js-cookie'
+
 
 
 @Component({
@@ -16,7 +18,7 @@ export class ProjectComponent implements OnInit {
   
   Projects: Project[];
   Project: Project;
-
+  clb_id: Number;
   constructor(
     private ProjectService: ProjectService,
     private notificationService: NotificationService,
@@ -24,11 +26,13 @@ export class ProjectComponent implements OnInit {
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getProject();
   }
+  
 
   public async getProject(){
-    this.Projects = await this.ProjectService.getProjects() as Project[];
+    this.Projects = await (await this.ProjectService.getProjects(this.clb_id)).data as Project[];
   }
 
 
@@ -55,6 +59,7 @@ export class ProjectComponent implements OnInit {
       startDate:p.startDate,
       endDate:p.endDate,
       targetMoney:p.targetMoney,
+      canDisburseWhenOverdue:p.projectType.canDisburseWhenOverdue,
       prt_ID:p.projectType.prt_ID,
       projectType:p.projectType,
       stp_ID:p.supportedPeople.stp_ID,
@@ -74,6 +79,7 @@ export class ProjectComponent implements OnInit {
       startDate:'',
       endDate:'',
       targetMoney:'',
+      canDisburseWhenOverdue:true,
       prt_ID:null,
       projectType:null,
       stp_ID:null,
@@ -85,11 +91,11 @@ export class ProjectComponent implements OnInit {
   public ceateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.createProject(data,true);
+      const result = await this.ProjectService.createProject(data,this.clb_id);
       if (result)
       {
         this.notificationService.success('Thêm chương trình từ thiện thành công');
-        this.Projects = result as Project[];
+        this.Projects = result.data as Project[];
       }    
     }
     catch (e) {
@@ -104,7 +110,7 @@ export class ProjectComponent implements OnInit {
       if (result)
       {
         this.notificationService.success('Cập nhật chương trình từ thiện thành công');
-        this.Projects = result as Project[];
+        this.Projects = result.data as Project[];
       }    
     }
     catch (e) {
@@ -121,7 +127,7 @@ export class ProjectComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Xoá chương trình từ thiện thành công');
-          this.Projects = result as Project[];
+          this.Projects = result.data as Project[];
         }  
       }
     }

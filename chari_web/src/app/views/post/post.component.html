@@ -41,13 +41,13 @@
           </td>
           <td *ngIf="data.isPublic==true">
             <button type="button" class="btn btn-warning btn-sm" (click)="unPublicPost(data.pos_ID)">
-              <i class="fa fa-eye-slash"></i>
+              <i class="fa fa-remove"></i>
             </button>
             <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
               <i class="fa fa-edit"></i>
             </button>
             <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)">
-              <i class="fa fa-close"></i>
+              <i class="fa fa-trash-o"></i>
             </button>
           </td>
           <td *ngIf="data.isPublic!=true">
@@ -58,7 +58,7 @@
               <i class="fa fa-edit"></i>
             </button>
             <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)">
-              <i class="fa fa-close"></i>
+              <i class="fa fa-trash-o"></i>
             </button>
           </td>
         </tbody>

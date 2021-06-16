@@ -3,5 +3,7 @@ export class Collaborator {
     fullName:string;
     address:string;
     phoneNumber:string;
+    email:string;
     certificate:string;
+    isAccept:boolean;
 }

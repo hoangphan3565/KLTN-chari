@@ -6,6 +6,9 @@ import com.macia.chariBE.service.SupportedPeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/supported_peoples")
@@ -19,6 +22,11 @@ public class SupportedPeopleController {
     @GetMapping()
     public ResponseEntity<?> getAllSupportedPeople() {
         return ResponseEntity.ok().body(repo.findAll());
+    }
+
+    @GetMapping("/collaborator/{id}")
+    public ResponseEntity<?> getAllSupportedPeopleByCollaboratorId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(repo.findAll().stream().filter(s-> s.getCollaborator().getCLB_ID().equals(id)).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")

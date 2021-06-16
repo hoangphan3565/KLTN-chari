@@ -22,6 +22,14 @@ public class PostController {
     public ResponseEntity<?> getAllPost() {
         return ResponseEntity.ok().body(PostService.getPostDTOs());
     }
+
+    @GetMapping("/collaborator/{id}")
+    public ResponseEntity<?> getAllPostByCollaboratorId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(PostService.getPostDTOs().stream()
+                .filter(p-> p.getCollaboratorId().equals(id))
+                .collect(Collectors.toList()));
+    }
+
     @GetMapping("/public")
     public ResponseEntity<?> getPublicPost() {
         return ResponseEntity.ok().body(PostService.getPostDTOs().stream().filter(PostDTO::getIsPublic).collect(Collectors.toList()));

@@ -40,6 +40,10 @@ public class SupportedPeople {
     @Column(length = 50)
     private String bankAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "clb_id")
+    private Collaborator collaborator;
+
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "supportedPeople")
     private List<Project> projects;

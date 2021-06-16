@@ -25,6 +25,9 @@ public class Collaborator {
     @Column(length = 200)
     private String address;
 
+    @Column(length = 20)
+    private String username;
+
     @Column(length = 100)
     private String email;
 
@@ -33,6 +36,9 @@ public class Collaborator {
 
     @Column(length = 500)
     private String certificate;
+
+    @Column
+    private Boolean isAccept;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "collaborator")

@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/models/project_model.dart';
-import 'package:chari/screens/home/projectdetails_screen.dart';
+import 'package:chari/screens/home/project_details_screen.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NotificationsScreen extends StatefulWidget {
   List<DonatorNotification> donator_notification_list;
@@ -33,7 +33,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   _getProjectReadyToMoveMoney(int money) async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String token = _prefs.getString('token');
-    API.getProjectReadyToMoveMoney(money, token).then((response) {
+    ProjectService.getProjectReadyToMoveMoney(money, token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         projects_ready_to_move_money = list.map((model) => Project.fromJson(model)).toList();
@@ -42,7 +42,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   }
 
   _getPushNotification() async{
-    API.getPushNotification().then((response) {
+    DonatorNotificationService.getPushNotification().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         push_notification_list = list.map((model) => PushNotification.fromJson(model)).toList();
@@ -51,7 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   }
 
   _getFavoriteNotification() async{
-    API.getFavoriteNotificationList(widget.donator.id, widget.donator.token).then((response) {
+    DonatorService.getFavoriteNotificationList(widget.donator.id, widget.donator.token).then((response) {
       setState(() {
         List<bool> list = (json.decode(response.body) as List<dynamic>).cast<bool>();
         favorite_notification_list = list;
@@ -197,7 +197,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                           press: () async {
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            var res = await API.putMoveMoney(handling_project_id,donator_id,project.prj_id,money,token);
+                            var res = await DonatorService.putMoveMoney(handling_project_id,donator_id,project.prj_id,money,token);
                             var jsRes = json.decode(utf8.decode(res.bodyBytes));
                             Fluttertoast.showToast(
                                 msg: jsRes['message'],
@@ -322,7 +322,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                         color: kPrimaryLightColor,
                         press: () async {
                           Navigator.pop(context);
-                          var res = await API.putMoveMoney(project_id, donator_id, 0, money, token);
+                          var res = await DonatorService.putMoveMoney(project_id, donator_id, 0, money, token);
                           var jsRes = json.decode(utf8.decode(res.bodyBytes));
                           Fluttertoast.showToast(
                               msg: jsRes['message'],
@@ -393,7 +393,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           if(notification.topic!='closed'){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: widget.projects.where((p) => p.prj_id==notification.project_id).elementAt(0),)),
+              MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: widget.projects.where((p) => p.prj_id==notification.project_id).elementAt(0),donator: widget.donator,)),
             );
           }
           if(notification.topic=='closed'){

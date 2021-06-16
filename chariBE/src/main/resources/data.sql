@@ -1,15 +1,19 @@
-insert into jwt_user(username,password,usertype,status) values('1234567890','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('collaborator_admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('1231231232','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('1231231233','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','BLOCKED');
+insert into jwt_user(username,password,usertype,status) values('4564564565','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
+
 insert into jwt_user(username,password,usertype,status) values('1231231231','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
+
 insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
 
-insert into collaborator(clb_id,full_name,phone_number,email,address,certificate) values(0,'Chari','Admin','Admin','TP Hà Nội','Admin');
-insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Minh Anh','413412312','abc@gmail.com','TP Hà Nội','Tự nguyện');
-insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Trần An','34532473','abc@gmail.com','TP HCM','Có chứng chỉ');
-insert into collaborator(full_name,phone_number,email,address,certificate) values('Lê Minh Vũ','8764252','abc@gmail.com','TP Hà Nội','Tự nguyện');
-insert into collaborator(full_name,phone_number,email,address,certificate) values('Đại Minh Trung','76893453','abc@gmail.com','TP Vinh','Có chứng chỉ');
-insert into collaborator(full_name,phone_number,email,address,certificate) values('Nguyễn Thành Quang','89341234','abc@gmail.com','TP Hà Nội','Có chứng chỉ');
+insert into collaborator(username,is_accept,clb_id,full_name,phone_number,email,address,certificate) values('collaborator_admin',true,0,'Chari','admin','admin','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
+insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231232',true,'Nguyễn Minh Anh','1231231232','abc@gmail.com','TP Hà Nội','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
+insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('4564564565',true,'Nguyễn Trần An','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
+insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231233',false,'Phan Văn B','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
+
 
 insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','1 2 3 4 5 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
 insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
@@ -28,15 +32,17 @@ insert into feedback(title,description,contributor) values('Ứng dụng lag','T
 insert into feedback(title,description,contributor) values('Thêm Zalopay','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
 insert into feedback(title,description,contributor) values('Làm lazy load','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
 
-insert into supported_people(full_name,address,phone_number,bank_name,bank_account) values('TRAN THI BICH NGOC','Biên Hoà','0773453819','BIDV','31410004127254');
-insert into supported_people(full_name,address,phone_number,bank_name,bank_account) values('PHAN DINH HOANG','TP HCM','0973465515','BIDV','31410002593895');
+insert into supported_people(clb_id,stp_id,full_name,address,phone_number,bank_name,bank_account) values(0,0,'PHAN DINH HOANG','TP HCM','0973465515','BIDV','31410002593895');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'TRAN THI BICH NGOC','Biên Hoà','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(2,'NGUYEN THI NA','Lạng Sơn','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'QUY VAC-XIN PHONG COVID-19','Hà Nội','0773453819','BIDV','21110009116868');
 
 insert into project(update_time,prj_id,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,prt_id,stp_id,clb_id)
 values('2021-05-13 20:50:40.075187',0,'G0','Quỹ chung Chari',true,false,false,
-       'Quỹ chung là nơi thuận tiện nhất để mọi người quyên góp,',
+       'Quỹ chung Chari là nơi thuận tiện nhất để mọi người quyên góp,',
        'Nếu bạn phân vân không biết nên ủng hộ cho hoàn cảnh nào là hợp lý, hãy ủng hộ ở đây chúng tôi sẽ cân nhắc các trường hợp khó khăn nhất hoặc những dự án sắp quyên góp thành công và chuyển số tiền này đến dự án đó. Tất cả số tiền của bạn trong quỹ này đều được thông báo khi được chúng tôi sử dụng, kèm theo những hình ảnh video chân thật nhất. ',
        '2020-11-01','2030-01-01',10000000,
-       'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quy-chung-chari.jpeg?alt=media&token=e68a9642-dd1f-4f16-9138-95668c822403',6,2,0);
+       'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quy-chung-chari.jpeg?alt=media&token=e68a9642-dd1f-4f16-9138-95668c822403',6,0,0);
 
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
@@ -103,7 +109,7 @@ values('2021-05-13 20:50:40.075187','G10004','Hỗ trợ vốn sinh kế cho ng�
 '       Do đó, Chari cùng với các đơn vị đồng hành mong muốn góp một phần nhỏ của mình để giúp đỡ người khuyết tật có vốn ban đầu hỗ trợ cho công việc của họ sau này.',
 '2020-11-01','2021-03-01',1000000,
 'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
 values('2021-05-13 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,true,false,
@@ -121,7 +127,7 @@ values('2021-05-13 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh
 '       Mong muốn hoàn thành giấc mơ xây cầu cho các em nhưng còn gặp nhiều khó khăn về mặt pháp lý, nên thời điểm hiện tại để kịp thời giúp đỡ các em Chari kêu gọi các nhà hảo tâm quyên góp tặng cho các em những chiếc “Cặp phao” để các em phần nào an toàn hơn trên con đường đến trường đầy chông gai, nguy hiểm.',
 '2020-11-15','2021-02-15',700000,
 'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
 values('2021-05-13 20:50:40.075187','G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
@@ -134,8 +140,8 @@ values('2021-05-13 20:50:40.075187','G10006','Xây cầu tình thương cho thô
 ' ||
 '       Để giúp đỡ cho người dân có cây cầu đi lại an toàn hơn, không xảy ra những vụ việc đáng tiếc mà ta có thể biết trước nhưng không thể ngăn chặn, thì Chari mong muốn góp một phần nhỏ để giúp đỡ cho chính quyền có đủ kinh phí xây dựng, giúp người dân mau chóng có một cây cầu mới để đi lại an toàn. ',
 '2020-11-01','2021-11-29',1500000,
-'https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
 values('2021-05-13 20:50:40.075187','G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
@@ -178,7 +184,7 @@ values('2021-05-13 20:50:40.075187','G300001','Ủng hộ 400 phần cơm cho b�
 'Làng An Phú 10 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-03-01',200000,
 'https://hieuvetraitim.com/attachments/hoan-canh-gioi-thieu-jpg.1782/',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',3,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',5,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
 values('2021-05-13 20:50:40.075187','G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
@@ -243,10 +249,10 @@ insert into project_images(image_url,prj_id) values('https://danviet.mediacdn.vn
 insert into project_images(image_url,prj_id) values('https://anh.eva.vn//upload/3-2015/images/2015-09-08/1441684268-11992496_1627825204133394_783327606_n.jpg',5);
 insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2015/09/kinh-so-canh-hang-tram-nguoi-dan-lieu-minh-du-day-cap-vuot-suoi.jpg',5);
 insert into project_images(image_url,prj_id) values('https://anh.24h.com.vn/upload/4-2014/images/2014-11-30/1417327823-vuot-suoi-den-truong-1.jpg',5);
-insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3452_cau-hu-hong-1.jpg',6);
-insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3453_cau-hu-hong-2.jpg',6);
-insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2018/06/3456_cau-hu-hong-4.jpg',6);
-insert into project_images(image_url,prj_id) values('https://www.dkn.tv/wp-content/uploads/2018/06/3457_cau-hu-hong-5.jpg',6);
+insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',6);
+insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',6);
+insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',6);
+insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',6);
 insert into project_images(image_url,prj_id) values('https://sites.google.com/site/phanthingochang290118/_/rsrc/1517397505028/tham-khao/hang9.jpg',7);
 insert into project_images(image_url,prj_id) values('https://vnn-imgs-f.vgcloud.vn/2018/02/08/17/canh-hoc-sinh-vung-cao-an-com-tron-mi-tom-ngon-lanh-khien-nhieu-nguoi-xot-xa-7.jpg',7);
 insert into project_images(image_url,prj_id) values('https://giacmovietnam.files.wordpress.com/2013/12/008.jpg',7);
@@ -308,11 +314,11 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-12',50000,1
 insert into donator_notification(create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','closed',80000,8,1);
 insert into donator_notification(create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','closed',40000,12,1);
 
-insert into push_notification(title,message,topic) values('Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này','new');
-insert into push_notification(title,message,topic) values('Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.','overdue');
-insert into push_notification(title,message,topic) values('Xử lý tiền dự án quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari','closed');
-insert into push_notification(title,message,topic) values('Dự án đã được gia hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.','extended');
-insert into push_notification(title,message,topic) values('Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.','reached');
+insert into push_notification(topic,title,message) values('new','Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này');
+insert into push_notification(topic,title,message) values('overdue','Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.');
+insert into push_notification(topic,title,message) values('closed','Xử lý tiền dự án quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari');
+insert into push_notification(topic,title,message) values('extended','Dự án đã được gia hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
+insert into push_notification(topic,title,message) values('reached','Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.');
 
 insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'
@@ -325,12 +331,22 @@ insert into post_images(image_url,pos_id) values('https://anh.eva.vn//upload/3-2
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/09/kinh-so-canh-hang-tram-nguoi-dan-lieu-minh-du-day-cap-vuot-suoi.jpg',1);
 insert into post_images(image_url,pos_id) values('https://anh.24h.com.vn/upload/4-2014/images/2014-11-30/1417327823-vuot-suoi-den-truong-1.jpg',1);
 
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10 đã thành công'
-,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-,11,0,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viện 115 quận 10 sắp đạt chỉ tiêu'
+,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi được 80% tiền quyên góp. Hãy tiếp tục kêu gọi mọi người tham gia để giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+,10,1,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
 ,true,'2021-04-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',2);
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',2);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',2);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',2);
+
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viện 115 quận 10 đã thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,10,1,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
+                                                                                        ,true,'2021-04-13 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',3);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',3);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',3);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',3);
 

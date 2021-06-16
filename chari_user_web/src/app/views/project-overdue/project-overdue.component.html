@@ -34,9 +34,6 @@
           <td *ngIf="data.curMoney/data.targetMoney>0.8">
             <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_ID)">Gia hạn</button>
           </td>                 
-          <td *ngIf="data.projectType.canDisburseWhenOverdue == true">
-            <button type="button" class="btn btn-block btn-outline-info" (click)="openDisburseDialog(data)">Giải ngân</button>
-          </td>
         </tbody>
         <tbody>
       </table>

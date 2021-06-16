@@ -5,3 +5,4 @@ export 'project_model.dart';
 export 'project_type_model.dart';
 export 'push_notification.dart';
 export 'post_model.dart';
+export 'comment_model.dart';

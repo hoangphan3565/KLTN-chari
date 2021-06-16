@@ -4,14 +4,19 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
+import { P404Component } from './pages/error/404.component';
+import { P500Component } from './pages/error/500.component';
+import { LoginComponent } from './pages/login/login.component';
 
+import Cookies from 'js-cookie'
+import { RegisterComponent } from './pages/register/register.component';
+import { LadingComponent } from './pages/landing/landing.component';
+
+const loginInfoStr = Cookies.get("loginInfo");
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: loginInfoStr!=''?'dashboard':'lading',
     pathMatch: 'full',
   },
   {
@@ -36,10 +41,24 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'register',
+    component: RegisterComponent,
+    data: {
+      title: 'Trang đăng ký'
+    }
+  },
+  {
+    path: 'lading',
+    component: LadingComponent,
+    data: {
+      title: 'Trang chủ'
+    }
+  },
+  {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Trang chủ'
+      title: 'Trang cộng tác viên'
     },
     children: [
       {

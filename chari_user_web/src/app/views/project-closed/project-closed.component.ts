@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
+import Cookies from 'js-cookie'
 
 
 @Component({
@@ -11,6 +11,7 @@ import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog
 })
 export class ProjectClosedComponent implements OnInit {
   Projects: any[];
+  clb_id: Number;
 
   constructor(
     private ProjectService: ProjectService,
@@ -18,26 +19,21 @@ export class ProjectClosedComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getClosed()
   }
 
   async getClosed(){
-    this.Projects = await this.ProjectService.getClosed() as any[];
+    this.Projects = await (await this.ProjectService.getClosed(this.clb_id)).data as any[];
   }
 
   async updateMoveMoneyProgress(){
-    const result = await this.ProjectService.updateMoveMoneyProgress() as any[];
+    const result = await (await this.ProjectService.updateMoveMoneyProgress()).data as any[];
     if (result)
       {
         this.notificationService.success(' Cập nhật thành công');
         this.Projects = result as any[];
       }   
-  }
-  openDisburseDialog(data): void {
-    const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
-      width: '250px',
-      data: data
-    });
   }
 }
 

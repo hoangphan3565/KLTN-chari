@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { CollaboratorComponent } from './collaborator.component';
 import { CollaboratorRoutingModule } from './collaborator-routing.module';
-import { DialogCollaboratorComponent } from './dialog-collaborator/dialog-collaborator.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -24,6 +23,6 @@ import { MatInputModule } from '@angular/material/input';
   ],
   declarations: [ 
     CollaboratorComponent,
-    DialogCollaboratorComponent ]
+  ]
 })
 export class CollaboratorModule { }

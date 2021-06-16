@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen>{
   TextEditingController _passwordController = TextEditingController();
   bool notSeePassword = true;
 
-  _signInFacebook() async {
+  _loginFacebook() async {
     FacebookLogin facebookLogin = FacebookLogin();
 
     final result = await facebookLogin.logIn(['email']);
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen>{
       _firebaseAuth.signInWithCredential(credential);
     }
 
-    var res = await API.loginFB(fbUser['name'], fbUser['id']);
+    var res = await UserService.loginFB(fbUser['name'], fbUser['id']);
     _saveDeviceToken(fbUser['id']);
     var jsRes = json.decode(utf8.decode(res.bodyBytes));
     if(res.statusCode == 200) {
@@ -61,48 +61,43 @@ class _LoginScreenState extends State<LoginScreen>{
       }else{
         Map<String, dynamic> decodedToken = JwtDecoder.decode(jsRes['token']); //{sub: 0973465515, exp: 19609229038, iat: 1609229038}
         DateTime expirationDate = JwtDecoder.getExpirationDate(jsRes['token']);
-        print("Token sẽ hết hạn vào: "+expirationDate.toString());
 
         _prefs.setString('token',jsRes['token']);
         _prefs.setString('username',decodedToken['sub']);
-
-        var jsRes2;
-        var res2 = await API.getDonatorDetailsByFacebookId(fbUser['id'],_prefs.getString('token'));
-        jsRes2 = json.decode(utf8.decode(res2.bodyBytes));
-
-        _prefs.setInt('donator_id',jsRes2['dnt_ID']);
-        if(jsRes2['address']==null){
+        
+        _prefs.setInt('donator_id',jsRes['info']['dnt_ID']);
+        if(jsRes['info']['address']==null){
           _prefs.setString('donator_address','');
         }else{
-          _prefs.setString('donator_address',jsRes2['address'].toString());
+          _prefs.setString('donator_address',jsRes['info']['address'].toString());
         }
 
-        if(jsRes2['fullName']==null){
+        if(jsRes['info']['fullName']==null){
           _prefs.setString('donator_full_name','');
         }else{
-          _prefs.setString('donator_full_name',jsRes2['fullName'].toString());
+          _prefs.setString('donator_full_name',jsRes['info']['fullName'].toString());
         }
 
-        if(jsRes2['avatarUrl']==null){
+        if(jsRes['info']['avatarUrl']==null){
           _prefs.setString('donator_avatar_url','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/charity_avatar.jpeg?alt=media&token=e339794b-3625-452b-a170-02f0874d5363');
         }else{
-          _prefs.setString('donator_avatar_url',jsRes2['avatarUrl'].toString());
+          _prefs.setString('donator_avatar_url',jsRes['info']['avatarUrl'].toString());
         }
 
-        if(jsRes2['facebookId']==null){
+        if(jsRes['info']['facebookId']==null){
           _prefs.setString('donator_facebook_id','');
         }else{
-          _prefs.setString('donator_facebook_id',jsRes2['facebookId'].toString());
+          _prefs.setString('donator_facebook_id',jsRes['info']['facebookId'].toString());
         }
 
-        if(jsRes2['phoneNumber']==null){
+        if(jsRes['info']['phoneNumber']==null){
           _prefs.setString('donator_phone','');
         }else{
-          _prefs.setString('donator_phone',jsRes2['phoneNumber'].toString());
+          _prefs.setString('donator_phone',jsRes['info']['phoneNumber'].toString());
         }
 
-        _prefs.setString('donator_favorite_project',jsRes2['favoriteProject'].toString());
-        _prefs.setString('donator_favorite_notification',jsRes2['favoriteNotification'].toString());
+        _prefs.setString('donator_favorite_project',jsRes['info']['favoriteProject'].toString());
+        _prefs.setString('donator_favorite_notification',jsRes['info']['favoriteNotification'].toString());
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
       }
     }
@@ -118,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
   _login(String username, String password) async{
-    var res = await API.signin(username, password);
+    var res = await UserService.signin(username, password);
     var jsRes = json.decode(utf8.decode(res.bodyBytes));
     //Kiem tra API Status
     if(res.statusCode == 200) {
@@ -144,33 +139,41 @@ class _LoginScreenState extends State<LoginScreen>{
         _prefs.setString('username',decodedToken['sub']);
         _prefs.setString('password',password);
 
-        // Lưu thông tin người dùng đã đăng nhập... Vì lúc tạo người dùng mới, app đang dùng là app của donator, phía server sẽ lưu đồng thời cả app user và thông tin của donator,
-        // lúc đăng ký lần đầu thì thông tin của donator chỉ có mỗi số điện thoại
-        var jsRes2;
-        var res2 = await API.getDonatorDetailsByPhone(username,_prefs.getString('token'));
-        jsRes2 = json.decode(utf8.decode(res2.bodyBytes));
-        _prefs.setInt('donator_id',jsRes2['dnt_ID']);
-        if(jsRes2['address']==null){_prefs.setString('donator_address','');
-        }else{_prefs.setString('donator_address',jsRes2['address'].toString());
-        }if(jsRes2['fullName']==null){_prefs.setString('donator_full_name','');
-        }else{_prefs.setString('donator_full_name',jsRes2['fullName'].toString());
-        }if(jsRes2['avatarUrl']==null){_prefs.setString('donator_avatar_url','https://1.bp.blogspot.com/-kFguDxc0qe4/XyzyK1y6eiI/AAAAAAAAwW8/XcAuOQ2qvQYhoDe4Bv0eLX9eye7FnmKKgCLcBGAsYHQ/s1600/co-4-la%2B%25283%2529.jpg');
-        }else{_prefs.setString('donator_avatar_url',jsRes2['avatarUrl'].toString());
+
+        _prefs.setInt('donator_id',jsRes['info']['dnt_ID']);
+        if(jsRes['info']['address']==null){
+          _prefs.setString('donator_address','');
+        }else{
+          _prefs.setString('donator_address',jsRes['info']['address'].toString());
         }
-        if(jsRes2['facebookId']==null){
+
+        if(jsRes['info']['fullName']==null){
+          _prefs.setString('donator_full_name','Nhà hảo tâm');
+        }else{
+          _prefs.setString('donator_full_name',jsRes['info']['fullName'].toString());
+        }
+
+        if(jsRes['info']['avatarUrl']==null){
+          _prefs.setString('donator_avatar_url','https://1.bp.blogspot.com/-kFguDxc0qe4/XyzyK1y6eiI/AAAAAAAAwW8/XcAuOQ2qvQYhoDe4Bv0eLX9eye7FnmKKgCLcBGAsYHQ/s1600/co-4-la%2B%25283%2529.jpg');
+        }
+        else{
+          _prefs.setString('donator_avatar_url',jsRes['info']['avatarUrl'].toString());
+        }
+
+        if(jsRes['info']['facebookId']==null){
           _prefs.setString('donator_facebook_id','');
         }else{
-          _prefs.setString('donator_facebook_id',jsRes2['facebookId'].toString());
+          _prefs.setString('donator_facebook_id',jsRes['info']['facebookId'].toString());
         }
 
-        if(jsRes2['phoneNumber']==null){
+        if(jsRes['info']['phoneNumber']==null){
           _prefs.setString('donator_phone','');
         }else{
-          _prefs.setString('donator_phone',jsRes2['phoneNumber'].toString());
+          _prefs.setString('donator_phone',jsRes['info']['phoneNumber'].toString());
         }
 
-        _prefs.setString('donator_favorite_project',jsRes2['favoriteProject'].toString());
-        _prefs.setString('donator_favorite_notification',jsRes2['favoriteNotification'].toString());
+        _prefs.setString('donator_favorite_project',jsRes['info']['favoriteProject'].toString());
+        _prefs.setString('donator_favorite_notification',jsRes['info']['favoriteNotification'].toString());
 
         //Chuyển hướng đến trang chính và xóa tất cả context trước đó
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
@@ -189,17 +192,17 @@ class _LoginScreenState extends State<LoginScreen>{
 
   _saveDeviceToken(String username) async{
     String fcmToken = await _fcm.getToken();
-    API.saveFCMToken(username, fcmToken);
+    UserService.saveFCMToken(username, fcmToken);
   }
 
 
   //Hàm kiểm tra định dạng đầu vào -> xem tài khoản đã được xác nhận hay chưa -> nếu chưa thì gửi code -> nếu xác thực thành công thì thực hiện đăng nhập
-  _validateCheckActivetedSendCodeAndLoginIfVerifireSuccessful(String username, String password) async{
+  _validateCheckActivetedSendCodeAndLoginIfVerifySuccessful(String username, String password) async{
     String error_message='';
     if(username.length != 0 && password.length !=0) {
       if(username.length==10 && CheckString.onlyNumber(username)){
         if(CheckString.isMyCustomPassword(password)){
-          var res = await API.signin(username, password);
+          var res = await UserService.signin(username, password);
           var jsRes = json.decode(utf8.decode(res.bodyBytes));
           //Kiem tra API Status
           if(res.statusCode == 200) {
@@ -273,8 +276,8 @@ class _LoginScreenState extends State<LoginScreen>{
                 textColor: Colors.white,
                 fontSize: 16.0
             );
-            await API.activateUser(NavitePhone);
-            await API.saveUser(NavitePhone);
+            await UserService.activateUser(NavitePhone);
+            await UserService.saveUser(NavitePhone);
             _login(_usernameController.text,_passwordController.text);
           }).catchError((e) {
             return "error";
@@ -295,8 +298,8 @@ class _LoginScreenState extends State<LoginScreen>{
         codeSent: (String verificationId, [int forceResendingToken]) async {
           final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
           if(await result=='successful'){
-            await API.activateUser(NavitePhone);
-            await API.saveUser(NavitePhone);
+            await UserService.activateUser(NavitePhone);
+            await UserService.saveUser(NavitePhone);
             _login(_usernameController.text,_passwordController.text);
           }
         },
@@ -361,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 RoundedButton(
                   text: "Đăng nhập",
                   press: () {
-                    _validateCheckActivetedSendCodeAndLoginIfVerifireSuccessful(_usernameController.text,_passwordController.text);
+                    _validateCheckActivetedSendCodeAndLoginIfVerifySuccessful(_usernameController.text,_passwordController.text);
                   },
                 ),
                 SizedBox(height: size.height * 0.01),
@@ -420,7 +423,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 ),
                 GestureDetector(
                   onTap: ()=>{
-                    _signInFacebook()
+                    _loginFacebook()
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),

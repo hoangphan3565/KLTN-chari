@@ -1,25 +1,50 @@
 
-// import Cookies from 'js-cookie';
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import Cookies from 'js-cookie';
+import axios from "axios";
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+const url = {
+    baseUrl: "http://192.168.1.13:8080/api",
+    projects: '/projects',
+    posts:'/posts',
+    supportedPeoples: '/supported_peoples',
+    projectTypes: '/project_types',
+    feedbacks: '/feedbacks',
+    login: '/login',
+    register: '/register',
 };
+
+const instance = axios.create({
+    baseURL: url.baseUrl,
+    headers: {"Content-Type":"application/json","Accept": "application/json"},
+});
+
+instance.interceptors.request.use(request=>{
+    const loginInfoStr = Cookies.get("loginInfo");
+    if(loginInfoStr){
+        const loginInfo = JSON.parse(loginInfoStr);
+        request.headers.Authorization = `Bearer ${loginInfo.token}`
+    }
+    return request;
+});
+
+instance.interceptors.response.use(response=>{
+    return response;
+    },(error)=>{
+        if(error.response.status === 401){
+            window.location.href = "/#/login";
+        }
+    }
+);
+
 
 @Injectable({providedIn: 'root'})
 export class Api {  
     constructor() { };
-
-    static baseUrl ='http://192.168.1.11:8080/api';    
-    static projects = '/projects';
-    static posts = '/posts';
-    static push_notifications = '/push_notifications';
-    static projectTypes = '/project_types';
-    static donators = '/donators'
-    static donate_details = '/donate_details'
-    static collaborators = '/collaborators'
-    static supportedPeoples = '/supported_peoples';
-    static feedbacks = '/feedbacks';
-    static users = '/users';
+    static url = url;    
+    static axios = instance;
+    static get = instance.get;
+    static post = instance.post;
+    static put = instance.put;
+    static delete = instance.delete;
 }

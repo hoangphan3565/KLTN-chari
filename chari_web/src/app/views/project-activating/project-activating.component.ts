@@ -23,7 +23,7 @@ export class ProjectActivatingComponent implements OnInit {
     this.getActivating()
   }
   public async getActivating(){
-    this.Projects = await this.projectService.getActivating() as Project[];
+    this.Projects = await (await this.projectService.getActivating()).data as Project[];
   }
 
   openDialog(): void {

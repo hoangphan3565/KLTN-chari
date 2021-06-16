@@ -6,8 +6,7 @@ import { ProjectReachedRoutingModule } from './project-reached-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
-import { AllMaterialModule } from '../../material-module';
+import { MaterialModule } from '../../material/material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
@@ -22,13 +21,12 @@ import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    AllMaterialModule,
+    MaterialModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
   ],
   declarations: [ 
     ProjectReachedComponent,
-    DialogDisburseProjectComponent,
     DialogPostComponent,
     PostImageDragDropDirective,
     PostVideoDragDropDirective

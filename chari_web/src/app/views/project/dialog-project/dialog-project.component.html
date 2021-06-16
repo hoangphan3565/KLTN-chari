@@ -2,44 +2,63 @@
 <h3 mat-dialog-tile *ngIf="data.prj_ID!=undefined">Cập nhật Dự án từ thiện</h3>
 
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline">
         <mat-label>Tên Dự án</mat-label>
         <input name="project_name" matInput [(ngModel)]="data.projectName" required>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline">
         <mat-label>Tiêu đề</mat-label>
         <input name="brief_description" matInput [(ngModel)]="data.briefDescription" required>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline">
         <mat-label>Nội dung</mat-label>
         <textarea matInput name="description" [(ngModel)]="data.description" required></textarea>
-    </mat-form-field>   
-     <mat-form-field appearance="outline">
+    </mat-form-field> 
+
+    <mat-form-field appearance="outline">
         <mat-label>Ngày bắt đầu</mat-label>
         <input matInput [matDatepicker]="pickerStartDate" name="startDate" [(ngModel)]="data.startDate" required>
         <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
         <mat-datepicker #pickerStartDate></mat-datepicker>
     </mat-form-field>   
-     <mat-form-field appearance="outline">
+   
+    <mat-form-field appearance="outline">
         <mat-label>Ngày kết thúc</mat-label>
         <input matInput [matDatepicker]="pickerEndDate" name="endDate" [(ngModel)]="data.endDate" required>
         <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
         <mat-datepicker #pickerEndDate></mat-datepicker>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline">
         <mat-label>Mục tiêu quyên góp</mat-label>
         <input name="target_money" matInput [(ngModel)]="data.targetMoney" required>
     </mat-form-field>
-    <mat-form-field >
-        <mat-label>Gói từ thiện</mat-label>
+
+    <mat-checkbox *ngIf="data.prj_ID==undefined" name="canDisburseWhenOverdue" (click)="changeState()" [(ngModel)]="data.canDisburseWhenOverdue">Cho phép giải ngân khi hết hạn</mat-checkbox>
+    <mat-checkbox *ngIf="data.prj_ID!=undefined" disabled name="canDisburseWhenOverdue" (click)="changeState()" [(ngModel)]="data.canDisburseWhenOverdue">Cho phép giải ngân khi hết hạn</mat-checkbox>
+   
+    <mat-form-field *ngIf="data.prj_ID==undefined" >
+        <mat-label>Chương trình từ thiện</mat-label>
         <mat-select class="form-control" [(ngModel)]="data.prt_ID" id="project_type_id" name="project_type_id" required>
-            <mat-option *ngFor="let type of ProjectTypes" [value]="type.prt_ID">
-                {{type.projectTypeName}}
+            <mat-option *ngFor="let type of filterProjectType()" [value]="type.prt_ID">
+                <a>{{type.projectTypeName}}</a>
             </mat-option>
         </mat-select>
     </mat-form-field>   
+
+    <mat-form-field *ngIf="data.prj_ID!=undefined" >
+        <mat-label>Chương trình từ thiện</mat-label>
+        <mat-select disabled class="form-control" [(ngModel)]="data.prt_ID" id="project_type_id" name="project_type_id" required>
+            <mat-option *ngFor="let type of ProjectTypes" [value]="type.prt_ID">
+                <a>{{type.projectTypeName}}</a>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>   
+
     <mat-form-field >
-        <mat-label>Cá nhân thụ hưởng</mat-label>
+        <mat-label>Đơn vị thụ hưởng</mat-label>
         <mat-select class="form-control" [(ngModel)]="data.stp_ID" id="supported_people_id" name="supported_people_id" required>
             <mat-option *ngFor="let spt of SupportedPeoples" [value]="spt.stp_ID">
                 {{spt.fullName}}
@@ -48,9 +67,9 @@
     </mat-form-field>
       
 
-    <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg,jpeg và png)</label>
+    <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg , .jpeg và png)</label>
     <div class="uploadfilecontainer" (click)="imageInput.click()" appDragDrop (files)="uploadImages($event)">
-        <input hidden type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg,jpeg,png">
+        <input hidden type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg, .jpeg,png">
     </div>
 
     <mat-grid-list cols="3">

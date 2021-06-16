@@ -24,7 +24,7 @@ export class FeedbackComponent implements OnInit {
     this.getFeedback()
   }
   public async getFeedback(){
-    this.Feedbacks = await this.FeedbackService.getFeedbacks() as Feedback[];
+    this.Feedbacks = await (await this.FeedbackService.getFeedbacks()).data as Feedback[];
   }
 
 
@@ -36,7 +36,7 @@ export class FeedbackComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Xoá phản hồi thành công');
-          this.Feedbacks = result as Feedback[];
+          this.Feedbacks = result.data as Feedback[];
         }  
       }
     }

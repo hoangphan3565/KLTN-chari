@@ -22,6 +22,6 @@ export class DonatorComponent implements OnInit {
     this.getDonator()
   }
   public async getDonator(){
-    this.Donators = await this.DonatorService.getDonators() as Donator[];
+    this.Donators = await (await this.DonatorService.getDonators()).data as Donator[];
   }
 }

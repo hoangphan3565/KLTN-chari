@@ -1,4 +1,8 @@
-
+import 'dart:async';
+import 'dart:convert';
+import 'dart:convert' show utf8;
+import 'dart:io';
+import 'package:quiver/async.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -6,84 +10,100 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:chari/services/services.dart';
 
 class HistoryScreen extends StatefulWidget {
-  final List<DonateDetails> donate_details_list;
-  final List<Project> projects;
-  HistoryScreen({Key key, @required this.donate_details_list,this.projects}) : super(key: key);
+  List<DonateDetails> donate_details_list;
+  List<Project> projects;
+  final Donator donator;
+  int total;
+  HistoryScreen({Key key, @required this.donate_details_list,this.projects,this.donator,this.total}) : super(key: key);
   @override
   _HistoryScreenState createState()=> _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen>{
 
+  int step = 5;
+  int numViewItem;
+  var inpage_donate_details_list;
+
+  @override
+  void initState() {
+    super.initState();
+    inpage_donate_details_list=widget.donate_details_list;
+    if(widget.total>=step){
+      numViewItem=step;
+    }else{
+      numViewItem = widget.total;
+    }
+  }
+
+  _getMoreDonateHistory(){
+    DonateDetailsService.getDonateDetailsListByDonatorIdFromAToB(widget.donator.id,numViewItem,numViewItem+step,widget.donator.token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_donate_details_list += list.map((model) => DonateDetails.fromJson(model)).toList();
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2)),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                backgroundColor:  Colors.white,
-                centerTitle: false,
-                floating: true,
-                title: Image.asset(
-                    "assets/icons/logo.png",
-                    height: size.height * 0.04,
-                  ),
-                actions: <Widget>[
-                  IconButton(
-                    splashRadius: 20,
-                    icon: Icon(
-                      FontAwesomeIcons.search,
-                      size: 19,
-                    ),
-                    onPressed: () {
-                      // do something
-                    },
-                  ),
-                ],
-              ),
-              widget.donate_details_list.length == 0 ?
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(top: 300.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Chưa lịch sử ủng hộ nào!",
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              color: kPrimaryHighLightColor,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  childCount: 1,
-                ),
-              )
-                  :
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index){
-                    return buildProjectInfo(widget.donate_details_list[index]);},
-                  childCount:  widget.donate_details_list.length,
-                ),
-              )
-            ],
-          )
+      appBar: AppBar(
+        backgroundColor:  Colors.white,
+        centerTitle: false,
+        title: Image.asset(
+          "assets/icons/logo.png",
+          height: size.height * 0.04,
+        ),
+        actions: <Widget>[
+          IconButton(
+            splashRadius: 20,
+            icon: Icon(
+              FontAwesomeIcons.search,
+              size: 19,
+            ),
+            onPressed: () {
+              print(widget.total);
+            },
+          ),
+        ],
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if(inpage_donate_details_list.isNotEmpty)
+              for(int i=0;i<numViewItem;i++)
+                buildProjectInfo(inpage_donate_details_list[i]),
+
+            if(numViewItem != widget.total )
+              Center(
+                child: FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                  onPressed: ()=>{
+                    _getMoreDonateHistory(),
+                    setState(() {
+                      if(numViewItem<=widget.total-step){
+                        numViewItem+=step;
+                      }else{
+                        numViewItem+= widget.total - numViewItem;
+                      }
+                    })
+                  },
+                  child: Text(
+                    'Xem thêm',
+                    style: TextStyle(color: kPrimaryHighLightColor,fontSize: 16),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+
     );
   }
 

@@ -9,7 +9,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
 import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
 import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
-import { AllMaterialModule } from '../../material-module';
+import { MaterialModule } from '../../material/material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
@@ -23,7 +23,7 @@ import { DialogPostComponent } from './dialog-post/dialog-post.component';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    AllMaterialModule,
+    MaterialModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
   ],

@@ -28,7 +28,7 @@ export class ProjectComponent implements OnInit {
   }
 
   public async getProject(){
-    this.Projects = await this.ProjectService.getProjects() as Project[];
+    this.Projects = await (await this.ProjectService.getProjects()).data as Project[];
   }
 
 
@@ -37,7 +37,7 @@ export class ProjectComponent implements OnInit {
       width: '900px',
       data: this.Project,
     });
-    dialogRef.afterClosed().subscribe((result: ProjectDTO) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if(result){
         if (result.prj_ID==null) this.ceateProject(result);
         else this.updateProject(result);
@@ -55,6 +55,7 @@ export class ProjectComponent implements OnInit {
       startDate:p.startDate,
       endDate:p.endDate,
       targetMoney:p.targetMoney,
+      canDisburseWhenOverdue:p.projectType.canDisburseWhenOverdue,
       prt_ID:p.projectType.prt_ID,
       projectType:p.projectType,
       stp_ID:p.supportedPeople.stp_ID,
@@ -74,6 +75,7 @@ export class ProjectComponent implements OnInit {
       startDate:'',
       endDate:'',
       targetMoney:'',
+      canDisburseWhenOverdue:true,
       prt_ID:null,
       projectType:null,
       stp_ID:null,
@@ -85,15 +87,15 @@ export class ProjectComponent implements OnInit {
   public ceateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.createProject(data,true);
+      const result = await this.ProjectService.createProject(data,0);
       if (result)
       {
-        this.notificationService.success('Thêm chương trình từ thiện thành công');
-        this.Projects = result as Project[];
+        this.notificationService.success('Thêm dự án từ thiện thành công');
+        this.Projects = result.data as Project[];
       }    
     }
     catch (e) {
-      alert('Thêm chương trình từ thiện thất bại');
+      this.notificationService.warn('Thêm dự án từ thiện thất bại');
     }
   };  
 
@@ -103,31 +105,13 @@ export class ProjectComponent implements OnInit {
       const result = await this.ProjectService.updateProject(data);
       if (result)
       {
-        this.notificationService.success('Cập nhật chương trình từ thiện thành công');
-        this.Projects = result as Project[];
+        this.notificationService.success('Cập nhật dự án thành công');
+        this.Projects = result.data as Project[];
       }    
     }
     catch (e) {
-      alert('Cập nhật chương trình từ thiện thất bại');
+      this.notificationService.warn('Cập nhật thất bại');
     }
   };
-
-
-  public deleteProject = async (id) => {
-    try 
-    {
-      if(confirm('Bạn có thực sự muốn xoá chương trình từ thiện này?')){
-        const result = await this.ProjectService.deleteProject(id);
-        if (result)
-        {
-          this.notificationService.warn('Xoá chương trình từ thiện thành công');
-          this.Projects = result as Project[];
-        }  
-      }
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
 }
 

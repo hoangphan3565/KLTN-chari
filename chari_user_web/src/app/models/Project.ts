@@ -1,4 +1,3 @@
-import { Collaborator } from "./Collaborator";
 import { ProjectType } from "./ProjectType";
 import { SupportedPeople } from "./SupportedPeople";
 
@@ -13,6 +12,7 @@ export class Project {
     videoUrl:string;
     imageUrl:string;
     images:string[];
+    canDisburseWhenOverdue:boolean;
     prt_ID:Number;
     projectType:ProjectType;
     stp_ID:Number;

@@ -29,7 +29,7 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
     if(new_password1.length !=0 && new_password2.length!=0) {
       if(new_password1==new_password2) {
         if(CheckString.isMyCustomPassword(new_password1)){
-          var res = await API.changeUserPassword(username, new_password1, new_password2);
+          var res = await UserService.changeUserPassword(username, new_password1, new_password2);
           var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
           message = jsonResponse['message'];
           errorCode = jsonResponse['errorCode'];

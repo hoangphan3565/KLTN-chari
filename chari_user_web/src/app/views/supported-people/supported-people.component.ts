@@ -4,7 +4,7 @@ import { SupportedPeople } from '../../models/SupportedPeople';
 import { NotificationService } from '../../services/notification.service';
 import { SupportedPeopleService } from '../../services/supported-people.service';
 import { DialogSupportedPeopleComponent } from './dialog-supported-people/dialog-supported-people.component';
-
+import Cookies from 'js-cookie'
 @Component({
   selector: 'app-supported-people',
   templateUrl: './supported-people.component.html',
@@ -13,17 +13,18 @@ export class SupportedPeopleComponent implements OnInit {
 
   SupportedPeoples: SupportedPeople[];
   SupportedPeople: SupportedPeople;
-
+  clb_id: Number;
   constructor(
     private SupportedPeopleService: SupportedPeopleService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getSupportedPeople()
   }
   public async getSupportedPeople(){
-    this.SupportedPeoples = await this.SupportedPeopleService.getSupportedPeoples() as SupportedPeople[];
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(this.clb_id)).data as SupportedPeople[];
   }
 
   openDialog(): void {
@@ -59,12 +60,12 @@ export class SupportedPeopleComponent implements OnInit {
       const result = await this.SupportedPeopleService.saveSupportedPeople(data);
       if (result)
       {
-        this.notificationService.success(state+' cá nhân thụ hưởng thành công');
-        this.SupportedPeoples = result as SupportedPeople[];
+        this.notificationService.success(state+' Đơn vị thụ hưởng thành công');
+        this.SupportedPeoples = result.data as SupportedPeople[];
       }    
     }
     catch (e) {
-      alert(state+' cá nhân thụ hưởng thất bại');
+      alert(state+' Đơn vị thụ hưởng thất bại');
     }
   };
 
@@ -72,12 +73,12 @@ export class SupportedPeopleComponent implements OnInit {
   public deleteSupportedPeople = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá cá nhân thụ hưởng này?')){
+      if(confirm('Bạn có thực sự muốn xoá Đơn vị thụ hưởng này?')){
         const result = await this.SupportedPeopleService.deleteSupportedPeople(id);
         if (result)
         {
-          this.notificationService.warn('Xoá cá nhân thụ hưởng thành công');
-          this.SupportedPeoples = result as SupportedPeople[];
+          this.notificationService.warn('Xoá Đơn vị thụ hưởng thành công');
+          this.SupportedPeoples = result.data as SupportedPeople[];
         }  
       }
     }

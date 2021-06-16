@@ -13,6 +13,7 @@ export class Project {
     videoUrl:string;
     imageUrl:string;
     images:string[];
+    canDisburseWhenOverdue:boolean;
     prt_ID:Number;
     projectType:ProjectType;
     stp_ID:Number;

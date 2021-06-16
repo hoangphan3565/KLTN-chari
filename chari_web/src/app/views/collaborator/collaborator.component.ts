@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Collaborator } from '../../models/Collaborator';
 import { NotificationService } from '../../services/notification.service';
 import { CollaboratorService } from '../../services/collaborator.service';
-import { DialogCollaboratorComponent } from './dialog-collaborator/dialog-collaborator.component';
 
 @Component({
   templateUrl: './collaborator.component.html',
@@ -23,48 +22,40 @@ export class CollaboratorComponent implements OnInit {
     this.getCollaborator()
   }
   public async getCollaborator(){
-    this.Collaborators = await this.CollaboratorService.getCollaborators() as Collaborator[];
+    this.Collaborators = await (await this.CollaboratorService.getCollaborators()).data as Collaborator[];
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogCollaboratorComponent, {
-      width: '250px',
-      data: this.Collaborator,
-    });
-    dialogRef.afterClosed().subscribe((result: Collaborator) => {
-      if(result){
-        if (result.clb_ID==null) this.saveCollaborator(result,'Thêm');
-        else this.saveCollaborator(result,'Cập nhật');
-      }
-    });
-  }
-  openEditDialog(c : Collaborator): void {
-    this.Collaborator = {
-      clb_ID:c.clb_ID,
-      fullName:c.fullName,
-      address:c.address,
-      phoneNumber:c.phoneNumber,
-      certificate:c.certificate
-    }
-    this.openDialog();
-  }
-  clearData(){
-    this.Collaborator = new Collaborator;
-    this.Collaborator.clb_ID=null;
-  }
-
-  public saveCollaborator = async (data,state) => {
+  public acceptCollaborator = async (data) => {
     try 
     {
-      const result = await this.CollaboratorService.saveCollaborator(data);
-      if (result)
-      {
-        this.notificationService.success(state+' công tác viên thành công');
-        this.Collaborators = result as Collaborator[];
-      }    
+      if(confirm('Bạn có thực sự muốn duyệt cộng tác viên?')){
+        const result = await this.CollaboratorService.accept(data.clb_ID);
+        if (result)
+        {
+          this.notificationService.success('Duyệt cộng tác viên thành công');
+          this.Collaborators = result.data as Collaborator[];
+        } 
+      }
     }
     catch (e) {
-      alert(state+' công tác viên thất bại');
+      this.notificationService.success('Duyệt cộng tác viên thất bại');
+    }
+  };
+
+  public blockCollaborator = async (data) => {
+    try 
+    {
+      if(confirm('Bạn có thực sự muốn khoá cộng tác viên?')){
+        const result = await this.CollaboratorService.block(data.clb_ID);
+        if (result)
+        {
+          this.notificationService.success('Khóa cộng tác viên thành công');
+          this.Collaborators = result.data as Collaborator[];
+        }   
+      }
+    }
+    catch (e) {
+      this.notificationService.warn('Khóa cộng tác viên thất bại');
     }
   };
 
@@ -72,17 +63,18 @@ export class CollaboratorComponent implements OnInit {
   public deleteCollaborator = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá công tác viên này?')){
+      if(confirm('Bạn có thực sự muốn xoá cộng tác viên này?')){
         const result = await this.CollaboratorService.deleteCollaborator(id);
         if (result)
         {
-          this.notificationService.warn('Xoá công tác viên thành công');
-          this.Collaborators = result as Collaborator[];
-        }  
+          this.notificationService.success('Xoá cộng tác viên thành công');
+          this.Collaborators = result.data as Collaborator[];
+        }
       }
     }
     catch (e) {
       console.log(e);
+      this.notificationService.warn('Không thể xóa cộng tác viên');
     }
   }
 

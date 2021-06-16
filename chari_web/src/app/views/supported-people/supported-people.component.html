@@ -26,6 +26,7 @@
               <th>Số điện thoại</th>
               <th>Tên ngân hàng</th>
               <th>Số tài khoản</th>
+              <th>Người tạo</th>
               <th>Tác vụ</th>
             </tr>
           </thead>
@@ -36,12 +37,13 @@
             <td>{{data.phoneNumber}}</td>
             <td>{{data.bankName}}</td>
             <td>{{data.bankAccount}}</td>
+            <td>{{data.collaborator.fullName}}</td>
             <td>
                 <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
                   <i class="fa fa-edit"></i>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" (click)="deleteSupportedPeople(data.stp_ID)">
-                  <i class="fa fa-remove"></i>
+                  <i class="fa fa-trash-o"></i>
                 </button>
             </td>
           </tbody>

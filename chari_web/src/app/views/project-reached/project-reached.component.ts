@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Post } from '../../models/Post';
 import { Project } from '../../models/Project';
-import { SupportedPeople } from '../../models/SupportedPeople';
 import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
@@ -32,7 +31,7 @@ export class ProjectReachedComponent implements OnInit {
     this.getReached()
   }
   public async getReached(){
-    this.Projects = await this.ProjectService.getReached() as Project[];
+    this.Projects = await (await this.ProjectService.getReached()).data as Project[];
   }
 
   openDisburseDialog(data): void {
@@ -103,7 +102,7 @@ export class ProjectReachedComponent implements OnInit {
   public saveDonateWithBankDetail = async (data: any[]) => {
     try 
     {
-      const result = await this.DonateDetailsService.saveDonateWithBankDetail(data);
+      const result = await (await this.DonateDetailsService.saveDonateWithBankDetail(data)).data;
       if (result==1)
       {
         this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');

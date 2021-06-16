@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DonateDetail } from '../../models/DonateDetail';
-import { DonateDetailsService } from '../../services/donate-details.service';
 import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 import { DialogExtendComponent } from './dialog-extend/dialog-extend.component';
+import Cookies from 'js-cookie'
 
 @Component({
   templateUrl: './project-overdue.component.html',
 })
 export class ProjectOverdueComponent implements OnInit {
   Projects: Project[];
+  clb_id: Number;
 
 
   constructor(
@@ -21,20 +20,21 @@ export class ProjectOverdueComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getOverdue()
   }
   public async getOverdue(){
-    this.Projects = await this.ProjectService.getOverdue() as Project[];
+    this.Projects = await (await this.ProjectService.getOverdue(this.clb_id)).data as Project[];
   }
   public closeProject = async (id) => {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const result = await this.ProjectService.closeProject(id);
+        const result = await this.ProjectService.closeProject(id, this.clb_id);
         if (result)
         {
           this.notificationService.warn('Đóng dự án thành công');
-          this.Projects = result as Project[];
+          this.Projects = result.data as Project[];
         }  
       }
     }
@@ -55,21 +55,15 @@ export class ProjectOverdueComponent implements OnInit {
     });
   }
   
-  openDisburseDialog(data): void {
-    const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
-      width: '250px',
-      data: data
-    });
-  }
 
   public extendProject = async (id,nod) => {
     try 
     {
-      const result = await this.ProjectService.extendProject(id,nod);
+      const result = await this.ProjectService.extendProject(id,nod,this.clb_id);
       if (result)
       {
         this.notificationService.warn('Gia hạn dự án thành công');
-        this.Projects = result as any[];
+        this.Projects = result.data as any[];
       }  
     }
     catch (e) {

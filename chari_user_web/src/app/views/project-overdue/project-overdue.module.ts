@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 
 
 @NgModule({
@@ -23,7 +22,6 @@ import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog
   declarations: [ 
     ProjectOverdueComponent,
     DialogExtendComponent,
-    DialogDisburseProjectComponent,
   ]
 })
 export class ProjectOverdueModule { }

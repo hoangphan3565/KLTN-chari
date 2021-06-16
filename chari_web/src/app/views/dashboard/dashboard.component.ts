@@ -10,46 +10,8 @@ import { DonateDetailsService } from '../../services/donate-details.service';
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  data: [][];
-  DonateDetail: DonateDetail;
-
   constructor(
-    private DonateDetailsService: DonateDetailsService,
-    private notificationService: NotificationService,
   ) { }
-
-
-  onFileChange(evt: any) {
-    const target : DataTransfer =  <DataTransfer>(evt.target);
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) =>  {
-      const bstr: string = e.target.result;
-      var wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-      
-      wb.SheetNames.forEach(sheet => {
-        let rowObject = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
-        console.log(rowObject);
-        this.saveDonateWithBankDetail(rowObject);
-      })
-    };
-  
-    reader.readAsBinaryString(target.files[0]);
-  }
-
-  public saveDonateWithBankDetail = async (data: any[]) => {
-    try 
-    {
-      const result = await this.DonateDetailsService.saveDonateWithBankDetail(data);
-      if (result==1)
-      {
-        this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');
-      }    
-    }
-    catch (e) {
-      alert('Cập nhật tiền quyên góp từ bảng sao kê thất bại');
-    }
-  };
 
 
   radioModel: string = 'Month';

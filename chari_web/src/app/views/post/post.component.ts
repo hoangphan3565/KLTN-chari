@@ -27,7 +27,7 @@ export class PostComponent implements OnInit {
   }
 
   public async getPost(){
-    this.Posts = await this.PostService.getPosts() as Post[];
+    this.Posts = await (await this.PostService.getPosts()).data as Post[];
   }
 
 
@@ -80,7 +80,7 @@ export class PostComponent implements OnInit {
       if (result)
       {
         this.notificationService.success(state+' tin tức thành công');
-        this.Posts = result as Post[];
+        this.Posts = result.data as Post[];
       }    
     }
     catch (e) {
@@ -98,7 +98,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Xoá tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }
@@ -115,7 +115,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Huỷ công bố tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }
@@ -131,7 +131,7 @@ export class PostComponent implements OnInit {
         if (result)
         {
           this.notificationService.warn('Công bố tin tức thành công');
-          this.Posts = result as Post[];
+          this.Posts = result.data as Post[];
         }  
       }
     }

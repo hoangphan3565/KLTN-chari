@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chari/services/user_service.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
@@ -38,7 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
               textColor: Colors.white,
               fontSize: 16.0
           );
-          API.activateUser(NavitePhone);
+          UserService.activateUser(NavitePhone);
           Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
           return "successful";
         }).catchError((e) {
@@ -60,7 +61,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
       codeSent: (String verificationId, [int forceResendingToken]) async {
         final result = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => EnterCodeScreen(phone: phone,verificationId: verificationId,firebaseAuth: _firebaseAuth,)));
         if(await result=='successful'){
-          API.activateUser(NavitePhone);
+          UserService.activateUser(NavitePhone);
           Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext ctx) => RecoverPasswordScreen(phone: NavitePhone)));
         }
       },
@@ -70,7 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
   }
 
   _findUserAndSendCodeIfAvailable(String username, BuildContext context) async {
-    var res = await API.findUserByUserName(username);
+    var res = await UserService.findUserByUserName(username);
     var jsRes = json.decode(utf8.decode(res.bodyBytes));
     String message='';
     int errorCode=1;
