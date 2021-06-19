@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AngularFireStorage } from "@angular/fire/storage";
 import { Project } from '../../models/Project';
-import { ProjectDTO } from '../../models/ProjectDTO';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogProjectComponent } from './dialog-project/dialog-project.component';
+import { ViewEncapsulation  } from '@angular/core';
 
 
 @Component({
   templateUrl: './project.component.html',
+  styles: ['.pager li.btn:active { box-shadow: none; }'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ProjectComponent implements OnInit {
 
@@ -17,18 +18,35 @@ export class ProjectComponent implements OnInit {
   Projects: Project[];
   Project: Project;
 
+
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getVerifiedProjects((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+
+  }
+
   constructor(
     private ProjectService: ProjectService,
     private notificationService: NotificationService,
-    private storage: AngularFireStorage,
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.getProject();
+    this.countVerifiedProjects();
+    this.getVerifiedProjects(0,this.itemsPerPage);
   }
 
-  public async getProject(){
-    this.Projects = await (await this.ProjectService.getProjects()).data as Project[];
+  public async countVerifiedProjects(){
+    this.totalItems = await (await this.ProjectService.countVerifiedProjects()).data;
+  }
+
+  public async getVerifiedProjects(a,b){
+    this.Projects = await (await this.ProjectService.getVerifiedProjects(a,b)).data as Project[];
   }
 
 

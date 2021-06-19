@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    PaginationModule.forRoot(),
   ],
   declarations: [ 
     ProjectClosedComponent,

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ProjectTypeDragDropDirective } from './drag-drop.directive';
 import { MaterialModule } from '../../material-module';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { MaterialModule } from '../../material-module';
     MatFormFieldModule,
     MatInputModule,
     MaterialModule,
+    PaginationModule.forRoot(),
   ],
   declarations: [ 
     ProjectTypeComponent,

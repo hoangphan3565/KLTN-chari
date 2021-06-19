@@ -1,11 +1,22 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:chari/services/services.dart';
+import 'package:http/http.dart' as http;
 
 class ProjectService {
-  static Future getProjects() {
-    var url = baseUrl + projects;
+
+  static Future getTotalProjects() {
+    var url = baseUrl + projects+'/count';
+    return http.get(url);
+  }
+
+  static Future getProjectById(int id) {
+    var url = baseUrl + projects+'/'+id.toString();
+    return http.get(url);
+  }
+
+  static Future getProjectsFromAToB(int a,int b) {
+    var url = baseUrl + projects+'/from/'+a.toString()+'/to/'+b.toString();
     return http.get(url);
   }
 

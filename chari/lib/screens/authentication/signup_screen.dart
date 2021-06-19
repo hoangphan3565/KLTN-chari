@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +23,13 @@ class _SignUpScreenState extends State<SignUpScreen>{
   TextEditingController _password2Controller = TextEditingController();
   bool notSeePassword1=true;
   bool notSeePassword2=true;
+  var focusNode = FocusNode();
 
+  @override
+  initState() {
+    super.initState();
+    focusNode.requestFocus();
+  }
   //Hàm xử lý đăng ký bằng UserService
   _singUp(String username, String password1,String password2) async{
     String message='';
@@ -65,6 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
     _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phone,
       timeout: Duration(seconds: 120),
+      //Trương hợp xác thực trên cùng 1 thiết bị - ko cần nhập code vẫn xác thực thành công.
       verificationCompleted: (AuthCredential authCredential) {
         _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result) async {
           Navigator.of(context).pop(); // to pop the dialog box
@@ -139,6 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
               SizedBox(height: size.height * 0.06),
               RoundedInputField(
                 hintText: "Nhập Số điện thoại",
+                focusNode: focusNode,
                 icon: FontAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,

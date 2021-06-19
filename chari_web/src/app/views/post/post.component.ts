@@ -16,6 +16,18 @@ export class PostComponent implements OnInit {
   Posts: Post[];
   Post: Post;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getPost((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+
+  }
+
   constructor(
     private PostService: PostService,
     private notificationService: NotificationService,
@@ -23,11 +35,16 @@ export class PostComponent implements OnInit {
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.getPost();
+    this.getTotalPost();
+    this.getPost(0,this.itemsPerPage);
   }
 
-  public async getPost(){
-    this.Posts = await (await this.PostService.getPosts()).data as Post[];
+  public async getTotalPost(){
+    this.totalItems = await (await this.PostService.countPost()).data;
+  }
+
+  public async getPost(a,b){
+    this.Posts = await (await this.PostService.getPosts(a,b)).data as Post[];
   }
 
 

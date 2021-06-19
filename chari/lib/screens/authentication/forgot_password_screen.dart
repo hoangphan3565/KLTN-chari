@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:chari/services/user_service.dart';
-import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
+import 'package:chari/services/user_service.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +18,13 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   TextEditingController _usernameController = TextEditingController();
+  var focusNode = FocusNode();
 
+  @override
+  initState() {
+    super.initState();
+    focusNode.requestFocus();
+  }
 
   //Hàm xác nhận sdt
   Future _sendCodeToUser(String phone, BuildContext context) {
@@ -120,6 +126,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
                 hintText: "Nhập Số điện thoại",
+                focusNode: focusNode,
                 icon: FontAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,

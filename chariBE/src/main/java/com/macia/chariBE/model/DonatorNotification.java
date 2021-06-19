@@ -39,6 +39,9 @@ public class DonatorNotification {
     @Column(length = 5)
     private Integer project_id;
 
+    @Column(length = 1000)
+    private String project_image;
+
     @CreationTimestamp
     @Column(length = 50)
     private LocalDateTime create_time;

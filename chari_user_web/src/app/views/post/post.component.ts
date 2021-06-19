@@ -18,19 +18,34 @@ export class PostComponent implements OnInit {
   Post: Post;
   clb_id: Number;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getPosts((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+
+  }
+
   constructor(
     private PostService: PostService,
     private notificationService: NotificationService,
-    private storage: AngularFireStorage,
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getPost();
+    this.getPosts(0,this.itemsPerPage);
+    this.getTotalPost();
   }
 
-  public async getPost(){
-    this.Posts = await (await this.PostService.getPosts(this.clb_id)).data as Post[];
+  public async getTotalPost(){
+    this.totalItems = await (await this.PostService.countPosts(this.clb_id)).data;
+  }
+
+  public async getPosts(a,b){
+    this.Posts = await (await this.PostService.getPosts(this.clb_id,a,b)).data as Post[];
   }
 
 

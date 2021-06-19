@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:chari/screens/home/project_filter.dart';
-import 'package:chari/services/services.dart';
+import 'package:quiver/async.dart';
 import 'package:chari/models/models.dart';
+import 'package:chari/screens/home/project_filter.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
-import 'package:chari/widgets/custom_alert_dialog.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,11 +13,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  final List<Project> projects;
-  final List<ProjectType> project_types;
-  final Donator donator;
-  final bool isLogin;
-  HomeScreen({Key key, @required this.projects,this.project_types,this.donator,this.isLogin}) : super(key: key);
+  List<Project> projects;
+  int total;
+  List<ProjectType> project_types;
+  Donator donator;
+  bool isLogin;
+  HomeScreen({Key key, @required this.projects,this.project_types,this.donator,this.isLogin,this.total}) : super(key: key);
 
   @override
   _HomeScreenState createState()=> _HomeScreenState();
@@ -27,16 +27,61 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
 
-  int _selectedProjectType  = 0;
+  // int _selectedProjectType  = 0;
   var listProjectIdFavorite = new List<String>();
 
-  TabController tabController;
+  int step = 10;
+  int numViewItem=0;
+  int total;
+  var inpage_project_list=List<Project>();
+
+  _getMoreProject(){
+    ProjectService.getProjectsFromAToB(numViewItem,numViewItem+step).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_project_list += list.map((model) => Project.fromJson(model)).toList();
+      });
+    });
+  }
+
+  void loadMore() {
+    _getMoreProject();
+    setState(() {
+      if(numViewItem<=widget.total-step){
+        numViewItem+=step;
+      }else{
+        numViewItem+= widget.total - numViewItem;
+      }
+      numViewItem += step;
+    });
+  }
+
+  int _start = 1;
+  void getDataAfterBuildWidget() {
+    CountdownTimer countDownTimer = new CountdownTimer(
+      new Duration(seconds: _start),
+      new Duration(seconds: 1),
+    );
+    var sub = countDownTimer.listen(null);
+    sub.onDone(() {
+      setState(() {
+
+      });
+      sub.cancel();
+    });
+  }
+
+
 
   @override
   initState() {
     super.initState();
     _getlistProjectIdFavorite();
-    _selectedProjectType  = 0;
+    inpage_project_list=widget.projects;
+    total = widget.total;
+    if(widget.total>=step){numViewItem=step;}
+    else{numViewItem = widget.total;}
+    // _selectedProjectType  = 0;
   }
 
   @override
@@ -44,128 +89,196 @@ class _HomeScreenState extends State<HomeScreen>{
     super.dispose();
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   Size size = MediaQuery.of(context).size;
+  //   return Scaffold(
+  //       body: CustomScrollView(
+  //         slivers: <Widget>[
+  //           SliverAppBar(
+  //             backgroundColor: Colors.white,
+  //             floating: true,
+  //             centerTitle: false,
+  //             title: Image.asset(
+  //               "assets/icons/logo.png",
+  //               height: size.height * 0.04,
+  //             ),
+  //             actions: <Widget>[
+  //               IconButton(
+  //                 splashRadius: 20,
+  //                 icon: Icon(
+  //                   FontAwesomeIcons.search,
+  //                   size: 19,
+  //                 ),
+  //                 onPressed: () {
+  //                   // do something
+  //                 },
+  //               ),
+  //               IconButton(
+  //                 splashRadius: 20,
+  //                 icon: Icon(
+  //                   FontAwesomeIcons.filter,
+  //                   size: 18,
+  //                 ),
+  //                 onPressed: () {
+  //                   _showBottomSheet();
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //           SliverAppBar(
+  //             backgroundColor:  Colors.white,
+  //             pinned: true,
+  //             centerTitle: true,
+  //             title: widget.project_types.length == 0 ? Text(""):
+  //             Text(
+  //               widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
+  //               style: const TextStyle(
+  //                 fontSize: 16.0,
+  //                 fontWeight: FontWeight.bold,
+  //                 letterSpacing: -0.5,
+  //               ),
+  //             ),
+  //             actions: <Widget>[
+  //               widget.project_types.length == 0 ? Text(""):
+  //               PopupMenuButton<ProjectType>(
+  //                 icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
+  //                 onSelected: (ProjectType result) {
+  //                   setState(() {
+  //                     _selectedProjectType = result.id;
+  //                   });
+  //                 },
+  //                 itemBuilder: (BuildContext context) {
+  //                   return widget.project_types.map((ProjectType choice) {
+  //                     return PopupMenuItem(
+  //                       value: choice,
+  //                       child: Text(choice.name),
+  //                     );
+  //                   }).toList();
+  //                 },
+  //               )
+  //             ],
+  //           ),
+  //            _selectedProjectType == 0 ?
+  //           SliverList(
+  //             delegate: SliverChildBuilderDelegate(
+  //                   (context, index) {
+  //                 return buildProjectSection(widget.projects[index]);
+  //               },
+  //               childCount: widget.projects.length,
+  //             ),
+  //           )
+  //               :
+  //           (widget.projects.where((i) => i.prt_id==_selectedProjectType).length != 0 ?
+  //           SliverList(
+  //             delegate: SliverChildBuilderDelegate(
+  //                   (context, index) {
+  //                 return buildProjectSection(widget.projects.where((i) => i.prt_id==_selectedProjectType).elementAt(index));
+  //               },
+  //               childCount: widget.projects.where((i) => i.prt_id==_selectedProjectType).length,
+  //             ),
+  //           )
+  //               :
+  //           SliverList(
+  //               delegate: SliverChildBuilderDelegate(
+  //                     (context, index) {
+  //                   return Container(
+  //                     margin: const EdgeInsets.only(top: 300.0),
+  //                     child: Column(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       crossAxisAlignment: CrossAxisAlignment.center,
+  //                       children: [
+  //                         Text(
+  //                          "Chưa có dự án nào!",
+  //                           style: const TextStyle(
+  //                             fontSize: 16.0,
+  //                             color: kPrimaryHighLightColor,
+  //                             fontWeight: FontWeight.bold,
+  //                             letterSpacing: -0.5,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   );
+  //                 },
+  //                   childCount: 1,
+  //               ),
+  //             ))
+  //
+  //         ],
+  //       )
+  //   );
+  // }
+
+  //Function and dialog
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              floating: true,
-              centerTitle: false,
-              title: Image.asset(
-                "assets/icons/logo.png",
-                height: size.height * 0.04,
-              ),
-              actions: <Widget>[
-                IconButton(
-                  splashRadius: 20,
-                  icon: Icon(
-                    FontAwesomeIcons.search,
-                    size: 19,
+        body: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                loadMore();
+              }
+              return true;
+            },
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  backgroundColor: Colors.white,
+                  floating: true,
+                  centerTitle: false,
+                  title: Image.asset(
+                    "assets/icons/logo.png",
+                    height: size.height * 0.04,
                   ),
-                  onPressed: () {
-                    // do something
-                  },
+                  actions: <Widget>[
+                    IconButton(
+                      splashRadius: 20,
+                      icon: Icon(
+                        FontAwesomeIcons.search,
+                        size: 19,
+                      ),
+                      onPressed: () {
+                        // do something
+                      },
+                    ),
+                    IconButton(
+                      splashRadius: 20,
+                      icon: Icon(
+                        FontAwesomeIcons.filter,
+                        size: 19,
+                      ),
+                      onPressed: () {
+                        _showFilterDialog();
+                      },
+                    )
+                  ],
                 ),
-                IconButton(
-                  splashRadius: 20,
-                  icon: Icon(
-                    FontAwesomeIcons.filter,
-                    size: 18,
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      return (index == inpage_project_list.length ) ?
+                      Container(
+                        child: FlatButton(
+                          child: Text("Đang tải...",style: TextStyle(color: kPrimaryHighLightColor),),
+                          onPressed: () {
+                            loadMore();
+                          },
+                        ),
+                      ) : buildProjectSection(inpage_project_list[index]);
+                    },
+                    childCount: (numViewItem <= widget.total) ? inpage_project_list.length + 1 : inpage_project_list.length,
                   ),
-                  onPressed: () {
-                    _showBottomSheet();
-                  },
-                ),
-              ],
-            ),
-            SliverAppBar(
-              backgroundColor:  Colors.white,
-              pinned: true,
-              centerTitle: true,
-              title: widget.project_types.length == 0 ? Text(""):
-              Text(
-                widget.project_types.where((i) => i.id==_selectedProjectType).elementAt(0).name.toString(),
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              actions: <Widget>[
-                widget.project_types.length == 0 ? Text(""):
-                PopupMenuButton<ProjectType>(
-                  icon:  Icon(FontAwesomeIcons.slidersH,size: 18,),
-                  onSelected: (ProjectType result) {
-                    setState(() {
-                      _selectedProjectType = result.id;
-                    });
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return widget.project_types.map((ProjectType choice) {
-                      return PopupMenuItem(
-                        value: choice,
-                        child: Text(choice.name),
-                      );
-                    }).toList();
-                  },
                 )
               ],
-            ),
-             _selectedProjectType == 0 ?
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  return buildProjectSection(widget.projects[index]);
-                },
-                childCount: widget.projects.length,
-              ),
             )
-                :
-            (widget.projects.where((i) => i.prt_id==_selectedProjectType).length != 0 ?
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  return buildProjectSection(widget.projects.where((i) => i.prt_id==_selectedProjectType).elementAt(index));
-                },
-                childCount: widget.projects.where((i) => i.prt_id==_selectedProjectType).length,
-              ),
-            )
-                :
-            SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(top: 300.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                           "Chưa có dự án nào!",
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              color: kPrimaryHighLightColor,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                    childCount: 1,
-                ),
-              ))
-
-          ],
         )
     );
   }
 
-  //Function and dialog
+
   _getlistProjectIdFavorite() async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String temp = _prefs.getString('donator_favorite_project');
@@ -605,7 +718,7 @@ class _HomeScreenState extends State<HomeScreen>{
     );
   }
 
-  void _showBottomSheet(){
+  void _showFilterDialog(){
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,

@@ -1,4 +1,4 @@
-import 'package:chari/models/models.dart';
+
 
 class Project {
   int prj_id;

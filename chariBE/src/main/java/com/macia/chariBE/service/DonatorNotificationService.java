@@ -42,6 +42,9 @@ public class DonatorNotificationService {
     @Autowired
     private JwtUserRepository jwtUserRepository;
 
+    @Autowired
+    private ProjectService projectService;
+
     public void save(DonatorNotification notification) {
         repo.saveAndFlush(notification);
     }
@@ -124,8 +127,7 @@ public class DonatorNotificationService {
                 this.save(DonatorNotification.builder().topic(pn.getTopic()).title(pn.getTitle())
                         .message(pn.getMessage()).create_time(LocalDateTime.now()).read(false).handled(false)
                         .total_money(donatorService.getTotalDonateMoneyOfDonatorByProjectId(project_id,da.getDonator().getDNT_ID()))
-                        .donator(da.getDonator())
-                        .project_id(project_id).build());
+                        .donator(da.getDonator()).project_id(project_id).project_image(projectService.getImageUrlOfProjectById(project_id)).build());
             }
         }
     }
@@ -141,7 +143,7 @@ public class DonatorNotificationService {
             this.save(DonatorNotification.builder()
                     .topic(pn.getTopic()).title(pn.getTitle()).message(pn.getMessage())
                     .create_time(LocalDateTime.now()).read(false).handled(false)
-                    .donator(d).project_id(id).build());
+                    .donator(d).project_id(id).project_image(projectService.getImageUrlOfProjectById(id)).build());
         }
         this.pushNotificationService.sendMessageWithoutData(no);
     }

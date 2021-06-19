@@ -25,7 +25,7 @@
 
     <label>Tải hình ảnh cho Tin (chỉ hỗ trợ định dạng .jpg , .jpeg và png)</label>
     <div class="uploadfilecontainer" (click)="imageInput.click()" postImageDragDrop (files)="uploadImages($event)">
-        <input hidden type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg, .jpeg,png">
+        <input hidden type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg,.jpeg,.png">
     </div>
 
     <mat-grid-list cols="3">

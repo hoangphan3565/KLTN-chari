@@ -75,10 +75,8 @@
     <mat-grid-list cols="3">
         <mat-grid-tile *ngFor="let imageUrl of imageUrls;let i=index">
             <div class="container">
-                <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 5px">
-                <button *ngIf="imageUrl" type="button" class="btn" (click)="deleteAttachment(i)">
-                    <i class="fa fa-remove"></i>
-                </button>
+                <img *ngIf="imageUrl" [src]="imageUrl" alt=""/>
+                <div *ngIf="imageUrl"  class="button"><a (click)="deleteAttachment(i)"> Xoá </a></div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>

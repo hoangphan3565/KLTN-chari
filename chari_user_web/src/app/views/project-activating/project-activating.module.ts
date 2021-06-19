@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectActivatingComponent } from './project-activating.component';
 import { ProjectActivatingRoutingModule } from './project-activating-routing.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
@@ -18,8 +17,7 @@ import { environment } from '../../../environments/environment';
   imports: [
     CommonModule,
     ProjectActivatingRoutingModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,

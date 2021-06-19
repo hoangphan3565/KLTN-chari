@@ -14,7 +14,7 @@
 
 <label>Logo</label>
 <div class="uploadfilecontainer" (click)="fileInput.click()" projectTypeDragDrop (files)="uploadFile($event)">
-    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" multiple="false" accept=".jpg, .jpeg,png">
+    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" multiple="false" accept=".jpg,.jpeg,.png">
 </div>
 <div class="container">
     <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 5px;" width="100px" height="100px">

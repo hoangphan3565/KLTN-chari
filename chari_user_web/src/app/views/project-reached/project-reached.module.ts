@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectReachedComponent } from './project-reached.component';
 import { ProjectReachedRoutingModule } from './project-reached-routing.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -18,8 +17,7 @@ import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
   imports: [
     CommonModule,
     ProjectReachedRoutingModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,

@@ -26,16 +26,14 @@ public class ProjectController {
     @Autowired
     private DonatorNotificationService donatorNotificationService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.findProjectById(id));
+    @GetMapping()
+    public ResponseEntity<?> getAllProject() {
+        return ResponseEntity.ok().body(projectService.getProjectDTOs());
     }
 
-    @GetMapping()
-    public ResponseEntity<?> getAllProjectDTO() {
-        return ResponseEntity.ok().body(projectService.getProjectDTOs().stream()
-                .sorted(Comparator.comparing(ProjectDTO::getPriorityPoint).reversed())
-                .collect(Collectors.toList()));
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.getProjectDTOById(id));
     }
 
     @GetMapping("/project_type/{id}")
@@ -43,10 +41,17 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.findProjectByProjectTypeId(id));
     }
 
-    @GetMapping("/verified")
-    public ResponseEntity<?> getAllProject() {
-        return ResponseEntity.ok().body(projectService.getVerifiedProjects());
+    @GetMapping("/count")
+    public ResponseEntity<?> countAllProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereUncloseAndVerified());
     }
+
+    @GetMapping("/from/{a}/to/{b}")
+    public ResponseEntity<?> getProjectDTOsFromAToB(@PathVariable(value = "a") Integer a,
+                                                    @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getProjectDTOsWhereUncloseAndVerifiedFromAToB(a,b));
+    }
+
 
     @GetMapping("/unverified")
     public ResponseEntity<?> getUnverifiedProject() {
@@ -73,9 +78,15 @@ public class ProjectController {
     }
 
     //for collaborator
-    @GetMapping("/collaborator/{id}")
-    public ResponseEntity<?> getAllProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getProjectsByCollaboratorId(id));
+    @GetMapping("/collaborator/{id}/count")
+    public ResponseEntity<?> countAllProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.countAllByCollaboratorId(id));
+    }
+    @GetMapping("/collaborator/{id}/from/{a}/to/{b}")
+    public ResponseEntity<?> getAllProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id,
+                                                              @PathVariable(value = "a") Integer a,
+                                                              @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getUncloseProjectDTOsByCollaboratorIdFromAToB(id,a,b));
     }
 
     @GetMapping("/activating/collaborator/{id}")

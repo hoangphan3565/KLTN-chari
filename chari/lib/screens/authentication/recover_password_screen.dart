@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,14 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
   TextEditingController _password2Controller = TextEditingController();
   bool notSeePassword1=true;
   bool notSeePassword2=true;
+
+  var focusNode = FocusNode();
+
+  @override
+  initState() {
+    super.initState();
+    focusNode.requestFocus();
+  }
 
   //Hàm xử lý đăng ký bằng API
   _recoverPassword(String username, String new_password1,String new_password2) async{
@@ -93,6 +101,7 @@ class _RecoverPasswordScreenState extends State<RecoverPasswordScreen>{
               SizedBox(height: size.height * 0.03),
               RoundedPasswordField(
                 hintText: "Nhập mật khẩu",
+                focusNode: focusNode,
                 icon: FontAwesomeIcons.lockOpen,
                 obscureText: notSeePassword1,
                 controller: _password1Controller,

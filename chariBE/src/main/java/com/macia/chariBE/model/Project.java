@@ -19,6 +19,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
+        @NamedQuery(name = "named.project.findAll",
+                query = "SELECT p FROM Project p ORDER BY p.updateTime desc"),
+        @NamedQuery(name = "named.project.findUncloseByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.updateTime desc"),
+        @NamedQuery(name = "named.project.findClosedByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=true ORDER BY p.updateTime desc"),
+        @NamedQuery(name = "named.project.findWhereUncloseAndVerified",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true ORDER BY p.updateTime desc"),
         @NamedQuery(name = "named.project.findById",
                 query = "SELECT p FROM Project p where p.PRJ_ID =:id"),
         @NamedQuery(name = "named.project.findByProjectTypeId",

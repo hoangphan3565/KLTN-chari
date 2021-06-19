@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.donate_details.findByDonatorId",
-                query = "SELECT NEW com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfDonatorDTO(dd.money,dd.donateDate,dd.donateActivity.project.PRJ_ID,dd.donateActivity.project.projectName,dd.donateActivity.status) FROM DonateDetails dd where dd.donateActivity.donator.DNT_ID =:dntid order by dd.donateDate desc"),
+                query = "SELECT NEW com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfDonatorDTO(dd.money,dd.donateDate,dd.donateActivity.project.PRJ_ID,dd.donateActivity.project.projectName,dd.donateActivity.project.imageUrl,dd.donateActivity.status) FROM DonateDetails dd where dd.donateActivity.donator.DNT_ID =:dntid order by dd.donateDate desc"),
         @NamedQuery(name = "named.donate_details.findByProjectId",
                 query = "SELECT NEW com.macia.chariBE.DTO.DonateDetails.DonateDetailsOfProjectDTO(dd.money,dd.donateDate,dd.donateActivity.donator.fullName,dd.donateActivity.donator.phoneNumber,dd.donateActivity.status) FROM DonateDetails dd where dd.donateActivity.project.PRJ_ID =:prjid order by dd.donateDate desc"),
         @NamedQuery(name = "named.donate_details.findByDonateActivityId",

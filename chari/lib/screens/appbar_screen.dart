@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:convert' show utf8;
 import 'dart:io';
-import 'package:chari/services/project_service.dart';
-import 'package:quiver/async.dart';
 
-import 'package:chari/services/services.dart';
 import 'package:chari/models/donator_notification.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/models/push_notification.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/project_service.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:quiver/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens.dart';
@@ -38,15 +38,18 @@ class _AppBarScreenState extends State<AppBarScreen> {
   bool isNewNotification = false;
 
   var projects = new List<Project>();
+  int totalProject;
   var project_types = new List<ProjectType>();
   var posts = new List<Post>();
+  int totalPost;
   var donate_details_list = new List<DonateDetails>();
   int totalDonate;
   var push_notification_list = new List<PushNotification>();
   var donator_notification_list = new List<DonatorNotification>();
+  int totalNotification;
   var donator = new Donator(null,null,null,null,null,null,null,null,null);
 
-  List<String> listProjectIdFavorite = new List<String>();
+  // List<String> listProjectIdFavorite = new List<String>();
 
 
   //Khi mở ứng dụng lên thì tất cả các widget sẽ được build ngay lập tức dữ liệu lấy từ API chậm hơn do đó biến isNewNotification vẫn là false
@@ -70,7 +73,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
   initState() {
     super.initState();
     _checkLogin();
-    _getProjectAndType();
+    _getProject();
+    _getProjectTypes();
     _getPosts();
 
     if(this.islogin==true){
@@ -83,7 +87,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian
     _getNewDataAfter = Timer.periodic(Duration(seconds: 60), (Timer t) {
-      _getProjectAndType();
+      _getProject();
+      _getProjectTypes();
       _getPosts();
       if(this.islogin==true){
         _checkNewNotificationsByDonatorId();
@@ -155,28 +160,34 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
 
   _getDonateHistory() async{
-    DonateDetailsService.getTotalDonateDetailsListByDonatorId(this.donator.id,this.donator.token).then((response) {
+    await DonateDetailsService.getTotalDonateDetailsListByDonatorId(this.donator.id,this.donator.token).then((response) {
       dynamic res = utf8.decode(response.bodyBytes);
       setState(() {
         totalDonate = int.tryParse(res);
       });
-      int min;
-      if(int.tryParse(res)>=5){
-        min=5;
-      }else{
-        min=int.tryParse(res);
-      }
-      DonateDetailsService.getDonateDetailsListByDonatorIdFromAToB(this.donator.id,0,min,this.donator.token).then((response) {
-        setState(() {
-          List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-          donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
-        });
+    });
+    int min;
+    if(totalDonate>=10){min=10;
+    }else{min=totalDonate;}
+    DonateDetailsService.getDonateDetailsListByDonatorIdFromAToB(this.donator.id,0,min,this.donator.token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
       });
     });
   }
 
   _getNotification() async{
-    DonatorNotificationService.getDonatorNotificationListByDonatorId(this.donator.id,this.donator.token).then((response) {
+    await DonatorNotificationService.getTotalDonatorNotificationByDonatorId(this.donator.id,this.donator.token).then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        totalNotification = int.tryParse(res);
+      });
+    });
+    int min;
+    if(totalNotification>=10){min=10;
+    }else{min=totalNotification;}
+    DonatorNotificationService.getDonatorNotificationListByDonatorIdFromAToB(this.donator.id,0,min,this.donator.token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         donator_notification_list = list.map((model) => DonatorNotification.fromJson(model)).toList();
@@ -184,17 +195,26 @@ class _AppBarScreenState extends State<AppBarScreen> {
     });
   }
 
-  _getProjectAndType(){
-    String temp = this.donator.favorite_project;
-    if(temp!=null){
-      listProjectIdFavorite = temp.split(" ");
-    }
-    ProjectService.getProjects().then((response) {
+  _getProject() async {
+    await ProjectService.getTotalProjects().then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        totalProject = int.tryParse(res);
+      });
+    });
+    int min;
+    if(totalProject>=10){min=10;
+    }else{min=totalProject;}
+
+    await ProjectService.getProjectsFromAToB(0,min).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         projects = list.map((model) => Project.fromJson(model)).toList();
       });
     });
+  }
+
+  _getProjectTypes(){
     ProjectService.getProjectTypes().then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
@@ -203,8 +223,18 @@ class _AppBarScreenState extends State<AppBarScreen> {
       });
     });
   }
-  _getPosts(){
-    PostService.getPost().then((response) {
+
+  _getPosts() async{
+    await PostService.getTotalPost().then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        totalPost = int.tryParse(res);
+      });
+    });
+    int min;
+    if(totalPost>=4){min=4;
+    }else{min=totalPost;}
+    PostService.getPostsFromAToB(0,min).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         posts = list.map((model) => Post.fromJson(model)).toList();
@@ -262,19 +292,19 @@ class _AppBarScreenState extends State<AppBarScreen> {
           currentIndex: _page,
           selectedItemColor: kPrimaryHighLightColor,
           onTap:  (index) {
+            _getProject();
+            _getProjectTypes();
             if(index==2){
               Navigator.push(context,MaterialPageRoute(builder: (BuildContext ctx) => LoginScreen()));
             }
             setState(() {
               _page = index;
-              _getProjectAndType();
-              _getPosts();
             });
           },
         ),
 
-        body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,)
-            : PostScreen(projects: this.projects,posts: this.posts)
+        body: _page == 0 ? HomeScreen(projects: this.projects,project_types :this.project_types,isLogin: this.islogin,total: this.totalProject, )
+            : PostScreen(posts: this.posts,total: this.totalPost,)
 
     );
     } else {
@@ -319,7 +349,8 @@ class _AppBarScreenState extends State<AppBarScreen> {
           onTap: (index)  {
             setState(() {
               if(index == 0){
-                _getProjectAndType();
+                _getProject();
+                _getProjectTypes();
                 _checkAndSubscribeFavoriteNotificationOfDonator();
                 _checkNewNotificationsByDonatorId();
               }
@@ -340,10 +371,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
             });
           },
         ),
-        body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,donator: this.donator,isLogin: this.islogin)
-            : _page == 1 ? PostScreen(projects: this.projects,posts: this.posts,donator: this.donator,)
-            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,projects: this.projects,donator: this.donator)
-            : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,projects: this.projects,donator: this.donator,total: totalDonate,)
+        body: (_page == 0 ? HomeScreen(projects: this.projects, project_types: this.project_types,donator: this.donator,isLogin: this.islogin,total: this.totalProject,)
+            : _page == 1 ? PostScreen(posts: this.posts,donator: this.donator,total: this.totalPost,)
+            : _page == 2 ? NotificationsScreen(donator_notification_list: this.donator_notification_list,donator: this.donator,total:this.totalNotification)
+            : _page == 3 ? HistoryScreen(donate_details_list: this.donate_details_list,donator: this.donator,total: totalDonate,)
             : PersonalScreen(donator: this.donator,push_notification_list: this.push_notification_list))
     );
     }

@@ -1,19 +1,18 @@
 import 'dart:convert';
 
-import 'package:chari/services/services.dart';
-import 'package:chari/utility/utility.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
 
 
 
@@ -30,8 +29,14 @@ class _DonateScreenState extends State<DonateScreen> {
   String str_donate_money='';
   bool _isRadioSelected = true;
   String donateCode='';
+
+  var focusNode = FocusNode();
+
+
   @override
   void initState() {
+    focusNode.requestFocus();
+
     if(widget.donator==null){
       this.donateCode = 'chari'+widget.project.prj_id.toString()+'x[SĐT]';
     }else{
@@ -199,6 +204,7 @@ class _DonateScreenState extends State<DonateScreen> {
         RoundedInputField(
           hintText: "Số tiền",
           icon: Icons.favorite,
+          focusNode: focusNode,
           keyboardType: TextInputType.number,
           controller: _moneyControllerField,
           onTapClearIcon: ()=>{

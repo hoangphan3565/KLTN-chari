@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chari/models/models.dart';
-import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:video_player/video_player.dart';
 
 
@@ -27,11 +24,12 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   final dataKey = new GlobalKey();
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
-  
+
   @override
   void initState() {
     super.initState();
     this.initializePlayer(widget.post.video_url);
+
   }
 
   @override

@@ -19,6 +19,19 @@ export class ProjectComponent implements OnInit {
   Projects: Project[];
   Project: Project;
   clb_id: Number;
+
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getProjects((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+
+  }
+
   constructor(
     private ProjectService: ProjectService,
     private notificationService: NotificationService,
@@ -27,12 +40,18 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getProject();
+    this.getTotalUncloseProject();
+    this.getProjects(0,this.itemsPerPage);
   }
   
+  public async getTotalUncloseProject(){
+    this.totalItems = await (await this.ProjectService.countUncloseProjects(this.clb_id)).data;
 
-  public async getProject(){
-    this.Projects = await (await this.ProjectService.getProjects(this.clb_id)).data as Project[];
+  }
+
+
+  public async getProjects(a,b){
+    this.Projects = await (await this.ProjectService.getUncloseProjects(this.clb_id,a,b)).data as Project[];
   }
 
 

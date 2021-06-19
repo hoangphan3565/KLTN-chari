@@ -34,10 +34,74 @@ public class PostService {
     @Autowired
     private CollaboratorService collaboratorService;
 
-    public List<Post> findAll() {
+    //== Services for Admin
+    public Integer countAllPost() {
         TypedQuery<Post> query = em.createNamedQuery("named.post.findAll", Post.class);
+        return query.getResultList().size();
+    }
+
+    public List<Post> findPostsFromAToB(Integer a,Integer b) {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findAll", Post.class)
+                .setFirstResult(a)
+                .setMaxResults(b-a);
         return query.getResultList();
     }
+    public List<PostDTO> getPostDTOsFromAToB(Integer a,Integer b){
+        List<PostDTO> r = new ArrayList<>();
+        List<Post> ps = this.findPostsFromAToB(a,b);
+        for(Post p : ps){
+            Project project =  projectService.findProjectById(p.getProjectId());
+            r.add(mapToDTO(p,project));
+        }
+        return r;
+    }
+
+    //== Services for Donators
+    public Integer countAllPublicPost() {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findPublic", Post.class);
+        return query.getResultList().size();
+    }
+    public List<Post> findPublicPostFromAToB(Integer a,Integer b) {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findPublic", Post.class)
+                .setFirstResult(a)
+                .setMaxResults(b-a);
+        return query.getResultList();
+    }
+    public List<PostDTO> getPublicPostDTOsFromAToB(Integer a,Integer b){
+        List<PostDTO> r = new ArrayList<>();
+        List<Post> ps = findPublicPostFromAToB(a,b);
+        for(Post p : ps){
+            Project project =  projectService.findProjectById(p.getProjectId());
+            r.add(mapToDTO(p,project));
+        }
+        return r;
+    }
+
+    //== Services for Collaborators
+    public Integer countAllPostByCollaboratorId(Integer id) {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findPostByCollaboratorId", Post.class);
+        query.setParameter("id", id);
+        return query.getResultList().size();
+    }
+    public List<Post> findsPostByCollaboratorIdFromAToB(Integer id,Integer a,Integer b) {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findPostByCollaboratorId", Post.class)
+                .setFirstResult(a)
+                .setMaxResults(b-a);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
+    public List<PostDTO> getPostDTOsByCollaboratorIdFromAToB(Integer id,Integer a, Integer b) {
+        List<PostDTO> r = new ArrayList<>();
+        List<Post> ps = findsPostByCollaboratorIdFromAToB(id,a,b);
+        for(Post p : ps){
+            Project project =  projectService.findProjectById(p.getProjectId());
+            r.add(mapToDTO(p,project));
+        }
+        return r;
+    }
+
+
 
     public Post findById(Integer id) {
         try {
@@ -49,7 +113,6 @@ public class PostService {
         }
     }
 
-
     public Post save(Post pt) {
         return repo.saveAndFlush(pt);
     }
@@ -58,23 +121,19 @@ public class PostService {
         repo.deleteById(id);
     }
 
-    public List<PostDTO> getPostDTOs(){
-        List<PostDTO> r = new ArrayList<>();
-        List<Post> ps = repo.findAll().stream().sorted(Comparator.comparing(Post::getPublicTime).reversed()).collect(Collectors.toList());
-        for(Post p : ps){
-            Project project =  projectService.findProjectById(p.getProjectId());
-            r.add(PostDTO.builder()
-                    .POS_ID(p.getPOS_ID()).name(p.getName()).content(p.getContent())
-                    .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
-                    .images(this.postImagesService.findListPostImageStringByPostId(p.getPOS_ID()))
-                    .publicTime(p.getPublicTime())
-                    .projectId(p.getProjectId()).projectName(project.getProjectName())
-                    .collaboratorId(p.getCollaborator().getCLB_ID())
-                    .collaboratorName(p.getCollaborator().getFullName())
-                    .isPublic(p.getIsPublic()).build());
-        }
-        return r;
+    private PostDTO mapToDTO(Post p,Project prj){
+        return PostDTO.builder()
+                .POS_ID(p.getPOS_ID()).name(p.getName()).content(p.getContent())
+                .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
+                .images(this.postImagesService.findListPostImageStringByPostId(p.getPOS_ID()))
+                .publicTime(p.getPublicTime())
+                .projectId(p.getProjectId()).projectName(prj.getProjectName())
+                .collaboratorId(p.getCollaborator().getCLB_ID())
+                .collaboratorName(p.getCollaborator().getFullName())
+                .isPublic(p.getIsPublic()).build();
     }
+
+
 
     public List<PostDTO> savePost(PostDTO p){
         Post np = new Post();
@@ -88,6 +147,6 @@ public class PostService {
         np.setPostImages(this.postImagesService.createListPostImage(np,p.getImages()));
         np.setCollaborator(collaboratorService.findById(p.getCollaboratorId()));
         this.save(np);
-        return this.getPostDTOs();
+        return this.getPostDTOsFromAToB(0,5);
     }
 }

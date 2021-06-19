@@ -8,20 +8,18 @@ import { ProjectComponent } from './project.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { DialogProjectComponent } from './dialog-project/dialog-project.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material-module';
 import { DragDropDirective } from './drag-drop.directive';
 import { VideoDragDropDirective } from './video-drag-drop.directive';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   imports: [
   CommonModule,
     ProjectRoutingModule,
     MatDialogModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,

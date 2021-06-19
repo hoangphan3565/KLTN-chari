@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:chari/services/services.dart';
+
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:chari/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -308,6 +309,10 @@ class _LoginScreenState extends State<LoginScreen>{
         });
   }
 
+  @override
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

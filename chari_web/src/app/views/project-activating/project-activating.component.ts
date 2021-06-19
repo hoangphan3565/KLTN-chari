@@ -13,6 +13,17 @@ export class ProjectActivatingComponent implements OnInit {
   Projects: Project[];
   Post: Post;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getActivating((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+  }
+
   constructor(
     private projectService: ProjectService,
     private postService: PostService,
@@ -20,11 +31,15 @@ export class ProjectActivatingComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getActivating()
+    this.getAllActivating()
   }
-  public async getActivating(){
+  public async getAllActivating(){
     this.Projects = await (await this.projectService.getActivating()).data as Project[];
+  }  
+  public async getActivating(a,b){
+    this.Projects = await (await this.projectService.getActivatingProjects(a,b)).data as Project[];
   }
+  
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostComponent, {

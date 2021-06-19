@@ -15,6 +15,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -68,6 +69,74 @@ public class ProjectService {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<Project> findAll() {
+        try {
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findAll", Project.class);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    // Services for Collaborator(Only show Unclose Project Of them)
+    public Integer countAllByCollaboratorId(Integer id) {
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findUncloseByCollaboratorId", Project.class);
+        query.setParameter("id", id);
+        return query.getResultList().size();
+    }
+    // pagination
+    public List<Project> findUncloseProjectByCollaboratorIdFromAToB(Integer id,Integer a,Integer b) {
+        try {
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findUncloseByCollaboratorId", Project.class)
+                    .setFirstResult(a)
+                    .setMaxResults(b-a);
+            query.setParameter("id", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public List<ProjectDTO> getUncloseProjectDTOsByCollaboratorIdFromAToB(Integer id,Integer a,Integer b){
+        List<ProjectDTO> r = new ArrayList<>();
+        List<Project> ps = this.findUncloseProjectByCollaboratorIdFromAToB(id,a,b);
+        for(Project p : ps){
+            r.add(mapToDTO(p));
+        }
+        return r;
+    }
+
+
+
+    // Services for Donator(Only show Verified and Unclose) and Admin(Verified Project)
+    public Integer countAllWhereUncloseAndVerified() {
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findWhereUncloseAndVerified", Project.class);
+        return query.getResultList().size();
+    }
+    public List<Project> findUncloseAndVerifiedProjectsFromAToB(Integer a,Integer b) {
+        try {
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findWhereUncloseAndVerified", Project.class)
+                    .setFirstResult(a)
+                    .setMaxResults(b-a);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public List<ProjectDTO> getProjectDTOsWhereUncloseAndVerifiedFromAToB(Integer a,Integer b){
+        List<ProjectDTO> r = new ArrayList<>();
+        List<Project> ps = this.findUncloseAndVerifiedProjectsFromAToB(a,b);
+        for(Project p : ps){
+            r.add(mapToDTO(p));
+        }
+        return r;
+    }
+
+
+
+    public String getImageUrlOfProjectById(Integer id){
+        return findProjectById(id).getImageUrl();
     }
 
     public Project findProjectByProjectTypeId(Integer id) {
@@ -139,25 +208,6 @@ public class ProjectService {
         return ProjectStatus.ACTIVATING.toString();
     }
 
-    private float findPriorityPoint(Project p){
-        float point=1000;
-        String curMoney = String.valueOf(findCurMoneyOfProject(p));
-        if(findStatusOfProject(p).equals((ProjectStatus.ACTIVATING).toString())){
-            if(curMoney.equals("0")){
-                point=999;
-            }else{
-                point-=(Float.parseFloat(curMoney) /Float.parseFloat(p.getTargetMoney().toString()))*Integer.parseInt(String.valueOf(findRemainingTermOfProject(p)));
-            }
-        }
-        if(findStatusOfProject(p).equals((ProjectStatus.REACHED).toString())){
-            point=300;
-        }
-        if(findStatusOfProject(p).equals((ProjectStatus.OVERDUE).toString())){
-            point=0;
-        }
-        return  point;
-    }
-
     private double findAchieved(Project p){
         return round(findCurMoneyOfProject(p)/p.getTargetMoney().doubleValue()*100,1);
     }
@@ -165,14 +215,12 @@ public class ProjectService {
     public List<ProjectDTO> getUnverifiedProjects(){
         return getProjectDTOs().stream()
                 .filter(p-> !p.getVerified())
-                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
                 .collect(Collectors.toList());
     }
     public List<ProjectDTO> getVerifiedProjects(){
         return getProjectDTOs().stream()
                 .filter(ProjectDTO::getVerified)
                 .filter(p->!p.getClosed())
-                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -188,18 +236,6 @@ public class ProjectService {
         return money;
     }
 
-    public List<ProjectDTO> getClosedProjects(){
-        List<ProjectDTO> ls = getProjectDTOs().stream()
-                .filter(ProjectDTO::getClosed)
-                .sorted(Comparator.comparing(ProjectDTO::getUpdateTime).reversed())
-                .collect(Collectors.toList());
-        for(ProjectDTO p:ls){
-            float curMoney = findCurMoneyOfProjectById(p.getPRJ_ID());
-            float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
-            p.setMoveMoneyProgress(round(movedMoney/curMoney*100,1));
-        }
-        return ls;
-    }
 
     public List<ProjectDTO> approveProject(Integer id){
         Project p = repo.findById(id).orElseThrow();
@@ -211,6 +247,7 @@ public class ProjectService {
     public List<ProjectDTO> closeProject(Integer id,Integer clb_id){
         Project p = repo.findById(id).orElseThrow();
         p.setClosed(true);
+        p.setUpdateTime(LocalDateTime.now().minusYears(10));
         repo.saveAndFlush(p);
         if(clb_id==0){
             return this.getOverdueProjectDTOs();
@@ -231,29 +268,41 @@ public class ProjectService {
             return this.getOverdueProjectDTOs().stream()
                     .filter(x-> x.getCollaborator().getCLB_ID().equals(clb_id))
                     .collect(Collectors.toList());
-        }    }
+        }
+    }
+
+    private ProjectDTO mapToDTO(Project p){
+        return ProjectDTO.builder()
+                .PRJ_ID(p.getPRJ_ID()).projectCode(p.getProjectCode()).projectName(p.getProjectName())
+                .briefDescription(p.getBriefDescription()).description(p.getDescription())
+                .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
+                .images(this.projectImagesService.findListStringProjectImagesByProjectId(p.getPRJ_ID()))
+                .targetMoney(p.getTargetMoney()).curMoney(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
+                .achieved(findAchieved(p))
+                .numOfDonations(findNumOfDonationOfProject(p))
+                .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
+                .remainingTerm(Integer.valueOf(String.valueOf(findRemainingTermOfProject(p))))
+                .verified(p.getVerified()).status(findStatusOfProject(p)).disbursed(p.getDisbursed()).closed(p.getClosed())
+                .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
+                .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
+                .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
+                .build();
+    }
+
+    public List<ProjectDTO> getProjectDTOById(Integer id){
+        List<ProjectDTO> r = new ArrayList<>();
+        Project p = this.findProjectById(id);
+        r.add(mapToDTO(p));
+        return r;
+    }
+
 
 
     public List<ProjectDTO> getProjectDTOs(){
         List<ProjectDTO> r = new ArrayList<>();
-        List<Project> ps = repo.findAll();
+        List<Project> ps = this.findAll();
         for(Project p : ps){
-            r.add(ProjectDTO.builder()
-                    .PRJ_ID(p.getPRJ_ID()).projectCode(p.getProjectCode()).projectName(p.getProjectName())
-                    .briefDescription(p.getBriefDescription()).description(p.getDescription())
-                    .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
-                    .images(this.projectImagesService.findListStringProjectImagesByProjectId(p.getPRJ_ID()))
-                    .targetMoney(p.getTargetMoney()).curMoney(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
-                    .achieved(findAchieved(p))
-                    .numOfDonations(findNumOfDonationOfProject(p))
-                    .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
-                    .remainingTerm(Integer.valueOf(String.valueOf(findRemainingTermOfProject(p))))
-                    .verified(p.getVerified()).status(findStatusOfProject(p)).disbursed(p.getDisbursed()).closed(p.getClosed())
-                    .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
-                    .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
-                    .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
-                    .priorityPoint(findPriorityPoint(p)).updateTime(p.getUpdateTime())
-                    .build());
+            r.add(mapToDTO(p));
         }
         return r;
     }
@@ -284,6 +333,18 @@ public class ProjectService {
                 .filter(p->p.getStatus().equals(ProjectStatus.OVERDUE.toString()))
                 .sorted(Comparator.comparing(ProjectDTO::getCurMoney).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public List<ProjectDTO> getClosedProjects(){
+        List<ProjectDTO> ls = getProjectDTOs().stream()
+                .filter(ProjectDTO::getClosed)
+                .collect(Collectors.toList());
+        for(ProjectDTO p:ls){
+            float curMoney = findCurMoneyOfProjectById(p.getPRJ_ID());
+            float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
+            p.setMoveMoneyProgress(round(movedMoney/curMoney*100,1));
+        }
+        return ls;
     }
 
     public List<ProjectDTO> createProject(ProjectDTO p,Integer collaboratorId){

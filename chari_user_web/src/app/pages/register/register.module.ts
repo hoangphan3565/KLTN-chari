@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -14,8 +13,7 @@ import { RegisterComponent } from './register.component';
   imports: [
     CommonModule,
     MatDialogModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,

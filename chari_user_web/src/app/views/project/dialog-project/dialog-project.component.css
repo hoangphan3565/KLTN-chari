@@ -16,42 +16,18 @@
   opacity: 0.8;
 }
 
-.files-list {
-  display: flex;
-  justify-content: space-between;
-  height: 35px;
-  width: 80%;
-  margin: 10px auto;
-  background: #ffffff;
-  border: 1px dashed;
-  border-radius: 3px;
-  padding: 3px;
-  color: #1c8adb;
-}
 
-.files-list .delete-file {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-.files-list .delete-file img{
-  width:30px;
-}
-
-
-/* Container needed to position the button. Adjust the width as needed */
-.container {
+/* .container {
   position: relative;
   width: 100%;
 }
 
-/* Make the image responsive */
+
 .container img {
   width: 100%;
   height: auto;
 }
 
-/* Style the button and place it in the middle of the container/image */
 .container .btn {
   position: absolute;
   top: 5%;
@@ -68,4 +44,41 @@
 
 .container .btn:hover {
   background-color: red;
+} */
+
+.container {
+  position: relative;
+  margin: 10px;
+  width: 300px;
+  height: 180px;
 }
+
+img {
+  position: absolute;
+  width: 300px;
+  height: 180px;
+  left: 0;
+}
+.button {
+  position: absolute;
+  width: 300px;
+  left:0;
+  top: 80px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.button a {
+  width: 100px;
+  padding: 12px 48px;
+  text-align: center;
+  color: white;
+  border: solid 2px white;
+  z-index: 1;
+}
+
+.container:hover .button {
+  opacity: 1;
+}
+

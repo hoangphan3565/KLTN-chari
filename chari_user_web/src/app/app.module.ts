@@ -25,7 +25,6 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './pages/error/404.component';
 import { P500Component } from './pages/error/500.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LadingComponent } from './pages/landing/landing.component';
 import { RegisterComponent } from './pages/register/register.component';
 
 const APP_CONTAINERS = [
@@ -48,6 +47,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { MaterialModule } from './material/material-module';
+import { LandingComponent } from './pages/landing/landing.component';
 
 
 @NgModule({
@@ -77,7 +77,7 @@ import { MaterialModule } from './material/material-module';
     P404Component,
     P500Component,
     LoginComponent,
-    LadingComponent,
+    LandingComponent,
     RegisterComponent,
   ],
   providers: [

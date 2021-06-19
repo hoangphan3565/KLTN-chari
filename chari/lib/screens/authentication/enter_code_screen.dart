@@ -19,10 +19,10 @@ class EnterCodeScreen extends StatefulWidget {
 
 class _EnterCodeScreenState extends State<EnterCodeScreen> {
   final _codeController = TextEditingController();
+  var focusNode = FocusNode();
 
   int _start = 120;
   int _current = 120;
-
 
 
 
@@ -60,6 +60,8 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   void initState() {
     super.initState();
     startTimer();
+    focusNode.requestFocus();
+
   }
 
   @override
@@ -124,6 +126,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
                 textAlign: TextAlign.center,
+                focusNode: focusNode,
                 hintText: "Nhập mã xác nhận",
                 icon: FontAwesomeIcons.key,
                 keyboardType: TextInputType.number,

@@ -10,7 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 import Cookies from 'js-cookie'
 import { RegisterComponent } from './pages/register/register.component';
-import { LadingComponent } from './pages/landing/landing.component';
+import { LandingComponent } from './pages/landing/landing.component';
 
 const loginInfoStr = Cookies.get("loginInfo");
 export const routes: Routes = [
@@ -49,7 +49,7 @@ export const routes: Routes = [
   },
   {
     path: 'lading',
-    component: LadingComponent,
+    component: LandingComponent,
     data: {
       title: 'Trang chủ'
     }

@@ -11,6 +11,7 @@ class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final Function switchObscureTextMode;
   final Function onTapClearIcon;
+  final FocusNode focusNode;
   const RoundedPasswordField({
     Key key,
     this.hintText,
@@ -20,6 +21,7 @@ class RoundedPasswordField extends StatelessWidget {
     this.switchObscureTextMode,
     this.onTapClearIcon,
     this.onChanged,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class RoundedPasswordField extends StatelessWidget {
         obscureText: obscureText,
         controller: controller,
         onChanged: onChanged,
+        focusNode: focusNode,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           hintText: hintText,

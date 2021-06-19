@@ -1,21 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:chari/widgets/widgets.dart';
-import 'package:quiver/async.dart';
-import 'package:intl/intl.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chari/models/models.dart';
-import 'package:chari/services/services.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
+import 'package:chari/widgets/widgets.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:video_player/video_player.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:video_player/video_player.dart';
 
 
 
@@ -49,6 +47,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     _getDonation();
     _getComment();
     timeago.setLocaleMessages('vi',timeago.ViMessages());
+
   }
 
   @override
@@ -279,7 +278,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   Widget buildNavBarItem() {
     return GestureDetector(
       child: Container(
-        width: MediaQuery.of(context).size.width*0.91,
+        width: MediaQuery.of(context).size.width*0.9,
         height: 30,
       ),
     );
@@ -634,7 +633,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   height: 8,
                 ),
                 LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width*0.91,
+                  width: MediaQuery.of(context).size.width*0.9,
                   lineHeight: 8.0,
                   percent: percent,
                   progressColor: kPrimaryColor,
@@ -673,7 +672,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   height: 8,
                 ),
                 LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width-60,
+                  width: MediaQuery.of(context).size.width*0.9,
                   lineHeight: 8.0,
                   percent: percent,
                   progressColor: Colors.grey,
@@ -829,6 +828,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   _showCommentDialog(BuildContext context) {
+    var focusNode = FocusNode();
+    focusNode.requestFocus();
     TextEditingController _nameField = TextEditingController();
     TextEditingController _contentField = TextEditingController();
     showModalBottomSheet(
@@ -841,60 +842,66 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
         ),
         builder: (BuildContext context){
-          return Wrap(
-            children: [
-              Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-                child: Column(
-                  children: <Widget>[
-                    Text("Bình luận",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryHighLightColor,
-                      ),
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
+              child: Column(
+                children: <Widget>[
+                  Text("Bình luận",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: kPrimaryHighLightColor,
                     ),
-                    SizedBox(height: 5),
-                    Container(
-                      height: 1.5,
-                      color: Colors.grey[300],
-                      margin: EdgeInsets.symmetric(horizontal: 0),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 1.5,
+                    color: Colors.grey[300],
+                    margin: EdgeInsets.symmetric(horizontal: 0),
+                  ),
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Column(
+                      children: [
+                        if(widget.donator==null)
+                          RoundedInputField(
+                            icon: Icons.person,
+                            hintText: 'Tên',
+                            keyboardType: TextInputType.name,
+                            controller: _nameField,
+                            onTapClearIcon: ()=>{_nameField.clear()},
+                            onChanged: (value) {},
+                          ),
+                        RoundedInputField(
+                          icon: Icons.chat_outlined,
+                          hintText: 'Nội dung',
+                          focusNode: focusNode,
+                          keyboardType: TextInputType.name,
+                          controller: _contentField,
+                          onTapClearIcon: ()=>{_contentField.clear()},
+                          onChanged: (value) {},
+                        ),
+                        RoundedButton(
+                          text: "Gửi",
+                          press: (){
+                            _sendComment(_nameField.text,_contentField.text,context);
+                          },
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 5),
-                    if(widget.donator==null)
-                      RoundedInputField(
-                        icon: Icons.person,
-                        hintText: 'Tên',
-                        keyboardType: TextInputType.name,
-                        controller: _nameField,
-                        onTapClearIcon: ()=>{_nameField.clear()},
-                        onChanged: (value) {},
-                      ),
-                    RoundedInputField(
-                      icon: Icons.chat_outlined,
-                      hintText: 'Nội dung',
-                      keyboardType: TextInputType.name,
-                      controller: _contentField,
-                      onTapClearIcon: ()=>{_contentField.clear()},
-                      onChanged: (value) {},
-                    ),
-                    RoundedButton(
-                      text: "Gửi",
-                      press: (){
-                        _sendComment(_nameField.text,_contentField.text,context);
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         }
     );
   }
 
   Container buildRecentDonatorList(BuildContext context){
-    Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.fromLTRB(8,5,8,20),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -1006,33 +1013,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-  _showMoreInfoDialog(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-        ),
-        builder: (BuildContext context){
-          return Wrap(
-            children: [
-              Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-                child: Column(
-                  children: <Widget>[
-
-
-                  ],
-                ),
-              ),
-            ],
-          );
-        }
-    );
-  }
 
 
 }

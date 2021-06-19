@@ -46,7 +46,7 @@
         <div class="col-xs-12 col-12">
           <pagination [totalItems]="bigTotalItems" [(ngModel)]="bigCurrentPage" [maxSize]="maxSize" class="pagination-sm"
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
-                      [boundaryLinks]="true" [rotate]="false" (numPages)="numPages = $event"></pagination>
+                      [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
       </div>
       <pre class="card card-body card-header">Page: {{bigCurrentPage}} / {{numPages}}</pre>

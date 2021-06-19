@@ -53,6 +53,13 @@
         </tbody>
         <tbody>
       </table>
+      <div class="row">
+        <div class="col-xs-12 col-12 col-md-6">
+          <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+                      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
+                      [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
+        </div>
+      </div>
     </div>
   </div>
 </div>

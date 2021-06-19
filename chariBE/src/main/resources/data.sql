@@ -46,7 +46,7 @@ values('2021-05-13 20:50:40.075187',0,'G0','Quỹ chung Chari',true,false,false,
 
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,false,false,
+values('2021-05-23 20:50:40.075187','G10001','Hướng về miền Trung: Hỗ trợ gia đình 23 ngư dân Bình Định mất tích trên biển',true,false,false,
 'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
 '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
     'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -65,10 +65,10 @@ values('2021-05-13 20:50:40.075187','G10001','Hướng về miền Trung: Hỗ t
 ',
 '2020-12-01','2021-03-15',1150000,
 'https://cdnmedia.baotintuc.vn/Upload/OND64xLJqhpDJlQ2Gd1dpw/files/2020/11/ngu-dan-gap-nan-31120.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp4?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp1?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,false,false,
+values('2021-05-22 20:50:40.075187','G10002','Chia sẻ khó khăn học sinh nghèo vùng biên giới',true,false,false,
 'Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn...',
 '       Trường Tiểu học Cù Chính Lan của huyện Ia Grai, tỉnh Gia Lai là một trường vùng biên giới giáp với Campuchia. Năm học 2019 - 2020 trường có hơn 600 học sinh  được chia thành 21 lớp, học sinh nơi đây chủ yếu là con em đồng bào dân tộc thiểu số (Jrai), đời sống còn quá khó khăn.
 ' ||
@@ -81,10 +81,10 @@ values('2021-05-13 20:50:40.075187','G10002','Chia sẻ khó khăn học sinh ng
         Rất mong quý nhà hảo tâm cùng Chari chung tay ủng hộ cho các em học sinh biên giới có cơ hội được cắp sách tới trường, thực hiện ước mơ học tập của em, nâng bước các em tới tương lai tươi đẹp hơn.',
 '2020-12-01','2021-05-31',750000,
 'https://www.giaoduc.edu.vn/upload/images/2011/10/02/hinh-anh-hoc-tro-ngheo-dung-quan-tai-lam-ghe-rung-dong-cong-dong_11.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',1,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,false,false,
+values('2021-05-27 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc cho người khuyết tật tại tỉnh Thừa Thiên Huế',true,false,false,
 'Trong đợt này, thị xã Hương có 30 người khuyết tật được trao tặng xe lăn, mỗi chiếc trị giá hơn 2 triệu đồng...',
 '       Thông qua nguồn tài trợ của tổ chức Trả lại tuổi thơ (Hoa Kỳ), Hội Chữ thập đỏ, Hội Người khuyết tật thị xã Hương Thủy phối hợp với Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh Thừa Thiên Huế và Ứng dụng Chari, dự định tổ chức trao xe lăn cho người khuyết tật trên địa bàn.
 ' ||
@@ -95,10 +95,10 @@ values('2021-05-13 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc cho n
 '       Được biết, năm 2019, Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh tiếp nhận 678 chiếc xe lăn do tổ chức Trả lại tuổi thơ (Hoa Kỳ) tài trợ để cấp phát miễn phí cho người khuyết tật trên địa bàn tỉnh Thừa Thiên Huế.',
 '2020-11-01','2021-07-01',700000,
 'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',1,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,false,false,
+values('2021-05-21 20:50:40.075187','G10004','Hỗ trợ vốn sinh kế cho người khuyết tật tỉnh Tây Ninh',true,false,false,
 'Trên địa bàn tỉnh Tây Ninh có khoảng 57.000 người khuyết tật...',
 '       Do tình hình của dịch COVID-19 kéo dài đã ảnh hưởng rất nhiều tới đời sống của người dân Việt Nam. Rất nhiều gia đình gặp tình trạng đói kém, mất việc làm và ảnh hưởng tới cuộc sống hằng ngày.
 ' ||
@@ -109,10 +109,10 @@ values('2021-05-13 20:50:40.075187','G10004','Hỗ trợ vốn sinh kế cho ng�
 '       Do đó, Chari cùng với các đơn vị đồng hành mong muốn góp một phần nhỏ của mình để giúp đỡ người khuyết tật có vốn ban đầu hỗ trợ cho công việc của họ sau này.',
 '2020-11-01','2021-03-01',1000000,
 'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,2,2);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,true,false,
+values('2021-05-25 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh cho các em học sinh ',true,true,false,
 'Khác với học sinh vùng xuôi, con đường tìm đến con chữ của học sinh miền núi, vùng sâu, vùng xa ở tỉnh Quảng Ngãi còn gặp rất nhiều khó khăn, trắc trở...',
 '       Để “kiếm” con chữ, mỗi ngày, hàng trăm học sinh ở xã vùng cao Ba Vì, huyện miền núi Ba Tơ (Quảng Ngãi) phải bất chấp nguy hiểm lội bộ qua dòng suối chảy xiết để đến trường với bao hiểm họa giăng ra trước mắt.
 ' ||
@@ -127,10 +127,10 @@ values('2021-05-13 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu sinh
 '       Mong muốn hoàn thành giấc mơ xây cầu cho các em nhưng còn gặp nhiều khó khăn về mặt pháp lý, nên thời điểm hiện tại để kịp thời giúp đỡ các em Chari kêu gọi các nhà hảo tâm quyên góp tặng cho các em những chiếc “Cặp phao” để các em phần nào an toàn hơn trên con đường đến trường đầy chông gai, nguy hiểm.',
 '2020-11-15','2021-02-15',700000,
 'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,2,2);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp1?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
+values('2021-05-29 20:50:40.075187','G10006','Xây cầu tình thương cho thôn Diêm Vân',false,false,false,
 'Nín thở đi qua cầu gỗ ọp ẹp tại thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định...',
 '       Nhiều năm qua, người dân xóm 3 (thôn Diêm Vân, xã Phước Thuận, tỉnh Bình Định) phải tự sửa chữa, gia cố cây cầu tạm bằng gỗ đã xuống cấp trầm trọng để làm nơi qua lại.
 ' ||
@@ -141,10 +141,10 @@ values('2021-05-13 20:50:40.075187','G10006','Xây cầu tình thương cho thô
 '       Để giúp đỡ cho người dân có cây cầu đi lại an toàn hơn, không xảy ra những vụ việc đáng tiếc mà ta có thể biết trước nhưng không thể ngăn chặn, thì Chari mong muốn góp một phần nhỏ để giúp đỡ cho chính quyền có đủ kinh phí xây dựng, giúp người dân mau chóng có một cây cầu mới để đi lại an toàn. ',
 '2020-11-01','2021-11-29',1500000,
 'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/unnamed.jpeg?alt=media&token=2984e9d7-c37d-4201-9d6e-ccecaea19b05',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,2,2);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',1,2,2);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
+values('2021-05-28 20:50:40.075187','G10007','Xây dựng tủ sách cho học sinh nghèo vùng cao',false,false,false,
 'Giúp học sinh nghèo vững bước tới trường với một tủ sách khang trang chống mưa...',
 '       Ðầu năm học mới, chi phí mua sắm sách giáo khoa, đồ dùng học tập cho học sinh đến trường  luôn là nỗi lo của những gia đình có điều kiện kinh tế khó khăn. Trong khi học sinh ở thành phố lúc nào cũng đầy đủ sách giáo khoa, đồ dùng học tập thì học sinh ở khu vực nông thôn, miền núi hay vùng cao lại rơi vào cảnh  thiếu sách để học. Nhiều  học sinh phải học chung một quyển sách, có những quyển được tận dụng tới ba, bốn năm, đến khi sách quá cũ, không thể dùng được nữa  mới bỏ đi. Trong khi đó ở thành phố, mỗi năm học sinh lại thay một bộ sách mới, sách giáo khoa cũ  không được tận dụng lại cho các  lớp sau.
 ' ||
@@ -153,10 +153,10 @@ values('2021-05-13 20:50:40.075187','G10007','Xây dựng tủ sách cho học s
 '       Do đó Chari muốn thay mặt các nhà hảo tâm đóng góp một phần nhỏ vào việc xây dựng tủ sách cho các em học sinh nghèo vùng cao để năm học sắp tới các em có đầy đủ sách giáo khoa mới, và những cuốn sách thuộc nhiều lĩnh vực khác giúp các em thỏa thích tìm hiểu và đọc sách.',
 '2020-9-30','2021-11-30',1000000,
 'https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp4?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp1?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,
+values('2021-05-19 20:50:40.075187','G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,
 
 'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
 '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
@@ -168,26 +168,26 @@ values('2021-05-13 20:50:40.075187','G10008','Xây dựng khu vui chơi trong s�
 '       Với sự ngây ngô của các em, chúng tôi muốn xây dựng cho các em một khu vui chơi nho nhỏ nằm trong sân trường để các em có thể chơi đùa, vận động cùng nhau. Dù chỉ là những trò chơi đơn giản nhưng cũng đủ giúp các em không còn phải nghịch đất sỏi trên đường.',
 '2020-11-20','2021-03-01',830000,
 'https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp4?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
+'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp1?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
+values('2021-05-27 20:50:40.075187','G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-08-01',400000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',2,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',2,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,false,false,
+values('2021-05-24 20:50:40.075187','G300001','Ủng hộ 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10',true,false,false,
 'Anh Hùng là đầu bếp có tâm, từng bỏ tiền túi để nấu 100 phần cơm cho bệnh nhân khó khăn ở quận 10',
 'Làng An Phú 10 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 '2020-11-01','2021-03-01',200000,
 'https://hieuvetraitim.com/attachments/hoan-canh-gioi-thieu-jpg.1782/',
-'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',5,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',5,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
+values('2021-05-18 20:50:40.075187','G10009','Hướng về miền Trung: Hỗ trợ gia đình mất nhà do bão',true,false,false,
        'Vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn) chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình...',
        '       Những ngày qua, vợ chồng ông Đặng Văn Xang và bà Phan Thị Dốn (ở thôn Cửu Lợi Đông, P.Tam Quan Nam, TX.Hoài Nhơn)' ||
        'chỉ biết cầu trời khấn Phật phù hộ để lực lượng cứu hộ tìm được 2 con trai của mình là Đặng Đức Hiểu (24 tuổi) và Đặng Đức Nghĩa (20 tuổi). Vợ chồng ông Xang có 4 người con trai đi biển, trong đó anh em Hiểu và Nghĩa là thuyền viên tàu cá BĐ 96388 TS, còn 2 người con trai còn lại là Đặng Ngọc Mãi và Đặng Ngọc Thơi thì cùng đi đánh bắt trên một tàu cá khác.
@@ -206,10 +206,10 @@ values('2021-05-13 20:50:40.075187','G10009','Hướng về miền Trung: Hỗ t
     ',
        '2020-12-01','2021-03-15',1150000,
        'https://thukyluat.vn/uploads/image/2020/11/06/Ho-so-thu-tuc-nhan-tien-ho-tro-sap-nha-o-do-thien-tai-bao-lut-gay-ra.jpg',
-       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp4?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
+       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project001.mp1?alt=media&token=f3ae0a28-e1fb-4438-a156-1fc73dfc7c55',2,1,1);
 
 insert into project(update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
-values('2021-05-13 20:50:40.075187','G10010','Xây dựng sân trường cho trường tiểu học Quảng Thành',true,false,true,
+values('2021-05-15 20:50:40.075187','G10010','Xây dựng sân trường cho trường tiểu học Quảng Thành',true,false,true,
 
        'Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai)...',
        '       Trường Tiểu học Thanh Kim, thuộc xã Thanh Kim (huyện Sa Pa, tỉnh Lào Cai). Đây là một trong những xã thuộc Chương trình 135 (chương trình hỗ trợ phát triển kinh tế xã hội các xã đặc biệt khó khăn vùng dân tộc thiểu số và miền núi).
@@ -221,7 +221,7 @@ values('2021-05-13 20:50:40.075187','G10010','Xây dựng sân trường cho tr�
        '       Với sự ngây ngô của các em, chúng tôi muốn xây dựng cho các em một khu vui chơi nho nhỏ nằm trong sân trường để các em có thể chơi đùa, vận động cùng nhau. Dù chỉ là những trò chơi đơn giản nhưng cũng đủ giúp các em không còn phải nghịch đất sỏi trên đường.',
        '2020-11-20','2021-03-01',830000,
        'https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg',
-       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp4?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
+       'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project008.mp1?alt=media&token=04d75437-7c92-46c6-872a-107f4bdd3e89',1,1,1);
 
 insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/quy-chung-chari.jpeg?alt=media&token=e68a9642-dd1f-4f16-9138-95668c822403',0);
 insert into project_images(image_url,prj_id) values('https://media.laodong.vn/Storage/NewsPortal/2020/10/29/849812/Lai-Dat-Tau-Bi-Nan-B.jpg?w=414&h=276&crop=auto&scale=both',1);
@@ -311,8 +311,8 @@ insert into donate_activity(dnt_id,prj_id,status) values(1,10,'SUCCESSFUL');
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,14);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',50000,14);
 
-insert into donator_notification(create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','closed',80000,8,1);
-insert into donator_notification(create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','closed',40000,12,1);
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','closed',80000,8,1);
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','closed',40000,12,1);
 
 insert into push_notification(topic,title,message) values('new','Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này');
 insert into push_notification(topic,title,message) values('overdue','Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.');
@@ -323,7 +323,7 @@ insert into push_notification(topic,title,message) values('reached','Chương tr
 insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'
 ,5,0,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
-,'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',true,'2021-05-13 20:50:40.075187');
+,'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp1?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',true,'2021-05-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',1);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',1);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',1);
@@ -343,10 +343,64 @@ insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/up
 
 insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viện 115 quận 10 đã thành công'
                                                                                         ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,10,1,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
+                                                                                        ,10,1,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
                                                                                         ,true,'2021-04-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',3);
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',3);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',3);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',3);
 
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án tài trợ xe lăn cho người khuyết tật sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,3,1,'https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg'
+                                                                                        ,true,'2021-04-03 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',4);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',4);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',4);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',4);
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,4,1,'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG'
+                                                                                        ,true,'2021-04-01 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',5);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',5);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',5);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',5);
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,3,1,'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG'
+                                                                                        ,true,'2021-04-01 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',6);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',6);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',6);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',6);
+
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,3,1,'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG'
+                                                                                        ,true,'2021-04-01 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',7);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',7);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',7);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',7);
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,3,2,'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG'
+                                                                                        ,true,'2021-04-01 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',8);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',8);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',8);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',8);
+
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
+                                                                                        ,4,2,'https://baotayninh.vn/image/fckeditor/upload/2018/20181204/images/trao%20von.JPG'
+                                                                                        ,true,'2021-04-01 20:50:40.075187');
+insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',9);
+insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',9);
+insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',9);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',9);

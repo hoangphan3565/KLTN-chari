@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { PostComponent } from './post.component';
 import { PostRoutingModule } from './post-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule } from '@angular/forms';
 import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
 import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
@@ -14,14 +12,14 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   imports: [
     CommonModule,
     PostRoutingModule,
     MatDialogModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,

@@ -1,15 +1,11 @@
 
-import 'dart:convert';
 
-import 'package:chari/services/services.dart';
 import 'package:chari/models/models.dart';
-import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingNotificationScreen extends StatefulWidget {
@@ -40,37 +36,36 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        title: Text(
-          'Cài đặt thông báo',
-          style: const TextStyle(
-            color: kPrimaryColor,
-            fontSize: 17.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -1.2,
+    return Container(
+      padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Cài đặt thông báo",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: kPrimaryHighLightColor,
+            ),
           ),
-        ),
-      ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for(int i=0;i<widget.push_notification_list.length;i++)
-              SwitchListTile(
-                title: Text(widget.push_notification_list.elementAt(i).title),
-                value: widget.favorite_notification_list.elementAt(i),
-                onChanged: (bool value){
-                  setState(() {
-                    widget.favorite_notification_list[i]=value;
-                    changeStateNotificationList(widget.push_notification_list.elementAt(i).topic,widget.push_notification_list.elementAt(i).nof_ID,value);
-                  });
-                },
-              )
-          ],
-        ),
+          SizedBox(height: 5),
+          Container(
+            height: 1.5,
+            color: Colors.grey[300],
+            margin: EdgeInsets.symmetric(horizontal: 0),
+          ),
+          for(int i=0;i<widget.push_notification_list.length;i++)
+            SwitchListTile(
+              title: Text(widget.push_notification_list.elementAt(i).title),
+              value: widget.favorite_notification_list.elementAt(i),
+              onChanged: (bool value){
+                setState(() {
+                  widget.favorite_notification_list[i]=value;
+                  changeStateNotificationList(widget.push_notification_list.elementAt(i).topic,widget.push_notification_list.elementAt(i).nof_ID,value);
+                });
+              },
+            )
+        ],
       ),
     );
   }

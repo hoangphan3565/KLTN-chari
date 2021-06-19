@@ -5,8 +5,7 @@ import { SupportedPeopleComponent } from './supported-people.component';
 import { SupportedPeopleRoutingModule } from './supported-people-routing.module';
 import { DialogSupportedPeopleComponent } from './dialog-supported-people/dialog-supported-people.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,8 +15,7 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     SupportedPeopleRoutingModule,
     MatDialogModule,
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     MatFormFieldModule,
     MatInputModule  ],

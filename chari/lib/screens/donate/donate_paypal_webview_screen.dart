@@ -1,6 +1,5 @@
 
 
-import 'dart:convert';
 
 import 'package:chari/models/models.dart';
 import 'package:chari/utility/utility.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class  DonateWithPaypalWebViewScreen extends StatefulWidget{
   final String paypalurl;

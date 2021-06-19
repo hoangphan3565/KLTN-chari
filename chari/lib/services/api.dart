@@ -1,8 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
 //local ip và port server đang deploy
 const baseUrl = "http://192.168.1.13:8080/api";
 
@@ -13,8 +8,7 @@ const save_user = "/save_user";
 const activate = "/activate";
 const projects = "/projects";
 const comments = "/comments";
-const posts = "/posts/public";
-const project_images = "/project_images/project/";
+const posts = "/posts";
 const donators = "/donators";
 const donate_details = "/donate_details";
 const donator_notifications = "/donator_notifications";

@@ -1,7 +1,6 @@
 
 import 'dart:convert';
-import 'package:quiver/async.dart';
-import 'package:chari/services/services.dart';
+
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
@@ -92,6 +91,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
   }
 
   _showChangeInformationDialog(BuildContext context) {
+    var focusNode = FocusNode();
+    focusNode.requestFocus();
     TextEditingController _fullnameField = TextEditingController(text: fullname);
     TextEditingController _addressField = TextEditingController(text: address);
     showModalBottomSheet(
@@ -125,28 +126,37 @@ class _PersonalScreenState extends State<PersonalScreen> {
                         margin: EdgeInsets.symmetric(horizontal: 0),
                       ),
                       SizedBox(height: 5),
-                      RoundedInputField(
-                        icon: Icons.person,
-                        hintText: 'Họ và tên',
-                        keyboardType: TextInputType.name,
-                        controller: _fullnameField,
-                        onTapClearIcon: ()=>{_fullnameField.clear()},
-                        onChanged: (value) {},
-                      ),
-                      RoundedInputField(
-                        icon: FontAwesomeIcons.addressCard,
-                        hintText: 'Địa chỉ',
-                        keyboardType: TextInputType.streetAddress,
-                        controller: _addressField,
-                        onTapClearIcon: ()=>{_addressField.clear()},
-                        onChanged: (value) {},
-                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Column(
+                          children: [
+                            RoundedInputField(
+                              icon: Icons.person,
+                              focusNode: focusNode,
+                              hintText: 'Họ và tên',
+                              keyboardType: TextInputType.name,
+                              controller: _fullnameField,
+                              onTapClearIcon: ()=>{_fullnameField.clear()},
+                              onChanged: (value) {},
+                            ),
+                            RoundedInputField(
+                              icon: FontAwesomeIcons.addressCard,
+                              hintText: 'Địa chỉ',
+                              keyboardType: TextInputType.streetAddress,
+                              controller: _addressField,
+                              onTapClearIcon: ()=>{_addressField.clear()},
+                              onChanged: (value) {},
+                            ),
 
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: (){
-                          _updateInformation(widget.donator.id,_fullnameField.text,_addressField.text);
-                        },
+                            RoundedButton(
+                              text: "Xác nhận",
+                              press: (){
+                                _updateInformation(widget.donator.id,_fullnameField.text,_addressField.text);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
 
                     ],
@@ -160,6 +170,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
   }
 
   _showSendFeedbackDialog(BuildContext context) {
+    var focusNode = FocusNode();
+    focusNode.requestFocus();
     TextEditingController _titleField = TextEditingController();
     TextEditingController _descriptionField = TextEditingController();
     showModalBottomSheet(
@@ -193,32 +205,39 @@ class _PersonalScreenState extends State<PersonalScreen> {
                         margin: EdgeInsets.symmetric(horizontal: 0),
                       ),
                       SizedBox(height: 5),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Column(
+                          children: [
+                            RoundedInputField(
+                              icon: Icons.adjust,
+                              focusNode: focusNode,
+                              keyboardType: TextInputType.text,
+                              controller: _titleField,
+                              onTapClearIcon: ()=>{_titleField.clear()},
+                              hintText: 'Tiêu đề',
+                              onChanged: (value) {},
+                            ),
+                            RoundedInputField(
+                              icon: Icons.message,
+                              keyboardType: TextInputType.text,
+                              controller: _descriptionField,
+                              onTapClearIcon: ()=>{_descriptionField.clear()},
+                              hintText: 'Nội dung đóng góp',
+                              onChanged: (value) {},
+                            ),
 
-                      RoundedInputField(
-                        icon: Icons.adjust,
-                        keyboardType: TextInputType.text,
-                        controller: _titleField,
-                        onTapClearIcon: ()=>{_titleField.clear()},
-                        hintText: 'Tiêu đề',
-                        onChanged: (value) {},
+                            RoundedButton(
+                              text: "Xác nhận",
+                              press: ()async{
+                                SharedPreferences _prefs = await SharedPreferences.getInstance();
+                                validateAndSendFeedback(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                      RoundedInputField(
-                        icon: Icons.message,
-                        keyboardType: TextInputType.text,
-                        controller: _descriptionField,
-                        onTapClearIcon: ()=>{_descriptionField.clear()},
-                        hintText: 'Nội dung đóng góp',
-                        onChanged: (value) {},
-                      ),
-
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: ()async{
-                          SharedPreferences _prefs = await SharedPreferences.getInstance();
-                          validateAndSendFeedback(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
-                        },
-                      ),
-
                     ],
                   ),
                 ),
@@ -255,12 +274,13 @@ class _PersonalScreenState extends State<PersonalScreen> {
   }
 
   _showChangePasswordDialog(String username,String password,BuildContext context) {
-    TextEditingController _curPasswordField = TextEditingController();
-    TextEditingController _newPasswordField = TextEditingController();
-    TextEditingController _reWritePasswordField = TextEditingController();
-    bool notSeePassword = true;
-    bool notSeePassword1 = true;
-    bool notSeePassword2 = true;
+    //Stateless example
+    // TextEditingController _curPasswordField = TextEditingController();
+    // TextEditingController _newPasswordField = TextEditingController();
+    // TextEditingController _reWritePasswordField = TextEditingController();
+    // bool notSeePassword = true;
+    // bool notSeePassword1 = true;
+    // bool notSeePassword2 = true;
 
     showModalBottomSheet(
         context: context,
@@ -274,196 +294,96 @@ class _PersonalScreenState extends State<PersonalScreen> {
         builder: (BuildContext context){
           return Wrap(
             children: [
-              Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Text("Đổi mật khẩu",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryHighLightColor,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        height: 1.5,
-                        color: Colors.grey[300],
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                      ),
-                      TextFieldContainer(
-                        child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
-                            style: TextStyle(
-                              color: kPrimaryHighLightColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                            )),
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Mật khẩu hiện tại",
-                        icon: FontAwesomeIcons.unlock,
-                        obscureText: notSeePassword,
-                        controller: _curPasswordField,
-                        onTapClearIcon: ()=>{_curPasswordField.clear()},
-                        switchObscureTextMode: ()=>{
-                          if(notSeePassword==true){
-                            setState((){notSeePassword=false;})
-                          }else{
-                            setState((){notSeePassword=true;})
-                          }
-                        },
-                        onChanged: (value) {},
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Mật khẩu mới",
-                        icon: FontAwesomeIcons.lockOpen,
-                        obscureText: notSeePassword1,
-                        controller: _newPasswordField,
-                        onTapClearIcon: ()=>{_newPasswordField.clear()},
-                        switchObscureTextMode: ()=>{
-                          if(notSeePassword1==true){
-                            setState((){notSeePassword1=false;})
-                          }else{
-                            setState((){notSeePassword1=true;})
-                          }
-                        },
-                        onChanged: (value) {},
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Nhập lại mật khẩu mới",
-                        icon: FontAwesomeIcons.lock,
-                        obscureText: notSeePassword2,
-                        controller: _reWritePasswordField,
-                        onTapClearIcon: ()=>{_reWritePasswordField.clear()},
-                        switchObscureTextMode: ()=>{
-                          if(notSeePassword2==true){
-                            setState((){notSeePassword2=false;})
-                          }else{
-                            setState((){notSeePassword2=true;})
-                          }
-                        },
-                        onChanged: (value) {},
-                      ),
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: ()=>{
-                          _changePassword(username,password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                // SingleChildScrollView(
-                //   child: Column(
-                //     children: [
-                //       TextFieldContainer(
-                //         child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
-                //             style: TextStyle(
-                //               color: kPrimaryHighLightColor,
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.normal,
-                //             )),
-                //       ),
-                //       RoundedPasswordField(
-                //         hintText: "Mật khẩu hiện tại",
-                //         icon: FontAwesomeIcons.unlock,
-                //         obscureText: notSeePassword,
-                //         controller: _curPasswordField,
-                //         onTapClearIcon: ()=>{_curPasswordField.clear()},
-                //         switchObscureTextMode: ()=>{
-                //           if(notSeePassword==true){
-                //             setState((){notSeePassword=false;})
-                //           }else{
-                //             setState((){notSeePassword=true;})
-                //           }
-                //         },
-                //         onChanged: (value) {},
-                //       ),
-                //       RoundedPasswordField(
-                //         hintText: "Mật khẩu mới",
-                //         icon: FontAwesomeIcons.lockOpen,
-                //         obscureText: notSeePassword1,
-                //         controller: _newPasswordField,
-                //         onTapClearIcon: ()=>{_newPasswordField.clear()},
-                //         switchObscureTextMode: ()=>{
-                //           if(notSeePassword1==true){
-                //             setState((){notSeePassword1=false;})
-                //           }else{
-                //             setState((){notSeePassword1=true;})
-                //           }
-                //         },
-                //         onChanged: (value) {},
-                //       ),
-                //       RoundedPasswordField(
-                //         hintText: "Nhập lại mật khẩu mới",
-                //         icon: FontAwesomeIcons.lock,
-                //         obscureText: notSeePassword2,
-                //         controller: _reWritePasswordField,
-                //         onTapClearIcon: ()=>{_reWritePasswordField.clear()},
-                //         switchObscureTextMode: ()=>{
-                //           if(notSeePassword2==true){
-                //             setState((){notSeePassword2=false;})
-                //           }else{
-                //             setState((){notSeePassword2=true;})
-                //           }
-                //         },
-                //         onChanged: (value) {},
-                //       ),
-                //       RoundedButton(
-                //         text: "Xác nhận",
-                //         press: ()=>{
-                //           _changePassword(username,password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
-                //         },
-                //       ),
-                //     ],
-                //   ),
-                // ),
-              ),
+              //Stateless example
+              // Container(
+              //   padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
+              //   child: SingleChildScrollView(
+              //     child: Column(
+              //       children: <Widget>[
+              //         Text("Đổi mật khẩu",
+              //           style: TextStyle(
+              //             fontSize: 20,
+              //             fontWeight: FontWeight.bold,
+              //             color: kPrimaryHighLightColor,
+              //           ),
+              //         ),
+              //         SizedBox(height: 5),
+              //         Container(
+              //           height: 1.5,
+              //           color: Colors.grey[300],
+              //           margin: EdgeInsets.symmetric(horizontal: 0),
+              //         ),
+              //         TextFieldContainer(
+              //           child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
+              //               style: TextStyle(
+              //                 color: kPrimaryHighLightColor,
+              //                 fontSize: 15,
+              //                 fontWeight: FontWeight.normal,
+              //               )),
+              //         ),
+              //         RoundedPasswordField(
+              //           hintText: "Mật khẩu hiện tại",
+              //           icon: FontAwesomeIcons.unlock,
+              //           obscureText: notSeePassword,
+              //           controller: _curPasswordField,
+              //           onTapClearIcon: ()=>{_curPasswordField.clear()},
+              //           switchObscureTextMode: ()=>{
+              //             if(notSeePassword==true){
+              //               setState((){notSeePassword=false;})
+              //             }else{
+              //               setState((){notSeePassword=true;})
+              //             }
+              //           },
+              //           onChanged: (value) {},
+              //         ),
+              //         RoundedPasswordField(
+              //           hintText: "Mật khẩu mới",
+              //           icon: FontAwesomeIcons.lockOpen,
+              //           obscureText: notSeePassword1,
+              //           controller: _newPasswordField,
+              //           onTapClearIcon: ()=>{_newPasswordField.clear()},
+              //           switchObscureTextMode: ()=>{
+              //             if(notSeePassword1==true){
+              //               setState((){notSeePassword1=false;})
+              //             }else{
+              //               setState((){notSeePassword1=true;})
+              //             }
+              //           },
+              //           onChanged: (value) {},
+              //         ),
+              //         RoundedPasswordField(
+              //           hintText: "Nhập lại mật khẩu mới",
+              //           icon: FontAwesomeIcons.lock,
+              //           obscureText: notSeePassword2,
+              //           controller: _reWritePasswordField,
+              //           onTapClearIcon: ()=>{_reWritePasswordField.clear()},
+              //           switchObscureTextMode: ()=>{
+              //             if(notSeePassword2==true){
+              //               setState((){notSeePassword2=false;})
+              //             }else{
+              //               setState((){notSeePassword2=true;})
+              //             }
+              //           },
+              //           onChanged: (value) {},
+              //         ),
+              //         RoundedButton(
+              //           text: "Xác nhận",
+              //           press: ()=>{
+              //             _changePassword(username,password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
+              //           },
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
+              //User Stateful widget
+              ChangePasswordScreen(username:username,password:password),
             ],
           );
         }
     );
   }
-
-  _changePassword(String username,String password, String cur_password,String new_password1,String new_password2) async{
-    String message='';
-    int errorCode=1;
-    if(cur_password.length != 0 && new_password1.length !=0 && new_password2.length!=0) {
-      if(cur_password==password){
-        if(new_password1==new_password2){
-          if(new_password1!=password){
-            if(CheckString.isMyCustomPassword(new_password1)){
-              SharedPreferences _prefs = await SharedPreferences.getInstance();
-              var res = await UserService.changeUserPassword(username, new_password1, new_password2);
-              var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
-              message = jsonResponse['message'];
-              errorCode = jsonResponse['errorCode'];
-              if(errorCode == 0){
-                _prefs.setString('password',jsonResponse['data']['password']);
-                Navigator.pop(context);
-              }}else{
-              message='Mật khẩu mới phải có ít nhất 6 ký tự và gồm chữ và số!';
-            }}else{
-            message='Mật khẩu mới phải khác mật khẩu cũ!';
-          }}else{
-          message='Mật khẩu mới không trùng khớp!';
-        }}else{
-        message='Mật khẩu hiện tại không chính xác!';
-      }}else{
-      message='Không được trống thông tin nào';
-    }
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: errorCode==0? kPrimaryColor:Colors.orangeAccent,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {

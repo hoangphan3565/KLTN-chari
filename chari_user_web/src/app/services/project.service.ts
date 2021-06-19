@@ -4,7 +4,10 @@ import { Api } from './api.service';
 @Injectable({providedIn: 'root'})
 export class ProjectService {  
   constructor(){ }
-  public getProjects = id => Api.get(Api.url.projects+'/collaborator/'+id);
+  public getAllProjects = id => Api.get(`${Api.url.projects}/collaborator/${id}`);
+  public getUncloseProjects = (id,a,b) => Api.get(`${Api.url.projects}/collaborator/${id}/from/${a}/to/${b}`);
+  public countUncloseProjects = id => Api.get(`${Api.url.projects}/collaborator/${id}/count`);
+
   public getActivating = id => Api.get(Api.url.projects+'/activating/collaborator/'+id); 
   public getReached = id => Api.get(Api.url.projects+'/reached/collaborator/'+id); 
   public getOverdue = id => Api.get(Api.url.projects+'/overdue/collaborator/'+id);
