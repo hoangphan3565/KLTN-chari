@@ -10,6 +10,8 @@ import { ProjectTypeService } from '../../../services/project-type.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map, finalize } from "rxjs/operators";
+import { CityService } from '../../../services/city.service';
+import { City } from '../../../models/City';
 
 @Component({
     selector: 'app-dialog-project',
@@ -22,11 +24,13 @@ export class DialogProjectComponent implements OnInit {
   videoUrl: any;
   downloadURL: Observable<string>;
   ProjectTypes: ProjectType[];
+  Cities: City[];
   SupportedPeoples: SupportedPeople[];
   canDisburseWhenOverdue:boolean=true;
   constructor(
     private notificationService: NotificationService,
     private SupportedPeopleService: SupportedPeopleService,
+    private cityService: CityService,
     private projectTypeService: ProjectTypeService,
     public dialogRef: MatDialogRef<DialogProjectComponent>,
     private storage: AngularFireStorage,
@@ -34,6 +38,7 @@ export class DialogProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProjectType();
+    this.getCity();
     this.getSupportedPeople();
     this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
@@ -100,6 +105,10 @@ export class DialogProjectComponent implements OnInit {
     this.videoUrl=null;
   }
   
+  public async getCity(){
+    this.Cities = await (await this.cityService.getCities()).data as City[];
+  }
+
   public async getProjectType(){
     this.ProjectTypes = await (await this.projectTypeService.getProjectTypes()).data as ProjectType[];
   }

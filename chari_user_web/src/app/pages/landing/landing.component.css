@@ -12,6 +12,12 @@
 .bg-cover {
   background-size: cover;
 }
+.section__title {
+  margin-bottom: 35px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .reason__item__avatar {
   position: absolute;

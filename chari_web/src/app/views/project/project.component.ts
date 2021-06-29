@@ -75,7 +75,9 @@ export class ProjectComponent implements OnInit {
       targetMoney:p.targetMoney,
       canDisburseWhenOverdue:p.projectType.canDisburseWhenOverdue,
       prt_ID:p.projectType.prt_ID,
-      projectType:p.projectType,
+      projectType:p.projectType,      
+      cti_ID:p.city.cti_ID,
+      city:p.city,
       stp_ID:p.supportedPeople.stp_ID,
       supportedPeople:p.supportedPeople,
       images:p.images
@@ -95,7 +97,9 @@ export class ProjectComponent implements OnInit {
       targetMoney:'',
       canDisburseWhenOverdue:true,
       prt_ID:null,
-      projectType:null,
+      projectType:null,      
+      cti_ID:null,
+      city:null,
       stp_ID:null,
       supportedPeople:null,
       images:[]
@@ -120,7 +124,7 @@ export class ProjectComponent implements OnInit {
   public updateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.updateProject(data);
+      const result = await this.ProjectService.updateProject(data,0);
       if (result)
       {
         this.notificationService.success('Cập nhật dự án thành công');

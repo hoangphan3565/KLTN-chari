@@ -92,24 +92,26 @@ export class ProjectReachedComponent implements OnInit {
       wb.SheetNames.forEach(sheet => {
         let rowObject = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
         console.log(rowObject);
-        this.saveDonateWithBankDetail(rowObject);
+        this.disburseWithBank(rowObject);
       })
     };
   
     reader.readAsBinaryString(target.files[0]);
   }
 
-  public saveDonateWithBankDetail = async (data: any[]) => {
+
+  public disburseWithBank = async (data: any[]) => {
     try 
     {
-      const result = await (await this.DonateDetailsService.saveDonateWithBankDetail(data)).data;
-      if (result==1)
+      const result = await (await this.DonateDetailsService.disburseWithBank(data)).data;
+      if (result)
       {
-        this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');
-      }    
+        this.notificationService.success(result.message);
+        this.getReached();
+      }
     }
     catch (e) {
-      alert('Cập nhật tiền quyên góp từ bảng sao kê thất bại');
+      alert('Cập nhật giải ngân từ bảng sao kê thất bại');
     }
   };
 

@@ -10,13 +10,13 @@
         <div class="col-auto">
           <button type="button" class="btn btn-success" >
             <i class="icon-cloud-download"></i>
-            <a style="color:white;" href="https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/SaoKeMau.xlsx?alt=media&token=adc45da4-c97b-4ee2-9499-8770b78c26d5" download>Tải xuống sao kê mẫu</a>
+            <a style="color:white;" href="https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/SaoKeMau.xlsx?alt=media&token=537bb08b-d2e6-4a17-a73f-325caa8edbf5" download>Tải xuống file sao kê mẫu</a>
           </button>
 
           <input #excelInput hidden="true" type="file" onclick="this.value=null" (change)="onFileChange($event)" multiple="false" accept=".xls,.xlsx"/>
           <button class="btn btn-primary" (click)="excelInput.click()">
             <i class="icon-cloud-upload"></i>
-            <a>Cập nhật sao kê</a>
+            <a>Cập nhật sao kê giải ngân</a>
           </button>
         </div>
       </div>
@@ -31,6 +31,9 @@
             <th>Mục tiêu (Triệu đồng)</th>
             <th>Đã quyên góp (Triệu đồng)</th>
             <th>Đạt được (%)</th>
+            <th>Cho phép giải ngân</th>
+            
+            <th>Tình trạng</th>
             <th>Tác vụ</th>
           </tr>
         </thead>
@@ -40,14 +43,25 @@
           <td>{{data.targetMoney/1000000}}</td>
           <td>{{data.curMoney/1000000}}</td>
           <td>{{data.achieved}}</td>
-          <td>
+          
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
+
+          <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
+          <td *ngIf="data.disbursed==true">Đã giải ngân</td>
+          
+
+          <td *ngIf="data.projectType.canDisburseWhenOverdue == true && data.disbursed==true">
+            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
+          </td>          
+          <td *ngIf="data.projectType.canDisburseWhenOverdue != true && data.curMoney/data.targetMoney<0.8">
             <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
           </td>
-          <td *ngIf="data.curMoney/data.targetMoney>0.8">
+          <td *ngIf="data.curMoney/data.targetMoney>0.8 && data.disbursed!=true">
             <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_ID)">Gia hạn</button>
           </td>                 
-          <td *ngIf="data.projectType.canDisburseWhenOverdue == true">
-            <button type="button" class="btn btn-block btn-outline-info" (click)="openDisburseDialog(data)">Giải ngân</button>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue == true && data.disbursed!=true">
+            <button type="button" class="btn btn-block btn-outline-info" (click)="openDisburseDialog(data)">Hiện thông tin giải ngân</button>
           </td>
         </tbody>
         <tbody>

@@ -14,7 +14,7 @@ export class ProjectService {
   public getClosed = id => Api.get(Api.url.projects+'/closed/collaborator/'+id);
   public updateMoveMoneyProgress = () => Api.put(`${Api.url.projects}/handle_all_money`);
   public createProject = (data,id) => Api.post(`${Api.url.projects}/create/collaborator/${id}`,data);
-  public updateProject = (data) => Api.put(`${Api.url.projects}/update`,data);
+  public updateProject = (data,id) => Api.put(`${Api.url.projects}/update/collaborator/${id}`,data);
   public deleteProject = id => Api.delete(`${Api.url.projects}/${id}`);
   public closeProject = (id,clb_id) => Api.put(`${Api.url.projects}/close/${id}/collaborator/${clb_id}`);
   public extendProject = (id,nod,clb_id) => Api.put(`${Api.url.projects}/extend/${id}/num_of_date/${nod}/collaborator/${clb_id}`);

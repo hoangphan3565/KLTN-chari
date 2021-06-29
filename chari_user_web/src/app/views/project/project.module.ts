@@ -10,8 +10,6 @@ import { DialogProjectComponent } from './dialog-project/dialog-project.componen
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material-module';
-import { DragDropDirective } from './drag-drop.directive';
-import { VideoDragDropDirective } from './video-drag-drop.directive';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
@@ -28,8 +26,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   declarations: [ 
     ProjectComponent,
     DialogProjectComponent,
-    DragDropDirective,
-    VideoDragDropDirective,
   ]
 })
 export class ProjectModule { }

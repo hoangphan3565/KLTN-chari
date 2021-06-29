@@ -83,6 +83,8 @@ export class ProjectComponent implements OnInit {
       projectType:p.projectType,
       stp_ID:p.supportedPeople.stp_ID,
       supportedPeople:p.supportedPeople,
+      cti_ID:p.city.cti_ID,
+      city:p.city,
       images:p.images
     }; 
     this.openDialog();
@@ -102,7 +104,9 @@ export class ProjectComponent implements OnInit {
       prt_ID:null,
       projectType:null,
       stp_ID:null,
-      supportedPeople:null,
+      supportedPeople:null,      
+      cti_ID:null,
+      city:null,
       images:[]
     };
   }
@@ -125,7 +129,7 @@ export class ProjectComponent implements OnInit {
   public updateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.updateProject(data);
+      const result = await this.ProjectService.updateProject(data,this.clb_id);
       if (result)
       {
         this.notificationService.success('Cập nhật chương trình từ thiện thành công');

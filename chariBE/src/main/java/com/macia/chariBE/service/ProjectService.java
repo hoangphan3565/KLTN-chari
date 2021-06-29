@@ -4,7 +4,9 @@ package com.macia.chariBE.service;
 import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.DonateActivity;
 import com.macia.chariBE.model.DonateDetails;
+import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.model.Project;
+import com.macia.chariBE.repository.CityRepository;
 import com.macia.chariBE.repository.ProjectRepository;
 import com.macia.chariBE.utility.ProjectStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +43,9 @@ public class ProjectService {
     private DonateActivityService donateActivityService;
 
     @Autowired
+    private DonatorService donatorService;
+
+    @Autowired
     private DonateDetailsService donateDetailsService;
 
     @Autowired
@@ -53,12 +59,38 @@ public class ProjectService {
 
     @Autowired
     private SupportedPeopleService supportedPeopleService;
+    @Autowired
+    private CityRepository cityRepository;
 
     @Autowired
     private CollaboratorService collaboratorService;
 
     public Project save(Project project) {
         return repo.saveAndFlush(project);
+    }
+
+    public List<Project> findFavoriteProject(Integer donatorId) {
+        try {
+            Donator donator = donatorService.findById(donatorId);
+            String[] curFavoriteList = donator.getFavoriteProject().split(" ");
+            List<Integer> id = new ArrayList<>();
+            for (String s : curFavoriteList) {
+                id.add(Integer.valueOf(s));
+            }
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findFavoriteProject", Project.class);
+            query.setParameter("ids", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public List<ProjectDTO> getFavoriteProjectDTOsByDonatorId(Integer id){
+        List<ProjectDTO> r = new ArrayList<>();
+        List<Project> ps = this.findFavoriteProject(id);
+        for(Project p : ps){
+            r.add(mapToDTO(p));
+        }
+        return r;
     }
 
     public Project findProjectById(Integer id) {
@@ -110,6 +142,7 @@ public class ProjectService {
 
 
     // Services for Donator(Only show Verified and Unclose) and Admin(Verified Project)
+
     public Integer countAllWhereUncloseAndVerified() {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findWhereUncloseAndVerified", Project.class);
         return query.getResultList().size();
@@ -133,6 +166,24 @@ public class ProjectService {
         return r;
     }
 
+    public List<Project> findUncloseAndVerifiedByName(String name) {
+        try {
+            TypedQuery<Project> query = em.createNamedQuery("named.project.findUncloseAndVerifiedByName", Project.class);
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<ProjectDTO> getProjectDTOsUncloseAndVerifiedByName(String name){
+        List<ProjectDTO> r = new ArrayList<>();
+        List<Project> ps = this.findUncloseAndVerifiedByName(name);
+        for(Project p : ps){
+            r.add(mapToDTO(p));
+        }
+        return r;
+    }
 
 
     public String getImageUrlOfProjectById(Integer id){
@@ -286,6 +337,7 @@ public class ProjectService {
                 .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
                 .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
                 .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
+                .cti_ID(p.getCity().getCTI_ID()).city(p.getCity())
                 .build();
     }
 
@@ -359,6 +411,7 @@ public class ProjectService {
         np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        np.setCity(this.cityRepository.findById(p.getCti_ID()).orElseThrow());
         np.setCollaborator(this.collaboratorService.findById(collaboratorId));
         np.setProjectImages(this.projectImagesService.createListProjectImage(np,p.getImages()));
         np.setVerified(collaboratorId == 0);
@@ -367,13 +420,13 @@ public class ProjectService {
         this.repo.saveAndFlush(np);
         if(collaboratorId == 0){
             this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),"new");
-            return this.getVerifiedProjects();
+            return this.getProjectDTOsWhereUncloseAndVerifiedFromAToB(0,5);
         }else{
-            return getProjectsByCollaboratorId(collaboratorId);
+            return getUncloseProjectDTOsByCollaboratorIdFromAToB(collaboratorId,0,5);
         }
     }
 
-    public List<ProjectDTO> updateProject(ProjectDTO p) {
+    public List<ProjectDTO> updateProject(ProjectDTO p,Integer collaboratorId) {
         Project np = this.findProjectById(p.getPRJ_ID());
         np.setProjectName(p.getProjectName());
         np.setBriefDescription(p.getBriefDescription());
@@ -385,9 +438,14 @@ public class ProjectService {
         np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
+        np.setCity(this.cityRepository.findById(p.getCti_ID()).orElseThrow());
         this.projectImagesService.updateListProjectImage(np,p.getImages());
         this.repo.saveAndFlush(np);
-        return this.getVerifiedProjects();
+        if(collaboratorId == 0){
+            return this.getProjectDTOsWhereUncloseAndVerifiedFromAToB(0,5);
+        }else{
+            return getUncloseProjectDTOsByCollaboratorIdFromAToB(collaboratorId,0,5);
+        }
     }
 
     public List<ProjectDTO> getProjectsByCollaboratorId(Integer id) {

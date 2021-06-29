@@ -55,7 +55,7 @@ export class ProjectReachedComponent implements OnInit {
       isPublic: true,
       imageUrl: '',
       videoUrl: '',
-      collaboratorId:0,
+      collaboratorId:this.clb_id,
       images:[]
     };
   }

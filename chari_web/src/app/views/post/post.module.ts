@@ -5,8 +5,6 @@ import { PostComponent } from './post.component';
 import { PostRoutingModule } from './post-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
-import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
 import { MaterialModule } from '../../material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
@@ -28,8 +26,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   declarations: [ 
     PostComponent,
     DialogPostComponent,
-    PostImageDragDropDirective,
-    PostVideoDragDropDirective
   ]
 })
 export class ProjectPostModule { }

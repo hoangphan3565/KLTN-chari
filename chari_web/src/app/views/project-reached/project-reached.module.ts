@@ -10,8 +10,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
-import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
-import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 @NgModule({
   imports: [
@@ -27,8 +25,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     ProjectReachedComponent,
     DialogDisburseProjectComponent,
     DialogPostComponent,
-    PostImageDragDropDirective,
-    PostVideoDragDropDirective
   ]
 })
 export class ProjectReachedModule { }

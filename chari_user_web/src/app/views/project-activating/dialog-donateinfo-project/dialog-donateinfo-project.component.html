@@ -2,21 +2,17 @@
 <mat-dialog-content>
      <mat-form-field appearance="outline">
         <mat-label>Tên đầy đủ</mat-label>
-        <input name="fullname" matInput [(ngModel)]="data.supportedPeople.fullName">
+        <input name="fullname" matInput [(ngModel)]="fullName">
     </mat-form-field>
      <mat-form-field appearance="outline">
         <mat-label>Tên ngân hàng</mat-label>
-        <input name="bankName" matInput [(ngModel)]="data.supportedPeople.bankName">
+        <input name="bankName" matInput [(ngModel)]="bankName">
     </mat-form-field>
      <mat-form-field appearance="outline">
         <mat-label>Số tài khoản</mat-label>
-        <input name="bankAccount" matInput [(ngModel)]="data.supportedPeople.bankAccount" cdkFocusInitial>
+        <input name="bankAccount" matInput [(ngModel)]="bankAccount" cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
-        <mat-label>Số tiền</mat-label>
-        <input name="bankAccount" matInput [(ngModel)]="data.curMoney">
-    </mat-form-field>
-     <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline">
         <mat-label>Nội dung chuyển khoản</mat-label>
         <input name="disbureCode" matInput [(ngModel)]="disburseCode">
     </mat-form-field>

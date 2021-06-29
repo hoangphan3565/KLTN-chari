@@ -30,7 +30,10 @@
           <td>{{data.achieved}}</td>
           <td>{{data.remainingTerm}}</td>        
           <td>
-            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
+            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng tin</button>
+          </td>
+          <td>
+            <button type="button" class="btn" style="background-color: #FF545B; color: #fff;" (click)="openDonateInfoDialog(data)">Quyên góp</button>
           </td>
         </tbody>
         <tbody>

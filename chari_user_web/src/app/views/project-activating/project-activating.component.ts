@@ -7,6 +7,7 @@ import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import Cookies from 'js-cookie'
+import { DialogDonateInfoComponent } from './dialog-donateinfo-project/dialog-donateinfo-project.component';
 
 @Component({
   templateUrl: './project-activating.component.html',
@@ -42,6 +43,13 @@ export class ProjectActivatingComponent implements OnInit {
     });
   }
 
+  openDonateInfoDialog(data): void {
+    const dialogRef = this.dialog.open(DialogDonateInfoComponent, {
+      width: '250px',
+      data: data
+    });
+  }
+
   clearData(p:Project){
     this.Post = {
       pos_ID: null,
@@ -52,7 +60,7 @@ export class ProjectActivatingComponent implements OnInit {
       isPublic: true,
       imageUrl: '',
       videoUrl: '',
-      collaboratorId:0,
+      collaboratorId:this.clb_id,
       images:[]
     };
   }

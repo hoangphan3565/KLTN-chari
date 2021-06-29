@@ -1,3 +1,4 @@
+import { City } from "./City";
 import { Collaborator } from "./Collaborator";
 import { ProjectType } from "./ProjectType";
 import { SupportedPeople } from "./SupportedPeople";
@@ -15,7 +16,9 @@ export class Project {
     images:string[];
     canDisburseWhenOverdue:boolean;
     prt_ID:Number;
-    projectType:ProjectType;
+    projectType:ProjectType;    
     stp_ID:Number;
     supportedPeople:SupportedPeople;
+    cti_ID:Number;
+    city:City;
 }

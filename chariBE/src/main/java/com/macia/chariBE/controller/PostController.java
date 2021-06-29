@@ -20,6 +20,12 @@ public class PostController {
     @Autowired
     PostService PostService;
 
+
+    @GetMapping("/find/{name}")
+    public ResponseEntity<?> findPostByName(@PathVariable(value = "name") String name) {
+        return ResponseEntity.ok().body(PostService.findLikePostName(name));
+    }
+
     //Services for admin
     @GetMapping("/count")
     public ResponseEntity<?> countAllPost() {

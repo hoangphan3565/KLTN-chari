@@ -1,9 +1,6 @@
 package com.macia.chariBE.service;
 
-import com.macia.chariBE.model.DonateActivity;
-import com.macia.chariBE.model.DonateDetails;
-import com.macia.chariBE.model.Donator;
-import com.macia.chariBE.model.PushNotification;
+import com.macia.chariBE.model.*;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.DonateDetailsRepository;
 import com.macia.chariBE.repository.DonatorRepository;
@@ -12,13 +9,19 @@ import com.macia.chariBE.utility.DonateActivityStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DonatorService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private DonatorRepository donatorRepo;
@@ -50,7 +53,6 @@ public class DonatorService {
     }
 
     public List<Donator> findAll(){return donatorRepo.findAll();}
-
 
     public Donator findByPhone(String phone) {
         try {

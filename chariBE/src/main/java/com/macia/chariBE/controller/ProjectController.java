@@ -31,6 +31,16 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getProjectDTOs());
     }
 
+    @GetMapping("/favorite/donator/{id}")
+    public ResponseEntity<?> getFavoriteProjectDTOsByDonatorId(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.getFavoriteProjectDTOsByDonatorId(id));
+    }
+
+    @GetMapping("/find/{key}")
+    public ResponseEntity<?> getProjectDTOsUncloseAndVerifiedByName(@PathVariable(value = "key") String key) {
+        return ResponseEntity.ok().body(projectService.getProjectDTOsUncloseAndVerifiedByName(key));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(projectService.getProjectDTOById(id));
@@ -162,10 +172,11 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.createProject(project,id));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/collaborator/{id}")
     public ResponseEntity<?> update(
-            @RequestBody ProjectDTO project) {
-        return ResponseEntity.ok().body(projectService.updateProject(project));
+            @RequestBody ProjectDTO project,
+            @PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(projectService.updateProject(project,id));
     }
 
 }

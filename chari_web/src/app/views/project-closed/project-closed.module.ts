@@ -7,7 +7,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   ],
   declarations: [ 
     ProjectClosedComponent,
-    DialogDisburseProjectComponent,
   ]
 })
 export class ProjectClosedModule { }

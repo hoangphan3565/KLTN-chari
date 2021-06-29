@@ -4,9 +4,10 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 
 const url = {
-    baseUrl: "http://192.168.1.13:8080/api",
+    baseUrl: "http://192.168.1.5:8080/api",
     projects: '/projects',
     posts:'/posts',
+    cities: '/cities',
     supportedPeoples: '/supported_peoples',
     projectTypes: '/project_types',
     feedbacks: '/feedbacks',

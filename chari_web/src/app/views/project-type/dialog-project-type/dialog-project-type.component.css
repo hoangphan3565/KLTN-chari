@@ -16,27 +16,6 @@
     opacity: 0.8;
   }
   
-  .files-list {
-    display: flex;
-    justify-content: space-between;
-    height: 35px;
-    width: 80%;
-    margin: 10px auto;
-    background: #ffffff;
-    border: 1px dashed;
-    border-radius: 3px;
-    padding: 3px;
-    color: #1c8adb;
-  }
-  
-  .files-list .delete-file {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  .files-list .delete-file img{
-    width:30px;
-  }
 
 /* Container needed to position the button. Adjust the width as needed */
 .container {

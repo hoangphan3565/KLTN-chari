@@ -19,8 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
+        @NamedQuery(name = "named.project.findUncloseAndVerifiedByName",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and lower(p.projectName) like :name ORDER BY p.updateTime desc"),
         @NamedQuery(name = "named.project.findAll",
                 query = "SELECT p FROM Project p ORDER BY p.updateTime desc"),
+        @NamedQuery(name = "named.project.findFavoriteProject",
+                query = "SELECT p FROM Project p where p.PRJ_ID in (:ids)"),
         @NamedQuery(name = "named.project.findUncloseByCollaboratorId",
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.updateTime desc"),
         @NamedQuery(name = "named.project.findClosedByCollaboratorId",
@@ -76,6 +80,10 @@ public class Project {
     @Column
     @UpdateTimestamp
     private LocalDateTime updateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "cti_id")
+    private City city;
 
     @ManyToOne
     @JoinColumn(name = "prt_id")

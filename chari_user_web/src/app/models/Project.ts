@@ -1,3 +1,4 @@
+import { City } from "./City";
 import { ProjectType } from "./ProjectType";
 import { SupportedPeople } from "./SupportedPeople";
 
@@ -17,4 +18,6 @@ export class Project {
     projectType:ProjectType;
     stp_ID:Number;
     supportedPeople:SupportedPeople;
+    cti_ID:Number;
+    city:City;
 }

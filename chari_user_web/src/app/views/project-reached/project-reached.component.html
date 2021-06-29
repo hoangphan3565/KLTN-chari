@@ -19,7 +19,7 @@
             <th>Chương trình từ thiện</th>
             <th>Mục tiêu (Triệu đồng)</th>
             <th>Số Tin liên quan</th>
-            <th>Giải ngân</th>
+            <th>Tình trạng</th>
             <th>Tác vụ</th>
           </tr>
         </thead>
@@ -32,7 +32,7 @@
           <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
           <td *ngIf="data.disbursed==true">Đã giải ngân</td>
           <td>
-            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
+            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng tin</button>
           </td>      
         </tbody>
         <tbody>

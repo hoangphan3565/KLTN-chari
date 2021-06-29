@@ -10,8 +10,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
-import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
-import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -26,8 +24,6 @@ import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
   declarations: [ 
     ProjectReachedComponent,
     DialogPostComponent,
-    PostImageDragDropDirective,
-    PostVideoDragDropDirective
   ]
 })
 export class ProjectReachedModule { }

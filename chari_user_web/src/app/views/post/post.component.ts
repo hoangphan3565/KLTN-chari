@@ -71,7 +71,7 @@ export class PostComponent implements OnInit {
       isPublic: p.isPublic,
       imageUrl: p.imageUrl,
       videoUrl: p.videoUrl,
-      collaboratorId:0,
+      collaboratorId:this.clb_id,
       images:p.images
     }; 
     this.openDialog();
@@ -86,7 +86,7 @@ export class PostComponent implements OnInit {
       isPublic: true,
       imageUrl: '',
       videoUrl: '',
-      collaboratorId:0,
+      collaboratorId:this.clb_id,
       images:[]
     };
   }

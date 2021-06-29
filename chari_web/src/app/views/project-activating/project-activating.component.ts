@@ -6,6 +6,10 @@ import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import * as XLSX from 'xlsx';
+import { DonateDetailsService } from '../../services/donate-details.service';
+import { DonateDetail } from '../../models/DonateDetail';
+
 @Component({
   templateUrl: './project-activating.component.html',
 })
@@ -13,18 +17,11 @@ export class ProjectActivatingComponent implements OnInit {
   Projects: Project[];
   Post: Post;
 
-  maxSize: number = 5;
-  totalItems: number;
-  itemsPerPage: number = 5;
-  currentPage: number = 1;
-
-
-  pageChanged(event: any): void {
-    this.currentPage =  event.page;
-    this.getActivating((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
-  }
+  data: [][];
+  DonateDetail: DonateDetail;
 
   constructor(
+    private DonateDetailsService: DonateDetailsService,
     private projectService: ProjectService,
     private postService: PostService,
     private notificationService: NotificationService,
@@ -35,11 +32,7 @@ export class ProjectActivatingComponent implements OnInit {
   }
   public async getAllActivating(){
     this.Projects = await (await this.projectService.getActivating()).data as Project[];
-  }  
-  public async getActivating(a,b){
-    this.Projects = await (await this.projectService.getActivatingProjects(a,b)).data as Project[];
-  }
-  
+  }    
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostComponent, {
@@ -52,6 +45,7 @@ export class ProjectActivatingComponent implements OnInit {
       }
     });
   }
+
 
   clearData(p:Project){
     this.Post = {
@@ -81,4 +75,37 @@ export class ProjectActivatingComponent implements OnInit {
       alert('Thêm tin tức thất bại');
     }
   };  
+
+  onFileChange(evt: any) {
+    const target : DataTransfer =  <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) =>  {
+      const bstr: string = e.target.result;
+      var wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      
+      wb.SheetNames.forEach(sheet => {
+        let rowObject = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
+        console.log(rowObject);
+        this.saveDonateWithBank(rowObject);
+      })
+    };
+  
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  public saveDonateWithBank = async (data: any[]) => {
+    try 
+    {
+      const result = await (await this.DonateDetailsService.saveDonateWithBank(data)).data;
+      if (result==1)
+      {
+        this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');
+        this.getAllActivating();
+      }    
+    }
+    catch (e) {
+      alert('Cập nhật tiền quyên góp từ bảng sao kê thất bại');
+    }
+  };
 }

@@ -6,12 +6,11 @@ import { ProjectActivatingRoutingModule } from './project-activating-routing.mod
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
-import { PostImageDragDropDirective } from './post-image-drag-drop.directive';
-import { PostVideoDragDropDirective } from './post-video-drag-drop.directive';
 import { MaterialModule } from '../../material/material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
+import { DialogDonateInfoComponent } from './dialog-donateinfo-project/dialog-donateinfo-project.component';
 
 @NgModule({
   imports: [
@@ -26,8 +25,7 @@ import { environment } from '../../../environments/environment';
   declarations: [ 
     ProjectActivatingComponent,
     DialogPostComponent,
-    PostImageDragDropDirective,
-    PostVideoDragDropDirective
+    DialogDonateInfoComponent,
   ]
 })
 export class ProjectActivatingModule { }

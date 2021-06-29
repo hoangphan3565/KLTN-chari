@@ -1,5 +1,6 @@
 package com.macia.chariBE.DTO;
 
+import com.macia.chariBE.model.City;
 import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.ProjectType;
 import com.macia.chariBE.model.SupportedPeople;
@@ -42,6 +43,8 @@ public class ProjectDTO {
     private SupportedPeople supportedPeople;
     private Integer clb_ID;
     private Collaborator collaborator;
+    private Integer cti_ID;
+    private City city;
     private float priorityPoint;
     private LocalDateTime updateTime;
 }

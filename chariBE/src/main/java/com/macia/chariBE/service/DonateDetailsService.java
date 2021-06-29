@@ -136,6 +136,11 @@ public class DonateDetailsService {
         String r = s.replace('+',' ').replace(",","").trim();
         return Integer.valueOf(r);
     }
+
+    public Integer getDisburseMoney(String s){
+        String r = s.replace('-',' ').replace(",","").trim();
+        return Integer.valueOf(r);
+    }
     public void saveDonateDetailsWithBank(List<DonateDetailsWithBankDTO> donations) {
         List<DonateDetailsWithBankDTO> ds = donations.stream()
                 .filter(dn->dn.getDetails()!=null)
@@ -233,7 +238,8 @@ public class DonateDetailsService {
     }
 
 
-    public void disbursedProjectWithBank(List<DonateDetailsWithBankDTO> donations) {
+    public int disbursedProjectWithBank(List<DonateDetailsWithBankDTO> donations) {
+        int flag=0;
         List<DonateDetailsWithBankDTO> ds = donations.stream()
                 .filter(dn->dn.getDetails()!=null)
                 .filter(dn->dn.getDetails().toLowerCase().contains(disburseCode))
@@ -242,10 +248,15 @@ public class DonateDetailsService {
             Integer project_id = Integer.valueOf(handleDonateDetails(d.getDetails().toLowerCase()));
             Project p = projectService.findProjectById(project_id);
             if(!p.getDisbursed()){
-                p.setDisbursed(true);
-                projectService.save(p);
-                sendDisburseNotificationToDonators(project_id);
+                if(getDisburseMoney(d.getAmount())>=projectService.findCurMoneyOfProject(p)){
+                    p.setDisbursed(true);
+                    projectService.save(p);
+                    sendDisburseNotificationToDonators(project_id);
+                }else{
+                    flag=1;
+                }
             }
         }
+        return flag;
     }
 }

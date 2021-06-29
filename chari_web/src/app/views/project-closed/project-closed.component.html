@@ -8,17 +8,6 @@
           </h3>
         </div>
         <div class="col-auto">
-          <button type="button" class="btn btn-success" >
-            <i class="icon-cloud-download"></i>
-            <a style="color:white;" href="https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/SaoKeMau.xlsx?alt=media&token=adc45da4-c97b-4ee2-9499-8770b78c26d5" download>Tải xuống sao kê mẫu</a>
-          </button>
-
-          <input #excelInput hidden="true" type="file" onclick="this.value=null" (change)="onFileChange($event)" multiple="false" accept=".xls,.xlsx"/>
-          <button class="btn btn-primary" (click)="excelInput.click()">
-            <i class="icon-cloud-upload"></i>
-            <a>Cập nhật sao kê</a>
-          </button>
-
           <button type="button" class="btn btn-secondary" (click)="updateMoveMoneyProgress()">
             <i class="icon-reload"></i>
             <a>Cập nhật tiến độ</a>
@@ -34,7 +23,7 @@
             <th>#</th>
             <th>Tên Dự án</th>
             <th>Cho phép giải ngân</th>
-            <th>Tiến độ xử lý tiền thừa (%)</th>
+            <th>Tiến độ xử lý (%)</th> 
             <th>Tình trạng giải ngân</th>
           </tr>
         </thead>
@@ -47,10 +36,7 @@
           <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">{{data.moveMoneyProgress}}</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==true">Đã giải ngân</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">Chưa giải ngân</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed!=true">N/A</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">
-            <button type="button" class="btn btn-block btn-outline-primary" (click)="openDisburseDialog(data)">Giải ngân</button>
-          </td>   
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed!=true">N/A</td> 
         </tbody>
         <tbody>
       </table>

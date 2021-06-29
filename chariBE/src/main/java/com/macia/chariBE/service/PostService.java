@@ -5,6 +5,7 @@ import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.Post;
 import com.macia.chariBE.model.Project;
 import com.macia.chariBE.repository.PostRepository;
+import org.apache.catalina.valves.rewrite.InternalRewriteMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,22 @@ public class PostService {
 
     @Autowired
     private CollaboratorService collaboratorService;
+
+    public List<Post> findLikePostName(String name) {
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findLikePostName", Post.class);
+        query.setParameter("name", "%" + name.toLowerCase() + "%");
+        return query.getResultList();
+    }
+
+    public List<PostDTO> getPostDTOsLikePostName(String name){
+        List<PostDTO> r = new ArrayList<>();
+        List<Post> ps = this.findLikePostName(name);
+        for(Post p : ps){
+            Project project =  projectService.findProjectById(p.getProjectId());
+            r.add(mapToDTO(p,project));
+        }
+        return r;
+    }
 
     //== Services for Admin
     public Integer countAllPost() {

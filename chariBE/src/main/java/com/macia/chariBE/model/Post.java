@@ -21,6 +21,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "named.post.findAll",
                 query = "SELECT p FROM Post p order by p.publicTime desc"),
+        @NamedQuery(name = "named.post.findLikePostName",
+                query = "SELECT p FROM Post p where lower(p.name) like :name and p.isPublic=true order by p.publicTime desc"),
         @NamedQuery(name = "named.post.findPublic",
                 query = "SELECT p FROM Post p where p.isPublic=true order by p.publicTime desc"),
         @NamedQuery(name = "named.post.findPostByCollaboratorId",

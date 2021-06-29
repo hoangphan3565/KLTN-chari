@@ -7,6 +7,17 @@
             <small class="text-muted"> danh sách </small> Dự án đang hoạt động
           </h3>
         </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-success" >
+            <i class="icon-cloud-download"></i>
+            <a style="color:white;" href="https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/SaoKeMau.xlsx?alt=media&token=537bb08b-d2e6-4a17-a73f-325caa8edbf5" download>Tải xuống file sao kê mẫu</a>
+          </button>
+          <input #excelInput hidden="true" type="file" onclick="this.value=null" (change)="onFileChange($event)" multiple="false" accept=".xls,.xlsx"/>
+          <button class="btn btn-primary" (click)="excelInput.click()">
+            <i class="icon-cloud-upload"></i>
+            <a>Cập nhật tiến độ quyên góp</a>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -20,6 +31,8 @@
             <th>Đã quyên góp (Triệu đồng)</th>
             <th>Đạt được (%)</th>
             <th>Thời hạn còn (Ngày)</th>
+            <th>Nội dung chuyển khoản</th>
+            <th>Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
@@ -28,9 +41,10 @@
           <td>{{data.targetMoney/1000000}}</td>
           <td>{{data.curMoney/1000000}}</td>
           <td>{{data.achieved}}</td>
-          <td>{{data.remainingTerm}}</td>        
+          <td>{{data.remainingTerm}}</td>   
+          <td>CHARI{{data.prj_ID}}xSĐT</td>       
           <td>
-            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng bài</button>
+            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng tin</button>
           </td>
         </tbody>
         <tbody>
