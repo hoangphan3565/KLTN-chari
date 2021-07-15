@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PaypalService {
 
-    static Integer RequestId = 1;
     @Autowired
     private APIContext apiContext;
 
@@ -27,8 +28,7 @@ public class PaypalService {
             String description,
             String cancelUrl,
             String successUrl) throws PayPalRESTException {
-        RequestId++;
-        apiContext.setRequestId(RequestId.toString());
+        apiContext.setRequestId(UUID.randomUUID().toString());
         Amount amount = new Amount();
         amount.setCurrency(currency);
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();

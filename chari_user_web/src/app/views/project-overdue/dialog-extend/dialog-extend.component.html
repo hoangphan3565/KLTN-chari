@@ -1,12 +1,16 @@
+<button mat-icon-button mat-dialog-close class="close-button" >
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>  
+
 <h3 mat-dialog-title>Gia hạn dự án</h3>
 <mat-dialog-content>
      <mat-form-field appearance="outline">
         <mat-label>Số ngày</mat-label>
-        <input type="number" name="nod" matInput [(ngModel)]="data" required>
+        <input type="number" name="nod" matInput [(ngModel)]="data" (keyup.enter)="save()" required cdkFocusInitial>
     </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
-</mat-dialog-actions>
 
+<mat-dialog-actions align="end">
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
+</mat-dialog-actions>
 

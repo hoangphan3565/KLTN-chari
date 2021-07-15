@@ -3,21 +3,22 @@ import { CommonModule } from '@angular/common';
 
 import { DonatorComponent } from './donator.component';
 import { DonatorRoutingModule } from './donator-routing.module';
-import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaterialModule } from '../../material-module';
 
 @NgModule({
   imports: [
     CommonModule,
     DonatorRoutingModule,
-    MatDialogModule,
     PaginationModule.forRoot(),
     FormsModule,
+    MaterialModule,
     MatFormFieldModule,
-    MatInputModule
+    TooltipModule.forRoot(),
+
   ],
   declarations: [ 
     DonatorComponent,

@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaterialModule } from '../../material-module';
 
 
 @NgModule({
@@ -18,10 +20,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     ProjectOverdueRoutingModule,
     MatDialogModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MaterialModule,
     PaginationModule.forRoot(),
-
+    TooltipModule.forRoot(),
   ],
   declarations: [ 
     ProjectOverdueComponent,

@@ -1,0 +1,78 @@
+<div class="col-lg">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h3 class="card-title">
+            Hoàn cảnh khác
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Người giới thiệu</th>
+            <th>SĐT liên lạc</th>
+            <th>Mô tả hoàn cảnh</th>
+            <th>Tên người thụ hưởng</th>
+            <th>SĐT người thụ hưởng</th>
+            <th>Trạng thái</th>
+            <th>Cộng tác viên</th>
+            <th style="width: 100px; text-align: right">Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of SupportedPeopleRecommends;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.referrerName}}</td>
+          <td>{{data.referrerPhone}}</td>
+          <td>{{data.referrerDescription}}</td>
+          <td>{{data.fullName}}</td>
+          <td>{{data.phoneNumber}}</td>
+          <td>
+            <span *ngIf="data.status=='PENDING'" class="badge badge-secondary">Chờ xử lý</span>
+            <span *ngIf="data.status=='PROCESSING'" class="badge badge-info">Đang xử lý</span>
+          </td>
+          <td *ngIf="data.collaborator!=null">{{data.collaborator.fullName}}</td>
+          <td *ngIf="data.collaborator==null"></td>
+          <td style="text-align: right" *ngIf="data.status=='PENDING'">
+            <button type="button" class="btn btn-info btn-sm" (click)="checkStatus(data)" tooltip="Xử lý hoàn cảnh ">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="delete(data.spr_ID)" tooltip="Xoá hoàn cảnh ">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </td>
+          <td style="text-align: right" *ngIf="data.status=='PROCESSING'">
+            <button type="button" class="btn btn-info btn-sm" (click)="checkStatus(data)" tooltip="Xử lý hoàn cảnh ">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" disabled class="btn btn-danger btn-sm" style="opacity: 0.2">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </td>
+        </tbody>
+        <tbody>
+      </table>
+      <div class="row">
+        <div class="col-xs-12 col-12 col-md-6">
+          <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+                      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
+                      [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
+        </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,27 +1,18 @@
 package com.macia.chariBE.controller;
 
-import com.macia.chariBE.model.DonateActivity;
-import com.macia.chariBE.model.DonateDetails;
 import com.macia.chariBE.model.Order;
-import com.macia.chariBE.repository.DonateDetailsRepository;
+import com.macia.chariBE.repository.IDonateDetailsRepository;
 import com.macia.chariBE.service.*;
-import com.macia.chariBE.utility.DonateActivityStatus;
 import com.macia.chariBE.utility.MoneyUtility;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @RestController
@@ -51,7 +42,7 @@ public class PaypalController {
     DonateDetailsService donateDetailsService;
 
     @Autowired
-    DonateDetailsRepository donateDetailsRepository;
+    IDonateDetailsRepository IDonateDetailsRepository;
 
 
     @GetMapping()

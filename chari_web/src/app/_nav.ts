@@ -11,11 +11,6 @@ export const navItems: INavData[] = [
     name: 'Quản lý dự án'
   },
   {
-    name: 'Đã phê duyệt',
-    url: '/project',
-    icon: 'icon-check',
-  },
-  {
     name: 'Chờ phê duyệt',
     url: '/project-unverified',
     icon: 'icon-clock',
@@ -31,7 +26,7 @@ export const navItems: INavData[] = [
     icon: 'icon-trophy',
   },
   {
-    name: 'Đã quá hạn',
+    name: 'Đã thất bại',
     url: '/project-overdue',
     icon: 'icon-close',
   },
@@ -54,18 +49,17 @@ export const navItems: INavData[] = [
     name: 'Quản lý chung'
   },
   {
-    name: 'Chương trình từ thiện',
+    name: 'Gói từ thiện',
     url: '/project-type',
     icon: 'icon-book-open',
   },
-
   {
     name: 'Nhà hảo tâm',
     url: '/donator',
     icon: 'icon-heart'
   },
   {
-    name: 'Đơn vị thụ hưởng',
+    name: 'Người thụ hưởng',
     url: '/supported-people',
     icon: 'icon-star',
   },
@@ -93,7 +87,11 @@ export const navItems: INavData[] = [
     url: '/feedback',
     icon: 'icon-pencil',
   },
-
+  {
+    name: 'Hoàn cảnh khác',
+    url: '/supported-people-recommend',
+    icon: 'icon-star',
+  },
 
   // //=========================================================================================================//
   

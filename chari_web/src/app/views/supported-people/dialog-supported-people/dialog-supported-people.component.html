@@ -1,27 +1,28 @@
-<h3 mat-dialog-title *ngIf="data.stp_ID==undefined">Thêm Đơn vị thụ hưởng</h3>
-<h3 mat-dialog-title *ngIf="data.stp_ID!=undefined">Cập nhật Đơn vị thụ hưởng</h3>
+<h3 mat-dialog-title *ngIf="data.stp_ID==undefined">Thêm Người thụ hưởng</h3>
+<h3 mat-dialog-title *ngIf="data.stp_ID!=undefined">Cập nhật Người thụ hưởng</h3>
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tên đầy đủ</mat-label>
-        <input name="fullname" matInput [(ngModel)]="data.fullName" required>
+        <input name="fullname" matInput [(ngModel)]="data.fullName" required cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Địa chỉ</mat-label>
         <input name="address" matInput [(ngModel)]="data.address" required>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Số điện thoại</mat-label>
         <input name="phoneNumber" matInput [(ngModel)]="data.phoneNumber" required>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tên ngân hàng</mat-label>
         <input name="bankName" matInput [(ngModel)]="data.bankName" required>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Số tài khoản</mat-label>
         <input name="bankAccount" matInput [(ngModel)]="data.bankAccount" required>
     </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
 </mat-dialog-actions>

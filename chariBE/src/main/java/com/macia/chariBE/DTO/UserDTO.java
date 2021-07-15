@@ -1,6 +1,6 @@
 package com.macia.chariBE.DTO;
 
-import com.macia.chariBE.utility.UserType;
+import com.macia.chariBE.utility.EUserType;
 import lombok.*;
 
 @Data
@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDTO {
     private String id;
+    private String avatar;
     private String username;
     private String password1;
     private String password2;
@@ -19,5 +20,5 @@ public class UserDTO {
     private String phone;
     private String certificate;
     private String fcmToken;
-    private UserType usertype;
+    private EUserType usertype;
 }

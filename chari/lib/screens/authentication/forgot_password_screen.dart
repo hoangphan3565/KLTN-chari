@@ -19,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   TextEditingController _usernameController = TextEditingController();
   var focusNode = FocusNode();
-
+  bool havePhone=false;
   @override
   initState() {
     super.initState();
@@ -52,9 +52,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
           return "error";
         });
       },
-      verificationFailed: (AuthException exception) {
+      verificationFailed: (AuthException e) {
+        String msg;
+        if(e.code == 'invalid-phone-number') {
+          msg="Số điện thoại không tồn tại!";
+          UserService.deleteUserByUserName(NavitePhone);
+        }else{
+          msg="Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!";
+        }
         Fluttertoast.showToast(
-            msg: "Xác thực thất bại!\nSĐT không tồn tại hoặc Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!",
+            msg: msg,
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -130,8 +137,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
                 icon: FontAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,
-                onTapClearIcon: ()=>{_usernameController.clear()},
-                onChanged: (value) {},
+                showClearIcon: havePhone,
+                onTapClearIcon: ()=>{_usernameController.clear(),setState(() {havePhone=false;})},
+                onChanged: (value) {
+                  value!=''?setState(() {havePhone=true;}):setState(() {havePhone=false;});
+                },
+                onSubmitted: (value){
+                  _findUserAndSendCodeIfAvailable(value,context);
+                },
               ),
 
               RoundedButton(

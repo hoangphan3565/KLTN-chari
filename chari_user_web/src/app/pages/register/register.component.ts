@@ -101,7 +101,7 @@ export class RegisterComponent implements OnInit{
             this.notificationService.warn('Đăng ký thất bại');
           }
         }else{
-          this.notificationService.warn('Hãy tải lên hình chụp chứng chỉ từ thiện!');
+          this.notificationService.warn('Hãy tải lên hình chụp chứng chỉ từ thiện');
         }
       }else{
         this.notificationService.warn('Mật khẩu phải trùng khớp');

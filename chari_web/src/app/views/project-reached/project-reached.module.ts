@@ -9,22 +9,27 @@ import { MaterialModule } from '../../material-module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
-import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import { DialogPostReachedComponent } from './dialog-post/dialog-post.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VideoDragDropDirective } from '../post/drag-drop.directive';
+
 @NgModule({
   imports: [
-    CommonModule,
+  CommonModule,
     ProjectReachedRoutingModule,
     PaginationModule.forRoot(),
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
+    TooltipModule.forRoot(),
   ],
   declarations: [ 
     ProjectReachedComponent,
     DialogDisburseProjectComponent,
-    DialogPostComponent,
+    DialogPostReachedComponent,
+    VideoDragDropDirective
   ]
 })
 export class ProjectReachedModule { }

@@ -30,11 +30,11 @@ export class ProjectOverdueComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const result = await this.ProjectService.closeProject(id, this.clb_id);
-        if (result)
+        const res = await (await this.ProjectService.closeProject(id, this.clb_id)).data;
+        if (res)
         {
-          this.notificationService.warn('Đóng dự án thành công');
-          this.Projects = result.data as Project[];
+          this.notificationService.warn(res.message);
+          this.Projects = res.data as Project[];
         }  
       }
     }
@@ -48,9 +48,9 @@ export class ProjectOverdueComponent implements OnInit {
       width: '250px',
       data: 30 
     });
-    dialogRef.afterClosed().subscribe((result: Number) => {
-      if(result){
-        this.extendProject(id,result);
+    dialogRef.afterClosed().subscribe((res: Number) => {
+      if(res){
+        this.extendProject(id,res);
       }
     });
   }
@@ -59,16 +59,19 @@ export class ProjectOverdueComponent implements OnInit {
   public extendProject = async (id,nod) => {
     try 
     {
-      const result = await this.ProjectService.extendProject(id,nod,this.clb_id);
-      if (result)
+      const res = await (await this.ProjectService.extendProject(id,nod,this.clb_id)).data;
+      if (res)
       {
-        this.notificationService.warn('Gia hạn dự án thành công');
-        this.Projects = result.data as any[];
+        this.notificationService.warn(res.message);
+        this.Projects = res.data as any[];
       }  
     }
     catch (e) {
       console.log(e);
     }
+  }
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 }
 

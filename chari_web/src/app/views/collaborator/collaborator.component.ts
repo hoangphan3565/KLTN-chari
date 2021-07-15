@@ -29,11 +29,11 @@ export class CollaboratorComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn duyệt cộng tác viên?')){
-        const result = await this.CollaboratorService.accept(data.clb_ID);
-        if (result)
+        const res = await this.CollaboratorService.accept(data.clb_ID);
+        if (res)
         {
           this.notificationService.success('Duyệt cộng tác viên thành công');
-          this.Collaborators = result.data as Collaborator[];
+          this.Collaborators = res.data as Collaborator[];
         } 
       }
     }
@@ -46,11 +46,11 @@ export class CollaboratorComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn khoá cộng tác viên?')){
-        const result = await this.CollaboratorService.block(data.clb_ID);
-        if (result)
+        const res = await this.CollaboratorService.block(data.clb_ID);
+        if (res)
         {
           this.notificationService.success('Khóa cộng tác viên thành công');
-          this.Collaborators = result.data as Collaborator[];
+          this.Collaborators = res.data as Collaborator[];
         }   
       }
     }
@@ -64,11 +64,11 @@ export class CollaboratorComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn xoá cộng tác viên này?')){
-        const result = await this.CollaboratorService.deleteCollaborator(id);
-        if (result)
+        const res = await this.CollaboratorService.deleteCollaborator(id);
+        if (res)
         {
           this.notificationService.success('Xoá cộng tác viên thành công');
-          this.Collaborators = result.data as Collaborator[];
+          this.Collaborators = res.data as Collaborator[];
         }
       }
     }

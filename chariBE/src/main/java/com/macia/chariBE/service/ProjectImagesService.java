@@ -2,9 +2,7 @@ package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.Project;
 import com.macia.chariBE.model.ProjectImages;
-import com.macia.chariBE.model.Project;
-import com.macia.chariBE.model.ProjectImages;
-import com.macia.chariBE.repository.ProjectImagesRepository;
+import com.macia.chariBE.repository.IProjectImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class ProjectImagesService {
     private EntityManager em;
 
     @Autowired
-    private ProjectImagesRepository repo;
+    private IProjectImagesRepository repo;
 
     public List<ProjectImages> findProjectImagesByProjectId(Integer id) {
         TypedQuery<ProjectImages> query = em.createNamedQuery("named.projectImages.findByProjectId", ProjectImages.class);

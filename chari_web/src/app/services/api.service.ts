@@ -5,6 +5,9 @@ import axios from "axios";
 
 const url = {
     baseUrl: "http://192.168.1.202:8080/api",
+    // baseUrl: "http://172.20.10.2:8080/api",
+    // baseUrl: 'http://192.168.1.121:8080/api',
+
     projects: '/projects',
     cities: '/cities',
     posts:'/posts',
@@ -14,6 +17,7 @@ const url = {
     donate_details: '/donate_details',
     collaborators: '/collaborators',
     supportedPeoples: '/supported_peoples',
+    supportedPeopleRecommends: '/supported_people_recommends',
     feedbacks: '/feedbacks',
     users: '/users',
     login: '/login',

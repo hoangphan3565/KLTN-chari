@@ -9,17 +9,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaterialModule } from '../../material/material-module';
 
 
 @NgModule({
   imports: [
   CommonModule,
     ProjectOverdueRoutingModule,
-    MatDialogModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MaterialModule,
     PaginationModule.forRoot(),
+    TooltipModule.forRoot(),
+
   ],
   declarations: [ 
     ProjectOverdueComponent,

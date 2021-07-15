@@ -14,11 +14,12 @@ class UserService{
     });
     return http.post(url,headers:header,body: body);
   }
-  static loginFB(String name,String id) {
+  static loginFB(String name,String id,String avatar) {
     String url = baseUrl+login_facebook;
     final body = jsonEncode(<String, String>{
       "name":name,
       "id":id,
+      "avatar":avatar,
       "usertype":"Donator"
     });
     return http.post(url,headers:header,body: body);
@@ -36,7 +37,7 @@ class UserService{
   }
 
   static Future activateUser(String username){
-    String url = baseUrl+activate+"/"+username;
+    String url = "$baseUrl$activate/$username";
     http.post(url,headers:header);
   }
 
@@ -49,17 +50,17 @@ class UserService{
     return http.post(url,headers:header,body: body);
   }
   static Future findUserByUserName(String username){
-    var url = baseUrl + "/username/"+username;
+    var url = "$baseUrl/username/"+username;
     return http.get(url);
   }
 
   static Future deleteUserByUserName(String username){
-    var url = baseUrl + "/username/"+username;
+    var url = "$baseUrl/username/"+username;
     return http.delete(url);
   }
 
   static Future saveFCMToken(String username,String fcmToken){
-    String url = baseUrl+"/save_fcmtoken";
+    String url = "$baseUrl/save_fcmtoken";
     final body = jsonEncode(<String, String>{
       "username":username,
       "fcmToken":fcmToken
@@ -68,7 +69,7 @@ class UserService{
   }
 
   static Future changeUserPassword(String username,String new_password1,String new_password2){
-    String url = baseUrl+"/change/password";
+    String url = "$baseUrl/change/password";
     final body = jsonEncode(<String, String>{
       "username":username,
       "password1":new_password1,

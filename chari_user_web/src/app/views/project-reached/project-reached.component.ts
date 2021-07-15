@@ -38,9 +38,9 @@ export class ProjectReachedComponent implements OnInit {
       width: '900px',
       data: this.Post,
     });
-    dialogRef.afterClosed().subscribe((result: Post) => {
-      if(result){
-        this.savePost(result);
+    dialogRef.afterClosed().subscribe((res: Post) => {
+      if(res){
+        this.savePost(res);
       }
     });
   }
@@ -63,8 +63,8 @@ export class ProjectReachedComponent implements OnInit {
   public savePost = async (data) => {
     try 
     {
-      const result = await this.postService.savePost(data);
-      if (result)
+      const res = await this.postService.savePost(data,this.clb_id);
+      if (res)
       {
         this.notificationService.success('Thêm tin tức thành công');
       }    
@@ -72,6 +72,9 @@ export class ProjectReachedComponent implements OnInit {
     catch (e) {
       alert('Thêm tin tức thất bại');
     }
+  }
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 }
 

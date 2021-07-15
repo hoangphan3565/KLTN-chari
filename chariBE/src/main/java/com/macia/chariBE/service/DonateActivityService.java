@@ -1,7 +1,7 @@
 package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.DonateActivity;
-import com.macia.chariBE.repository.DonateActivityRepository;
+import com.macia.chariBE.repository.IDonateActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class DonateActivityService {
     private EntityManager em;
 
     @Autowired
-    private DonateActivityRepository donateAvtRepo;
+    private IDonateActivityRepository donateAvtRepo;
 
     public DonateActivity save(DonateActivity donateActivity) {
         return donateAvtRepo.saveAndFlush(donateActivity);

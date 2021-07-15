@@ -8,7 +8,7 @@
           </h3>
         </div>
         <div class="col-auto">
-          <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" >
+          <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" tooltip="Thêm tin tức cho dự án đã thành công">
             <i class="fa fa-plus"></i>
             <a>Thêm</a>
           </button>
@@ -21,43 +21,41 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Tên Tin</th>
-            <th>Tên dự án</th>
-            <th>Đăng bởi</th>
-            <th>Tình trạng</th>
             <th>Hình ảnh</th>
-            <th>Tác vụ</th>
+            <th>Tiêu đề tin tức</th>
+            <th>Dự án liên quan</th>
+            <th>Đăng bởi</th>
+            <th style="width: 18%">Tình trạng</th>
+            <th style="text-align: right">Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Posts;let i=index;">
           <td>{{i+1}}</td>
-          <td>{{data.name}}</td>
-          <td>{{data.projectName}}</td>
+          <td style="width: 75px;cursor:pointer" (click)="openEditDialog(data)"><img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px"></td>
+          <td style="width: 25%;cursor:pointer" (click)="openEditDialog(data)">{{data.name}}</td>
+          <td style="width: 25%;cursor:pointer" (click)="openEditDialog(data)">{{data.projectName}}</td>
           <td>{{data.collaboratorName}}</td>
-          <td *ngIf="data.isPublic==true">Đã công bố</td>
-          <td *ngIf="data.isPublic!=true">Chưa công bố</td>
-          <td>
-            <img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px">
-          </td>
-          <td *ngIf="data.isPublic==true">
-            <button type="button" class="btn btn-warning btn-sm" (click)="unPublicPost(data.pos_ID)">
+          <td style="width: 18%" *ngIf="data.isPublic==true">Đã công bố</td>
+          <td style="width: 18%" *ngIf="data.isPublic!=true">Chưa công bố</td>
+          <td style="text-align: right" *ngIf="data.isPublic==true">
+            <button type="button" class="btn btn-warning btn-sm" (click)="unPublicPost(data.pos_ID)" tooltip="Ẩn tin tức">
               <i class="fa fa-remove"></i>
             </button>
-            <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
-              <i class="fa fa-edit"></i>
+            <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)" tooltip="Cập nhật tin tức">
+              <i class="fa fa-pencil"></i>
             </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)">
+            <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)" tooltip="Xoá tin tức">
               <i class="fa fa-trash-o"></i>
             </button>
           </td>
-          <td *ngIf="data.isPublic!=true">
-            <button type="button" class="btn btn-success btn-sm" (click)="publicPost(data.pos_ID)">
+          <td style="text-align: right" *ngIf="data.isPublic!=true">
+            <button type="button" class="btn btn-success btn-sm" (click)="publicPost(data.pos_ID)" tooltip="Hiện tin tức">
               <i class="fa fa-check"></i>
             </button>
-            <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
-              <i class="fa fa-edit"></i>
+            <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)" tooltip="Cập nhật tin tức">
+              <i class="fa fa-pencil"></i>
             </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)">
+            <button type="button" class="btn btn-danger btn-sm" (click)="deletePost(data.pos_ID)" tooltip="Xoá tin tức">
               <i class="fa fa-trash-o"></i>
             </button>
           </td>
@@ -65,11 +63,21 @@
         <tbody>
       </table>
       <div class="row">
+        
         <div class="col-xs-12 col-12 col-md-6">
           <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                       [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>

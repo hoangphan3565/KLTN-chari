@@ -27,6 +27,7 @@ class DonateScreen extends StatefulWidget {
 class _DonateScreenState extends State<DonateScreen> {
   TextEditingController _moneyControllerField = TextEditingController();
   String str_donate_money='';
+  bool isEnterMoney=false;
   bool _isRadioSelected = true;
   String donateCode='';
 
@@ -40,7 +41,7 @@ class _DonateScreenState extends State<DonateScreen> {
     if(widget.donator==null){
       this.donateCode = 'chari'+widget.project.prj_id.toString()+'x[SĐT]';
     }else{
-      this.donateCode = 'chari'+widget.project.prj_id.toString()+'x'+widget.donator.phone_number.toString()+widget.donator.facebook_id.toString();
+      this.donateCode = 'chari'+widget.project.prj_id.toString()+'x'+widget.donator.username.toString();
 
     }
     super.initState();
@@ -68,16 +69,6 @@ class _DonateScreenState extends State<DonateScreen> {
             letterSpacing: -1.2,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            onPressed: () {
-              // do something
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -185,6 +176,7 @@ class _DonateScreenState extends State<DonateScreen> {
             _moneyControllerField.text=selected_money.toString();
             setState(() {
               str_donate_money=selected_money.toString();
+              isEnterMoney=true;
             });
           },
           defaultSelected: null,
@@ -207,13 +199,16 @@ class _DonateScreenState extends State<DonateScreen> {
           focusNode: focusNode,
           keyboardType: TextInputType.number,
           controller: _moneyControllerField,
+          showClearIcon: isEnterMoney,
           onTapClearIcon: ()=>{
             _moneyControllerField.clear(),
             setState(() {
               str_donate_money = '';
+              isEnterMoney=false;
             }),
           },
           onChanged: (value) {
+            value!=''?setState(() {isEnterMoney=true;}):setState(() {isEnterMoney=false;});
             setState(() {
               str_donate_money=value;
             });
@@ -221,7 +216,7 @@ class _DonateScreenState extends State<DonateScreen> {
               _moneyControllerField.clear();
               str_donate_money='';
               Fluttertoast.showToast(
-                  msg: 'Không đúng định dạng!',
+                  msg: 'Vui lòng không nhập ký tự nào khác ký tự số',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -230,11 +225,11 @@ class _DonateScreenState extends State<DonateScreen> {
                   fontSize: 16.0
               );
             }
-            if(int.tryParse(value) > 20000000){
+            if(int.tryParse(value) > 100000000){
               _moneyControllerField.clear();
               str_donate_money='';
               Fluttertoast.showToast(
-                  msg: 'Số tiền quá lớn!',
+                  msg: 'Số tiền tối đa có thể quyên góp là 100.000.000VNĐ',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -253,26 +248,23 @@ class _DonateScreenState extends State<DonateScreen> {
             int errorCode=-1;
             if(_moneyControllerField.text.length != 0){
               if(int.parse(_moneyControllerField.text) >= 1000){
-                if(int.parse(_moneyControllerField.text)<=lessMoney && int.parse(_moneyControllerField.text) <= 1000000000){
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  int donator_id = prefs.getInt('donator_id');
-                  if(donator_id==null){donator_id = 0;}  //nếu chưa đăng nhập***** Vấn đề là lỡ có nhiều lượt quyên góp ko đăng nhập thì sao ******
-                  String url = baseUrl+"/paypal/donator_id/${donator_id}/project_id/${widget.project.prj_id}/donate";
-                  final body = jsonEncode(<String, String>{
-                    "price": _moneyControllerField.text,
-                  });
-                  var res = await http.post(url,headers:header,body: body);
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context, MaterialPageRoute(
-                      builder: (context)=>DonateWithPaypalWebViewScreen(paypalurl: res.body.toString(),project: widget.project, money: _moneyControllerField.text,))
-                  );
-                }else{
-                  message='Dự án này chỉ cần ${lessMoney} VNĐ nữa là đủ!';
-                  errorCode=0;
-                }}else{
-                message  = 'Hãy ủng hộ ít nhất 1.000 VNĐ!';
-              }}else{
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                int donator_id = prefs.getInt('donator_id');
+                if(donator_id==null){donator_id = 0;}
+                String url = baseUrl+"/paypal/donator_id/${donator_id}/project_id/${widget.project.prj_id}/donate";
+                final body = jsonEncode(<String, String>{
+                  "price": _moneyControllerField.text,
+                });
+                var res = await http.post(url,headers:header,body: body);
+                Navigator.pop(context);
+                Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (context)=>DonateWithPaypalWebViewScreen(paypalurl: res.body.toString(),project: widget.project, money: _moneyControllerField.text,))
+                );
+              }else{
+                message  = 'Hãy ủng hộ tối thiểu 1.000VNĐ cho dự án';
+              }
+            }else{
               message  = 'Hãy nhập số tiền đúng định dạng!';
             }
             if(message.length>0){

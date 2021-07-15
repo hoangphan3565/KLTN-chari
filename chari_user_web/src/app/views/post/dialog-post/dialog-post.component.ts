@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { map, finalize } from "rxjs/operators";
 import { Project } from '../../../models/Project';
 import { ProjectService } from '../../../services/Project.service';
-import Cookies from 'js-cookie'
 
 @Component({
     selector: 'app-dialog-post',
@@ -21,17 +20,18 @@ export class DialogPostComponent implements OnInit {
   videoUrl: any;
   downloadURL: Observable<string>;
   Projects: Project[];
-  clb_id: Number;
+  isUploadingVideo: boolean=false;
 
   constructor(
     private notificationService: NotificationService,
     private projectService: ProjectService,
     public dialogRef: MatDialogRef<DialogPostComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: Post) { }
+    @Inject(MAT_DIALOG_DATA) public data: Post) { 
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
-    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getProject();
     this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
@@ -64,6 +64,7 @@ export class DialogPostComponent implements OnInit {
     }
   }  
   uploadVideo(event) {
+    this.isUploadingVideo=true;
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -78,6 +79,7 @@ export class DialogPostComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.videoUrl=(url);
+                this.isUploadingVideo=false;
               }
             });
           })
@@ -99,14 +101,21 @@ export class DialogPostComponent implements OnInit {
   }
   
   public async getProject(){
-    this.Projects = await (await this.projectService.getAllProjects(this.clb_id)).data as Project[];
+    this.Projects = await (await this.projectService.getReached(this.data.collaboratorId)).data as Project[];
   }
-
   
   save(){
     this.data.videoUrl=this.videoUrl;
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
-    this.dialogRef.close(this.data);
+    if(this.data.name==''||this.data.content==''||this.data.projectId==null){
+      this.notificationService.warn('Hãy điền đầy đủ thông tin')
+      return;
+    }else if(this.data.imageUrl==null){
+      this.notificationService.warn('Hãy tải lên ít nhất 1 hình ảnh cho tin tức')
+      return;
+    }else{
+      this.dialogRef.close(this.data);
+    }
   }
 }

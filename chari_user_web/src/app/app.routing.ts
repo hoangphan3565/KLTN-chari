@@ -94,6 +94,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/supported-people/supported-people.module').then(m => m.SupportedPeopleModule)
       },
       {
+        path: 'supported-people-recommend',
+        loadChildren: () => import('./views/supported-people-recommend/supported-people-recommend.module').then(m => m.SupportedPeopleRecommendModule)
+      },
+      {
         path: 'feedback',
         loadChildren: () => import('./views/feedback/feedback.module').then(m => m.FeedbackModule)
       },

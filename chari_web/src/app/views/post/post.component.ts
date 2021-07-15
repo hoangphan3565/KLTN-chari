@@ -24,8 +24,11 @@ export class PostComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.currentPage =  event.page;
-    this.getPost((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
-
+    this.getPost(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getPost(this.currentPage,this.itemsPerPage);
   }
 
   constructor(
@@ -36,8 +39,9 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTotalPost();
-    this.getPost(0,this.itemsPerPage);
+    this.getPost(1,this.itemsPerPage);
   }
+
 
   public async getTotalPost(){
     this.totalItems = await (await this.PostService.countPost()).data;
@@ -53,10 +57,9 @@ export class PostComponent implements OnInit {
       width: '900px',
       data: this.Post,
     });
-    dialogRef.afterClosed().subscribe((result: Post) => {
-      if(result){
-        if (result.pos_ID==null) this.savePost(result,'Thêm');
-        else this.savePost(result,'Cập nhật');
+    dialogRef.afterClosed().subscribe((res: Post) => {
+      if(res){
+        this.savePost(res)
       }
     });
   }
@@ -90,18 +93,19 @@ export class PostComponent implements OnInit {
     };
   }
 
-  public savePost = async (data,state) => {
+  public savePost = async (data) => {
     try 
     {
-      const result = await this.PostService.savePost(data);
-      if (result)
+      const res = await (await this.PostService.savePost(data,0)).data;
+      if (res)
       {
-        this.notificationService.success(state+' tin tức thành công');
-        this.Posts = result.data as Post[];
+        this.notificationService.success(res.message);
+        this.getTotalPost();
+        this.getPost(1,this.itemsPerPage);
       }    
     }
     catch (e) {
-      alert(state+' tin tức thất bại');
+      console.log(e);
     }
   };  
 
@@ -111,11 +115,12 @@ export class PostComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn xoá tin tức này?')){
-        const result = await this.PostService.deletePost(id);
-        if (result)
+        const res = await (await this.PostService.deletePost(id,0)).data;
+        if (res)
         {
-          this.notificationService.warn('Xoá tin tức thành công');
-          this.Posts = result.data as Post[];
+          this.notificationService.warn(res.message);
+          this.getTotalPost();
+          this.getPost(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -128,11 +133,11 @@ export class PostComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn hủy công bố tin tức này?')){
-        const result = await this.PostService.unPublicPost(id);
-        if (result)
+        const res = await (await this.PostService.unPublicPost(id,0)).data;
+        if (res)
         {
-          this.notificationService.warn('Huỷ công bố tin tức thành công');
-          this.Posts = result.data as Post[];
+          this.notificationService.warn(res.message);
+          this.getPost(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -144,11 +149,11 @@ export class PostComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn công bố tin tức này?')){
-        const result = await this.PostService.publicPost(id);
-        if (result)
+        const res = await (await this.PostService.publicPost(id,0)).data;
+        if (res)
         {
-          this.notificationService.warn('Công bố tin tức thành công');
-          this.Posts = result.data as Post[];
+          this.notificationService.warn(res.message);
+          this.getPost(this.currentPage,this.itemsPerPage);
         }  
       }
     }

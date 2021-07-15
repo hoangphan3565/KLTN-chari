@@ -20,7 +20,9 @@ export class DialogProjectTypeComponent implements OnInit {
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<DialogProjectTypeComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: ProjectType) { }
+    @Inject(MAT_DIALOG_DATA) public data: ProjectType) { 
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
     this.imageUrl= this.data.imageUrl;
@@ -60,7 +62,7 @@ export class DialogProjectTypeComponent implements OnInit {
 
   save(){
     if(this.data.projectTypeName==''){
-      this.notificationService.warn('Không được trống thông tin nào!');
+      this.notificationService.warn('Không được trống thông tin nào');
     }else{
       this.data.imageUrl=this.imageUrl;
       this.dialogRef.close(this.data);

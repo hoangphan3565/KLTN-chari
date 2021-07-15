@@ -10,6 +10,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VideoDragDropDirective } from './drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -19,11 +21,14 @@ import { DialogPostComponent } from './dialog-post/dialog-post.component';
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
+    TooltipModule.forRoot(),
+
   ],
   declarations: [ 
     ProjectReachedComponent,
     DialogPostComponent,
+    VideoDragDropDirective
   ]
 })
 export class ProjectReachedModule { }

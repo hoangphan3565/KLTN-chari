@@ -21,20 +21,15 @@ public class PostController {
     PostService PostService;
 
 
-    @GetMapping("/find/{name}")
-    public ResponseEntity<?> findPostByName(@PathVariable(value = "name") String name) {
-        return ResponseEntity.ok().body(PostService.findLikePostName(name));
-    }
-
     //Services for admin
     @GetMapping("/count")
     public ResponseEntity<?> countAllPost() {
         return ResponseEntity.ok().body(PostService.countAllPost());
     }
-    @GetMapping("/from/{a}/to/{b}")
-    public ResponseEntity<?> getPostsFromAToB(@PathVariable(value = "a") Integer a,
+    @GetMapping("/page/{a}/size/{b}")
+    public ResponseEntity<?> getPostsPageASizeB(@PathVariable(value = "a") Integer a,
                                               @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(PostService.getPostDTOsFromAToB(a,b));
+        return ResponseEntity.ok().body(PostService.getPostDTOsPageASizeB(a-1,b));
     }
 
 
@@ -43,25 +38,34 @@ public class PostController {
     public ResponseEntity<?> countPostByCollaboratorId(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok().body(PostService.countAllPostByCollaboratorId(id));
     }
-    @GetMapping("/collaborator/{id}/from/{a}/to/{b}")
+    @GetMapping("/collaborator/{id}/page/{a}/size/{b}")
     public ResponseEntity<?> getAllPostByCollaboratorId(@PathVariable(value = "id") Integer id,
                                                         @PathVariable(value = "a") Integer a,
                                                         @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(PostService.getPostDTOsByCollaboratorIdFromAToB(id,a,b));
+        return ResponseEntity.ok().body(PostService.getPostDTOsByCollaboratorIdPageASizeB(id,a-1,b));
     }
 
 
 
     //Get những bài post đã được public
-    @GetMapping("/public/count")
-    public ResponseEntity<?> countPublicPost() {
-        return ResponseEntity.ok().body(PostService.countAllPublicPost());
-    }
+//    @GetMapping("/public/count")
+//    public ResponseEntity<?> countPublicPost() {
+//        return ResponseEntity.ok().body(PostService.countAllPublicPost());
+//    }
+//    @GetMapping("/public/page/{a}/size/{b}")
+//    public ResponseEntity<?> getPublicPostPageASizeB(@PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
+//        return ResponseEntity.ok().body(PostService.getPublicPostDTOsPageASizeB(a-1,b));
+//    }
 
-    @GetMapping("/public/from/{a}/to/{b}")
-    public ResponseEntity<?> getPublicPostFromAToB(@PathVariable(value = "a") Integer a,
-                                                   @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(PostService.getPublicPostDTOsFromAToB(a,b));
+    @GetMapping("/public/find/{name}/count")
+    public ResponseEntity<?> countFoundPublicPost(@PathVariable(value = "name") String name) {
+        return ResponseEntity.ok().body(PostService.countFoundPublicPost(name));
+    }
+    @GetMapping("/public/find/{name}/page/{a}/size/{b}")
+    public ResponseEntity<?> findPostByName(@PathVariable(value = "name") String name,
+                                            @PathVariable(value = "a") Integer a,
+                                            @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(PostService.getPublicPostDTOsPageASizeBByName(name,a-1,b));
     }
 
 
@@ -70,30 +74,23 @@ public class PostController {
         return PostService.findById(id);
     }
 
-    @PostMapping()
-    public ResponseEntity<?> savePost(@RequestBody PostDTO p) {
-        return ResponseEntity.ok().body(PostService.savePost(p));
+    @PostMapping("/collaborator/{clb_id}")
+    public ResponseEntity<?> savePost(@RequestBody PostDTO p,@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(PostService.savePost(p,clb_id));
     }
 
-    @PutMapping("/public/{id}")
-    public ResponseEntity<?> publicPost(@PathVariable(value = "id") Integer id) {
-        Post p = PostService.findById(id);
-        p.setIsPublic(true);
-        PostService.save(p);
-        return ResponseEntity.ok().body(PostService.getPostDTOsFromAToB(0,5));
+    @PutMapping("/public/{id}/collaborator/{clb_id}")
+    public ResponseEntity<?> publicPost(@PathVariable(value = "id") Integer id, @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(PostService.publicPost(id,clb_id));
     }
 
-    @PutMapping("/un_public/{id}")
-    public ResponseEntity<?> unPublicPost(@PathVariable(value = "id") Integer id) {
-        Post p = PostService.findById(id);
-        p.setIsPublic(false);
-        PostService.save(p);
-        return ResponseEntity.ok().body(PostService.getPostDTOsFromAToB(0,5));
+    @PutMapping("/un_public/{id}/collaborator/{clb_id}")
+    public ResponseEntity<?> unPublicPost(@PathVariable(value = "id") Integer id,  @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(PostService.unPublicPost(id,clb_id));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removePostById(@PathVariable(value = "id") Integer id) {
-        PostService.removeById(id);
-        return ResponseEntity.ok().body(PostService.getPostDTOsFromAToB(0,5));
+    @DeleteMapping("/{id}/collaborator/{clb_id}")
+    public ResponseEntity<?> deletePostById(@PathVariable(value = "id") Integer id, @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(PostService.deleteById(id,clb_id));
     }
 }

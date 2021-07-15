@@ -10,7 +10,7 @@ import 'package:quiver/async.dart';
 
 class EnterCodeScreen extends StatefulWidget {
   final String phone;
-  final String verificationId;
+  String verificationId;
   final FirebaseAuth firebaseAuth;
   EnterCodeScreen({@required this.phone,this.verificationId,this.firebaseAuth});
   @override
@@ -20,7 +20,8 @@ class EnterCodeScreen extends StatefulWidget {
 class _EnterCodeScreenState extends State<EnterCodeScreen> {
   final _codeController = TextEditingController();
   var focusNode = FocusNode();
-
+  bool isCodeOverdue=false;
+  bool haveEnterCode=false;
   int _start = 120;
   int _current = 120;
 
@@ -39,9 +40,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
     });
 
     sub.onDone(() {
-      print("Done");
-      sub.cancel();
-      Navigator.pop(context, 'fail');
+      setState(() {
+        isCodeOverdue=true;
+      });
       Fluttertoast.showToast(
           msg: 'Mã xác thực hết hiệu lực',
           toastLength: Toast.LENGTH_LONG,
@@ -131,37 +132,16 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 icon: FontAwesomeIcons.key,
                 keyboardType: TextInputType.number,
                 controller: _codeController,
-                onTapClearIcon: ()=>{_codeController.clear()},
-                onChanged: (value) {},
+                showClearIcon: haveEnterCode,
+                onTapClearIcon: ()=>{_codeController.clear(),setState(() {haveEnterCode=false;})},
+                onChanged: (value) {
+                  value!=''?setState(() {haveEnterCode=true;}):setState(() {haveEnterCode=false;});
+                },
               ),
               RoundedButton(
-                text: "Xác nhận $_current",
+                text: isCodeOverdue?"Gửi lại mã":"Xác nhận $_current",
                 press:() {
-                  var _credential = PhoneAuthProvider.getCredential(verificationId: widget.verificationId, smsCode: _codeController.text.trim());
-                    widget.firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
-                    Navigator.pop(context, 'successful'); //Trả về value khi xác thực thành công
-                    Fluttertoast.showToast(
-                        msg: 'Xác thực thành công!',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: kPrimaryColor,
-                        textColor: Colors.white,
-                        fontSize: 16.0
-                    );
-                    return "successful";
-                  }).catchError((e) {
-                    Fluttertoast.showToast(
-                        msg: "Xác thực thất bại!\nMã xác nhận không chính xác!",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.orangeAccent,
-                        textColor: Colors.white,
-                        fontSize: 16.0
-                    );
-                    return "error";
-                  });
+                  isCodeOverdue?resendCode():verifyCode();
                 },
               ),
               SizedBox(height: size.height * 0.03),
@@ -170,5 +150,75 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
         ),
       ),
     );
+  }
+
+  
+  resendCode() async{
+    print('resending code!');
+    await widget.firebaseAuth.verifyPhoneNumber(
+      phoneNumber: widget.phone,
+      timeout: Duration(seconds: 120),
+      verificationFailed: (AuthException e) {
+        String msg;
+        if(e.code != 'invalid-phone-number') {
+          msg="Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!";
+        }
+        Fluttertoast.showToast(
+            msg: msg,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.orangeAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        return "error";
+      },
+      codeSent: (String verificationId, [int]) async {
+        widget.verificationId=verificationId;
+        Fluttertoast.showToast(
+            msg: 'Đã gửi lại mã xác thực',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: kPrimaryHighLightColor,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        setState(() {
+          isCodeOverdue=false;
+          _start=120;
+          _current=120;
+        });
+        startTimer();
+      },
+    );
+  }
+  verifyCode(){
+    var _credential = PhoneAuthProvider.getCredential(verificationId: widget.verificationId, smsCode: _codeController.text.trim());
+    widget.firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
+      Navigator.pop(context, 'successful'); //Trả về value khi xác thực thành công
+      Fluttertoast.showToast(
+          msg: 'Xác thực thành công!',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: kPrimaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      return "successful";
+    }).catchError((e) {
+      Fluttertoast.showToast(
+          msg: "Xác thực thất bại!\nMã xác nhận không chính xác!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.orangeAccent,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      return "error";
+    });
   }
 }

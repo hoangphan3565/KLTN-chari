@@ -1,7 +1,7 @@
 package com.macia.chariBE.security;
 
 import com.macia.chariBE.model.JwtUser;
-import com.macia.chariBE.repository.JwtUserRepository;
+import com.macia.chariBE.repository.IJwtUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	private JwtUserRepository jwtUserRepo;
+	private IJwtUserRepository jwtUserRepo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

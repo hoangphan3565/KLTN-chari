@@ -1,7 +1,7 @@
 package com.macia.chariBE.model;
 
-import com.macia.chariBE.utility.UserStatus;
-import com.macia.chariBE.utility.UserType;
+import com.macia.chariBE.utility.EUserStatus;
+import com.macia.chariBE.utility.EUserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +28,11 @@ public class JwtUser implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private UserType usertype;
+    private EUserType usertype;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private UserStatus status;
+    private EUserStatus status;
 
     @Column(length = 1000)
     private String fcmToken;

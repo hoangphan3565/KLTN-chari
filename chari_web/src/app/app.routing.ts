@@ -49,10 +49,6 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: islogged==''?'login':'project',
-        loadChildren: () => import('./views/project/project.module').then(m => m.ProjectModule)
-      }, 
-      {
         path: islogged==''?'login':'project-activating',
         loadChildren: () => import('./views/project-activating/project-activating.module').then(m => m.ProjectActivatingModule)
       },   
@@ -104,6 +100,11 @@ export const routes: Routes = [
         path: islogged==''?'login':'push-notification',
         loadChildren: () => import('./views/push-notification/push-notification.module').then(m => m.PushNotificationModule)
       },
+      {
+        path: islogged==''?'login':'supported-people-recommend',
+        loadChildren: () => import('./views/supported-people-recommend/supported-people-recommend.module').then(m => m.SupportedPeopleRecommendModule)
+      },
+
       {
         path: 'base',
         loadChildren: () => import('./temp/base/base.module').then(m => m.BaseModule)

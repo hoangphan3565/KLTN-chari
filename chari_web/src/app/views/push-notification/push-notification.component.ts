@@ -29,13 +29,13 @@ export class PushNotificationComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPushNotificationComponent, {
-      width: '250px',
+      width: '350px',
       data: this.PushNotification,
     });
-    dialogRef.afterClosed().subscribe((result: PushNotification) => {
-      if(result){
-        if (result.nof_ID==null) this.savePushNotification(result,'Thêm');
-        else this.savePushNotification(result,'Cập nhật');
+    dialogRef.afterClosed().subscribe((res: PushNotification) => {
+      if(res){
+        if (res.nof_ID==null) this.savePushNotification(res,'Thêm');
+        else this.savePushNotification(res,'Cập nhật');
       }
     });
   }
@@ -60,11 +60,11 @@ export class PushNotificationComponent implements OnInit {
   public savePushNotification = async (data,state) => {
     try 
     {
-      const result = await this.PushNotificationService.savePushNotification(data);
-      if (result)
+      const res = await this.PushNotificationService.savePushNotification(data);
+      if (res)
       {
         this.notificationService.success(state+' thông báo đẩy thành công');
-        this.PushNotifications = result.data as PushNotification[];
+        this.PushNotifications = res.data as PushNotification[];
       }    
     }
     catch (e) {

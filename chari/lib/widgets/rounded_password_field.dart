@@ -6,9 +6,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class RoundedPasswordField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
+  final bool showClearIcon;
   final IconData icon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String> onSubmitted;
   final Function switchObscureTextMode;
   final Function onTapClearIcon;
   final FocusNode focusNode;
@@ -20,7 +22,9 @@ class RoundedPasswordField extends StatelessWidget {
     this.controller,
     this.switchObscureTextMode,
     this.onTapClearIcon,
+    this.showClearIcon=false,
     this.onChanged,
+    this.onSubmitted,
     this.focusNode,
   }) : super(key: key);
 
@@ -31,33 +35,38 @@ class RoundedPasswordField extends StatelessWidget {
         obscureText: obscureText,
         controller: controller,
         onChanged: onChanged,
+        onSubmitted: onSubmitted,
         focusNode: focusNode,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(
+            fontSize: 15,
+            height: 1.5,
+          ),
           icon: Icon(
             icon,
             size: 16,
             color: kPrimaryHighLightColor,
           ),
           suffixIcon: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
-            mainAxisSize: MainAxisSize.min, // added line
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               IconButton(
-                padding: EdgeInsets.only(right: 0),
                 splashRadius: 18,
                 iconSize: 16,
-                icon: Icon(obscureText==true?FontAwesomeIcons.lowVision:FontAwesomeIcons.solidEye),
+                icon: Icon(obscureText==true?FontAwesomeIcons.lowVision:FontAwesomeIcons.solidEye,color: Colors.black38,),
                 onPressed: switchObscureTextMode,
               ),
-              IconButton(
-                padding: EdgeInsets.only(right: 0),
-                splashRadius: 18,
-                iconSize: 15,
-                icon: FaIcon(FontAwesomeIcons.solidTimesCircle),
-                onPressed: onTapClearIcon,
-              ),
+              if(showClearIcon)
+                IconButton(
+                  splashRadius: 18,
+                  iconSize: 15,
+                  icon: FaIcon(FontAwesomeIcons.solidTimesCircle,color: Colors.black38,),
+                  onPressed: onTapClearIcon,
+                ),
+
             ],
           ),
           border: InputBorder.none,

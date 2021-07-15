@@ -1,6 +1,8 @@
 package com.macia.chariBE.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.macia.chariBE.utility.EProcessingStatus;
+import com.macia.chariBE.utility.EProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,22 +21,41 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
-        @NamedQuery(name = "named.project.findUncloseAndVerifiedByName",
-                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and lower(p.projectName) like :name ORDER BY p.updateTime desc"),
         @NamedQuery(name = "named.project.findAll",
-                query = "SELECT p FROM Project p ORDER BY p.updateTime desc"),
-        @NamedQuery(name = "named.project.findFavoriteProject",
-                query = "SELECT p FROM Project p where p.PRJ_ID in (:ids)"),
-        @NamedQuery(name = "named.project.findUncloseByCollaboratorId",
-                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.updateTime desc"),
-        @NamedQuery(name = "named.project.findClosedByCollaboratorId",
-                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=true ORDER BY p.updateTime desc"),
-        @NamedQuery(name = "named.project.findWhereUncloseAndVerified",
-                query = "SELECT p FROM Project p where p.closed=false and p.verified=true ORDER BY p.updateTime desc"),
+                query = "SELECT p FROM Project p ORDER BY p.PRJ_ID desc"),
         @NamedQuery(name = "named.project.findById",
                 query = "SELECT p FROM Project p where p.PRJ_ID =:id"),
-        @NamedQuery(name = "named.project.findByProjectTypeId",
-                query = "SELECT p FROM Project p where p.projectType.PRT_ID =:id"),
+
+        @NamedQuery(name = "named.project.findUncloseAndVerifiedByName",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and lower(p.projectName) like :name ORDER BY p.updateTime desc"),
+        @NamedQuery(name = "named.project.findUnVerified",
+                query = "SELECT p FROM Project p where p.verified=false ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findClosed",
+                query = "SELECT p FROM Project p where p.closed=true ORDER BY p.PRJ_ID desc"),
+
+        @NamedQuery(name = "named.project.findUnVerifiedByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.verified=false ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findUncloseByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findClosedByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=true ORDER BY p.PRJ_ID desc"),
+
+        //find project on mobile short by updatetime
+        @NamedQuery(name = "named.project.findUncloseAndVerified",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true ORDER BY p.updateTime desc"),
+
+        //filter project on mobile short by updatetime
+        @NamedQuery(name = "named.project.findFavoriteProject",
+                query = "SELECT p FROM Project p where p.PRJ_ID in (:ids)"),
+        @NamedQuery(name = "named.project.filterByProjectTypeIds",
+                query = "SELECT p FROM Project p where p.projectType.PRT_ID in (:ptids)"),
+        @NamedQuery(name = "named.project.filterByCityIds",
+                query = "SELECT p FROM Project p where p.city.CTI_ID in (:ctids)"),
+
+        @NamedQuery(name = "named.project.findProjectMultiFilterAndSearchKey",
+                query = "SELECT p FROM Project p " +
+                        "where lower(p.projectName) like :name and p.PRJ_ID in (:ids) and p.closed=false and p.verified=true and p.projectType.PRT_ID in (:ptids) and p.city.CTI_ID in (:cids) and p.status in (:status)" +
+                        "ORDER BY p.status asc"),
 })
 public class Project {
     @Id
@@ -76,6 +97,10 @@ public class Project {
 
     @Column
     private Boolean closed;
+
+    @Column()
+    @Enumerated(EnumType.ORDINAL)
+    private EProjectStatus status;
 
     @Column
     @UpdateTimestamp

@@ -32,15 +32,15 @@ export class ProjectTypeComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogProjectTypeComponent, {
-      width: '300px',
+      width: '500px',
       data: this.projectType,
     });
-    dialogRef.afterClosed().subscribe((result: ProjectType) => {
-      if(result){
-        if (result.prt_ID==null) {
-          this.saveProjectType(result,'Thêm');
+    dialogRef.afterClosed().subscribe((res: ProjectType) => {
+      if(res){
+        if (res.prt_ID==null) {
+          this.saveProjectType(res,'Thêm');
         }else{
-          this.saveProjectType(result,'Cập nhật');
+          this.saveProjectType(res,'Cập nhật');
         }
       }
     });
@@ -61,15 +61,15 @@ export class ProjectTypeComponent implements OnInit {
   saveProjectType = async (project,state) => {
     try 
     {
-      const result = await this.projectTypeService.saveProjectType(project);
-      if (result)
+      const res = await this.projectTypeService.saveProjectType(project);
+      if (res)
       {
-        this.notificationService.success(state+' chương trình từ thiện thành công');
-        this.projectTypes = result.data as ProjectType[];
+        this.notificationService.success(state+' Gói từ thiện thành công');
+        this.projectTypes = res.data as ProjectType[];
       }    
     }
     catch (e) {
-      alert(state+' chương trình từ thiện thất bại');
+      alert(state+' Gói từ thiện thất bại');
     }
   };
 
@@ -77,12 +77,12 @@ export class ProjectTypeComponent implements OnInit {
   deleteProjectType = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá chương trình từ thiện này?')){
-        const result = await this.projectTypeService.deleteProjectType(id);
-        if (result)
+      if(confirm('Bạn có thực sự muốn xoá Gói từ thiện này?')){
+        const res = await this.projectTypeService.deleteProjectType(id);
+        if (res)
         {
-          this.notificationService.warn('Xoá chương trình từ thiện thành công');
-          this.projectTypes = result.data as ProjectType[];
+          this.notificationService.warn('Xoá Gói từ thiện thành công');
+          this.projectTypes = res.data as ProjectType[];
         }  
       }
     }

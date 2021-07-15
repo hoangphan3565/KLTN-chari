@@ -1,7 +1,7 @@
 package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.ProjectType;
-import com.macia.chariBE.repository.ProjectTypeRepository;
+import com.macia.chariBE.repository.IProjectTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class ProjectTypeService {
     @PersistenceContext
     private EntityManager em;
     @Autowired
-    private ProjectTypeRepository repo;
+    private IProjectTypeRepository repo;
     public List<ProjectType> findAll() {
         TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findAll", ProjectType.class);
         return query.getResultList();

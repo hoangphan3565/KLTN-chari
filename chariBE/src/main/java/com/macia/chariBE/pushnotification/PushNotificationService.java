@@ -1,13 +1,11 @@
 package com.macia.chariBE.pushnotification;
-import com.macia.chariBE.model.DonatorNotification;
 import com.macia.chariBE.model.PushNotification;
-import com.macia.chariBE.repository.PushNotificationRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -19,7 +17,7 @@ public class PushNotificationService {
     FCMService fcmService;
 
     @Autowired
-    private PushNotificationRepository repo;
+    private IPushNotificationRepository repo;
 
     public String findAllIdAsString(){
         List<PushNotification> lsp = repo.findAll();

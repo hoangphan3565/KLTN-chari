@@ -15,10 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
-        @NamedQuery(name = "named.supportedpeople.findAll",
-                query = "SELECT s FROM SupportedPeople s"),
-        @NamedQuery(name = "named.supportedpeople.findById",
+        @NamedQuery(name = "named.supportedPeople.findAll",
+                query = "SELECT s FROM SupportedPeople s order by s.STP_ID desc"),
+        @NamedQuery(name = "named.supportedPeople.findById",
                 query = "SELECT s FROM SupportedPeople s where s.STP_ID =:id"),
+        @NamedQuery(name = "named.supportedPeople.findByCollaboratorId",
+                query = "SELECT s FROM SupportedPeople s where s.collaborator.CLB_ID =:id order by s.STP_ID desc"),
 })
 public class SupportedPeople {
     @Id

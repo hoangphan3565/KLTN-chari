@@ -29,11 +29,11 @@ export class UserComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn khoá người dùng này?')){
-        const result = await this.UserService.blockUser(id);
-        if (result)
+        const res = await this.UserService.blockUser(id);
+        if (res)
         {
           this.notificationService.warn('Khoá người dùng thành công');
-          this.Users = result.data as User[];
+          this.Users = res.data as User[];
         }  
       }
     }
@@ -45,11 +45,11 @@ export class UserComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn mở khoá người dùng này?')){
-        const result = await this.UserService.unblockUser(id);
-        if (result)
+        const res = await this.UserService.unblockUser(id);
+        if (res)
         {
           this.notificationService.warn('Mở khoá người dùng thành công');
-          this.Users = result.data as User[];
+          this.Users = res.data as User[];
         }  
       }
     }

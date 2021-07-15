@@ -36,16 +36,16 @@ export class ProjectActivatingComponent implements OnInit {
       width: '900px',
       data: this.Post,
     });
-    dialogRef.afterClosed().subscribe((result: Post) => {
-      if(result){
-        this.savePost(result);
+    dialogRef.afterClosed().subscribe((res: Post) => {
+      if(res){
+        this.savePost(res);
       }
     });
   }
 
   openDonateInfoDialog(data): void {
     const dialogRef = this.dialog.open(DialogDonateInfoComponent, {
-      width: '250px',
+      width: '350px',
       data: data
     });
   }
@@ -68,8 +68,8 @@ export class ProjectActivatingComponent implements OnInit {
   public savePost = async (data) => {
     try 
     {
-      const result = await this.postService.savePost(data);
-      if (result)
+      const res = await this.postService.savePost(data,this.clb_id);
+      if (res)
       {
         this.notificationService.success('Thêm tin tức thành công');
       }    
@@ -78,4 +78,7 @@ export class ProjectActivatingComponent implements OnInit {
       alert('Thêm tin tức thất bại');
     }
   };  
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
 }

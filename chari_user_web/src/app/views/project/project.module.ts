@@ -11,6 +11,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material-module';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VideoDragDropDirective } from './drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -21,11 +23,13 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     FormsModule,
     MaterialModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud")
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
+    TooltipModule.forRoot(),
   ],
   declarations: [ 
     ProjectComponent,
     DialogProjectComponent,
+    VideoDragDropDirective
   ]
 })
 export class ProjectModule { }

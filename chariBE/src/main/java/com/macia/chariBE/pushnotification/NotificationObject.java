@@ -1,10 +1,9 @@
 package com.macia.chariBE.pushnotification;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.macia.chariBE.utility.ENotificationTopic;
+import lombok.*;
 
+@Builder
 @Setter
 @Getter
 @NoArgsConstructor
@@ -12,7 +11,7 @@ import lombok.Setter;
 public class NotificationObject {
 	private String title;
     private String message;
-    private String topic;
+    private ENotificationTopic topic;
     private String token;
 
 }

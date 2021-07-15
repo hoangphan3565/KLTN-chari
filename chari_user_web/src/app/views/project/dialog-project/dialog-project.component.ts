@@ -27,6 +27,7 @@ export class DialogProjectComponent implements OnInit {
   Cities: City[];
   SupportedPeoples: SupportedPeople[];
   canDisburseWhenOverdue:boolean=true;
+  isUploadingVideo: boolean=false;
 
   clb_id: Number;
   constructor(
@@ -36,7 +37,9 @@ export class DialogProjectComponent implements OnInit {
     private projectTypeService: ProjectTypeService,
     public dialogRef: MatDialogRef<DialogProjectComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: Project) { }
+    @Inject(MAT_DIALOG_DATA) public data: Project) {
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
@@ -74,6 +77,7 @@ export class DialogProjectComponent implements OnInit {
     }
   }  
   uploadVideo(event) {
+    this.isUploadingVideo=true;
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -88,6 +92,7 @@ export class DialogProjectComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.videoUrl=(url);
+                this.isUploadingVideo=false;
               }
             });
           })
@@ -115,7 +120,7 @@ export class DialogProjectComponent implements OnInit {
     this.ProjectTypes = await (await this.projectTypeService.getProjectTypes()).data as ProjectType[];
   }
   public async getSupportedPeople(){
-    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(this.clb_id)).data as SupportedPeople[];
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getAll(this.clb_id)).data as SupportedPeople[];
   }
   changeState(){
     if(this.canDisburseWhenOverdue==true){

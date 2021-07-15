@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Configuration
 @EnableWebSecurity
@@ -43,40 +44,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
+		httpSecurity.cors();
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(
 						"/api/login","/api/login_facebook","/api/register","/api/activate/{usn}",
 				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
-				"/api/cities","/api/projects","/api/projects/find/{key}","/api/projects/count","/api/projects/from/{a}/to/{b}","/api/projects/{id}",
-				"/api/posts/find/{name}","/api/posts/public","/api/posts/public/count","/api/posts/public/from/{a}/to/{b}",
+				"/api/cities","/api/projects","/api/projects/find/{key}","/api/projects/count",
+				"/api/projects/page/{a}/size/{b}","/api/projects/{id}","/api/project_types",
+				"/api/posts/public/count","/api/posts/public/page/{a}/size/{b}",
+				"/api/posts/public/find/{name}/count","/api/posts/public/find/{name}/page/{a}/size/{b}",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
 				"/api/donate_details/project/{prjid}","/api/comments/project/{id}","/api/comments/{id}/project/{pid}",
-
-				"/api/projects/collaborator/{id}/count","/api/projects/collaborator/{id}/from/{a}/to/{b}",
-				"/api/projects/activating/collaborator/{id}",
-				"/api/projects/overdue/collaborator/{id}",
-				"/api/projects/reached/collaborator/{id}",
-				"/api/projects/closed/collaborator/{id}",
-				"/api/posts/collaborator/{id}/count","/api/posts/collaborator/{id}/from/{a}/to/{b}",
-				"/api/supported_peoples/collaborator/{id}",
-
-				"/api/posts","/api/posts/count","/api/posts/from/{a}/to/{b}","/api/posts/public/{id}","/api/posts/un_public/{id}","/api/posts/{id}",
-				"/api/push_notifications","/api/push_notifications/{id}",
-				"/api/push_notifications/topic","/api/notification/username/{usn}","/api/notification/data",
-				"/api/projects/verified","/api/projects/unverified","/api/projects/activating",
-				"/api/projects/overdue","/api/projects/reached","/api/projects/closed","/api/projects/handle_all_money",
-				"/api/projects/approve/{id}",
-				"/api/projects/create/collaborator/{id}","/api/projects/update/collaborator/{id}",
-				"/api/projects/close/{id}/collaborator/{clb_id}","/api/projects/extend/{id}/num_of_date/{nod}/collaborator/{clb_id}",
-				"/api/project_types","/api/project_types/{id}",
-				"/api/donators","/api/donators/{id}",
-				"/api/donate_details/donate_with_bank","/api/donate_details/disburse_with_bank",
-				"/api/collaborators","/api/collaborators/{id}","/api/collaborators/accept/{id}","/api/collaborators/block/{id}",
-				"/api/feedbacks","/api/feedbacks/{id}","/api/users","/api/users/{id}",
-				"/api/supported_peoples","/api/supported_peoples/{id}"
+				"/api/projects/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/page/{p}/size/{s}",
+				"/api/projects/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/count"
 				).permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().

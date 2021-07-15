@@ -7,12 +7,6 @@
             <small class="text-muted"> danh sách </small> Dự án đã đóng
           </h3>
         </div>
-        <div class="col-auto">
-          <button type="button" class="btn btn-secondary" (click)="updateMoveMoneyProgress()">
-            <i class="icon-reload"></i>
-            <a>Cập nhật tiến độ</a>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -21,19 +15,21 @@
         <thead>
           <tr>
             <th>#</th>
+            <th>Hình ảnh</th>
             <th>Tên Dự án</th>
             <th>Cho phép giải ngân</th>
-            <th>Tiến độ xử lý (%)</th> 
+            <th style="text-align: right">Tiến độ xử lý (%)</th> 
             <th>Tình trạng giải ngân</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
-          <td>{{data.projectName}}</td>
+          <td style="width: 80px; cursor:pointer"><img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px"></td>
+          <td style="width: 30%;">{{data.projectName}}</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true">N/A</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">{{data.moveMoneyProgress}}</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true" style="text-align: right">{{data.moveMoneyProgress}}</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==true">Đã giải ngân</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed!=true">Chưa giải ngân</td>
           <td *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed!=true">N/A</td> 
@@ -46,6 +42,15 @@
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                       [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>

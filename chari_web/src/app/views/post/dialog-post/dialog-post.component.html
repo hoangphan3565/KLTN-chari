@@ -1,30 +1,34 @@
-<h3 mat-dialog-tile *ngIf="data.pos_ID==undefined">Thêm tin tức mới</h3>
-<h3 mat-dialog-tile *ngIf="data.pos_ID!=undefined">Cập nhật Tin từ thiện</h3>
+<h3 mat-dialog-tile *ngIf="data.pos_ID==undefined">Thêm tin cho dự án đã thành công</h3>
+<h3 mat-dialog-tile *ngIf="data.pos_ID!=undefined">Cập nhật tin tức</h3>
 
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tên Tin</mat-label>
-        <input name="post_name" matInput [(ngModel)]="data.name" required>
+        <input name="post_name" matInput [(ngModel)]="data.name" required cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Nội dung</mat-label>
         <textarea matInput name="content" [(ngModel)]="data.content" required></textarea>
     </mat-form-field>   
     
-    <mat-form-field >
+    <mat-form-field *ngIf="data.pos_ID==undefined" [style.width.%]="75">
         <mat-label>Dự án liên quan</mat-label>
         <mat-select class="form-control" [(ngModel)]="data.projectId" id="project_id" name="project_id" required>
             <mat-option *ngFor="let project of Projects" [value]="project.prj_ID">
                 {{project.projectName}}
             </mat-option>
         </mat-select>
-    </mat-form-field>   
+    </mat-form-field>
+    <mat-form-field *ngIf="data.pos_ID!=undefined" [style.width.%]="75" appearance="outline"> 
+        <mat-label>Dự án liên quan</mat-label>
+        <input disabled name="project_name" matInput [(ngModel)]="data.projectName" required cdkFocusInitial>
+    </mat-form-field>  
     <mat-checkbox name="publicPost" [(ngModel)]="data.isPublic">Công bố Tin</mat-checkbox>
 
 
     <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg , .jpeg và .png)</label>
     <input hidden type="file" #imageInput onclick="this.value=null" (change)="uploadImages($event.target.files)" multiple="true" accept=".jpg,.jpeg,.png">
-    <button class="btn btn-primary" (click)="imageInput.click()">
+    <button class="btn btn-primary btn-sm" (click)="imageInput.click()" tooltip="Ảnh đầu tiên sẽ được chọn làm ảnh bìa">
         <i class="icon-cloud-upload"></i>
         <a>Tải lên hình ảnh</a>
     </button>
@@ -39,25 +43,25 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <label>Tải video cho dự án (chỉ hỗ trợ định dạng .mp4)</label>
-    <input hidden type="file" #videoInput onclick="this.value=null" (change)="uploadVideo($event.target.files)" multiple="false" accept=".mp4">
-    <button class="btn btn-primary" (click)="videoInput.click()">
-      <i class="icon-cloud-upload"></i>
-      <a>Tải lên video</a>
-    </button>
-    <div>
-        <button *ngIf="videoUrl" type="button" class="btn btn-outline-danger btn-sm" (click)="deleteVideo()" style="float: right;">
+
+    <div *ngIf="!videoUrl && !isUploadingVideo" class="video-container" (click)="fileInput.click()" videoDragDrop (files)="uploadVideo($event)">
+        <input hidden type="file" #fileInput (change)="uploadVideo($event.target.files)" multiple="false" accept=".mp4">
+    </div>
+    <div *ngIf="isUploadingVideo" class="video-container-loading"></div>
+    <div *ngIf="videoUrl" class="video-container-loading">
+        <video *ngIf="videoUrl" [src]="videoUrl" controls>
+            <source src="videoUrl" type="video/mp4">
+        </video>
+        <button *ngIf="videoUrl" type="button" class="delete-video-button btn btn-danger btn-sm" (click)="deleteVideo()">
             <i class="fa fa-remove"></i>
         </button>
-        <video *ngIf="videoUrl" [src]="videoUrl" width="840" controls>
-            <source src="videoUrl" type="video/mp4">
-        </video>        
     </div>
+
 
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Hủy</button>
-    <button mat-button (click)="save()" cdkFocusInitial>Lưu</button>
+    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
 </mat-dialog-actions>

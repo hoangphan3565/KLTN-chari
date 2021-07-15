@@ -1,31 +1,31 @@
-<h3 mat-dialog-title *ngIf="data.prt_ID==undefined">Thêm Chương trình từ thiện</h3>
-<h3 mat-dialog-title *ngIf="data.prt_ID!=undefined">Cập nhật Chương trình từ thiện</h3>
+<h3 mat-dialog-title *ngIf="data.prt_ID==undefined">Thêm Gói từ thiện</h3>
+<h3 mat-dialog-title *ngIf="data.prt_ID!=undefined">Cập nhật Gói từ thiện</h3>
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
-        <mat-label>Tên chương trình</mat-label>
-        <input name="project_type_name" matInput [(ngModel)]="data.projectTypeName" required>
+     <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-label>Tên Gói</mat-label>
+        <input name="project_type_name" matInput [(ngModel)]="data.projectTypeName" required cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Mô tả</mat-label>
-        <input name="project_type_name" matInput [(ngModel)]="data.description" required>
+        <textarea name="description" matInput [(ngModel)]="data.description"></textarea>
     </mat-form-field>
     <mat-checkbox name="canDisburseWhenOverdue" [(ngModel)]="data.canDisburseWhenOverdue">Cho phép giải ngân khi hết hạn</mat-checkbox>
 </mat-dialog-content>
 
 <label>Logo</label>
-<div class="uploadfilecontainer" (click)="fileInput.click()" projectTypeDragDrop (files)="uploadFile($event)">
+<div *ngIf="!imageUrl" class="container" (click)="fileInput.click()" projectTypeDragDrop (files)="uploadFile($event)">
     <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" multiple="false" accept=".jpg,.jpeg,.png">
 </div>
-<div class="container">
-    <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 5px;" width="100px" height="100px">
-    <button *ngIf="imageUrl" type="button" class="btn" (click)="deleteAttachment()">
+<div *ngIf="imageUrl" class="container">
+    <img *ngIf="imageUrl" [src]="imageUrl">
+    <button *ngIf="imageUrl" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment()">
         <i class="fa fa-remove"></i>
     </button>
 </div>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Hủy</button>
-    <button mat-button (click)="save()" cdkFocusInitial>Lưu</button>
+    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
 </mat-dialog-actions>
 
 

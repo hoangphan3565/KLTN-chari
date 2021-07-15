@@ -14,14 +14,16 @@ import { NotificationService } from '../../../services/notification.service';
     constructor(
       public dialogRef: MatDialogRef<DialogPushNotificationComponent>,
       private notificationService: NotificationService,
-      @Inject(MAT_DIALOG_DATA) public data: PushNotification) { }
+      @Inject(MAT_DIALOG_DATA) public data: PushNotification) { 
+        dialogRef.disableClose = true;
+      }
   
     ngOnInit(): void {
     }
 
     save(){
       if(this.data.title=='' || this.data.message==''){
-        this.notificationService.warn('Không được trống thông tin nào!');
+        this.notificationService.warn('Không được trống thông tin nào');
       }else{
         this.dialogRef.close(this.data);
       }

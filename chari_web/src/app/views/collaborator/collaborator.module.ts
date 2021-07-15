@@ -8,16 +8,18 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaterialModule } from '../../material-module';
 
 @NgModule({
   imports: [
-    CommonModule,
+  CommonModule,
     CollaboratorRoutingModule,
-    MatDialogModule,
     PaginationModule.forRoot(),
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule
+    MaterialModule,
+    TooltipModule.forRoot(),
+
   ],
   declarations: [ 
     CollaboratorComponent,

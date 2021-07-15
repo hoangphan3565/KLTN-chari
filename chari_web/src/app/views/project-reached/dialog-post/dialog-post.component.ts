@@ -14,20 +14,22 @@ import { ProjectService } from '../../../services/Project.service';
     templateUrl: './dialog-post.component.html',
     styleUrls: ['./dialog-post.component.css']
 })
-export class DialogPostComponent implements OnInit {
+export class DialogPostReachedComponent implements OnInit {
 
   imageUrls: any = [];
   videoUrl: any;
   downloadURL: Observable<string>;
   Projects: Project[];
-
+  isUploadingVideo: boolean;
 
   constructor(
     private notificationService: NotificationService,
     private projectService: ProjectService,
-    public dialogRef: MatDialogRef<DialogPostComponent>,
+    public dialogRef: MatDialogRef<DialogPostReachedComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: Post) { }
+    @Inject(MAT_DIALOG_DATA) public data: Post) { 
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
     this.getProject();
@@ -62,6 +64,7 @@ export class DialogPostComponent implements OnInit {
     }
   }  
   uploadVideo(event) {
+    this.isUploadingVideo=true;
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -76,6 +79,7 @@ export class DialogPostComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.videoUrl=(url);
+                this.isUploadingVideo=false;
               }
             });
           })

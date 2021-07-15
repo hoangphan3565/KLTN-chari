@@ -18,7 +18,7 @@
               <th>Tên đầy đủ</th>
               <th>Địa chỉ</th>
               <th>Số điện thoại</th>
-              <th>Facebook Id</th>
+              <th>Tên đăng nhập</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of Donators;let i=index;">
@@ -26,7 +26,7 @@
             <td>{{data.fullName}}</td>
             <td>{{data.address}}</td>
             <td>{{data.phoneNumber}}</td>
-            <td>{{data.facebookId}}</td>
+            <td>{{data.username}}</td>
           </tbody>
           <tbody>
         </table>
@@ -36,6 +36,15 @@
                         previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                         [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
           </div>
+          <mat-form-field [style.width.px]="130"> 
+            <mat-label>Số hàng hiển thị</mat-label>
+            <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+              <mat-option value="5">5</mat-option>
+              <mat-option value="10">10</mat-option>
+              <mat-option value="25">25</mat-option>
+              <mat-option value="100">100</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>

@@ -8,16 +8,17 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaterialModule } from '../../material/material-module';
 
 @NgModule({
   imports: [
     CommonModule,
     ProjectClosedRoutingModule,
-    MatDialogModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MaterialModule,
     PaginationModule.forRoot(),
+    TooltipModule.forRoot(),
   ],
   declarations: [ 
     ProjectClosedComponent,

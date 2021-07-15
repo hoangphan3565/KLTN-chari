@@ -1,16 +1,13 @@
 package com.macia.chariBE.DTO;
 
-import com.macia.chariBE.model.City;
-import com.macia.chariBE.model.Collaborator;
-import com.macia.chariBE.model.ProjectType;
-import com.macia.chariBE.model.SupportedPeople;
+import com.macia.chariBE.model.*;
+import com.macia.chariBE.utility.EProjectStatus;
 import lombok.*;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,29 +19,29 @@ public class ProjectDTO {
     private String projectName;
     private String briefDescription;
     private String description;
-    private String imageUrl;
-    private List<String> images;
-    private String videoUrl;
-    private Integer curMoney;
-    private Integer targetMoney;
-    private double achieved;
-    private Integer numOfDonations;
     private String startDate;
     private String endDate;
-    private Integer remainingTerm;
+    private Integer targetMoney;
+    private String imageUrl;
+    private String videoUrl;
     private Boolean verified;
-    private String status;
     private Boolean disbursed;
     private Boolean closed;
-    private double moveMoneyProgress;
+    private LocalDateTime updateTime;
+    private Integer cti_ID;
+    private City city;
     private Integer prt_ID;
     private ProjectType projectType;
     private Integer stp_ID;
     private SupportedPeople supportedPeople;
     private Integer clb_ID;
     private Collaborator collaborator;
-    private Integer cti_ID;
-    private City city;
-    private float priorityPoint;
-    private LocalDateTime updateTime;
+
+    private EProjectStatus status;
+    private Integer curMoney;
+    private double achieved;
+    private Integer numOfDonations;
+    private Long remainingTerm;
+    private List<String> images;
+    private double moveMoneyProgress;
 }

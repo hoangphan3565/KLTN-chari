@@ -10,6 +10,7 @@ class RoundedInputField extends StatelessWidget {
   final Function onTapClearIcon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String> onSubmitted;
   final TextInputType keyboardType;
   final TextAlign textAlign;
   final FocusNode focusNode;
@@ -20,9 +21,10 @@ class RoundedInputField extends StatelessWidget {
     this.keyboardType,
     this.controller,
     this.icon,
-    this.showClearIcon,
+    this.showClearIcon=false,
     this.onTapClearIcon,
     this.onChanged,
+    this.onSubmitted,
     this.focusNode
   }) : super(key: key);
 
@@ -32,21 +34,32 @@ class RoundedInputField extends StatelessWidget {
       child: TextField(
         textAlign: textAlign,
         onChanged: onChanged,
+        onSubmitted: onSubmitted,
         controller: controller,
         keyboardType: keyboardType,
         cursorColor: kPrimaryColor,
         focusNode: focusNode,
         decoration: InputDecoration(
+          hintStyle: TextStyle(
+            fontSize: 15,
+            height: 1.5,
+          ),
           icon: Icon(
             icon,
             size: 16,
             color: kPrimaryHighLightColor,
           ),
-          suffixIcon: IconButton(
+          suffixIcon: showClearIcon?
+          IconButton(
               splashRadius: 18,
               iconSize: 15,
               onPressed: onTapClearIcon,
-              icon: FaIcon(FontAwesomeIcons.solidTimesCircle)
+              icon: FaIcon(FontAwesomeIcons.solidTimesCircle,color: Colors.black38,)
+          ):IconButton(
+              splashRadius: 18,
+              iconSize: 15,
+              onPressed: ()=>{},
+              icon: FaIcon(FontAwesomeIcons.solidTimesCircle,color: kPrimaryLightColor,)
           ),
           hintText: hintText,
           border: InputBorder.none,

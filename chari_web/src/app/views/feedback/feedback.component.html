@@ -18,7 +18,9 @@
               <th>Tiêu đề</th>
               <th>Nội dung</th>
               <th>Người đóng góp</th>
-              <th>Tác vụ</th>
+              <th>Trạng thái</th>
+              <th style="width: 25%;">Nội dung trả lời</th>
+              <th style="text-align: right;width: 100px;">Tác vụ</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of Feedbacks;let i=index;">
@@ -26,10 +28,24 @@
             <td>{{data.title}}</td>
             <td>{{data.description}}</td>
             <td>{{data.contributor}}</td>
-            <td>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteFeedback(data.feb_ID)">
-                  <i class="fa fa-trash-o"></i>
-                </button>
+            <td *ngIf="data.isReply==true">Đã trả lời</td>
+            <td *ngIf="data.isReply!=true">Chưa trả lời</td>
+            <td>{{data.theReply}}</td>
+            <td style="text-align: right" *ngIf="data.isReply==true">
+              <button style="opacity:0.2" disabled type="button" class="btn btn-success btn-sm">
+                <i class="fa fa-reply"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteFeedback(data.feb_ID)" tooltip="Xoá phản hồi">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>            
+            <td style="text-align: right" *ngIf="data.isReply!=true">
+              <button type="button" class="btn btn-success btn-sm" (click)="openReplyFeedbackDialog(data)" tooltip="Trả lời phản hồi">
+                <i class="fa fa-reply"></i>
+              </button>
+              <button style="opacity:0.2" disabled type="button" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+              </button>
             </td>
           </tbody>
           <tbody>
@@ -40,6 +56,15 @@
                         previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                         [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
           </div>
+          <mat-form-field [style.width.px]="130"> 
+            <mat-label>Số hàng hiển thị</mat-label>
+            <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+              <mat-option value="5">5</mat-option>
+              <mat-option value="10">10</mat-option>
+              <mat-option value="25">25</mat-option>
+              <mat-option value="100">100</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>

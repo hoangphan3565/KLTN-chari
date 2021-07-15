@@ -4,11 +4,13 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 
 const url = {
-    baseUrl: "http://192.168.1.5:8080/api",
+    // baseUrl: "http://172.20.10.2:8080/api",
+    baseUrl: "http://192.168.1.202:8080/api",
     projects: '/projects',
     posts:'/posts',
     cities: '/cities',
     supportedPeoples: '/supported_peoples',
+    supportedPeopleRecommends: '/supported_people_recommends',
     projectTypes: '/project_types',
     feedbacks: '/feedbacks',
     login: '/login',
@@ -17,7 +19,7 @@ const url = {
 
 const instance = axios.create({
     baseURL: url.baseUrl,
-    headers: {"Content-Type":"application/json","Accept": "application/json"},
+    headers: {"Content-Type":"application/json","Accept": "application/json",},
 });
 
 instance.interceptors.request.use(request=>{

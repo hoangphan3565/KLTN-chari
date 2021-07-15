@@ -13,7 +13,9 @@ export class DialogDisburseProjectComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<DialogDisburseProjectComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Project) { }
+    @Inject(MAT_DIALOG_DATA) public data: Project) { 
+      dialogRef.disableClose = true;
+    }
   
   ngOnInit(): void {
     this.disburseCode = 'GIAINGAN'+this.data.prj_ID

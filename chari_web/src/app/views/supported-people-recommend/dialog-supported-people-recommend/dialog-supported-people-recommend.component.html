@@ -1,0 +1,47 @@
+<button mat-icon-button mat-dialog-close class="close-button" >
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>  
+<h2 mat-dialog-title>Xử lý hoàn cảnh khó khăn</h2>
+<h5 mat-dialog-title>Bước 1: Cập nhật thông tin người thụ hưởng</h5>
+<mat-dialog-content>
+    <h5>Thông tin người giới thiệu</h5>
+    <mat-form-field disabled appearance="outline" [style.width.%]="60">
+        <mat-label>Tên Người giới thiệu</mat-label>
+        <input name="referrerName" matInput [(ngModel)]="data.referrerName" required>
+    </mat-form-field>
+    <mat-form-field disabled appearance="outline" [style.width.%]="38">
+        <mat-label>SĐT Liên hệ</mat-label>
+        <input name="referrerPhone" matInput [(ngModel)]="data.referrerPhone" required>
+    </mat-form-field>
+    <mat-form-field disabled appearance="outline" [style.width.%]="98"> 
+        <mat-label>Mô tả hoàn cảnh</mat-label>
+        <textarea matInput name="description" [(ngModel)]="data.referrerDescription" required></textarea>
+    </mat-form-field>
+
+    <h5>Thông tin người thụ hưởng</h5>
+     <mat-form-field appearance="outline" [style.width.%]="60">
+        <mat-label>Tên đầy đủ</mat-label>
+        <input name="fullname" matInput [(ngModel)]="data.fullName" required cdkFocusInitial>
+    </mat-form-field>
+    <mat-form-field appearance="outline" [style.width.%]="38">
+        <mat-label>Số điện thoại</mat-label>
+        <input name="phoneNumber" matInput [(ngModel)]="data.phoneNumber" required>
+    </mat-form-field>
+     <mat-form-field appearance="outline" [style.width.%]="98">
+        <mat-label>Địa chỉ</mat-label>
+        <input name="address" matInput [(ngModel)]="data.address" required>
+    </mat-form-field>
+     <mat-form-field appearance="outline" [style.width.%]="60">
+        <mat-label>Tên ngân hàng</mat-label>
+        <input name="bankName" matInput [(ngModel)]="data.bankName" required>
+    </mat-form-field>
+     <mat-form-field appearance="outline" [style.width.%]="38">
+        <mat-label>Số tài khoản</mat-label>
+        <input name="bankAccount" matInput [(ngModel)]="data.bankAccount" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="btn btn-danger"(click)="unHandle()">Hủy</button>
+    <button mat-button class="btn btn-primary" (click)="saveDraft()">Lưu nháp</button>
+    <button mat-button class="btn btn-success" (click)="nextStep()">Tiếp theo</button>
+</mat-dialog-actions>

@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: SupportedPeopleComponent,
     data: {
-      title: 'Đơn vị thụ hưởng'
+      title: 'Người thụ hưởng'
     }
   }
 ];

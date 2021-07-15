@@ -2,17 +2,16 @@ package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.*;
 import com.macia.chariBE.pushnotification.PushNotificationService;
-import com.macia.chariBE.repository.DonateDetailsRepository;
-import com.macia.chariBE.repository.DonatorRepository;
-import com.macia.chariBE.repository.PushNotificationRepository;
-import com.macia.chariBE.utility.DonateActivityStatus;
+import com.macia.chariBE.repository.IDonateDetailsRepository;
+import com.macia.chariBE.repository.IDonatorRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
+import com.macia.chariBE.utility.EDonateActivityStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,13 @@ public class DonatorService {
     private EntityManager em;
 
     @Autowired
-    private DonatorRepository donatorRepo;
+    private IDonatorRepository donatorRepo;
 
     @Autowired
     private DonateActivityService donateActivityService;
 
     @Autowired
-    private DonateDetailsRepository donateDetailsRepository;
+    private IDonateDetailsRepository IDonateDetailsRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -39,7 +38,7 @@ public class DonatorService {
     private DonateDetailsService donateDetailsService;
 
     @Autowired
-    private PushNotificationRepository pushNotificationRepository;
+    private IPushNotificationRepository IPushNotificationRepository;
 
     @Autowired
     private PushNotificationService pushNotificationService;
@@ -54,43 +53,27 @@ public class DonatorService {
 
     public List<Donator> findAll(){return donatorRepo.findAll();}
 
-    public Donator findByPhone(String phone) {
+    public Donator findByUsername(String username) {
         try {
-            return donatorRepo.findByPhoneNumber(phone);
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-    public Donator findByFacebookId(String facebookId) {
-        try {
-            return donatorRepo.findByFacebookId(facebookId);
+            return donatorRepo.findByUsername(username);
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    public Integer getDonatorIdByPhone(String s){
-        Donator d = donatorRepo.findByPhoneNumber(s);
+
+    public Integer getDonatorIdByUsername(String s){
+        Donator d = donatorRepo.findByUsername(s);
         if(d!=null){
             return d.getDNT_ID();
         }else{
             donatorRepo.saveAndFlush(Donator.builder()
                     .phoneNumber(s).favoriteNotification(pushNotificationService.findAllIdAsString())
                     .favoriteProject("").build());
-            return donatorRepo.findByPhoneNumber(s).getDNT_ID();
+            return donatorRepo.findByUsername(s).getDNT_ID();
         }
     }
-    public Integer getDonatorIdByFacebookId(String s){
-        Donator d = donatorRepo.findByFacebookId(s);
-        if(d!=null){
-            return d.getDNT_ID();
-        }else{
-            donatorRepo.saveAndFlush(Donator.builder()
-                    .facebookId(s).favoriteNotification(pushNotificationService.findAllIdAsString())
-                    .favoriteProject("").build());
-            return donatorRepo.findByFacebookId(s).getDNT_ID();
-        }
-    }
+
 
     public void addProjectIdToFavoriteList(Integer projectId, Integer donatorid) {
         Donator donator = donatorRepo.findById(donatorid).orElseThrow();
@@ -150,22 +133,22 @@ public class DonatorService {
 
     public void moveMoney(Integer project_id,Integer donator_id,Integer targetProjectId,Integer money) {
         DonateActivity oldDonateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-        oldDonateActivity.setStatus(DonateActivityStatus.FAILED.toString());
+        oldDonateActivity.setStatus(EDonateActivityStatus.FAILED.toString());
         donateActivityService.save(oldDonateActivity);
         DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, targetProjectId);
         if (donateActivity == null) {
-            donateDetailsRepository.save(DonateDetails.builder()
+            IDonateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(this.findById(donator_id))
                             .project(projectService.findProjectById(targetProjectId))
-                            .status(DonateActivityStatus.SUCCESSFUL.toString())
+                            .status(EDonateActivityStatus.SUCCESSFUL.toString())
                             .build()))
                     .donateDate(LocalDateTime.now())
                     .money(money)
                     .build());
         }
         else {
-            donateDetailsRepository.save(DonateDetails.builder()
+            IDonateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
                     .money(money)
@@ -174,7 +157,7 @@ public class DonatorService {
     }
 
     public List<Boolean> getFavoriteNotificationOfDonator(Integer donator_id){
-        List<PushNotification> lsp = pushNotificationRepository.findAll();
+        List<PushNotification> lsp = IPushNotificationRepository.findAll();
         List<Boolean> result = new ArrayList<>();
         Donator d = donatorRepo.findById(donator_id).orElseThrow();
         for(PushNotification p:lsp){

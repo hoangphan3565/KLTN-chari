@@ -36,35 +36,46 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      child: Stack(
         children: [
-          Text("Cài đặt thông báo",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: kPrimaryHighLightColor,
-            ),
+          Positioned(
+            right: size.width*0.35,top:-26,
+            child: Icon(Icons.horizontal_rule_rounded,size: 60,color: Colors.black38,),
           ),
-          SizedBox(height: 5),
-          Container(
-            height: 1.5,
-            color: Colors.grey[300],
-            margin: EdgeInsets.symmetric(horizontal: 0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 16),
+              Text("Cài đặt thông báo",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryHighLightColor,
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                height: 1.5,
+                color: Colors.grey[300],
+                margin: EdgeInsets.symmetric(horizontal: 0),
+              ),
+              for(int i=0;i<widget.push_notification_list.length;i++)
+                SwitchListTile(
+                  title: Text(widget.push_notification_list.elementAt(i).title),
+                  value: widget.favorite_notification_list.elementAt(i),
+                  activeColor: kPrimaryHighLightColor,
+                  onChanged: (bool value){
+                    setState(() {
+                      widget.favorite_notification_list[i]=value;
+                      changeStateNotificationList(widget.push_notification_list.elementAt(i).topic,widget.push_notification_list.elementAt(i).nof_ID,value);
+                    });
+                  },
+                )
+            ],
           ),
-          for(int i=0;i<widget.push_notification_list.length;i++)
-            SwitchListTile(
-              title: Text(widget.push_notification_list.elementAt(i).title),
-              value: widget.favorite_notification_list.elementAt(i),
-              onChanged: (bool value){
-                setState(() {
-                  widget.favorite_notification_list[i]=value;
-                  changeStateNotificationList(widget.push_notification_list.elementAt(i).topic,widget.push_notification_list.elementAt(i).nof_ID,value);
-                });
-              },
-            )
         ],
       ),
     );

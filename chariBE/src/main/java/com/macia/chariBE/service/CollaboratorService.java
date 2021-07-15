@@ -2,10 +2,9 @@ package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.Collaborator;
 import com.macia.chariBE.model.JwtUser;
-import com.macia.chariBE.repository.CollaboratorRepository;
-import com.macia.chariBE.repository.JwtUserRepository;
-import com.macia.chariBE.utility.UserStatus;
-import com.macia.chariBE.utility.UserType;
+import com.macia.chariBE.repository.ICollaboratorRepository;
+import com.macia.chariBE.repository.IJwtUserRepository;
+import com.macia.chariBE.utility.EUserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,10 @@ import java.util.List;
 public class CollaboratorService {
 
     @Autowired
-    private CollaboratorRepository repo;
+    private ICollaboratorRepository repo;
 
     @Autowired
-    private JwtUserRepository userRepository;
+    private IJwtUserRepository userRepository;
 
     public void save(Collaborator collaborator) {
         repo.saveAndFlush(collaborator);
@@ -53,7 +52,7 @@ public class CollaboratorService {
         c.setIsAccept(true);
         repo.saveAndFlush(c);
         JwtUser user = userRepository.findByUsername(c.getUsername());
-        user.setStatus(UserStatus.ACTIVATED);
+        user.setStatus(EUserStatus.ACTIVATED);
         userRepository.save(user);
         return findAll();
     }
@@ -62,7 +61,7 @@ public class CollaboratorService {
         c.setIsAccept(false);
         repo.saveAndFlush(c);
         JwtUser user = userRepository.findByUsername(c.getUsername());
-        user.setStatus(UserStatus.BLOCKED);
+        user.setStatus(EUserStatus.BLOCKED);
         userRepository.save(user);
         return findAll();
     }

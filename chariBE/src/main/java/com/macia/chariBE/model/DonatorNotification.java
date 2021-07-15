@@ -1,5 +1,6 @@
 package com.macia.chariBE.model;
 
+import com.macia.chariBE.utility.ENotificationTopic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,19 +17,24 @@ import java.time.LocalDateTime;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.donator_notification.findByDonatorId",
-                query = "SELECT dn FROM DonatorNotification dn where dn.donator.DNT_ID =:dnt_id order by dn.create_time desc "),
+                query = "SELECT dn FROM DonatorNotification dn " +
+                        "where dn.donator.DNT_ID =:dnt_id order by dn.create_time desc "),
+        @NamedQuery(name = "named.donator_notification.findByDonatorIdAndTitle",
+                query = "SELECT dn FROM DonatorNotification dn " +
+                        "where dn.donator.DNT_ID =:dnt_id and (lower(dn.title) like :skey or lower(dn.message) like :skey) order by dn.create_time desc "),
         @NamedQuery(name = "named.donator_notification.findAllClosedAndUnHandledNotification",
-                query = "SELECT dn FROM DonatorNotification dn where dn.handled=false and dn.topic='closed'"),
+                query = "SELECT dn FROM DonatorNotification dn where dn.handled=false and dn.topic='CLOSED'"),
         @NamedQuery(name = "named.donator_notification.findClosedNotificationByProjectIdAndDonatorId",
-                query = "SELECT dn FROM DonatorNotification dn where dn.project_id =:prj_id and dn.donator.DNT_ID =:dnt_id and dn.topic='closed'"),
+                query = "SELECT dn FROM DonatorNotification dn where dn.project_id =:prj_id and dn.donator.DNT_ID =:dnt_id and dn.topic='CLOSED'"),
 })
 public class DonatorNotification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer DNO_ID;
 
-    @Column(length = 100)
-    private String topic;
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private ENotificationTopic topic;
 
     @Column(length = 100)
     private String title;

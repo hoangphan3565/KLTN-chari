@@ -22,17 +22,19 @@ export class DialogPostComponent implements OnInit {
   downloadURL: Observable<string>;
   Projects: Project[];
   clb_id: Number;
+  isUploadingVideo: boolean;
 
   constructor(
     private notificationService: NotificationService,
     private projectService: ProjectService,
     public dialogRef: MatDialogRef<DialogPostComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: Post) { }
+    @Inject(MAT_DIALOG_DATA) public data: Post) { 
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getProject();
     this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
   }  
@@ -64,6 +66,7 @@ export class DialogPostComponent implements OnInit {
     }
   }  
   uploadVideo(event) {
+    this.isUploadingVideo=true;
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -78,6 +81,7 @@ export class DialogPostComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.videoUrl=(url);
+                this.isUploadingVideo=false;
               }
             });
           })
@@ -97,11 +101,6 @@ export class DialogPostComponent implements OnInit {
   deleteVideo() {
     this.videoUrl=null;
   }
-  
-  public async getProject(){
-    this.Projects = await (await this.projectService.getAllProjects(this.clb_id)).data as Project[];
-  }
-
   
   save(){
     this.data.videoUrl=this.videoUrl;

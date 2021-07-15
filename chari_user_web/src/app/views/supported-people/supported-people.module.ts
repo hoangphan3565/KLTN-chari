@@ -9,6 +9,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DialogProjectAddComponent } from './dialog-project/dialog-project.component';
+import { MaterialModule } from '../../material/material-module';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../../../environments/environment';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [
@@ -18,10 +24,18 @@ import { MatInputModule } from '@angular/material/input';
     PaginationModule.forRoot(),
     FormsModule,
     MatFormFieldModule,
-    MatInputModule  ],
+    MatInputModule,
+    CommonModule,
+    MaterialModule,
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
+    TooltipModule.forRoot(),
+
+  ],
   declarations: [ 
     SupportedPeopleComponent,
     DialogSupportedPeopleComponent, 
+    DialogProjectAddComponent,
   ]
 })
 export class SupportedPeopleModule { }

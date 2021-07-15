@@ -85,10 +85,18 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   _sendComment(String name,String content,BuildContext context) {
+    String msg;
+    bool haveError=false;
     if(widget.donator!=null){
       name = widget.donator.full_name;
     }
-    if(name!='' && content!=''){
+    if(name==''){
+      msg='Hãy điền tên';
+      haveError=true;
+    }else if(content==''){
+      msg='Hãy điền nội dung bình luận';
+      haveError=true;
+    }else{
       CommentService.saveComment(widget.project.prj_id,name,content).then((response) {
         setState(() {
           List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
@@ -101,9 +109,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         });
       });
       Navigator.pop(context);
-    }else{
+    }
+    if(haveError){
       Fluttertoast.showToast(
-          msg: "Hãy điền đầy đủ thông tin",
+          msg: msg,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -151,16 +160,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             letterSpacing: -1.2,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            onPressed: () {
-
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -704,35 +703,13 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
               ),
-              Container(
-                width: size.width/3,
-                height: 35,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: kPrimaryHighLightColor),
-                  borderRadius: BorderRadius.circular(8), color: kPrimaryLightColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 20,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: FlatButton(
-                  onPressed:() => {
-                    _showCommentDialog(context)
-                  },
-                  child: Text(
-                    "Gửi bình luận",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                        color: kPrimaryHighLightColor),
-                  ),
-                ),
+              ActionButton(
+                width: size.width/4,
+                onPressed:() => {
+                  _showCommentDialog(context)
+                },
+                buttonText: 'Bình luận',
               ),
-
             ],
           ),
 
@@ -828,8 +805,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   _showCommentDialog(BuildContext context) {
-    var focusNode = FocusNode();
-    focusNode.requestFocus();
+    Size size = MediaQuery.of(context).size;
+    var focusNodeName = FocusNode();
+    var focusNodeContent = FocusNode();
+    widget.donator==null?focusNodeName.requestFocus():focusNodeContent.requestFocus();
     TextEditingController _nameField = TextEditingController();
     TextEditingController _contentField = TextEditingController();
     showModalBottomSheet(
@@ -842,60 +821,72 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
         ),
         builder: (BuildContext context){
-          return SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-              child: Column(
-                children: <Widget>[
-                  Text("Bình luận",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: kPrimaryHighLightColor,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    height: 1.5,
-                    color: Colors.grey[300],
-                    margin: EdgeInsets.symmetric(horizontal: 0),
-                  ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Column(
-                      children: [
-                        if(widget.donator==null)
-                          RoundedInputField(
-                            icon: Icons.person,
-                            hintText: 'Tên',
-                            keyboardType: TextInputType.name,
-                            controller: _nameField,
-                            onTapClearIcon: ()=>{_nameField.clear()},
-                            onChanged: (value) {},
-                          ),
-                        RoundedInputField(
-                          icon: Icons.chat_outlined,
-                          hintText: 'Nội dung',
-                          focusNode: focusNode,
-                          keyboardType: TextInputType.name,
-                          controller: _contentField,
-                          onTapClearIcon: ()=>{_contentField.clear()},
-                          onChanged: (value) {},
-                        ),
-                        RoundedButton(
-                          text: "Gửi",
-                          press: (){
-                            _sendComment(_nameField.text,_contentField.text,context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+          return Stack(
+            children: [
+              Positioned(
+                right: size.width*0.42,top:-22,
+                child: Icon(Icons.horizontal_rule_rounded,size: 60,color: Colors.black38,),
               ),
-            ),
+              SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 24),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Bình luận",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryHighLightColor,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Container(
+                        height: 1.5,
+                        color: Colors.grey[300],
+                        margin: EdgeInsets.symmetric(horizontal: 0),
+                      ),
+                      SizedBox(height: 5),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Column(
+                          children: [
+                            if(widget.donator==null)
+                              RoundedInputField(
+                                icon: Icons.person,
+                                hintText: 'Tên',
+                                focusNode: focusNodeName,
+                                keyboardType: TextInputType.name,
+                                controller: _nameField,
+                                onTapClearIcon: ()=>{_nameField.clear()},
+                                onChanged: (value) {},
+                              ),
+                            RoundedInputField(
+                              icon: Icons.chat_outlined,
+                              hintText: 'Nội dung',
+                              focusNode: focusNodeContent,
+                              keyboardType: TextInputType.name,
+                              controller: _contentField,
+                              onTapClearIcon: ()=>{_contentField.clear()},
+                              onChanged: (value) {},
+                              onSubmitted: (value)=>{
+                                _sendComment(_nameField.text,_contentField.text,context)
+                              },
+                            ),
+                            RoundedButton(
+                              text: "Gửi",
+                              press: (){
+                                _sendComment(_nameField.text,_contentField.text,context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           );
         }
     );

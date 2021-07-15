@@ -1,5 +1,7 @@
 package com.macia.chariBE;
 
+import com.macia.chariBE.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +14,8 @@ import java.sql.Statement;
 @SpringBootApplication
 public class chariBEApplication implements CommandLineRunner {
 
-
+	@Autowired
+	private ProjectService projectService;
 
 	public static void main(String[] args)  throws SQLException {
 		SpringApplication.run(chariBEApplication.class, args);
@@ -38,6 +41,7 @@ public class chariBEApplication implements CommandLineRunner {
 //		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 //		String ps = passwordEncoder.encode("hoang123");
 //		System.out.println(ps);
+		projectService.updateAllProjectStatus();
 		System.out.println("Web API service is running!");
 	}
 }

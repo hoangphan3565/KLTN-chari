@@ -1,8 +1,6 @@
 package com.macia.chariBE.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.protobuf.Enum;
-import com.macia.chariBE.utility.DonateActivityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

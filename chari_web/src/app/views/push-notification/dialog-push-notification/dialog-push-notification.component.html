@@ -1,15 +1,16 @@
 <h3 mat-dialog-title *ngIf="data.nof_ID==undefined">Thêm Thông báo đẩy</h3>
 <h3 mat-dialog-title *ngIf="data.nof_ID!=undefined">Cập nhật Thông báo đẩy</h3>
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tiêu đề</mat-label>
-        <input name="title" matInput [(ngModel)]="data.title" required>
+        <input name="title" matInput [(ngModel)]="data.title" required cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Nội dung</mat-label>
-        <input name="message" matInput [(ngModel)]="data.message" required>
+        <textarea name="message" matInput [(ngModel)]="data.message" required></textarea>
     </mat-form-field> 
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button class="btn btn-success" (click)="save()" cdkFocusInitial>Lưu</button>
-</mat-dialog-actions> 
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
+</mat-dialog-actions>

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AngularFireStorage } from "@angular/fire/storage";
 import { Project } from '../../models/Project';
-import { ProjectDTO } from '../../models/ProjectDTO';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogProjectComponent } from './dialog-project/dialog-project.component';
@@ -28,8 +27,13 @@ export class ProjectComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.currentPage =  event.page;
-    this.getProjects((this.currentPage-1)*this.itemsPerPage,this.currentPage*this.itemsPerPage);
+    this.getProjects(this.currentPage,this.itemsPerPage);
 
+  }
+
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getProjects(this.currentPage,this.itemsPerPage);
   }
 
   constructor(
@@ -41,7 +45,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
     this.getTotalUncloseProject();
-    this.getProjects(0,this.itemsPerPage);
+    this.getProjects(1,this.itemsPerPage);
   }
   
   public async getTotalUncloseProject(){
@@ -60,10 +64,10 @@ export class ProjectComponent implements OnInit {
       width: '900px',
       data: this.Project,
     });
-    dialogRef.afterClosed().subscribe((result: ProjectDTO) => {
-      if(result){
-        if (result.prj_ID==null) this.ceateProject(result);
-        else this.updateProject(result);
+    dialogRef.afterClosed().subscribe((res: Project) => {
+      if(res){
+        if (res.prj_ID==null) this.ceateProject(res);
+        else this.updateProject(res);
       }
     });
   }
@@ -114,30 +118,30 @@ export class ProjectComponent implements OnInit {
   public ceateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.createProject(data,this.clb_id);
-      if (result)
+      const res = await (await this.ProjectService.createProject(data, this.clb_id)).data;
+      if (res)
       {
-        this.notificationService.success('Thêm chương trình từ thiện thành công');
-        this.Projects = result.data as Project[];
+        this.notificationService.success(res.message);
+        this.getProjects(1,this.itemsPerPage);
       }    
     }
     catch (e) {
-      alert('Thêm chương trình từ thiện thất bại');
+      alert('Thêm dự án thất bại');
     }
   };  
 
   public updateProject = async (data) => {
     try 
     {
-      const result = await this.ProjectService.updateProject(data,this.clb_id);
-      if (result)
+      const res = await (await this.ProjectService.updateProject(data,this.clb_id)).data;
+      if (res)
       {
-        this.notificationService.success('Cập nhật chương trình từ thiện thành công');
-        this.Projects = result.data as Project[];
+        this.notificationService.success(res.message);
+        this.getProjects(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
-      alert('Cập nhật chương trình từ thiện thất bại');
+      alert('Cập nhật thất bại');
     }
   };
 
@@ -145,18 +149,21 @@ export class ProjectComponent implements OnInit {
   public deleteProject = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá chương trình từ thiện này?')){
-        const result = await this.ProjectService.deleteProject(id);
-        if (result)
+      if(confirm('Bạn có thực sự muốn xoá dự án này?')){
+        const res = await (await this.ProjectService.deleteProject(id,this.clb_id)).data;
+        if (res)
         {
-          this.notificationService.warn('Xoá chương trình từ thiện thành công');
-          this.Projects = result.data as Project[];
+          this.notificationService.warn(res.message);
+          this.getProjects(this.currentPage,this.itemsPerPage);
         }  
       }
     }
     catch (e) {
-      console.log(e);
+      alert('Xóa dự án thất bại');
     }
+  }
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 }
 

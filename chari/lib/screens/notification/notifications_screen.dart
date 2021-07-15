@@ -16,10 +16,9 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  List<DonatorNotification> donator_notification_list;
   Donator donator;
   int total;
-  NotificationsScreen({Key key, @required this.donator_notification_list,this.donator,this.total}) : super(key: key);
+  NotificationsScreen({Key key, @required this.donator,this.total}) : super(key: key);
   @override
   _NotificationsScreenState createState()=> _NotificationsScreenState();
 }
@@ -30,10 +29,18 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   var favorite_notification_list = new List<bool>();
   var projects_ready_to_move_money = new List<Project>();
 
-  int step = 10;
-  int numViewItem=0;
+  int size = 10;
+  int numOfItem=0;
+  int page = 1;
   var inpage_donator_notification_list=List<DonatorNotification>();
   var p = List<Project>();
+
+
+  TextEditingController _searchQueryController = TextEditingController();
+  bool _isTapingSearchKey = false;
+  bool _isSearching = false;
+  bool _isLoading = true;
+  String searchQuery = "*";
 
   _getProjectAndNavigate(DonatorNotification n) async {
     await ProjectService.getProjectById(n.project_id).then((response) {
@@ -44,7 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),)),
+      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),donator: widget.donator,)),
     );
   }
 
@@ -60,7 +67,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   }
 
   _getPushNotification() async{
-    DonatorNotificationService.getPushNotification().then((response) {
+    DonatorNotificationService.getPushNotification(widget.donator.token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         push_notification_list = list.map((model) => PushNotification.fromJson(model)).toList();
@@ -75,6 +82,161 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         favorite_notification_list = list;
       });
     });
+  }
+
+  _countTotalNotification() async{
+    await DonatorNotificationService.getTotalDonatorNotificationByDonatorId('*',widget.donator.id,widget.donator.token).then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        widget.total = int.tryParse(res);
+      });
+    });
+  }
+
+  _getNotification(){
+    DonatorNotificationService.getDonatorNotificationListByDonatorIdPageASizeB(searchQuery,widget.donator.id,page,size,widget.donator.token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_donator_notification_list = list.map((model) => DonatorNotification.fromJson(model)).toList();
+        _isLoading=false;
+      });
+    });
+  }
+
+  _getMoreDonatorNotification(){
+    DonatorNotificationService.getDonatorNotificationListByDonatorIdPageASizeB(searchQuery,widget.donator.id,page,size,widget.donator.token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_donator_notification_list += list.map((model) => DonatorNotification.fromJson(model)).toList();
+      });
+    });
+  }
+
+  void loadMore() {
+    setState(() {
+      if(numOfItem<=widget.total-size){
+        numOfItem+=size;
+      }else{
+        numOfItem+= widget.total - numOfItem;
+      }
+      if(numOfItem>inpage_donator_notification_list.length){
+        page++;
+        _getMoreDonatorNotification();
+        print('Call API!!');
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getNotification();
+    _getPushNotification();
+    _getFavoriteNotification();
+    if(widget.total>=size){numOfItem=size;}
+    else{numOfItem = widget.total;}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(0))
+          ),
+          child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                  loadMore();
+                }
+                return true;
+              },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    backgroundColor: Colors.white,
+                    floating: true,
+                    centerTitle: false,
+                    title: _isSearching?_buildSearchField():Image.asset(
+                      "assets/icons/logo.png",
+                      height: size.height * 0.05,
+                    ),
+                    actions: _buildActions()
+                  ),
+                  _isLoading==true?
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: size.height/3),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/loading.gif",
+                                height: size.height * 0.13,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: 1,
+                    ),
+                  ):
+                  (inpage_donator_notification_list.length==0?
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: size.height/3.5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icons/nodata.png",
+                                height: size.height * 0.13,
+                              ),
+                              Text(
+                                "Không tìm thấy kết quả!",
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: kPrimaryHighLightColor,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: 1,
+                    ),
+                  ) :
+                  SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                            return (index == inpage_donator_notification_list.length ) ?
+                            Container(
+                              child: FlatButton(
+                                child: Text("",style: TextStyle(color: kPrimaryHighLightColor),),
+                                onPressed: () {
+                                  loadMore();
+                                },
+                              ),
+                            ) : buildNotificationInfo(inpage_donator_notification_list[index],index);
+                          },
+                          childCount: (numOfItem < widget.total) ? inpage_donator_notification_list.length + 1 : inpage_donator_notification_list.length,
+                        ),
+                      ))
+                ],
+              )
+          )
+      ),
+    );
   }
 
   _showSettingDialog(BuildContext context) {
@@ -139,6 +301,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   }
 
   _showAskForMoveMoneyDialog(BuildContext context,int project_id,int donator_id,int money,String token,int index){
+    Size size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -149,13 +312,18 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           ),
         ),
         builder: (BuildContext context){
-          return Wrap(
-            children: [
-              Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-                child: SingleChildScrollView(
+          return Container(
+            padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: size.width*0.35,top:-26,
+                  child: Icon(Icons.horizontal_rule_rounded,size: 60,color: Colors.black38,),
+                ),
+                SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 16),
                       Text("Xử lý chuyển dời tiền",
                         style: TextStyle(
                           fontSize: 17,
@@ -163,7 +331,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 8),
                       Container(
                         height: 1.5,
                         color: Colors.grey[300],
@@ -223,14 +391,16 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+
           );
         }
     );
   }
 
   _showInformDialog(BuildContext context){
+    Size size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -244,28 +414,37 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           return Wrap(
             children: [
               Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-                child: Column(
-                  children: <Widget>[
-                    Text("Trường hợp này đã được xử ",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: size.width*0.35,top:-26,
+                      child: Icon(Icons.horizontal_rule_rounded,size: 60,color: Colors.black38,),
                     ),
-                    SizedBox(height: 5),
-                    Container(
-                      height: 1.5,
-                      color: Colors.grey[300],
-                      margin: EdgeInsets.symmetric(horizontal: 0),
-                    ),
-                    SizedBox(height: 10),
-                    RoundedButton(
-                        text: "Đóng",
-                        press: (){
-                          Navigator.pop(context);
-                        }
+                    Column(
+                      children: <Widget>[
+                        SizedBox(height: 16),
+                        Text("Trường hợp này đã được xử lý",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          height: 1.5,
+                          color: Colors.grey[300],
+                          margin: EdgeInsets.symmetric(horizontal: 0),
+                        ),
+                        SizedBox(height: 10),
+                        RoundedButton(
+                            text: "Đóng",
+                            press: (){
+                              Navigator.pop(context);
+                            }
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -273,135 +452,6 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
             ],
           );
         }
-    );
-  }
-
-  _getMoreDonatorNotification(){
-    DonatorNotificationService.getDonatorNotificationListByDonatorIdFromAToB(widget.donator.id,numViewItem,numViewItem+step,widget.donator.token).then((response) {
-      setState(() {
-        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        inpage_donator_notification_list += list.map((model) => DonatorNotification.fromJson(model)).toList();
-      });
-    });
-  }
-
-  void loadMore() {
-    _getMoreDonatorNotification();
-    setState(() {
-      if(numViewItem<=widget.total-step){
-        numViewItem+=step;
-      }else{
-        numViewItem+= widget.total - numViewItem;
-      }
-      numViewItem += step;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getPushNotification();
-    _getFavoriteNotification();
-    inpage_donator_notification_list=widget.donator_notification_list;
-    if(widget.total>=step){numViewItem=step;}
-    else{numViewItem = widget.total;}
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(0))
-          ),
-          child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                  loadMore();
-                }
-                return true;
-              },
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    backgroundColor: Colors.white,
-                    floating: true,
-                    centerTitle: false,
-                    title: Image.asset(
-                      "assets/icons/logo.png",
-                      height: size.height * 0.04,
-                    ),
-                    actions: <Widget>[
-                      IconButton(
-                        splashRadius: 20,
-                        icon: Icon(
-                          FontAwesomeIcons.search,
-                          size: 19,
-                        ),
-                        onPressed: () {
-                          // do something
-                        },
-                      ),
-                      IconButton(
-                        splashRadius: 20,
-                        icon: Icon(
-                          Icons.settings,
-                        ),
-                        onPressed: () {
-                          _showSettingDialog(context);
-                        },
-                      ),
-                    ],
-                  ),
-                  widget.donator_notification_list.length == 0 ?
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.only(top: 300.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Chưa có thông báo nào!",
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: kPrimaryHighLightColor,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.5,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      childCount: 1,
-                    ),
-                  )
-                      :
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                        return (index == inpage_donator_notification_list.length ) ?
-                        Container(
-                          child: FlatButton(
-                            child: Text("Đang tải...",style: TextStyle(color: kPrimaryHighLightColor),),
-                            onPressed: () {
-                              loadMore();
-                            },
-                          ),
-                        ) : buildNotificationInfo(inpage_donator_notification_list[index],index);
-                      },
-                      childCount: (numViewItem <= widget.total) ? inpage_donator_notification_list.length + 1 : inpage_donator_notification_list.length,
-                    ),
-                  )
-                ],
-              )
-          )
-      ),
     );
   }
 
@@ -487,10 +537,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
     return GestureDetector(
         onTap: () async {
           _getProjectReadyToMoveMoney(notification.total_money);
-          if(notification.topic!='closed'){
+          if(notification.topic!='CLOSED'&&notification.topic!=null){
             _getProjectAndNavigate(notification);
           }
-          if(notification.topic=='closed'){
+          if(notification.topic=='CLOSED'){
             if(notification.handled==true){
               _showInformDialog(context);
             }
@@ -508,10 +558,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withOpacity(0.2),
                 spreadRadius: 1,
-                blurRadius: 20,
-                offset: Offset(0, 10),
+                blurRadius: 10,
+                offset: Offset(5, 5),
               ),
             ],
           ),
@@ -535,7 +585,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
-                        if(notification.topic=='closed' && notification.handled==true)
+                        if(notification.topic=='CLOSED' && notification.handled==true)
                           Text(
                             ' (Đã xử lý)',
                             style: TextStyle(
@@ -543,7 +593,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                        if(notification.topic=='closed' && notification.handled==false)
+                        if(notification.topic=='CLOSED' && notification.handled==false)
                           Text(
                             ' (Chưa xử lý)',
                             style: TextStyle(
@@ -585,8 +635,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                       BoxShadow(
                         color: Colors.black.withOpacity(0.3),
                         spreadRadius: 2,
-                        blurRadius: 20,
-                        offset: Offset(0, 10),
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
                       ),
                     ],
                     image: DecorationImage(
@@ -598,5 +648,127 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           ),
         )
     );
+  }
+
+  Widget _buildSearchField() {
+    return SearchField(
+      hintText: 'Tìm kiếm thông báo',
+      controller: _searchQueryController,
+      showClearIcon: _isTapingSearchKey,
+      onTapClearIcon: _clearSearchQuery,
+      onChanged: (query) => _updateSearchQuery(query),
+      onSubmitted: (query) => _letSearch(query),
+    );
+  }
+
+
+  List<Widget> _buildActions() {
+    Size size = MediaQuery.of(context).size;
+    if (_isSearching) {
+      return <Widget>[
+        ActionButton(
+          width: 75,
+          height: 25,
+          onPressed: ()=>{_stopSearching(),},
+          buttonText: 'Đóng',
+          borderRadius: 0.0,
+          borderColor: Colors.white70,
+          buttonColor: Colors.white,
+          textColor: kPrimaryHighLightColor,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+          splashRadius: size.height * 0.03,
+          icon: Icon(
+            FontAwesomeIcons.search,
+            size: size.height * 0.03,
+            color: kPrimaryHighLightColor,
+          ),
+          onPressed: _startSearch
+      ),
+      IconButton(
+        splashRadius: 20,
+        icon: Icon(
+          Icons.settings_rounded,
+          color: kPrimaryHighLightColor,
+          size: size.height * 0.036,
+        ),
+        onPressed: () {
+          _showSettingDialog(context);
+        },
+      ),
+    ];
+  }
+
+  _resetElement(){
+    setState(() {
+      this.size = 5;
+      this.numOfItem=0;
+      this.page = 1;
+    });
+  }
+
+  _getNewData(){
+    _resetElement();
+    setState(() {
+      this.inpage_donator_notification_list.clear();
+      _getNotification();
+      _countTotalNotification();
+    });
+  }
+
+  _startSearch() {
+    setState(() {
+      _isSearching = true;
+    });
+    _resetElement();
+  }
+
+
+  _letSearch(String searchKey) {
+    if(searchQuery!='' && searchQuery!='*'){
+      setState(() {
+        _isLoading=true;
+      });
+      _getNewData();
+    }
+  }
+
+  _updateSearchQuery(String newQuery) {
+    setState(() {
+      if(newQuery!=''){
+        setState(() {
+          _isTapingSearchKey=true;
+          searchQuery = newQuery;
+        });
+      }else{
+        _isTapingSearchKey=false;
+      }
+    });
+  }
+
+  _stopSearching() {
+    setState(() {
+      _isLoading = true;
+    });
+    _clearSearchQuery();
+    _getNewData();
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  _clearSearchQuery() async {
+    setState(() {
+      _searchQueryController.clear();
+      _updateSearchQuery("");
+      searchQuery="*";
+      _isTapingSearchKey=false;
+    });
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
@@ -26,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen>{
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool notSeePassword = true;
+  bool havePhone = false;
+  bool havePass = false;
 
   _loginFacebook() async {
     FacebookLogin facebookLogin = FacebookLogin();
@@ -34,18 +37,21 @@ class _LoginScreenState extends State<LoginScreen>{
     final fb_token = result.accessToken.token;
     final graphResponse = await http.get(
         'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name&access_token=${fb_token}');
-    var fbUser = json.decode(utf8.decode(graphResponse.bodyBytes));
-    print(fbUser);
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setString('fb_token',fb_token);
+    final fbUser = json.decode(utf8.decode(graphResponse.bodyBytes));
+    final fbId=fbUser['id'];
+    final fbName=fbUser['name'];
+    final avatar = "http://graph.facebook.com/$fbId/picture?type=square";
+    print(avatar);
+    SharedPreferences p = await SharedPreferences.getInstance();
+    p.setString('fb_token',fb_token);
 
     if (result.status == FacebookLoginStatus.loggedIn) {
       final credential = FacebookAuthProvider.getCredential(accessToken: fb_token);
       _firebaseAuth.signInWithCredential(credential);
     }
 
-    var res = await UserService.loginFB(fbUser['name'], fbUser['id']);
-    _saveDeviceToken(fbUser['id']);
+    var res = await UserService.loginFB(fbName,fbId,avatar);
+    _saveDeviceToken(fbId);
     var jsRes = json.decode(utf8.decode(res.bodyBytes));
     if(res.statusCode == 200) {
       if(jsRes['data']['usertype']!='Donator'&&jsRes['data']['usertype']!=null){
@@ -60,46 +66,20 @@ class _LoginScreenState extends State<LoginScreen>{
         );
         return;
       }else{
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(jsRes['token']); //{sub: 0973465515, exp: 19609229038, iat: 1609229038}
-        DateTime expirationDate = JwtDecoder.getExpirationDate(jsRes['token']);
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(jsRes['token']);
+        p.setString('token',jsRes['token']);
+        p.setString('username',decodedToken['sub']);
 
-        _prefs.setString('token',jsRes['token']);
-        _prefs.setString('username',decodedToken['sub']);
-        
-        _prefs.setInt('donator_id',jsRes['info']['dnt_ID']);
-        if(jsRes['info']['address']==null){
-          _prefs.setString('donator_address','');
-        }else{
-          _prefs.setString('donator_address',jsRes['info']['address'].toString());
-        }
-
-        if(jsRes['info']['fullName']==null){
-          _prefs.setString('donator_full_name','');
-        }else{
-          _prefs.setString('donator_full_name',jsRes['info']['fullName'].toString());
-        }
-
-        if(jsRes['info']['avatarUrl']==null){
-          _prefs.setString('donator_avatar_url','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/charity_avatar.jpeg?alt=media&token=e339794b-3625-452b-a170-02f0874d5363');
-        }else{
-          _prefs.setString('donator_avatar_url',jsRes['info']['avatarUrl'].toString());
-        }
-
-        if(jsRes['info']['facebookId']==null){
-          _prefs.setString('donator_facebook_id','');
-        }else{
-          _prefs.setString('donator_facebook_id',jsRes['info']['facebookId'].toString());
-        }
-
-        if(jsRes['info']['phoneNumber']==null){
-          _prefs.setString('donator_phone','');
-        }else{
-          _prefs.setString('donator_phone',jsRes['info']['phoneNumber'].toString());
-        }
-
-        _prefs.setString('donator_favorite_project',jsRes['info']['favoriteProject'].toString());
-        _prefs.setString('donator_favorite_notification',jsRes['info']['favoriteNotification'].toString());
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
+        final donator = Donator.fromJson(jsRes['info']);
+        p.setInt('donator_id',donator.id);
+        p.setString('donator_address',donator.address);
+        p.setString('donator_full_name',donator.full_name);
+        p.setString('donator_phone',donator.phone_number);
+        p.setString('donator_avatar_url',donator.avatar_url);
+        p.setString('donator_username',donator.username);
+        p.setString('donator_favorite_project',donator.favorite_project);
+        p.setString('donator_favorite_notification',donator.favorite_notification);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> MainScreen()), (Route<dynamic> route) => false);
       }
     }
     Fluttertoast.showToast(
@@ -130,54 +110,27 @@ class _LoginScreenState extends State<LoginScreen>{
         );
         return;
       }else{
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(jsRes['token']); //{sub: 0973465515, exp: 19609229038, iat: 1609229038}
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(jsRes['token']);
         DateTime expirationDate = JwtDecoder.getExpirationDate(jsRes['token']);
         print("Token sẽ hết hạn vào: "+expirationDate.toString()); //Hết hạn vào:
 
         // lưu token vào SharedPreferences
-        SharedPreferences _prefs = await SharedPreferences.getInstance();
-        _prefs.setString('token',jsRes['token']);
-        _prefs.setString('username',decodedToken['sub']);
-        _prefs.setString('password',password);
-
-
-        _prefs.setInt('donator_id',jsRes['info']['dnt_ID']);
-        if(jsRes['info']['address']==null){
-          _prefs.setString('donator_address','');
-        }else{
-          _prefs.setString('donator_address',jsRes['info']['address'].toString());
-        }
-
-        if(jsRes['info']['fullName']==null){
-          _prefs.setString('donator_full_name','Nhà hảo tâm');
-        }else{
-          _prefs.setString('donator_full_name',jsRes['info']['fullName'].toString());
-        }
-
-        if(jsRes['info']['avatarUrl']==null){
-          _prefs.setString('donator_avatar_url','https://1.bp.blogspot.com/-kFguDxc0qe4/XyzyK1y6eiI/AAAAAAAAwW8/XcAuOQ2qvQYhoDe4Bv0eLX9eye7FnmKKgCLcBGAsYHQ/s1600/co-4-la%2B%25283%2529.jpg');
-        }
-        else{
-          _prefs.setString('donator_avatar_url',jsRes['info']['avatarUrl'].toString());
-        }
-
-        if(jsRes['info']['facebookId']==null){
-          _prefs.setString('donator_facebook_id','');
-        }else{
-          _prefs.setString('donator_facebook_id',jsRes['info']['facebookId'].toString());
-        }
-
-        if(jsRes['info']['phoneNumber']==null){
-          _prefs.setString('donator_phone','');
-        }else{
-          _prefs.setString('donator_phone',jsRes['info']['phoneNumber'].toString());
-        }
-
-        _prefs.setString('donator_favorite_project',jsRes['info']['favoriteProject'].toString());
-        _prefs.setString('donator_favorite_notification',jsRes['info']['favoriteNotification'].toString());
+        SharedPreferences p = await SharedPreferences.getInstance();
+        p.setString('token',jsRes['token']);
+        p.setString('username',decodedToken['sub']);
+        p.setString('password',password);
+        final donator = Donator.fromJson(jsRes['info']);
+        p.setInt('donator_id',donator.id);
+        p.setString('donator_address',donator.address);
+        p.setString('donator_full_name',donator.full_name);
+        p.setString('donator_phone',donator.phone_number);
+        p.setString('donator_avatar_url',donator.avatar_url);
+        p.setString('donator_username',donator.username);
+        p.setString('donator_favorite_project',donator.favorite_project);
+        p.setString('donator_favorite_notification',donator.favorite_notification);
 
         //Chuyển hướng đến trang chính và xóa tất cả context trước đó
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> AppBarScreen()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=> MainScreen()), (Route<dynamic> route) => false);
       }
     }
     Fluttertoast.showToast(
@@ -284,9 +237,16 @@ class _LoginScreenState extends State<LoginScreen>{
             return "error";
           });
         },
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (AuthException e) {
+          String msg;
+          if(e.code == 'invalid-phone-number') {
+            msg="Số điện thoại không tồn tại!";
+            UserService.deleteUserByUserName(NavitePhone);
+          }else{
+            msg="Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!";
+          }
           Fluttertoast.showToast(
-              msg: "Xác thực thất bại!\nSĐT không tồn tại hoặc Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!",
+              msg: msg,
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -347,23 +307,28 @@ class _LoginScreenState extends State<LoginScreen>{
                   icon: FontAwesomeIcons.phone,
                   keyboardType: TextInputType.number,
                   controller: _usernameController,
-                  onTapClearIcon: ()=>{_usernameController.clear()},
-                  onChanged: (value) {},
+                  showClearIcon: havePhone,
+                  onTapClearIcon: ()=>{_usernameController.clear(),setState(() {havePhone=false;})},
+                  onChanged: (value) {
+                    value!=''?setState(() {havePhone=true;}):setState(() {havePhone=false;});
+                  },
                 ),
                 RoundedPasswordField(
                   hintText: "Nhập mật khẩu",
                   obscureText: notSeePassword,
                   icon: FontAwesomeIcons.lock,
                   controller: _passwordController,
-                  onTapClearIcon: ()=>{_passwordController.clear()},
+                  showClearIcon: havePass,
+                  onTapClearIcon: ()=>{_passwordController.clear(),setState(() {havePass=false;})},
                   switchObscureTextMode: ()=>{
-                    if(notSeePassword==true){
-                      setState((){notSeePassword=false;})
-                    }else{
-                      setState((){notSeePassword=true;})
-                    }
+                    notSeePassword==true?setState((){notSeePassword=false;}):setState((){notSeePassword=true;})
                   },
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    value!=''?setState(() {havePass=true;}):setState(() {havePass=false;});
+                  },
+                  onSubmitted: (value)=>{
+                    _validateCheckActivetedSendCodeAndLoginIfVerifySuccessful(_usernameController.text,_passwordController.text)
+                  },
                 ),
                 SizedBox(height: size.height * 0.01),
                 RoundedButton(

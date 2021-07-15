@@ -3,13 +3,13 @@ package com.macia.chariBE.service;
 import com.macia.chariBE.model.*;
 import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.pushnotification.PushNotificationService;
-import com.macia.chariBE.repository.DonatorNotificationRepository;
-import com.macia.chariBE.repository.JwtUserRepository;
-import com.macia.chariBE.repository.PushNotificationRepository;
+import com.macia.chariBE.repository.IDonatorNotificationRepository;
+import com.macia.chariBE.repository.IJwtUserRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
+import com.macia.chariBE.utility.ENotificationTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.Notification;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class DonatorNotificationService {
     @Autowired
-    private DonatorNotificationRepository repo;
+    private IDonatorNotificationRepository repo;
 
     @Autowired
     private DonatorService donatorService;
@@ -34,13 +34,13 @@ public class DonatorNotificationService {
     private PushNotificationService pushNotificationService;
 
     @Autowired
-    private PushNotificationRepository pushNotificationRepository;
+    private IPushNotificationRepository pushNotificationRepository;
 
     @Autowired
     private DonateActivityService donateActivityService;
 
     @Autowired
-    private JwtUserRepository jwtUserRepository;
+    private IJwtUserRepository IJwtUserRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -49,22 +49,32 @@ public class DonatorNotificationService {
         repo.saveAndFlush(notification);
     }
 
-    public List<DonatorNotification> findDonatorNotificationByDonatorId(Integer donator_id) {
+
+    public int countAllDonatorNotificationByDonatorIdAndTitle(Integer id, String skey) {
         try {
-            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findByDonatorId", DonatorNotification.class);
-            query.setParameter("dnt_id", donator_id);
-            return query.getResultList();
+            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findByDonatorIdAndTitle", DonatorNotification.class);
+            query.setParameter("dnt_id", id);
+            if(skey.equals("*")){
+                query.setParameter("skey", "%"+""+"%");
+            }else{
+                query.setParameter("skey", "%" + skey.toLowerCase() + "%");
+            }
+            return query.getResultList().size();
         } catch (NoResultException e) {
-            return null;
+            return -1;
         }
     }
 
-    public List<DonatorNotification> findDonatorNotificationByDonatorIdFromAToB(Integer id, Integer a, Integer b) {
+    public List<DonatorNotification>  findDonatorNotificationByDonatorIdAndTitlePageASizeB(Integer id, String skey, Integer a, Integer b) {
         try {
-            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findByDonatorId", DonatorNotification.class)
-                    .setFirstResult(a)
-                    .setMaxResults(b-a);
+            TypedQuery<DonatorNotification> query = em.createNamedQuery("named.donator_notification.findByDonatorIdAndTitle", DonatorNotification.class)
+                    .setFirstResult(a*b).setMaxResults(b);
             query.setParameter("dnt_id", id);
+            if(skey.equals("*")){
+                query.setParameter("skey", "%"+""+"%");
+            }else{
+                query.setParameter("skey", "%" + skey.toLowerCase() + "%");
+            }
             return query.getResultList();
         } catch (NoResultException e) {
             return null;
@@ -118,7 +128,7 @@ public class DonatorNotificationService {
         no.setTopic(pn.getTopic());
         List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(project_id);
         for(DonateActivity da:listDA){
-            JwtUser appUser = jwtUserRepository.findByUsername(da.getDonator().getPhoneNumber());
+            JwtUser appUser = IJwtUserRepository.findByUsername(da.getDonator().getPhoneNumber());
             if(da.getDonator().getDNT_ID()!=0){
                 if(appUser.getFcmToken() != null){
                     no.setToken(appUser.getFcmToken());
@@ -132,7 +142,7 @@ public class DonatorNotificationService {
         }
     }
 
-    public void saveAndPushNotificationToAllUser(Integer id,String topic) {
+    public void saveAndPushNotificationToAllUser(Integer id, ENotificationTopic topic) {
         NotificationObject no = new NotificationObject();
         PushNotification pn = this.pushNotificationRepository.findByTopic(topic);
         no.setTitle(pn.getTitle());
@@ -147,6 +157,4 @@ public class DonatorNotificationService {
         }
         this.pushNotificationService.sendMessageWithoutData(no);
     }
-
-
 }

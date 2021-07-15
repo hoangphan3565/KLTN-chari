@@ -1,0 +1,96 @@
+<h3 mat-dialog-tile>Thêm Dự án từ thiện</h3>
+
+<mat-dialog-content>
+    <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-label>Tên Dự án</mat-label>
+        <input name="project_name" matInput [(ngModel)]="data.projectName" required cdkFocusInitial>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-label>Mô tả vắn tắt</mat-label>
+        <input name="brief_description" matInput [(ngModel)]="data.briefDescription" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-label>Nội dung</mat-label>
+        <textarea matInput name="description" [(ngModel)]="data.description" required></textarea>
+    </mat-form-field> 
+    <mat-form-field [style.width.%]="24">
+        <mat-label>Tỉnh thành</mat-label>
+        <mat-select class="form-control" [(ngModel)]="data.cti_ID" id="city_id" name="city_id" required>
+            <mat-option *ngFor="let city of Cities" [value]="city.cti_ID">
+                <a>{{city.name}}</a>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>  
+    <mat-form-field appearance="outline" [style.width.%]="24">
+        <mat-label>Ngày bắt đầu</mat-label>
+        <input matInput [matDatepicker]="pickerStartDate" name="startDate" [(ngModel)]="data.startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStartDate></mat-datepicker>
+    </mat-form-field>   
+   
+    <mat-form-field appearance="outline" [style.width.%]="24">
+        <mat-label>Ngày kết thúc</mat-label>
+        <input matInput [matDatepicker]="pickerEndDate" name="endDate" [(ngModel)]="data.endDate" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEndDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [style.width.%]="24">
+        <mat-label>Mục tiêu quyên góp</mat-label>
+        <input name="target_money" matInput [(ngModel)]="data.targetMoney" required>
+    </mat-form-field>
+
+    <mat-checkbox name="canDisburseWhenOverdue" (click)="changeState()" [(ngModel)]="data.canDisburseWhenOverdue">Cho phép giải ngân khi hết hạn</mat-checkbox>
+   
+    <mat-form-field [style.width.%]="30">
+        <mat-label>Gói từ thiện</mat-label>
+        <mat-select class="form-control" [(ngModel)]="data.prt_ID" id="project_type_id" name="project_type_id" required>
+            <mat-option *ngFor="let type of filterProjectType()" [value]="type.prt_ID">
+                <a>{{type.projectTypeName}}</a>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>   
+ 
+    <mat-form-field appearance="outline" [style.width.%]="30">
+        <mat-label>Người thụ hưởng</mat-label>
+        <input disabled matInput name="content" [(ngModel)]="data.supportedPeople.fullName">
+    </mat-form-field> 
+
+    <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg , .jpeg và .png)</label>
+    <input hidden type="file" #imageInput onclick="this.value=null" (change)="uploadImages($event.target.files)" multiple="true" accept=".jpg,.jpeg,.png">
+    <button class="btn btn-primary btn-sm" (click)="imageInput.click()">
+        <i class="icon-cloud-upload"></i>
+        <a>Tải lên hình ảnh</a>
+    </button>
+    <mat-grid-list cols="3">
+        <mat-grid-tile *ngFor="let imageUrl of imageUrls;let i=index">
+            <div class="container">
+                <img *ngIf="imageUrl" [src]="imageUrl" alt=""/>
+                <button *ngIf="imageUrl" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment(i)">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <div *ngIf="!videoUrl && !isUploadingVideo" class="video-container" (click)="fileInput.click()" videoDragDrop (files)="uploadVideo($event)">
+        <input hidden type="file" #fileInput (change)="uploadVideo($event.target.files)" multiple="false" accept=".mp4">
+    </div>
+    <div *ngIf="isUploadingVideo" class="video-container-loading"></div>
+    <div *ngIf="videoUrl" class="video-container-loading">
+        <video *ngIf="videoUrl" [src]="videoUrl" controls>
+            <source src="videoUrl" type="video/mp4">
+        </video>
+        <button *ngIf="videoUrl" type="button" class="delete-video-button btn btn-danger btn-sm" (click)="deleteVideo()">
+            <i class="fa fa-remove"></i>
+        </button>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
+    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
+</mat-dialog-actions>

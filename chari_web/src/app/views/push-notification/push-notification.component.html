@@ -17,20 +17,17 @@
               <th>#</th>
               <th>Tiêu đề</th>
               <th>Nội dung</th>
-              <th>Tác vụ</th>
+              <th style="text-align: right">Tác vụ</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of PushNotifications;let i=index;">
             <td>{{i+1}}</td>
             <td>{{data.title}}</td>
-            <td>{{data.message}}</td>
-            <td>
+            <td style="width: 65%">{{data.message}}</td>
+            <td style="text-align: right">
               <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
-                <i class="fa fa-edit"></i>
+                <i class="fa fa-pencil"></i>
               </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deletePushNotification(data.nof_ID)">
-                  <i class="fa fa-trash-o"></i>
-                </button>
             </td>
           </tbody>
           <tbody>

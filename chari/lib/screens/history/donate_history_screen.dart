@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:convert' show utf8;
+import 'package:chari/widgets/widgets.dart';
 import 'package:quiver/async.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
@@ -11,21 +12,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
-  List<DonateDetails> donate_details_list;
   final Donator donator;
   int total;
-  HistoryScreen({Key key, @required this.donate_details_list,this.donator,this.total}) : super(key: key);
+  HistoryScreen({Key key, @required this.donator,this.total}) : super(key: key);
   @override
   _HistoryScreenState createState()=> _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen>{
 
-  int step = 10;
-  int numViewItem=0;
+  int size = 5;
+  int numOfItem = 0;
+  int page = 1;
   var inpage_donate_details_list=List<DonateDetails>();
   var p = List<Project>();
 
+  TextEditingController _searchQueryController = TextEditingController();
+  bool _isTapingSearchKey = false;
+  bool _isSearching = false;
+  bool _isLoading = true;
+  String searchQuery = "*";
 
 
   _getProjectAndNavigate(DonateDetails d) async {
@@ -37,12 +43,31 @@ class _HistoryScreenState extends State<HistoryScreen>{
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),)),
+      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),donator: widget.donator,)),
     );
   }
 
+  _countTotalDonateHistory() async{
+    await DonateDetailsService.getTotalDonateDetailsListByDonatorId('*',widget.donator.id,widget.donator.token).then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        widget.total = int.tryParse(res);
+      });
+    });
+  }
+
+  _getDonateHistory(){
+    DonateDetailsService.getDonateDetailsListByDonatorIdPageASizeB(searchQuery,widget.donator.id,page,size,widget.donator.token).then((response) {
+      setState(() {
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_donate_details_list = list.map((model) => DonateDetails.fromJson(model)).toList();
+        _isLoading=false;
+      });
+    });
+  }
+
   _getMoreDonateHistory(){
-    DonateDetailsService.getDonateDetailsListByDonatorIdFromAToB(widget.donator.id,numViewItem,numViewItem+step,widget.donator.token).then((response) {
+    DonateDetailsService.getDonateDetailsListByDonatorIdPageASizeB(searchQuery,widget.donator.id,page,size,widget.donator.token).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         inpage_donate_details_list += list.map((model) => DonateDetails.fromJson(model)).toList();
@@ -51,23 +76,26 @@ class _HistoryScreenState extends State<HistoryScreen>{
   }
 
   void loadMore() {
-    _getMoreDonateHistory();
     setState(() {
-      if(numViewItem<=widget.total-step){
-        numViewItem+=step;
+      if(numOfItem<=widget.total-size){
+        numOfItem+=size;
       }else{
-        numViewItem+= widget.total - numViewItem;
+        numOfItem+= widget.total - numOfItem;
       }
-      numViewItem += step;
+      if(numOfItem>inpage_donate_details_list.length){
+        page++;
+        _getMoreDonateHistory();
+        print('Load more!');
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    inpage_donate_details_list=widget.donate_details_list;
-    if(widget.total>=step){numViewItem=step;}
-    else{numViewItem = widget.total;}
+    _getDonateHistory();
+    if(widget.total>=size){numOfItem=size;}
+    else{numOfItem = widget.total;}
   }
 
   @override
@@ -76,12 +104,12 @@ class _HistoryScreenState extends State<HistoryScreen>{
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(0))
         ),
         child:NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&  inpage_donate_details_list.length >= this.size) {
               loadMore();
             }
             return true;
@@ -92,35 +120,49 @@ class _HistoryScreenState extends State<HistoryScreen>{
                 backgroundColor: Colors.white,
                 floating: true,
                 centerTitle: false,
-                title: Image.asset(
+                title:_isSearching?_buildSearchField(): Image.asset(
                   "assets/icons/logo.png",
-                  height: size.height * 0.04,
+                  height: size.height * 0.05,
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    splashRadius: 20,
-                    icon: Icon(
-                      FontAwesomeIcons.search,
-                      size: 19,
-                    ),
-                    onPressed: () {
-                      // do something
-                    },
-                  ),
-                ],
+                actions: _buildActions()
               ),
-              widget.donate_details_list.length == 0 ?
+              _isLoading==true?
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (context, index) {
                     return Container(
-                      margin: const EdgeInsets.only(top: 300.0),
+                      margin: EdgeInsets.symmetric(vertical: size.height/3),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Image.asset(
+                            "assets/images/loading.gif",
+                            height: size.height * 0.13,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  childCount: 1,
+                ),
+              ):
+              (inpage_donate_details_list.length==0?
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: size.height/3.5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/icons/nodata.png",
+                            height: size.height * 0.13,
+                          ),
                           Text(
-                            "Chưa có lịch sử quyên góp nào!",
+                            "Không tìm thấy kết quả!",
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: kPrimaryHighLightColor,
@@ -134,24 +176,23 @@ class _HistoryScreenState extends State<HistoryScreen>{
                   },
                   childCount: 1,
                 ),
-              )
-                  :
+              ) :
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return (index == inpage_donate_details_list.length ) ?
-                        Container(
-                          child: FlatButton(
-                            child: Text("Đang tải...",style: TextStyle(color: kPrimaryHighLightColor),),
-                            onPressed: () {
-                              loadMore();
-                            },
-                          ),
-                        ) : buildHistoryInfo(inpage_donate_details_list[index]);
+                    return (index == inpage_donate_details_list.length ) ?
+                    Container(
+                      child: FlatButton(
+                        child: Text("",style: TextStyle(color: kPrimaryHighLightColor),),
+                        onPressed: () {
+                          loadMore();
+                        },
+                      ),
+                    ) : buildHistoryInfo(inpage_donate_details_list[index]);
                   },
-                  childCount: (numViewItem <= widget.total) ? inpage_donate_details_list.length + 1 : inpage_donate_details_list.length,
+                  childCount: (numOfItem < widget.total) ? inpage_donate_details_list.length + 1 : inpage_donate_details_list.length,
                 ),
-              )
+              ))
             ],
           )
         )
@@ -250,14 +291,134 @@ class _HistoryScreenState extends State<HistoryScreen>{
                 width: 75,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
                     image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(donate_details.project_image),
+                        fit: BoxFit.cover,
+                        image: NetworkImage(donate_details.project_image)
                     )),
               ),
             ],
           )
         )
     );
+  }
+
+
+  Widget _buildSearchField() {
+    return SearchField(
+      hintText: 'Tìm kiếm lịch sử',
+      controller: _searchQueryController,
+      showClearIcon: _isTapingSearchKey,
+      onTapClearIcon: _clearSearchQuery,
+      onChanged: (query) => _updateSearchQuery(query),
+      onSubmitted: (query) => _letSearch(query),
+    );
+  }
+
+
+  List<Widget> _buildActions() {
+    Size size = MediaQuery.of(context).size;
+    if (_isSearching) {
+      return <Widget>[
+        ActionButton(
+          width: 75,
+          height: 25,
+          onPressed: ()=>{_stopSearching(),},
+          buttonText: 'Đóng',
+          borderRadius: 0.0,
+          borderColor: Colors.white70,
+          buttonColor: Colors.white,
+          textColor: kPrimaryHighLightColor,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+          splashRadius: size.height * 0.03,
+          icon: Icon(
+            FontAwesomeIcons.search,
+            size: size.height * 0.03,
+            color: kPrimaryHighLightColor,
+          ),
+          onPressed: _startSearch
+      ),
+    ];
+  }
+
+  _resetElement(){
+    setState(() {
+      this.size = 5;
+      this.numOfItem=0;
+      this.page = 1;
+    });
+  }
+
+  _getNewData(){
+    _resetElement();
+    setState(() {
+      this.inpage_donate_details_list.clear();
+      _countTotalDonateHistory();
+      _getDonateHistory();
+    });
+  }
+
+  _startSearch() {
+    setState(() {
+      _isSearching = true;
+    });
+    _resetElement();
+  }
+
+
+  _letSearch(String searchKey) {
+    if(searchQuery!='' && searchQuery!='*'){
+      setState(() {
+        _isLoading=true;
+      });
+      _getNewData();
+    }
+  }
+
+  _updateSearchQuery(String newQuery) {
+    setState(() {
+      if(newQuery!=''){
+        setState(() {
+          _isTapingSearchKey=true;
+          searchQuery = newQuery;
+        });
+      }else{
+        _isTapingSearchKey=false;
+      }
+    });
+  }
+
+  _stopSearching() {
+    setState(() {
+      _isLoading=true;
+    });
+    _clearSearchQuery();
+    _getNewData();
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  _clearSearchQuery() async {
+    setState(() {
+      _searchQueryController.clear();
+      _updateSearchQuery("");
+      searchQuery="*";
+      _isTapingSearchKey=false;
+    });
   }
 }

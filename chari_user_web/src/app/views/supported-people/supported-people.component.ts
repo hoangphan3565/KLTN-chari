@@ -5,6 +5,9 @@ import { NotificationService } from '../../services/notification.service';
 import { SupportedPeopleService } from '../../services/supported-people.service';
 import { DialogSupportedPeopleComponent } from './dialog-supported-people/dialog-supported-people.component';
 import Cookies from 'js-cookie'
+import { Project } from '../../models/Project';
+import { ProjectService } from '../../services/Project.service';
+import { DialogProjectAddComponent } from './dialog-project/dialog-project.component';
 @Component({
   selector: 'app-supported-people',
   templateUrl: './supported-people.component.html',
@@ -13,29 +16,52 @@ export class SupportedPeopleComponent implements OnInit {
 
   SupportedPeoples: SupportedPeople[];
   SupportedPeople: SupportedPeople;
+  Project: Project;
+
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number = 1;
+  
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getSupportedPeople(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getSupportedPeople(this.currentPage,this.itemsPerPage);
+  }
+
   clb_id: Number;
   constructor(
     private SupportedPeopleService: SupportedPeopleService,
+    private ProjectService: ProjectService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getSupportedPeople()
+    this.itemsPerPage=5;
+    this.getTotalSupportedPeoples();
+    this.getSupportedPeople(1,this.itemsPerPage)  }
+
+
+  public async getTotalSupportedPeoples(){
+    this.totalItems = await (await this.SupportedPeopleService.countTotal(this.clb_id)).data;
   }
-  public async getSupportedPeople(){
-    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(this.clb_id)).data as SupportedPeople[];
+
+  public async getSupportedPeople(a,b){
+    this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(this.clb_id,a,b)).data as SupportedPeople[];
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogSupportedPeopleComponent, {
-      width: '250px',
+      width: '350px',
       data: this.SupportedPeople
     });
-    dialogRef.afterClosed().subscribe((result: SupportedPeople) => {
-      if(result){
-        if (result.stp_ID==null) this.saveSupportedPeople(result,'Thêm'); 
-        else this.saveSupportedPeople(result,'Cập nhật');      
+    dialogRef.afterClosed().subscribe((res: SupportedPeople) => {
+      if(res){
+        this.saveSupportedPeople(res)     
       }
     });
   }
@@ -54,18 +80,18 @@ export class SupportedPeopleComponent implements OnInit {
     this.SupportedPeople = new SupportedPeople;
     this.SupportedPeople.stp_ID=null;
   }
-  public saveSupportedPeople = async (data,state) => {
+  public saveSupportedPeople = async (data) => {
     try 
     {
-      const result = await this.SupportedPeopleService.saveSupportedPeople(data);
-      if (result)
+      const res = await (await this.SupportedPeopleService.saveSupportedPeople(data,this.clb_id)).data;
+      if (res)
       {
-        this.notificationService.success(state+' Đơn vị thụ hưởng thành công');
-        this.SupportedPeoples = result.data as SupportedPeople[];
+        this.notificationService.success(res.message);
+        this.getSupportedPeople(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
-      alert(state+' Đơn vị thụ hưởng thất bại');
+      console.log(e);
     }
   };
 
@@ -73,12 +99,12 @@ export class SupportedPeopleComponent implements OnInit {
   public deleteSupportedPeople = async (id) => {
     try 
     {
-      if(confirm('Bạn có thực sự muốn xoá Đơn vị thụ hưởng này?')){
-        const result = await this.SupportedPeopleService.deleteSupportedPeople(id);
-        if (result)
+      if(confirm('Bạn có thực sự muốn xoá Người thụ hưởng này?')){
+        const res = await (await this.SupportedPeopleService.deleteSupportedPeople(id,this.clb_id)).data;
+        if (res)
         {
-          this.notificationService.warn('Xoá Đơn vị thụ hưởng thành công');
-          this.SupportedPeoples = result.data as SupportedPeople[];
+          this.notificationService.warn(res.message);
+          this.getSupportedPeople(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -86,4 +112,52 @@ export class SupportedPeopleComponent implements OnInit {
       console.log(e);
     }
   }
+
+  openProjectDialog(): void {
+    const dialogRef = this.dialog.open(DialogProjectAddComponent, {
+      width: '900px',
+      data: this.Project,
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      if(res){
+        this.ceateProject(res);
+      }
+    });
+  }
+
+  openAddProjectDialog(sp): void {
+    this.Project = {
+      prj_ID:null,
+      projectName:'',
+      briefDescription:'',
+      description:'',
+      imageUrl:'',
+      videoUrl:'',
+      startDate:'',
+      endDate:'',
+      targetMoney:'',
+      canDisburseWhenOverdue:true,
+      prt_ID:null,
+      projectType:null,      
+      cti_ID:null,
+      city:null,
+      stp_ID:sp.stp_ID,
+      supportedPeople:sp,      
+      images:[]
+    }; 
+    this.openProjectDialog();
+  }
+  public ceateProject = async (data) => {
+    try 
+    {
+      const res = await this.ProjectService.createProject(data,0);
+      if (res)
+      {
+        this.notificationService.success('Thêm dự án từ thiện thành công');
+      }    
+    }
+    catch (e) {
+      this.notificationService.warn('Thêm dự án từ thiện thất bại');
+    }
+  };  
 }

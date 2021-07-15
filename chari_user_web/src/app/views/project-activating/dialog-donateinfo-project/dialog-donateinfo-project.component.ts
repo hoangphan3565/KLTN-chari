@@ -4,6 +4,7 @@ import { Project } from '../../../models/Project';
 
 @Component({
     templateUrl: './dialog-donateinfo-project.component.html',
+    styleUrls: ['./dialog-donateinfo-project.component.css']
   })
 export class DialogDonateInfoComponent implements OnInit {
   disburseCode: string;
@@ -12,7 +13,9 @@ export class DialogDonateInfoComponent implements OnInit {
   bankAccount: string='31410002593895';
   constructor(
     public dialogRef: MatDialogRef<DialogDonateInfoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Project) { }
+    @Inject(MAT_DIALOG_DATA) public data: Project) { 
+      dialogRef.disableClose = true;
+    }
   
   ngOnInit(): void {
     this.disburseCode = `CHARI${this.data.prj_ID}xSDT`

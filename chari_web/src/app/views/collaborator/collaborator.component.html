@@ -21,7 +21,7 @@
               <th>Số điện thoại</th>
               <th>Chứng chỉ</th>
               <th>Tình tạng</th>
-              <th>Tác vụ</th>
+              <th style="text-align: right">Tác vụ</th>
             </tr>
           </thead>
           <tbody *ngFor="let data of Collaborators;let i=index;">
@@ -35,20 +35,14 @@
             </td>
             <td *ngIf="data.isAccept==true">Đã phê duyệt</td>
             <td *ngIf="data.isAccept!=true">Chưa phê duyệt</td>
-            <td *ngIf="data.isAccept!=true">
-                <button type="button" class="btn btn-success btn-sm" (click)="acceptCollaborator(data)">
+            <td style="text-align: right" *ngIf="data.isAccept!=true">
+                <button type="button" class="btn btn-success btn-sm" (click)="acceptCollaborator(data)" tooltip="Duyệt cộng tác viên">
                   <i class="fa fa-check"></i>
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteCollaborator(data.clb_ID)">
-                  <i class="fa fa-trash-o"></i>
-                </button>
             </td>
-            <td *ngIf="data.isAccept==true">
-              <button type="button" class="btn btn-warning btn-sm" (click)="blockCollaborator(data)">
+            <td style="text-align: right" *ngIf="data.isAccept==true">
+              <button type="button" class="btn btn-warning btn-sm" (click)="blockCollaborator(data)" tooltip="Khoá cộng tác viên">
                 <i class="fa fa-remove"></i>
-              </button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteCollaborator(data.clb_ID)">
-                <i class="fa fa-trash-o"></i>
               </button>
           </td>
           </tbody>
@@ -60,6 +54,15 @@
                         previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                         [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
           </div>
+          <mat-form-field [style.width.px]="130"> 
+            <mat-label>Số hàng hiển thị</mat-label>
+            <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+              <mat-option value="5">5</mat-option>
+              <mat-option value="10">10</mat-option>
+              <mat-option value="25">25</mat-option>
+              <mat-option value="100">100</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>

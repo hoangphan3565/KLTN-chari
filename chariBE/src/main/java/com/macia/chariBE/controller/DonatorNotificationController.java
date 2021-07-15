@@ -14,21 +14,19 @@ public class DonatorNotificationController {
     @Autowired
     DonatorNotificationService service;
 
-    @GetMapping("/donator/{id}")
-    public ResponseEntity<?> findByDonatorId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorId(id));
+
+    @GetMapping("/donator/{dntid}/find/{skey}/count")
+    public ResponseEntity<?> getTotalDonateDetailsOfDonatorByNotificationTitle(@PathVariable(value = "dntid") Integer id,
+                                                                               @PathVariable(value = "skey") String skey) {
+        return ResponseEntity.ok().body(service.countAllDonatorNotificationByDonatorIdAndTitle(id,skey));
     }
 
-    @GetMapping("/donator/{dntid}/count")
-    public ResponseEntity<?> getTotalDonateDetailsOfDonator(@PathVariable(value = "dntid") Integer id) {
-        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorId(id).size());
-    }
-
-    @GetMapping("/donator/{dntid}/from/{a}/to/{b}")
-    public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorIdWithNumOfRecord(@PathVariable(value = "dntid") Integer id,
-                                                                                 @PathVariable(value = "a") Integer a,
-                                                                                 @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorIdFromAToB(id,a,b));
+    @GetMapping("/donator/{dntid}/find/{skey}/page/{a}/size/{b}")
+    public ResponseEntity<?> getDonateDetailsOfDonatorByNotificationTitle(@PathVariable(value = "dntid") Integer id,
+                                                                          @PathVariable(value = "skey") String skey,
+                                                                          @PathVariable(value = "a") Integer a,
+                                                                          @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorIdAndTitlePageASizeB(id,skey,a-1,b));
     }
 
     @PutMapping("/read/donator/{id}")

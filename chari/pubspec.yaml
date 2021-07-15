@@ -17,21 +17,22 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   cloud_firestore: ^0.12.9+5
   firebase_messaging: ^5.0.2
-  shared_preferences: ^0.5.12+4 #All platfom
-  http: ^0.12.1 #All
-  fluttertoast: ^7.1.1 #All
-  percent_indicator: ^2.1.8 #All
-  unicode: ^0.2.4 #All
-  chewie: ^0.12.0 #All
-  video_player: ^1.0.0 #All
-  carousel_slider: ^2.3.1 #All
-  font_awesome_flutter: ^8.10.0 #All
-  webview_flutter: ^1.0.7 #iOS, Android
-  curved_navigation_bar: ^0.3.7 #All
-  custom_radio_grouped_button: ^1.0.6+1 #All
+  shared_preferences: ^0.5.12+4
+  http: ^0.12.1 
+  fluttertoast: ^7.1.1 
+  percent_indicator: ^2.1.8 
+  unicode: ^0.2.4 
+  chewie: ^0.12.0 
+  video_player: ^1.0.0 
+  carousel_slider: ^2.3.1 
+  font_awesome_flutter: ^8.10.0 
+  webview_flutter: ^1.0.7
+  curved_navigation_bar: ^0.3.7 
+  custom_radio_grouped_button: ^1.0.6+1 
   jwt_decoder: ^1.0.3
   timeago: ^2.0.26
   cupertino_icons: ^1.0.0
+  multi_select_flutter: ^3.1.6
 
 dev_dependencies:
   flutter_test:

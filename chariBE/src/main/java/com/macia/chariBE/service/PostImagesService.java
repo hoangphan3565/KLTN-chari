@@ -2,7 +2,7 @@ package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.Post;
 import com.macia.chariBE.model.PostImages;
-import com.macia.chariBE.repository.PostImagesRepository;
+import com.macia.chariBE.repository.IPostImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class PostImagesService {
     private EntityManager em;
 
     @Autowired
-    private PostImagesRepository repo;
+    private IPostImagesRepository repo;
 
     public List<PostImages> findPostImagesByPostId(Integer id) {
         TypedQuery<PostImages> query = em.createNamedQuery("named.postImages.findByPostId", PostImages.class);

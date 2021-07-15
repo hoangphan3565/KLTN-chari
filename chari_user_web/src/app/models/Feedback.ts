@@ -3,4 +3,7 @@ export class Feedback {
     title:string;
     description:string;
     contributor:string;
+    username:string;
+    isReply:boolean;
+    theReply:string;
 }

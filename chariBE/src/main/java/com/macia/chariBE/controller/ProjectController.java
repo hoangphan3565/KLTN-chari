@@ -2,15 +2,15 @@ package com.macia.chariBE.controller;
 
 import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.*;
-import com.macia.chariBE.pushnotification.PushNotificationService;
-import com.macia.chariBE.repository.JwtUserRepository;
-import com.macia.chariBE.repository.PushNotificationRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
 import com.macia.chariBE.service.*;
+import com.macia.chariBE.utility.ENotificationTopic;
+import com.macia.chariBE.utility.EProjectStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,24 +21,21 @@ public class ProjectController {
     private ProjectService projectService;
 
     @Autowired
-    private PushNotificationRepository pushNotificationRepository;
+    private IPushNotificationRepository pushNotificationRepository;
 
     @Autowired
     private DonatorNotificationService donatorNotificationService;
+
 
     @GetMapping()
     public ResponseEntity<?> getAllProject() {
         return ResponseEntity.ok().body(projectService.getProjectDTOs());
     }
 
-    @GetMapping("/favorite/donator/{id}")
-    public ResponseEntity<?> getFavoriteProjectDTOsByDonatorId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getFavoriteProjectDTOsByDonatorId(id));
-    }
-
-    @GetMapping("/find/{key}")
-    public ResponseEntity<?> getProjectDTOsUncloseAndVerifiedByName(@PathVariable(value = "key") String key) {
-        return ResponseEntity.ok().body(projectService.getProjectDTOsUncloseAndVerifiedByName(key));
+    @DeleteMapping("/{id}/collaborator/{clb_id}")
+    public ResponseEntity<?> deleteProjectByID(@PathVariable(value = "id") Integer id,
+                                               @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.deleteProjectByID(id,clb_id));
     }
 
     @GetMapping("/{id}")
@@ -46,26 +43,39 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getProjectDTOById(id));
     }
 
-    @GetMapping("/project_type/{id}")
-    public ResponseEntity<?> getProjectByProjectTypeId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.findProjectByProjectTypeId(id));
+    @PutMapping("/handle_all_money")
+    public ResponseEntity<?> handleAllCloseAndUnHandled() {
+        donatorNotificationService.handleAllMoneyOfClosedProjectOverSevenDay();
+        return ResponseEntity.ok().body(projectService.getClosedProjects(0,5));
     }
 
+    // Services for admin
     @GetMapping("/count")
     public ResponseEntity<?> countAllProject() {
         return ResponseEntity.ok().body(projectService.countAllWhereUncloseAndVerified());
     }
-
-    @GetMapping("/from/{a}/to/{b}")
-    public ResponseEntity<?> getProjectDTOsFromAToB(@PathVariable(value = "a") Integer a,
+    @GetMapping("/page/{a}/size/{b}")
+    public ResponseEntity<?> getProjectDTOsPageASizeB(@PathVariable(value = "a") Integer a,
                                                     @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(projectService.getProjectDTOsWhereUncloseAndVerifiedFromAToB(a,b));
+        return ResponseEntity.ok().body(projectService.getProjectDTOsWhereUncloseAndVerifiedPageASizeB(a-1,b));
     }
-
-
-    @GetMapping("/unverified")
-    public ResponseEntity<?> getUnverifiedProject() {
-        return ResponseEntity.ok().body(projectService.getUnverifiedProjects());
+    @GetMapping("/unverified/count")
+    public ResponseEntity<?> countUnverifiedProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereUnverified());
+    }
+    @GetMapping("/unverified/page/{a}/size/{b}")
+    public ResponseEntity<?> getUnverifiedProject(@PathVariable(value = "a") Integer a,
+                                                  @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getUnverifiedProjects(a-1,b));
+    }
+    @GetMapping("/closed/count")
+    public ResponseEntity<?> countClosedProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereClosed());
+    }
+    @GetMapping("/closed/page/{a}/size/{b}")
+    public ResponseEntity<?> getClosedProjectDTO(@PathVariable(value = "a") Integer a,
+                                                 @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getClosedProjects(a-1,b));
     }
 
     @GetMapping("/activating")
@@ -82,48 +92,50 @@ public class ProjectController {
     public ResponseEntity<?> getReachedProjectDTO() {
         return ResponseEntity.ok().body(projectService.getReachedProjectDTOs());
     }
-    @GetMapping("/closed")
-    public ResponseEntity<?> getClosedProjectDTO() {
-        return ResponseEntity.ok().body(projectService.getClosedProjects());
-    }
+
 
     //for collaborator
-    @GetMapping("/collaborator/{id}/count")
-    public ResponseEntity<?> countAllProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.countAllByCollaboratorId(id));
+    @GetMapping("/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countAllProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countAllUnverifiedByCollaboratorId(clb_id));
     }
-    @GetMapping("/collaborator/{id}/from/{a}/to/{b}")
-    public ResponseEntity<?> getAllProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id,
+    @GetMapping("/collaborator/{clb_id}/page/{a}/size/{b}")
+    public ResponseEntity<?> getAllProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id,
                                                               @PathVariable(value = "a") Integer a,
                                                               @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(projectService.getUncloseProjectDTOsByCollaboratorIdFromAToB(id,a,b));
+        return ResponseEntity.ok().body(projectService.getUnverifiedProjectDTOsByCollaboratorIdPageASizeB(clb_id,a-1,b));
     }
 
-    @GetMapping("/activating/collaborator/{id}")
-    public ResponseEntity<?> getActivatingProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
+    @GetMapping("/activating/collaborator/{clb_id}")
+    public ResponseEntity<?> getActivatingProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
         return ResponseEntity.ok().body(projectService.getActivatingProjectDTOs().stream()
-                .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
+                .filter(p-> p.getCollaborator().getCLB_ID().equals(clb_id))
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/overdue/collaborator/{id}")
-    public ResponseEntity<?> getOverdueProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
+    @GetMapping("/overdue/collaborator/{clb_id}")
+    public ResponseEntity<?> getOverdueProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer id) {
         return ResponseEntity.ok().body(projectService.getOverdueProjectDTOs().stream()
                 .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/reached/collaborator/{id}")
-    public ResponseEntity<?> getReachedProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
+    @GetMapping("/reached/collaborator/{clb_id}")
+    public ResponseEntity<?> getReachedProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer id) {
         return ResponseEntity.ok().body(projectService.getReachedProjectDTOs().stream()
                 .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
                 .collect(Collectors.toList()));
     }
-    @GetMapping("/closed/collaborator/{id}")
-    public ResponseEntity<?> getClosedProjectDTOByCollaboratorId(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getClosedProjects().stream()
-                .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
-                .collect(Collectors.toList()));
+
+    @GetMapping("/closed/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countClosedProjectByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countCloseByCollaboratorId(clb_id));
+    }
+    @GetMapping("/closed/collaborator/{clb_id}/page/{a}/size/{b}")
+    public ResponseEntity<?> getClosedProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id,
+                                                                 @PathVariable(value = "a") Integer a,
+                                                                 @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getClosedProjectsOfCollaborator(clb_id,a-1,b));
     }
     //end - for collaborator
 
@@ -135,48 +147,76 @@ public class ProjectController {
 
     @PutMapping("/approve/{id}")
     public ResponseEntity<?> approveProject(@PathVariable(value = "id") Integer id) {
-        donatorNotificationService.saveAndPushNotificationToAllUser(id,"new");
         return ResponseEntity.ok().body(projectService.approveProject(id));
     }
 
     @PutMapping("/close/{id}/collaborator/{clb_id}")
     public ResponseEntity<?> closeProject(@PathVariable(value = "id") Integer id,
                                           @PathVariable(value = "clb_id") Integer clb_id) {
-        PushNotification pn = this.pushNotificationRepository.findByTopic("closed");
+        PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.CLOSED);
         if(!projectService.findProjectById(id).getProjectType().getCanDisburseWhenOverdue()){
             donatorNotificationService.saveAndPushNotificationToUser(pn,id);
         }
         return ResponseEntity.ok().body(projectService.closeProject(id,clb_id));
     }
 
-    @PutMapping("/handle_all_money")
-    public ResponseEntity<?> handleAllCloseAndUnHandled() {
-        donatorNotificationService.handleAllMoneyOfClosedProjectOverSevenDay();
-        return ResponseEntity.ok().body(projectService.getClosedProjects());
-    }
 
     @PutMapping("/extend/{id}/num_of_date/{nod}/collaborator/{clb_id}")
     public ResponseEntity<?> extendProjectDeadline(
             @PathVariable(value = "id") Integer id,
             @PathVariable(value = "nod") Integer nod,
             @PathVariable(value = "clb_id") Integer clb_id) {
-        PushNotification pn = this.pushNotificationRepository.findByTopic("extended");
+        PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.EXTENDED);
         donatorNotificationService.saveAndPushNotificationToUser(pn,id);
         return ResponseEntity.ok().body(projectService.extendProject(id,nod,clb_id));
     }
 
-    @PostMapping("/create/collaborator/{id}")
+    @PostMapping("/create/collaborator/{clb_id}")
     public ResponseEntity<?> create(
             @RequestBody ProjectDTO project,
-            @PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.createProject(project,id));
+            @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.createProject(project,clb_id));
     }
 
-    @PutMapping("/update/collaborator/{id}")
+    @PutMapping("/update/collaborator/{clb_id}")
     public ResponseEntity<?> update(
             @RequestBody ProjectDTO project,
-            @PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(projectService.updateProject(project,id));
+            @PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.updateProject(project,clb_id));
+    }
+    @PutMapping("/update_and_approve")
+    public ResponseEntity<?> update(@RequestBody ProjectDTO project) {
+        return ResponseEntity.ok().body(projectService.updateAndApprove(project));
+    }
+
+    //============================== Find =================================//
+    @GetMapping("/find/{key}")
+    public ResponseEntity<?> getProjectDTOsUncloseAndVerifiedByName(@PathVariable(value = "key") String key) {
+        return ResponseEntity.ok().body(projectService.getProjectDTOsUncloseAndVerifiedByName(key));
+    }
+
+
+
+    // ============================== Filter =================================//
+    @GetMapping("/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/page/{p}/size/{s}")
+    public ResponseEntity<?> getProjectsByMultiFilterAndSearchKey(
+            @PathVariable(value = "did") String did, @PathVariable(value = "c_ids") List<String> c_ids, @PathVariable(value = "pt_ids") List<String> pt_ids,
+            @PathVariable(value = "st") List<String> status, @PathVariable(value = "key") String key, @PathVariable(value = "p") Integer p, @PathVariable(value = "s") Integer s) {
+        return ResponseEntity.ok().body(projectService.getProjectsByMultiFilterAndSearchKey(did,c_ids,pt_ids,status,key,p-1,s));
+    }
+
+    @GetMapping("/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/count")
+    public ResponseEntity<?> countTotalProjectsByMultiFilterAndSearchKey(
+            @PathVariable(value = "did") String did, @PathVariable(value = "c_ids") List<String> c_ids, @PathVariable(value = "pt_ids") List<String> pt_ids,
+            @PathVariable(value = "st") List<String> status, @PathVariable(value = "key") String key){
+        return ResponseEntity.ok().body(projectService.countTotalProjectsByMultiFilterAndSearchKey(did,c_ids,pt_ids,status,key));
+    }
+
+    // update project donate status
+    @GetMapping("/update_donate_status")
+    public ResponseEntity<?> getProjectDTOsUncloseAndVerifiedByName() {
+        projectService.updateAllProjectStatus();
+        return ResponseEntity.ok().body("Cập nhật trạng thái thành công");
     }
 
 }

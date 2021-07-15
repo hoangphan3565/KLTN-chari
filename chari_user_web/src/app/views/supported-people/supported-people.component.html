@@ -1,59 +1,71 @@
 <div class="col-lg">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col">
-            <h3 class="card-title">
-              <small class="text-muted"> danh sách </small> Đơn vị thụ hưởng
-            </h3>
-          </div>
-          <div class="col-auto">
-            <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" >
-              <i class="fa fa-plus"></i>
-              <a>Thêm</a>
-            </button>
-          </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h3 class="card-title">
+            <small class="text-muted"> danh sách </small> Người thụ hưởng
+          </h3>
         </div>
-      </div>
-
-      <div class="card-body">
-        <table class="table table-light">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Tên đơn vị</th>
-              <th>Địa chỉ</th>
-              <th>Số điện thoại</th>
-              <th>Tên ngân hàng</th>
-              <th>Số tài khoản</th>
-              <th>Tác vụ</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let data of SupportedPeoples;let i=index;">
-            <td>{{i+1}}</td>
-            <td>{{data.fullName}}</td>
-            <td>{{data.address}}</td>
-            <td>{{data.phoneNumber}}</td>
-            <td>{{data.bankName}}</td>
-            <td>{{data.bankAccount}}</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)">
-                  <i class="fa fa-edit"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteSupportedPeople(data.stp_ID)">
-                  <i class="fa fa-remove"></i>
-                </button>
-            </td>
-          </tbody>
-          <tbody>
-        </table>
-        <div class="row">
-          <div class="col-xs-12 col-12 col-md-6">
-            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
-                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
-                        [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
-          </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-info" (click)="clearData(); openDialog()" tooltip="Thêm Người thụ hưởng">
+            <i class="fa fa-plus"></i>
+            <a>Thêm</a>
+          </button>
         </div>
       </div>
     </div>
+
+    <div class="card-body">
+      <table class="table table-light">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên người thụ hưởng</th>
+            <th>Địa chỉ</th>
+            <th>Số điện thoại</th>
+            <th>Tên ngân hàng</th>
+            <th>Số tài khoản</th>
+            <th style="text-align: right">Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let data of SupportedPeoples;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{data.fullName}}</td>
+          <td>{{data.address}}</td>
+          <td>{{data.phoneNumber}}</td>
+          <td>{{data.bankName}}</td>
+          <td>{{data.bankAccount}}</td>
+          <td style="text-align: right">
+            <button type="button" class="btn btn-facebook btn-sm" (click)="openAddProjectDialog(data)" tooltip="Thêm dự án">
+              <i class="fa fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-info btn-sm" (click)="openEditDialog(data)" tooltip="Cập nhật người thụ hưởng">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteSupportedPeople(data.stp_ID)" tooltip="Xoá người thụ hưởng">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </td>
+        </tbody>
+        <tbody>
+      </table>
+      <div class="row">
+        <div class="col-xs-12 col-12 col-md-6">
+          <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+                      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
+                      [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
+        </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
 </div>

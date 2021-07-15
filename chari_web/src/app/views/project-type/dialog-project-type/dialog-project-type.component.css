@@ -1,50 +1,32 @@
-.uploadfilecontainer {
-    background-image: url("../../../../assets/img/upload.png");
-    background-repeat: no-repeat;
-    background-size: 100px;
-    background-position: center;
-    height: 100px;
-    width: 80%;
-    margin: 20px auto;
-    border: 2px dashed #1C8ADB;
-    border-radius: 6px;
-  }
-  
-  .uploadfilecontainer:hover {
-    cursor: pointer;
-    background-color: #9ecbec !important;
-    opacity: 0.8;
-  }
-  
-
-/* Container needed to position the button. Adjust the width as needed */
 .container {
   position: relative;
-  width: 70%;
+  background-image: url("../../../../assets/img/upload.png");
+  background-repeat: no-repeat;
+  background-size: 100px;
+  background-position: center;
+  width: 300px;
+  height: 300px;
+  margin: 10px auto;
+  border: 2px dashed #1C8ADB;
+  border-radius: 6px;
 }
 
-/* Make the image responsive */
-.container img {
-  width: 100%;
-  height: auto;
-}
-
-/* Style the button and place it in the middle of the container/image */
-.container .btn {
-  position: absolute;
-  top: 8%;
-  right: 0%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 13px;
-  padding: 5px 10px;
-  border: none;
+.container:hover {
   cursor: pointer;
-  border-radius: 5px;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
 }
 
-.container .btn:hover {
-  background-color: red;
+img {
+  position: absolute;
+  border-radius: 3px;
+  width: 300px;
+  height: 300px;
+  left: -2px;
+  top: -2px;
+}
+
+.button {
+  position: absolute;
+  right: 0px;
 }

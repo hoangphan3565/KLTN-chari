@@ -11,9 +11,9 @@ export const navItems: INavData[] = [
     name: 'Quản lý dự án'
   },
   {
-    name: 'Dự án của tôi',
+    name: 'Chờ phê duyệt',
     url: '/project',
-    icon: 'icon-check',
+    icon: 'icon-clock',
   },
   {
     name: 'Đang hoạt động',
@@ -26,12 +26,12 @@ export const navItems: INavData[] = [
     icon: 'icon-trophy',
   },
   {
-    name: 'Đã quá hạn',
+    name: 'Đã thất bại',
     url: '/project-overdue',
     icon: 'icon-close',
   },
   {
-    name: 'Đã đóng',
+    name: 'Dự án đã đóng',
     url: '/project-closed',
     icon: 'icon-ban',
   },
@@ -49,8 +49,13 @@ export const navItems: INavData[] = [
     name: 'Quản lý chung'
   },
   {
-    name: 'Đơn vị thụ hưởng',
+    name: 'Người thụ hưởng',
     url: '/supported-people',
+    icon: 'icon-star',
+  },
+  {
+    name: 'Hoàn cảnh khác',
+    url: '/supported-people-recommend',
     icon: 'icon-star',
   },
   {

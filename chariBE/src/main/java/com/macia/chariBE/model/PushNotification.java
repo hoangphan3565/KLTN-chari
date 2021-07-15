@@ -1,5 +1,6 @@
 package com.macia.chariBE.model;
 
+import com.macia.chariBE.utility.ENotificationTopic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class PushNotification {
     @Column(length = 1000)
     private String message;
 
-    @Column(length = 30)
-    private String topic;
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private ENotificationTopic topic;
 }

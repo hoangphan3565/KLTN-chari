@@ -6,7 +6,7 @@ import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/Post.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
-import { DialogPostComponent } from './dialog-post/dialog-post.component';
+import { DialogPostReachedComponent } from './dialog-post/dialog-post.component';
 import * as XLSX from 'xlsx';
 import { DonateDetailsService } from '../../services/donate-details.service';
 import { DonateDetail } from '../../models/DonateDetail';
@@ -41,13 +41,13 @@ export class ProjectReachedComponent implements OnInit {
     });
   }
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogPostComponent, {
+    const dialogRef = this.dialog.open(DialogPostReachedComponent, {
       width: '900px',
       data: this.Post,
     });
-    dialogRef.afterClosed().subscribe((result: Post) => {
-      if(result){
-        this.savePost(result);
+    dialogRef.afterClosed().subscribe((res: Post) => {
+      if(res){
+        this.savePost(res);
       }
     });
   }
@@ -59,7 +59,7 @@ export class ProjectReachedComponent implements OnInit {
       content: '',
       projectId:p.prj_ID,
       projectName:p.projectName,
-      isPublic: null,
+      isPublic: true,
       imageUrl: '',
       videoUrl: '',
       collaboratorId:0,
@@ -70,8 +70,8 @@ export class ProjectReachedComponent implements OnInit {
   public savePost = async (data) => {
     try 
     {
-      const result = await this.postService.savePost(data);
-      if (result)
+      const res = await this.postService.savePost(data,0);
+      if (res)
       {
         this.notificationService.success('Thêm tin tức thành công');
       }    
@@ -81,32 +81,31 @@ export class ProjectReachedComponent implements OnInit {
     }
   }
   
-  onFileChange(evt: any) {
-    const target : DataTransfer =  <DataTransfer>(evt.target);
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) =>  {
-      const bstr: string = e.target.result;
-      var wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-      
-      wb.SheetNames.forEach(sheet => {
-        let rowObject = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
-        console.log(rowObject);
-        this.disburseWithBank(rowObject);
-      })
-    };
-  
-    reader.readAsBinaryString(target.files[0]);
+  onFileChange(ev) {
+    let workBook = null;
+    let jsonData = null;
+    const reader = new FileReader();
+    const file = ev.target.files[0];
+    reader.onload = (event) => {
+      const data = reader.result;
+      workBook = XLSX.read(data, { type: 'binary' });
+      jsonData = workBook.SheetNames.reduce((initial, name) => {
+        const sheet = workBook.Sheets[name];
+        initial[name] = XLSX.utils.sheet_to_json(sheet);
+        return initial;
+      }, {});
+      this.disburseWithBank(jsonData.Sheet1 as DonateDetail[]);
+    }
+    reader.readAsBinaryString(file);
   }
-
 
   public disburseWithBank = async (data: any[]) => {
     try 
     {
-      const result = await (await this.DonateDetailsService.disburseWithBank(data)).data;
-      if (result)
+      const res = await (await this.DonateDetailsService.disburseWithBank(data)).data;
+      if (res)
       {
-        this.notificationService.success(result.message);
+        this.notificationService.success(res.message);
         this.getReached();
       }
     }
@@ -114,6 +113,8 @@ export class ProjectReachedComponent implements OnInit {
       alert('Cập nhật giải ngân từ bảng sao kê thất bại');
     }
   };
-
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 }
 

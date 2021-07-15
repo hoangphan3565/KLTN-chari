@@ -20,14 +20,16 @@ export class DialogPostComponent implements OnInit {
   videoUrl: any;
   downloadURL: Observable<string>;
   Projects: Project[];
-
+  isUploadingVideo: boolean=false;
 
   constructor(
     private notificationService: NotificationService,
     private projectService: ProjectService,
     public dialogRef: MatDialogRef<DialogPostComponent>,
     private storage: AngularFireStorage,
-    @Inject(MAT_DIALOG_DATA) public data: Post) { }
+    @Inject(MAT_DIALOG_DATA) public data: Post) { 
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
     this.getProject();
@@ -62,6 +64,7 @@ export class DialogPostComponent implements OnInit {
     }
   }  
   uploadVideo(event) {
+    this.isUploadingVideo=true;
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -76,6 +79,7 @@ export class DialogPostComponent implements OnInit {
             this.downloadURL.subscribe(url => {
               if (url) {
                 this.videoUrl=(url);
+                this.isUploadingVideo=false;
               }
             });
           })
@@ -97,7 +101,7 @@ export class DialogPostComponent implements OnInit {
   }
   
   public async getProject(){
-    this.Projects = await (await this.projectService.getProjects()).data as Project[];
+    this.Projects = await (await this.projectService.getReached()).data as Project[];
   }
 
   
@@ -105,6 +109,14 @@ export class DialogPostComponent implements OnInit {
     this.data.videoUrl=this.videoUrl;
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
-    this.dialogRef.close(this.data);
+    if(this.data.name==''||this.data.content==''||this.data.projectId==null){
+      this.notificationService.warn('Hãy điền đầy đủ thông tin')
+      return;
+    }else if(this.data.imageUrl==null){
+      this.notificationService.warn('Hãy tải lên ít nhất 1 hình ảnh cho tin tức')
+      return;
+    }else{
+      this.dialogRef.close(this.data);
+    }
   }
 }

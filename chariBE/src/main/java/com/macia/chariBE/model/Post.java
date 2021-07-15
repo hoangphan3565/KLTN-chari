@@ -20,13 +20,13 @@ import java.util.List;
 @Builder
 @NamedQueries({
         @NamedQuery(name = "named.post.findAll",
-                query = "SELECT p FROM Post p order by p.publicTime desc"),
+                query = "SELECT p FROM Post p order by p.POS_ID desc"),
         @NamedQuery(name = "named.post.findLikePostName",
                 query = "SELECT p FROM Post p where lower(p.name) like :name and p.isPublic=true order by p.publicTime desc"),
         @NamedQuery(name = "named.post.findPublic",
                 query = "SELECT p FROM Post p where p.isPublic=true order by p.publicTime desc"),
         @NamedQuery(name = "named.post.findPostByCollaboratorId",
-                query = "SELECT p FROM Post p where p.collaborator.CLB_ID =:id order by p.publicTime desc"),
+                query = "SELECT p FROM Post p where p.collaborator.CLB_ID =:id order by p.POS_ID desc"),
         @NamedQuery(name = "named.post.findById",
                 query = "SELECT p FROM Post p where p.POS_ID =:id"),
 })

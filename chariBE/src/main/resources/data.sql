@@ -1,4 +1,4 @@
--- insert into city(cti_id,name) values (0,'Tất cả');
+-- insert into city(cti_id,name) values (0,'Toàn quốc');
 insert into city(name) values ('Tp Hồ Chí Minh');
 insert into city(name) values ('Hà Nội');
 insert into city(name) values ('Cần Thơ');
@@ -73,15 +73,15 @@ insert into jwt_user(username,password,usertype,status) values('4564564564','$2a
 insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
 
-insert into collaborator(username,is_accept,clb_id,full_name,phone_number,email,address,certificate) values('collaborator_admin',true,0,'Chari','admin','admin','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
+insert into collaborator(username,is_accept,clb_id,full_name,phone_number,email,address,certificate) values('collaborator_admin',true,0,'Admin','admin','admin','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231232',true,'Nguyễn Minh Anh','1231231232','abc@gmail.com','TP Hà Nội','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('4564564565',true,'Nguyễn Trần An','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231233',false,'Phan Văn B','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 
 
-insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','1 2 3 4 5 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 5 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('1231231231','Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','1 2 3 4 5 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('4564564564','Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('7897897897','Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 5 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
 
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(false,'Sứ mệnh 1.000','Cùng Chari trên chặn đường xây dựng 1.000 điểm trường và mái ấm cho những hoàn cảnh khó khăn trên khắp đất nước.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fxay-truong-dung-uoc-mo.jpeg?alt=media&token=9aa38892-ed33-45b4-b4cb-17bfc9a43de1');
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(true,'Hướng về miền Trung','Cùng chung tay ủng hộ bà con miền Trung vượt qua khó khăn mùa bão lũ.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fhuong-ve-mien-trung.png?alt=media&token=a4401234-f6b0-4b9c-b71b-7c722c4fa791');
@@ -91,15 +91,40 @@ insert into project_type(can_disburse_when_overdue,project_type_name,description
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(false,'Quỹ Chari','Nơi đóng góp quỹ chung, chúng tôi sẽ thúc đẩy hoàn thành các đợt quyên góp sắp thành công.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fquy-chari.png?alt=media&token=a64e5a72-953e-4a70-9612-65d1dbd4cef5');
 
 
-insert into feedback(title,description,contributor) values('Thêm chức năng','Thực hiện quyên góp tiền qua ví Momo','Phan Đình Hoàng');
-insert into feedback(title,description,contributor) values('Ứng dụng lag','Thao tác lướt ở trang chính ko được mượt mà','Nguyễn Văn Qúa');
-insert into feedback(title,description,contributor) values('Thêm Zalopay','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
-insert into feedback(title,description,contributor) values('Làm lazy load','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 01:50:40.075187','1231231231',false,'Thêm chức năng','Thực hiện quyên góp tiền qua ví Momo','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 02:50:40.075187','1231231231',false,'Thêm Zalopay4','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 03:50:40.075187','1231231231',false,'Thêm Zalopay5','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 04:50:40.075187','1231231231',false,'Làm lazy load1','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 05:50:40.075187','1231231231',false,'Làm lazy load2','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 06:50:40.075187','1231231231',false,'Làm lazy load3','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,the_reply,is_reply,title,description,contributor) values('2021-07-01 07:50:40.075187','1231231231','ok!!!!',true,'Làm lazy load4','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,the_reply,is_reply,title,description,contributor) values('2021-07-01 08:50:40.075187','1231231231','okkkkkk',true,'Làm lazy load5','Làm lazy loading cho trang chính để ứng dụng mượt hơn','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 09:50:40.075187','1231231231',false,'Thêm Zalopay1','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 10:50:40.075187','1231231231',false,'Thêm Zalopay2','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 11:50:40.075187','1231231231',false,'Thêm Zalopay3','Thực hiện quyên góp tiền qví Zalopay','Phan Đình Hoàng');
+insert into feedback(create_time,username,is_reply,title,description,contributor) values('2021-07-01 12:50:40.075187','4564564564',false,'Ứng dụng lag','Thao tác lướt ở trang chính ko được mượt mà','Trần Văn Thường');
 
-insert into supported_people(clb_id,stp_id,full_name,address,phone_number,bank_name,bank_account) values(0,0,'PHAN DINH HOANG','TP HCM','0973465515','BIDV','31410002593895');
-insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'TRAN THI BICH NGOC','Biên Hoà','0773453819','BIDV','31410004127254');
-insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(2,'NGUYEN THI NA','Lạng Sơn','0773453819','BIDV','31410004127254');
+
+
+
+insert into supported_people(clb_id,stp_id,full_name,address,phone_number,bank_name,bank_account) values(0,0,'Phan Đình Hoàng','TP HCM','0973465515','BIDV','31410002593895');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'Trần Minh Hiếu','Biên Hoà','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'Vũ Hoàng Hiệp','Hà Nội','0773453819','BIDV','21110009116868');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'Lê Kim Đỉnh','Biên Hoà','0773453819','BIDV','31410004127254');
 insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'QUY VAC-XIN PHONG COVID-19','Hà Nội','0773453819','BIDV','21110009116868');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'Bùi Thị Hồng Nhung','Biên Hoà','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(1,'Nguyễn Võ Hoàng','Hà Nội','0773453819','BIDV','21110009116868');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(2,'Phan Sơn','Lạng Sơn','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(2,'Nguyễn Thành Tâm','Lạng Sơn','0773453819','BIDV','31410004127254');
+insert into supported_people(clb_id,full_name,address,phone_number,bank_name,bank_account) values(2,'Tôn Thất Tấn','Lạng Sơn','0773453819','BIDV','31410004127254');
+
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address,phone_number,bank_name,bank_account) values(2,'PROCESSING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Lê Minh Tiến','Lạng Sơn','0773451112','BIDV','21110009116868');
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address,phone_number,bank_name,bank_account) values(null,'PENDING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Nguyễn Tiến Thành','Thái Nguyên','0773453331','BIDV','21110009116868');
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address,phone_number,bank_name,bank_account) values(null,'PENDING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Võ Minh Hiếu','Hải Dương','0774535643','BIDV','21110009116868');
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address,phone_number,bank_name,bank_account) values(null,'PENDING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Võ Tấn Nguyên','Hà Giang','0773453344','BIDV','21110009116868');
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address) values(null,'PENDING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Trần Văn Ơn','Tây Ninh');
+insert into supported_people_recommend(clb_id,status,referrer_name,referrer_phone,referrer_description,full_name,address) values(null,'PENDING','Phan Đình Hoàng','1231231231','Đây là mô tả hoàn cảnh khó khăn mà bạn muốn giới thiệu đến với chúng tôi....','Võ Thị Bình','Cà Mau');
+
 
 insert into project(cti_id,update_time,prj_id,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,prt_id,stp_id,clb_id)
 values(1,'2021-05-13 20:50:40.075187',0,'G0','Quỹ chung Chari',true,false,false,
@@ -157,8 +182,8 @@ values(58,'2021-05-27 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc ch
 '       Việc trao tặng xe lăn sẽ góp phần hỗ trợ đắc lực cho người khuyết tật có thể tự di chuyển thuận lợi và dễ dàng, giảm bớt gánh nặng chăm sóc cho người thân; giúp người khuyết tật có thêm tự tin, nỗ lực vươn lên trong cuộc sống.
 ' ||
 '       Được biết, năm 2019, Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh tiếp nhận 678 chiếc xe lăn do tổ chức Trả lại tuổi thơ (Hoa Kỳ) tài trợ để cấp phát miễn phí cho người khuyết tật trên địa bàn tỉnh Thừa Thiên Huế.',
-'2020-11-01','2021-07-01',700000,
-'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',
+'2020-11-01','2021-08-01',700000,
+'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpeg?alt=media&token=1b705be9-57f0-484b-829c-98c9530d26aa',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',1,1,1);
 
 insert into project(cti_id,update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
@@ -375,14 +400,14 @@ insert into donate_activity(dnt_id,prj_id,status) values(1,10,'SUCCESSFUL');
 insert into donate_details(donate_date,money,dna_id) values('2020-11-05',50000,14);
 insert into donate_details(donate_date,money,dna_id) values('2020-11-12',50000,14);
 
-insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','closed',80000,8,1);
-insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','closed',40000,12,1);
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','CLOSED',80000,8,1);
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','CLOSED',40000,12,1);
 
-insert into push_notification(topic,title,message) values('new','Dự án từ thiện mới','Có một chương trình từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này');
-insert into push_notification(topic,title,message) values('overdue','Dự án đã quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.');
-insert into push_notification(topic,title,message) values('closed','Xử lý tiền dự án quá hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari');
-insert into push_notification(topic,title,message) values('extended','Dự án đã được gia hạn','Dự án cộng đồng mà bạn đã tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
-insert into push_notification(topic,title,message) values('reached','Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.');
+insert into push_notification(topic,title,message) values('NEW','Dự án từ thiện mới','Có một dự án từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này');
+insert into push_notification(topic,title,message) values('OVERDUE','Dự án đã quá hạn','Dự án mà bạn tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.');
+insert into push_notification(topic,title,message) values('CLOSED','Xử lý tiền dự án quá hạn','Dự án mà bạn tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari');
+insert into push_notification(topic,title,message) values('EXTENDED','Dự án đã được gia hạn','Dự án mà bạn tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
+insert into push_notification(topic,title,message) values('REACHED','Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.');
 
 insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'
@@ -407,9 +432,9 @@ insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/up
 
 insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án bữa cơm từ thiện: Ủng hộ 400 phần cơm cho bệnh nhân bệnh viện 115 quận 10 đã thành công'
                                                                                         ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,10,1,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
+                                                                                        ,10,1,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Fminh%20hoa%20bua%20com%20tu%20thien.jpeg?alt=media&token=9cc207c0-fb72-4d8c-9023-c9491e1a09e1'
                                                                                         ,true,'2021-04-13 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',3);
+insert into post_images(image_url,pos_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Fminh%20hoa%20bua%20com%20tu%20thien.jpeg?alt=media&token=9cc207c0-fb72-4d8c-9023-c9491e1a09e1',3);
 insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',3);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',3);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',3);

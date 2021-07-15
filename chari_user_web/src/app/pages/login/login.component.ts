@@ -31,7 +31,7 @@ export class LoginComponent{
           Cookies.set("loginInfo",JSON.stringify(res),{expires: 1});
           window.location.href="/dashboard";
         }else{
-          this.notificationService.warn('Đăng nhập thất bại! Tài khoản đã bị khoá!');
+          this.notificationService.warn('Đăng nhập thất bại! Tài khoản đã bị khoá');
         }
       } else{
         this.notificationService.warn('Đăng nhập thất bại');

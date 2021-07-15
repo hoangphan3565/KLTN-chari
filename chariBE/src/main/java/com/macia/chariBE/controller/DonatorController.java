@@ -1,7 +1,7 @@
 package com.macia.chariBE.controller;
 
 import com.macia.chariBE.model.Donator;
-import com.macia.chariBE.repository.DonatorRepository;
+import com.macia.chariBE.repository.IDonatorRepository;
 import com.macia.chariBE.service.DonatorNotificationService;
 import com.macia.chariBE.service.DonatorService;
 import net.minidev.json.JSONObject;
@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -20,7 +18,7 @@ public class DonatorController {
     DonatorService donatorService;
 
     @Autowired
-    DonatorRepository donatorRepo;
+    IDonatorRepository donatorRepo;
 
     @Autowired
     DonatorNotificationService donatorNotificationService;
@@ -36,23 +34,20 @@ public class DonatorController {
         return ResponseEntity.ok().body(donatorService.getFavoriteNotificationOfDonator(id));
     }
 
-    @GetMapping("/phone/{phone}")
-    public ResponseEntity<?> getDonatorByPhone(@PathVariable(value = "phone") String phone) {
-        return ResponseEntity.ok().body(donatorService.findByPhone(phone));
-    }
-    @GetMapping("/facebook/{facebookId}")
-    public ResponseEntity<?> getDonatorDetailsByFacebookId(@PathVariable(value = "facebookId") String facebookId) {
-        return ResponseEntity.ok().body(donatorService.findByFacebookId(facebookId));
+    @GetMapping("/username/{usn}")
+    public ResponseEntity<?> getDonatorByPhone(@PathVariable(value = "usn") String usn) {
+        return ResponseEntity.ok().body(donatorService.findByUsername(usn));
     }
 
-    @PostMapping("/add_favorite/project/{prjid}/donator_id/{dntid}")
+
+    @PostMapping("/add_favorite/project/{prjid}/donator/{dntid}")
     public ResponseEntity<?> addProjectToFavoriteList(@PathVariable(value = "prjid") Integer prtid,
                                                       @PathVariable(value = "dntid") Integer dntid) {
         donatorService.addProjectIdToFavoriteList(prtid, dntid);
         return ResponseEntity.ok(donatorService.findById(dntid));
     }
 
-    @PostMapping("/remove_favorite/project/{prjid}/donator_id/{dntid}")
+    @PostMapping("/remove_favorite/project/{prjid}/donator/{dntid}")
     public ResponseEntity<?> removeProjectFromFavoriteList(@PathVariable(value = "prjid") Integer prtid,
                                                            @PathVariable(value = "dntid") Integer dntid) {
         donatorService.removeProjectIdFromFavoriteList(prtid, dntid);
@@ -61,23 +56,23 @@ public class DonatorController {
 
     @PostMapping("/update/id/{id}")
     public ResponseEntity<?> updateDonatorDetails(@PathVariable(value = "id") Integer id,@RequestBody Donator donator)    {
-        JSONObject jo = new JSONObject();
+        JSONObject jso = new JSONObject();
         Donator dnt = donatorService.findById(id);
         if(dnt!=null)
         {
             dnt.setAddress(donator.getAddress());
             dnt.setFullName(donator.getFullName());
             donatorService.save(dnt);
-            jo.put("errorCode", "0");
-            jo.put("data", dnt);
-            jo.put("message", "Cập nhật thông tin thành công!");
-            return new ResponseEntity<>(jo, HttpStatus.OK);
+            jso.put("errorCode", "0");
+            jso.put("data", dnt);
+            jso.put("message", "Cập nhật thông tin thành công!");
+            return new ResponseEntity<>(jso, HttpStatus.OK);
         }
         else{
-            jo.put("errorCode", "1");
-            jo.put("data", "");
-            jo.put("message", "Cập nhật thông tin thất bại!");
-            return new ResponseEntity<>(jo, HttpStatus.BAD_REQUEST);
+            jso.put("errorCode", "1");
+            jso.put("data", "");
+            jso.put("message", "Cập nhật thông tin thất bại!");
+            return new ResponseEntity<>(jso, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -87,12 +82,12 @@ public class DonatorController {
             @PathVariable(value = "dntid") Integer dntid,
             @PathVariable(value = "tarprjid") Integer tarprjid,
             @PathVariable(value = "money") Integer money)    {
-        JSONObject jo = new JSONObject();
+        JSONObject jso = new JSONObject();
         donatorService.moveMoney(prjid,dntid,tarprjid,money);
         donatorNotificationService.handleCloseProjectNotification(prjid,dntid);
-        jo.put("errorCode", 0);
-        jo.put("message", "Chuyển tiền thành công!");
-        return new ResponseEntity<>(jo, HttpStatus.OK);
+        jso.put("errorCode", 0);
+        jso.put("message", "Chuyển tiền thành công!");
+        return new ResponseEntity<>(jso, HttpStatus.OK);
     }
 
     @PutMapping("/change_state_notification_list/{dntid}/nof_id/{nof_id}/value/{value}")

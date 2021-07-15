@@ -5,26 +5,32 @@ import 'package:chari/models/project_model.dart';
 import 'package:chari/screens/screens.dart';
 import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
+import 'package:chari/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PostScreen extends StatefulWidget {
-  // List<Project> projects;
-  List<Post> posts;
   int total;
   Donator donator;
-  PostScreen({Key key, @required this.posts,this.donator,this.total}) : super(key: key);
+  PostScreen({Key key, @required this.donator,this.total}) : super(key: key);
   @override
   _PostScreenState createState()=> _PostScreenState();
 }
 
 class _PostScreenState extends State<PostScreen>{
 
-  int step = 4;
-  int numViewItem=0;
+  int size = 5;
+  int numOfItem = 0;
+  int page = 1;
   var inpage_posts_list=List<Post>();
   var p = List<Project>();
+
+  TextEditingController _searchQueryController = TextEditingController();
+  bool _isTapingSearchKey = false;
+  bool _isSearching = false;
+  bool _isLoading = true;
+  String searchQuery = "*";
 
   _getProjectAndNavigate(Post post) async {
     await ProjectService.getProjectById(post.projectId).then((response) {
@@ -39,8 +45,28 @@ class _PostScreenState extends State<PostScreen>{
     );
   }
 
+  _countTotalFoundPosts() async{
+    await PostService.getTotalFoundPost(searchQuery).then((response) {
+      dynamic res = utf8.decode(response.bodyBytes);
+      setState(() {
+        widget.total = int.tryParse(res);
+      });
+    });
+  }
+
+  _getPost(){
+    PostService.findPostsPageASizeByName(searchQuery,page,size).then((response) {
+      setState(() {
+        // print(utf8.decode(response.bodyBytes));
+        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+        inpage_posts_list = list.map((model) => Post.fromJson(model)).toList();
+        _isLoading = false;
+      });
+    });
+  }
+
   _getMorePost(){
-    PostService.getPostsFromAToB(numViewItem,numViewItem+step).then((response) {
+    PostService.findPostsPageASizeByName(searchQuery,page,size).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         inpage_posts_list += list.map((model) => Post.fromJson(model)).toList();
@@ -49,14 +75,17 @@ class _PostScreenState extends State<PostScreen>{
   }
 
   void loadMore() {
-    _getMorePost();
     setState(() {
-      if(numViewItem<=widget.total-step){
-        numViewItem+=step;
+      if(numOfItem<=widget.total-size){
+        numOfItem+=size;
       }else{
-        numViewItem+= widget.total - numViewItem;
+        numOfItem+= widget.total - numOfItem;
       }
-      numViewItem += step;
+      if(numOfItem>inpage_posts_list.length){
+        page++;
+        _getMorePost();
+        print('Call API!!');
+      }
     });
   }
 
@@ -64,9 +93,9 @@ class _PostScreenState extends State<PostScreen>{
   void initState() {
     super.initState();
     setState(() {
-      inpage_posts_list=widget.posts;
-      if(widget.total>=step){numViewItem=step;}
-      else{numViewItem = widget.total;}
+      _getPost();
+      if(widget.total>=size){numOfItem=size;}
+      else{numOfItem = widget.total;}
     });
   }
 
@@ -76,7 +105,7 @@ class _PostScreenState extends State<PostScreen>{
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&  inpage_posts_list.length >= this.size) {
               loadMore();
             }
             return true;
@@ -87,35 +116,49 @@ class _PostScreenState extends State<PostScreen>{
                 backgroundColor: Colors.white,
                 floating: true,
                 centerTitle: false,
-                title: Image.asset(
-                  "assets/icons/logo.png",
-                  height: size.height * 0.04,
-                ),
-                actions: <Widget>[
-                  IconButton(
-                    splashRadius: 20,
-                    icon: Icon(
-                      FontAwesomeIcons.search,
-                      size: 19,
-                    ),
-                    onPressed: () {
-                      // do something
-                    },
+                  title: _isSearching ? _buildSearchField() : Image.asset(
+                    "assets/icons/logo.png",
+                    height: size.height * 0.05,
                   ),
-                ],
+                actions: _buildActions()
               ),
-              widget.posts.length == 0 ?
+              _isLoading==true?
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (context, index) {
                     return Container(
-                      margin: const EdgeInsets.only(top: 300.0),
+                      margin: EdgeInsets.symmetric(vertical: size.height/3),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Image.asset(
+                            "assets/images/loading.gif",
+                            height: size.height * 0.13,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  childCount: 1,
+                ),
+              ):
+              (inpage_posts_list.length==0?
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: size.height/3.5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/icons/nodata.png",
+                            height: size.height * 0.13,
+                          ),
                           Text(
-                            "Chưa có tin từ thiện nào!",
+                            "Không tìm thấy kết quả!",
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: kPrimaryHighLightColor,
@@ -129,24 +172,23 @@ class _PostScreenState extends State<PostScreen>{
                   },
                   childCount: 1,
                 ),
-              )
-                  :
+              ) :
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (context, index) {
                     return (index == inpage_posts_list.length ) ?
                     Container(
                       child: FlatButton(
-                        child: Text("Đang tải...",style: TextStyle(color: kPrimaryHighLightColor),),
+                        child: Text("",style: TextStyle(color: kPrimaryHighLightColor),),
                         onPressed: () {
                           loadMore();
                         },
                       ),
                     ) : buildPostSection(inpage_posts_list[index]);
                   },
-                  childCount: (numViewItem <= widget.total) ? inpage_posts_list.length + 1 : inpage_posts_list.length,
+                  childCount: (numOfItem < widget.total) ? inpage_posts_list.length + 1 : inpage_posts_list.length,
                 ),
-              )
+              ))
             ],
           )
       )
@@ -217,6 +259,118 @@ class _PostScreenState extends State<PostScreen>{
         ),
       ],
     );
+  }
+
+
+  Widget _buildSearchField() {
+    return SearchField(
+      hintText: 'Tìm kiếm tin tức',
+      controller: _searchQueryController,
+      showClearIcon: _isTapingSearchKey,
+      onTapClearIcon: _clearSearchQuery,
+      onChanged: (query) => _updateSearchQuery(query),
+      onSubmitted: (query) => _letSearch(query),
+    );
+  }
+
+
+  List<Widget> _buildActions() {
+    Size size = MediaQuery.of(context).size;
+    if (_isSearching) {
+      return <Widget>[
+        ActionButton(
+          width: 75,
+          height: 25,
+          onPressed: ()=>{_stopSearching(),},
+          buttonText: 'Đóng',
+          borderRadius: 0.0,
+          borderColor: Colors.white70,
+          buttonColor: Colors.white,
+          textColor: kPrimaryHighLightColor,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+          splashRadius: size.height * 0.03,
+          icon: Icon(
+            FontAwesomeIcons.search,
+            size: size.height * 0.03,
+            color: kPrimaryHighLightColor,
+          ),
+          onPressed: _startSearch
+      ),
+    ];
+  }
+
+  _resetElement(){
+    setState(() {
+      this.size = 5;
+      this.numOfItem=0;
+      this.page = 1;
+    });
+  }
+
+  _getNewData(){
+    _resetElement();
+    setState(() {
+      this.inpage_posts_list.clear();
+      _getPost();
+      _countTotalFoundPosts();
+    });
+  }
+
+  _startSearch() {
+    setState(() {
+      _isSearching = true;
+    });
+    _resetElement();
+  }
+
+
+  _letSearch(String searchKey) {
+    if(searchQuery!='' && searchQuery!='*'){
+      setState(() {
+        _isLoading=true;
+      });
+      _getNewData();
+    }
+  }
+
+  _updateSearchQuery(String newQuery) {
+    setState(() {
+      if(newQuery!=''){
+        setState(() {
+          _isTapingSearchKey=true;
+          searchQuery = newQuery;
+        });
+      }else{
+        _isTapingSearchKey=false;
+      }
+    });
+  }
+
+  _stopSearching() {
+    setState(() {
+      _isLoading = true;
+    });
+    _clearSearchQuery();
+    _getNewData();
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  _clearSearchQuery() async {
+    setState(() {
+      _searchQueryController.clear();
+      _updateSearchQuery("");
+      searchQuery="*";
+      _isTapingSearchKey=false;
+    });
   }
 }
 

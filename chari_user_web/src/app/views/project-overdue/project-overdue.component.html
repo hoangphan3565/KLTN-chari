@@ -1,10 +1,10 @@
-<div class="col-lg">
+ <div class="col-lg">
   <div class="card">
     <div class="card-header">
       <div class="row">
         <div class="col">
           <h3 class="card-title">
-            <small class="text-muted"> danh sách </small> Dự án đã quá hạn
+            <small class="text-muted"> danh sách </small> Dự án Đã thất bại
           </h3>
         </div>
       </div>
@@ -16,27 +16,62 @@
           <tr>
             <th>#</th>
             <th>Tên Dự án</th>
-            <th>Mục tiêu (Triệu đồng)</th>
-            <th>Đã quyên góp (Triệu đồng)</th>
-            <th>Đạt được (%)</th>
+            <th style="text-align: right">Mục tiêu</th>
+            <th style="text-align: right">Đã quyên góp </th>
+            <th style="text-align: right">Đạt được (%)</th>
+            <th style="width: 15%;">Cho phép giải ngân</th>
             <th>Tình trạng</th>
-            <th>Tác vụ</th>
+            <th style="width: 15%;text-align: right">Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
-          <td>{{data.projectName}}</td>
-          <td>{{data.targetMoney/1000000}}</td>
-          <td>{{data.curMoney/1000000}}</td>
-          <td>{{data.achieved}}</td>
+          <td style="width: 30%;">{{data.projectName}}</td>
+          <td style="text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
+          <td style="text-align: right">{{numberWithCommas(data.curMoney)}}</td>
+          <td style="text-align: right">{{data.achieved}}</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
           <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
           <td *ngIf="data.disbursed==true">Đã giải ngân</td>
-          <td>
-            <button type="button" class="btn btn-block btn-outline-danger" (click)="closeProject(data.prj_ID)">Đóng</button>
+          
+
+          <td style="text-align: right" *ngIf="data.projectType.canDisburseWhenOverdue != true && data.curMoney/data.targetMoney>0.8">
+            <button type="button" class="btn btn-sm btn-success" (click)="openExtendDialog(data.prj_ID)" tooltip="Gia hạn dự án">
+              <i class="fa fa-clock-o"></i>
+            </button>
+            <button disabled type="button" class="btn btn-sm btn-danger" style="opacity: 0.2">
+              <i class="fa fa-close"></i>
+            </button>
+          </td>          
+          
+          <td style="text-align: right" *ngIf="data.projectType.canDisburseWhenOverdue != true && data.curMoney/data.targetMoney<0.8">
+            <button disabled type="button" class="btn btn-sm btn-success" style="opacity: 0.2">
+              <i class="fa fa-clock-o"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-danger" (click)="closeProject(data.prj_ID)" tooltip="Đóng dự án">
+              <i class="fa fa-close"></i>
+            </button>
           </td>
-          <td *ngIf="data.curMoney/data.targetMoney>0.8 && data.disbursed!=true">
-            <button type="button" class="btn btn-block btn-outline-success" (click)="openExtendDialog(data.prj_ID)">Gia hạn</button>
-          </td>                 
+
+          <td style="text-align: right" *ngIf="data.projectType.canDisburseWhenOverdue == true && data.curMoney/data.targetMoney>0.8">
+            <button type="button" class="btn btn-sm btn-success" (click)="openExtendDialog(data.prj_ID)" tooltip="Gia hạn dự án">
+              <i class="fa fa-clock-o"></i>
+            </button>
+            <button disabled type="button" class="btn btn-sm btn-danger" style="opacity: 0.2">
+              <i class="fa fa-close"></i>
+            </button>
+          </td>  
+
+          <td style="text-align: right" *ngIf="data.projectType.canDisburseWhenOverdue == true && data.curMoney/data.targetMoney<0.8">
+            <button disabled type="button" class="btn btn-sm btn-success" style="opacity: 0.2">
+              <i class="fa fa-clock-o"></i>
+            </button>
+            <button disabled type="button" class="btn btn-sm btn-danger" style="opacity: 0.2">
+              <i class="fa fa-close"></i>
+            </button>
+          </td> 
+
         </tbody>
         <tbody>
       </table>
@@ -46,6 +81,15 @@
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                       [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>

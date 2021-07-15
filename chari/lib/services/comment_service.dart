@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class CommentService {
   static Future getCommentListByProjectId(int projectId) {
-    var url = baseUrl + comments + "/project/"+projectId.toString();
+    var url = "$baseUrl$comments/project/$projectId";
     return http.get(url);
   }
 
@@ -16,7 +16,7 @@ class CommentService {
       "content":content,
       "projectId": projectId.toString()
     });
-    var url = baseUrl + comments + "/project/"+projectId.toString();
+    var url = "$baseUrl$comments/project/$projectId";
     return http.post(url,headers:header,body:body);
   }
 }

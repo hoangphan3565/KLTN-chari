@@ -23,6 +23,9 @@ class _SignUpScreenState extends State<SignUpScreen>{
   TextEditingController _password2Controller = TextEditingController();
   bool notSeePassword1=true;
   bool notSeePassword2=true;
+  bool havePhone = false;
+  bool havePass1 = false;
+  bool havePass2 = false;
   var focusNode = FocusNode();
 
   @override
@@ -91,17 +94,23 @@ class _SignUpScreenState extends State<SignUpScreen>{
           return "error";
         });
       },
-      verificationFailed: (AuthException exception) {
+      verificationFailed: (AuthException e) {
+        String msg;
+        if(e.code == 'invalid-phone-number') {
+          msg="Số điện thoại không tồn tại!";
+          UserService.deleteUserByUserName(NavitePhone);
+        }else{
+          msg="Đã quá số lần xác thực quy định!\nHãy quay lại sau 24 giờ!";
+        }
         Fluttertoast.showToast(
-          msg: "Xác thực thất bại! SĐT không tồn tại!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.orangeAccent,
-          textColor: Colors.white,
-          fontSize: 16.0
+            msg: msg,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.orangeAccent,
+            textColor: Colors.white,
+            fontSize: 16.0
         );
-        UserService.deleteUserByUserName(NavitePhone);
         return "error";
       },
       codeSent: (String verificationId, [int forceResendingToken]) async {
@@ -150,38 +159,39 @@ class _SignUpScreenState extends State<SignUpScreen>{
                 icon: FontAwesomeIcons.phone,
                 keyboardType: TextInputType.number,
                 controller: _usernameController,
-                onTapClearIcon: ()=>{_usernameController.clear()},
-                onChanged: (value) {},
+                showClearIcon: havePhone,
+                onTapClearIcon: ()=>{_usernameController.clear(),setState(() {havePhone=false;})},
+                onChanged: (value) {
+                  value!=''?setState(() {havePhone=true;}):setState(() {havePhone=false;});
+                },
               ),
               RoundedPasswordField(
                 hintText: "Nhập mật khẩu",
                 icon: FontAwesomeIcons.lockOpen,
                 obscureText: notSeePassword1,
                 controller: _password1Controller,
-                onTapClearIcon: ()=>{_password1Controller.clear()},
+                showClearIcon: havePass1,
+                onTapClearIcon: ()=>{_password1Controller.clear(),setState(() {havePass1=false;})},
                 switchObscureTextMode: ()=>{
-                  if(notSeePassword1==true){
-                    setState((){notSeePassword1=false;})
-                  }else{
-                    setState((){notSeePassword1=true;})
-                  }
+                  notSeePassword1==true?setState((){notSeePassword1=false;}):setState((){notSeePassword1=true;})
                 },
-                onChanged: (value) {},
+                onChanged: (value) {
+                  value!=''?setState(() {havePass1=true;}):setState(() {havePass1=false;});
+                },
               ),
               RoundedPasswordField(
                 hintText: "Nhập lại mật khẩu",
                 icon: FontAwesomeIcons.lock,
                 obscureText: notSeePassword2,
                 controller: _password2Controller,
-                onTapClearIcon: ()=>{_password2Controller.clear()},
+                showClearIcon: havePass2,
+                onTapClearIcon: ()=>{_password2Controller.clear(),setState(() {havePass2=false;})},
                 switchObscureTextMode: ()=>{
-                  if(notSeePassword2==true){
-                    setState((){notSeePassword2=false;})
-                  }else{
-                    setState((){notSeePassword2=true;})
-                  }
+                  notSeePassword2==true?setState((){notSeePassword2=false;}):setState((){notSeePassword2=true;})
                 },
-                onChanged: (value) {},
+                onChanged: (value) {
+                  value!=''?setState(() {havePass2=true;}):setState(() {havePass2=false;});
+                },
               ),
               RoundedButton(
                 text: "Đăng ký",

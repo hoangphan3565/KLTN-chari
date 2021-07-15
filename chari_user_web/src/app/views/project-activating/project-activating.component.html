@@ -16,24 +16,27 @@
           <tr>
             <th>#</th>
             <th>Tên Dự án</th>
-            <th>Mục tiêu (Triệu đồng)</th>
-            <th>Đã quyên góp (Triệu đồng)</th>
-            <th>Đạt được (%)</th>
-            <th>Thời hạn còn (Ngày)</th>
+            <th style="text-align: right">Mục tiêu</th>
+            <th style="text-align: right">Đã quyên góp </th>
+            <th style="text-align: right">Đạt được (%)</th>
+            <th style="text-align: right">Thời hạn còn (Ngày)</th>
+            <th style="text-align: right">Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
-          <td>{{data.projectName}}</td>
-          <td>{{data.targetMoney/1000000}}</td>
-          <td>{{data.curMoney/1000000}}</td>
-          <td>{{data.achieved}}</td>
-          <td>{{data.remainingTerm}}</td>        
-          <td>
-            <button type="button" class="btn btn-block btn-outline-dark" (click)="clearData(data);openDialog()">Đăng tin</button>
-          </td>
-          <td>
-            <button type="button" class="btn" style="background-color: #FF545B; color: #fff;" (click)="openDonateInfoDialog(data)">Quyên góp</button>
+          <td style="width: 30%;">{{data.projectName}}</td>
+          <td style="text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
+          <td style="text-align: right">{{numberWithCommas(data.curMoney)}}</td>
+          <td style="text-align: right">{{data.achieved}}</td>
+          <td style="text-align: right">{{data.remainingTerm}}</td>   
+          <td style="text-align: right">
+            <button type="button" class="btn btn-stack-overflow btn-sm" (click)="clearData(data);openDialog()" tooltip="Đăng tin tức">
+              <i class="fa fa-plus-square"></i>
+            </button>
+            <button type="button" class="btn btn-sm" style="background-color: #FF545B; color: #fff;" (click)="openDonateInfoDialog(data)" tooltip="Hiện thông tin quyên góp">
+              <i class="fa fa-heart"></i>
+            </button>
           </td>
         </tbody>
         <tbody>
@@ -44,8 +47,19 @@
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                       [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
+        <mat-form-field [style.width.px]="130"> 
+          <mat-label>Số hàng hiển thị</mat-label>
+          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="25">25</mat-option>
+            <mat-option value="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>
 </div>
+
+
 
