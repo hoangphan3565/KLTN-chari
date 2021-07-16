@@ -20,20 +20,41 @@ export class ProjectReachedComponent implements OnInit {
   data: [][];
   DonateDetail: DonateDetail;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+
   constructor(
-    private ProjectService: ProjectService,
+    private projectService: ProjectService,
     private postService: PostService,
     private DonateDetailsService: DonateDetailsService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getReached()
-  }
-  public async getReached(){
-    this.Projects = await (await this.ProjectService.getReached()).data as Project[];
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
   }
 
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countReachedProjects()).data;
+  }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getReachedProjects(a,b)).data as Project[];
+  } 
   openDisburseDialog(data): void {
     const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
       width: '250px',
@@ -106,7 +127,7 @@ export class ProjectReachedComponent implements OnInit {
       if (res)
       {
         this.notificationService.success(res.message);
-        this.getReached();
+        this.getList(this.currentPage,this.itemsPerPage);
       }
     }
     catch (e) {

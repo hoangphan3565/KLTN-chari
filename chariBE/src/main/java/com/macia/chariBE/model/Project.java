@@ -32,6 +32,13 @@ import java.util.List;
                 query = "SELECT p FROM Project p where p.verified=false ORDER BY p.PRJ_ID desc"),
         @NamedQuery(name = "named.project.findClosed",
                 query = "SELECT p FROM Project p where p.closed=true ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findActivating",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and p.status=0 ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findReached",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and p.status=1 ORDER BY p.disbursed asc"),
+        @NamedQuery(name = "named.project.findOverdue",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true and p.status=2 ORDER BY p.projectType.canDisburseWhenOverdue asc"),
+
 
         @NamedQuery(name = "named.project.findUnVerifiedByCollaboratorId",
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.verified=false ORDER BY p.PRJ_ID desc"),
@@ -39,10 +46,13 @@ import java.util.List;
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.PRJ_ID desc"),
         @NamedQuery(name = "named.project.findClosedByCollaboratorId",
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=true ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findActivatingByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =:id and p.closed=false and p.verified=true and p.status=0 ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findReachedByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =:id and p.closed=false and p.verified=true and p.status=1 ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findOverdueByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =:id and p.closed=false and p.verified=true and p.status=2 ORDER BY p.PRJ_ID desc"),
 
-        //find project on mobile short by updatetime
-        @NamedQuery(name = "named.project.findUncloseAndVerified",
-                query = "SELECT p FROM Project p where p.closed=false and p.verified=true ORDER BY p.updateTime desc"),
 
         //filter project on mobile short by updatetime
         @NamedQuery(name = "named.project.findFavoriteProject",
@@ -52,10 +62,15 @@ import java.util.List;
         @NamedQuery(name = "named.project.filterByCityIds",
                 query = "SELECT p FROM Project p where p.city.CTI_ID in (:ctids)"),
 
+        //find project on mobile short by updatetime
+        @NamedQuery(name = "named.project.findUncloseAndVerified",
+                query = "SELECT p FROM Project p where p.closed=false and p.verified=true ORDER BY p.updateTime desc"),
         @NamedQuery(name = "named.project.findProjectMultiFilterAndSearchKey",
                 query = "SELECT p FROM Project p " +
-                        "where lower(p.projectName) like :name and p.PRJ_ID in (:ids) and p.closed=false and p.verified=true and p.projectType.PRT_ID in (:ptids) and p.city.CTI_ID in (:cids) and p.status in (:status)" +
+                        "where p.PRJ_ID in (:ids) and p.closed=false and p.verified=true and p.projectType.PRT_ID in (:ptids) and p.city.CTI_ID in (:cids) and p.status in (:status)" +
+                        "and (lower(p.projectName) like :name or lower(p.briefDescription) like :name) " +
                         "ORDER BY p.status asc"),
+
 })
 public class Project {
     @Id

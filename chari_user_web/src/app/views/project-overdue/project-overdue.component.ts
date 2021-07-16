@@ -13,28 +13,49 @@ export class ProjectOverdueComponent implements OnInit {
   Projects: Project[];
   clb_id: Number;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
 
   constructor(
-    private ProjectService: ProjectService,
+    private projectService: ProjectService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getOverdue()
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
   }
-  public async getOverdue(){
-    this.Projects = await (await this.ProjectService.getOverdue(this.clb_id)).data as Project[];
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countOverdue(this.clb_id)).data;
   }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getOverdue(this.clb_id,a,b)).data as Project[];
+  } 
+
   public closeProject = async (id) => {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const res = await (await this.ProjectService.closeProject(id, this.clb_id)).data;
+        const res = await (await this.projectService.closeProject(id, this.clb_id)).data;
         if (res)
         {
           this.notificationService.warn(res.message);
-          this.Projects = res.data as Project[];
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -59,11 +80,11 @@ export class ProjectOverdueComponent implements OnInit {
   public extendProject = async (id,nod) => {
     try 
     {
-      const res = await (await this.ProjectService.extendProject(id,nod,this.clb_id)).data;
+      const res = await (await this.projectService.extendProject(id,nod)).data;
       if (res)
       {
         this.notificationService.warn(res.message);
-        this.Projects = res.data as any[];
+        this.getList(this.currentPage,this.itemsPerPage);
       }  
     }
     catch (e) {

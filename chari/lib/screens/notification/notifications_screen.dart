@@ -581,7 +581,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                         Text(
                           notification.title,
                           style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
@@ -589,7 +589,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                           Text(
                             ' (Đã xử lý)',
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
@@ -597,7 +597,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                           Text(
                             ' (Chưa xử lý)',
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.red),
                           ),
@@ -609,7 +609,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
                     Text(
                       notification.message,
                       style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.normal,
                           color: Colors.black),
                     ),

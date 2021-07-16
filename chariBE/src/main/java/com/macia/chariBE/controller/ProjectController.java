@@ -27,10 +27,10 @@ public class ProjectController {
     private DonatorNotificationService donatorNotificationService;
 
 
-    @GetMapping()
-    public ResponseEntity<?> getAllProject() {
-        return ResponseEntity.ok().body(projectService.getProjectDTOs());
-    }
+//    @GetMapping()
+//    public ResponseEntity<?> getAllProject() {
+//        return ResponseEntity.ok().body(projectService.getProjectDTOs());
+//    }
 
     @DeleteMapping("/{id}/collaborator/{clb_id}")
     public ResponseEntity<?> deleteProjectByID(@PathVariable(value = "id") Integer id,
@@ -44,9 +44,8 @@ public class ProjectController {
     }
 
     @PutMapping("/handle_all_money")
-    public ResponseEntity<?> handleAllCloseAndUnHandled() {
+    public void handleAllCloseAndUnHandled() {
         donatorNotificationService.handleAllMoneyOfClosedProjectOverSevenDay();
-        return ResponseEntity.ok().body(projectService.getClosedProjects(0,5));
     }
 
     // Services for admin
@@ -78,19 +77,34 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getClosedProjects(a-1,b));
     }
 
-    @GetMapping("/activating")
-    public ResponseEntity<?> getActivatingProjectDTO() {
-        return ResponseEntity.ok().body(projectService.getActivatingProjectDTOs());
+    @GetMapping("/activating/count")
+    public ResponseEntity<?> countActivatingProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereActivating());
+    }
+    @GetMapping("/activating/page/{a}/size/{b}")
+    public ResponseEntity<?> getActivatingProjectDTO(@PathVariable(value = "a") Integer a,
+                                                     @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getActivatingProjectDTOs(a-1,b));
     }
 
-    @GetMapping("/overdue")
-    public ResponseEntity<?> getOverdueProjectDTO() {
-        return ResponseEntity.ok().body(projectService.getOverdueProjectDTOs());
+    @GetMapping("/reached/count")
+    public ResponseEntity<?> countReachedProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereReached());
+    }
+    @GetMapping("/reached/page/{a}/size/{b}")
+    public ResponseEntity<?> getReachedProjectDTO(@PathVariable(value = "a") Integer a,
+                                                  @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getReachedProjectDTOs(a-1,b));
     }
 
-    @GetMapping("/reached")
-    public ResponseEntity<?> getReachedProjectDTO() {
-        return ResponseEntity.ok().body(projectService.getReachedProjectDTOs());
+    @GetMapping("/overdue/count")
+    public ResponseEntity<?> countOverdueProject() {
+        return ResponseEntity.ok().body(projectService.countAllWhereOverdue());
+    }
+    @GetMapping("/overdue/page/{a}/size/{b}")
+    public ResponseEntity<?> getOverdueProjectDTO(@PathVariable(value = "a") Integer a,
+                                                  @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getOverdueProjectDTOs(a-1,b));
     }
 
 
@@ -106,26 +120,38 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getUnverifiedProjectDTOsByCollaboratorIdPageASizeB(clb_id,a-1,b));
     }
 
-    @GetMapping("/activating/collaborator/{clb_id}")
-    public ResponseEntity<?> getActivatingProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
-        return ResponseEntity.ok().body(projectService.getActivatingProjectDTOs().stream()
-                .filter(p-> p.getCollaborator().getCLB_ID().equals(clb_id))
-                .collect(Collectors.toList()));
+    @GetMapping("/activating/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countActivatingProjectByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countAllWhereActivatingByCollaboratorId(clb_id));
+    }
+    @GetMapping("/activating/collaborator/{clb_id}/page/{a}/size/{b}")
+    public ResponseEntity<?> getActivatingProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id,
+                                                                     @PathVariable(value = "a") Integer a,
+                                                                     @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getActivatingProjectDTOsByCollaboratorId(clb_id,a-1,b));
+    }
+    @GetMapping("/reached/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countReachedProjectByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countAllWhereReachedByCollaboratorId(clb_id));
+    }
+    @GetMapping("/reached/collaborator/{clb_id}/page/{a}/size/{b}")
+    public ResponseEntity<?> getReachedProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id,
+                                                                  @PathVariable(value = "a") Integer a,
+                                                                  @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getReachedProjectDTOsByCollaboratorId(clb_id,a-1,b));
     }
 
-    @GetMapping("/overdue/collaborator/{clb_id}")
-    public ResponseEntity<?> getOverdueProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getOverdueProjectDTOs().stream()
-                .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
-                .collect(Collectors.toList()));
+    @GetMapping("/overdue/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countOverdueProjectByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countAllWhereOverdueByCollaboratorId(clb_id));
+    }
+    @GetMapping("/overdue/collaborator/{clb_id}/page/{a}/size/{b}")
+    public ResponseEntity<?> getOverdueProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id,
+                                                                  @PathVariable(value = "a") Integer a,
+                                                                  @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(projectService.getOverdueProjectDTOsByCollaboratorId(clb_id,a-1,b));
     }
 
-    @GetMapping("/reached/collaborator/{clb_id}")
-    public ResponseEntity<?> getReachedProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer id) {
-        return ResponseEntity.ok().body(projectService.getReachedProjectDTOs().stream()
-                .filter(p-> p.getCollaborator().getCLB_ID().equals(id))
-                .collect(Collectors.toList()));
-    }
 
     @GetMapping("/closed/collaborator/{clb_id}/count")
     public ResponseEntity<?> countClosedProjectByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
@@ -161,14 +187,13 @@ public class ProjectController {
     }
 
 
-    @PutMapping("/extend/{id}/num_of_date/{nod}/collaborator/{clb_id}")
+    @PutMapping("/extend/{id}/num_of_date/{nod}")
     public ResponseEntity<?> extendProjectDeadline(
             @PathVariable(value = "id") Integer id,
-            @PathVariable(value = "nod") Integer nod,
-            @PathVariable(value = "clb_id") Integer clb_id) {
+            @PathVariable(value = "nod") Integer nod) {
         PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.EXTENDED);
         donatorNotificationService.saveAndPushNotificationToUser(pn,id);
-        return ResponseEntity.ok().body(projectService.extendProject(id,nod,clb_id));
+        return ResponseEntity.ok().body(projectService.extendProject(id,nod));
     }
 
     @PostMapping("/create/collaborator/{clb_id}")
@@ -178,14 +203,12 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.createProject(project,clb_id));
     }
 
-    @PutMapping("/update/collaborator/{clb_id}")
-    public ResponseEntity<?> update(
-            @RequestBody ProjectDTO project,
-            @PathVariable(value = "clb_id") Integer clb_id) {
-        return ResponseEntity.ok().body(projectService.updateProject(project,clb_id));
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody ProjectDTO project) {
+        return ResponseEntity.ok().body(projectService.updateProject(project));
     }
     @PutMapping("/update_and_approve")
-    public ResponseEntity<?> update(@RequestBody ProjectDTO project) {
+    public ResponseEntity<?> updateAndApprove(@RequestBody ProjectDTO project) {
         return ResponseEntity.ok().body(projectService.updateAndApprove(project));
     }
 

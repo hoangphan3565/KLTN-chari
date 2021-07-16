@@ -21,7 +21,7 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen>{
 
-  int size = 5;
+  int size = 10;
   int numOfItem = 0;
   int page = 1;
   var inpage_donate_details_list=List<DonateDetails>();
@@ -357,7 +357,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
 
   _resetElement(){
     setState(() {
-      this.size = 5;
+      this.size = 10;
       this.numOfItem=0;
       this.page = 1;
     });

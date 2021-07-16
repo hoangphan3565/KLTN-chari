@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,22 @@ public class DonatorService {
         return donatorRepo.findById(id).orElseThrow();
     }
 
-    public List<Donator> findAll(){return donatorRepo.findAll();}
+    public List<Donator> findAll(){
+        TypedQuery<Donator> query = em.createNamedQuery("named.donator.findAll", Donator.class);
+        return query.getResultList();
+    }
+
+    public List<Donator> findWhereHaveAccount(){
+        TypedQuery<Donator> query = em.createNamedQuery("named.donator.findWhereHaveAccount", Donator.class);
+        return query.getResultList();
+    }
+
+    public Donator findByUserName(Integer id){
+        TypedQuery<Donator> query = em.createNamedQuery("named.donator.findById", Donator.class);
+        query.setParameter("id",id);
+        return query.getSingleResult();
+    }
+
 
     public Donator findByUsername(String username) {
         try {
@@ -64,14 +80,15 @@ public class DonatorService {
 
     public Integer getDonatorIdByUsername(String s){
         Donator d = donatorRepo.findByUsername(s);
+        Integer id;
         if(d!=null){
-            return d.getDNT_ID();
+            id = d.getDNT_ID();
         }else{
-            donatorRepo.saveAndFlush(Donator.builder()
-                    .phoneNumber(s).favoriteNotification(pushNotificationService.findAllIdAsString())
-                    .favoriteProject("").build());
-            return donatorRepo.findByUsername(s).getDNT_ID();
+            donatorRepo.saveAndFlush(Donator.builder().phoneNumber(s).username(s).build());
+            Donator donator = donatorRepo.findByUsername(s);
+            id = donator.getDNT_ID();
         }
+        return id;
     }
 
 

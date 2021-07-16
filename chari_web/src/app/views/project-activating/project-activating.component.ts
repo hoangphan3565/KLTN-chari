@@ -19,6 +19,21 @@ export class ProjectActivatingComponent implements OnInit {
   Project: Project;
   Post: Post;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  
   data: [][];
   DonateDetail: DonateDetail;
 
@@ -30,11 +45,18 @@ export class ProjectActivatingComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getAllActivating();
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
   }
-  public async getAllActivating(){
-    this.Projects = await (await this.projectService.getActivating()).data as Project[];
-  }    
+
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countActivatingProjects()).data;
+  }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getActivatingProjects(a,b)).data as Project[];
+  }  
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostActivatingComponent, {
@@ -47,8 +69,6 @@ export class ProjectActivatingComponent implements OnInit {
       }
     });
   }
-
-
   clearData(p:Project){
     this.Post = {
       pos_ID: null,
@@ -121,7 +141,7 @@ export class ProjectActivatingComponent implements OnInit {
       if (res==1)
       {
         this.notificationService.success('Cập nhật tiền quyên góp từ bảng sao kê thành công');
-        this.getAllActivating();
+        this.getList(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
@@ -199,9 +219,8 @@ export class ProjectActivatingComponent implements OnInit {
       if (res)
       {
         this.notificationService.success('Thêm dự án từ thiện thành công');
-        // this.getVerifiedProjects(1,this.itemsPerPage);
-        this.getAllActivating();
-
+        this.countTotal();
+        this.getList(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
@@ -212,13 +231,11 @@ export class ProjectActivatingComponent implements OnInit {
   public updateProject = async (data) => {
     try 
     {
-      const res = await (await this.projectService.updateProject(data,0)).data;
+      const res = await (await this.projectService.updateProject(data)).data;
       if (res)
       {
         this.notificationService.success(res.message);
-        // this.getVerifiedProjects(this.currentPage,this.itemsPerPage);
-        this.getAllActivating();
-
+        this.getList(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {

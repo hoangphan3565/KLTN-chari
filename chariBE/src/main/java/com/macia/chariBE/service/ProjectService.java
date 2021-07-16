@@ -9,7 +9,6 @@ import com.macia.chariBE.utility.ENotificationTopic;
 import com.macia.chariBE.utility.EProjectStatus;
 import com.macia.chariBE.utility.NumberUtility;
 import net.minidev.json.JSONObject;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +29,6 @@ import static com.macia.chariBE.utility.Round.round;
 
 @Service
 public class ProjectService {
-
-    @Autowired
-    private ModelMapper mapper;
 
     @PersistenceContext
     private EntityManager em;
@@ -177,7 +173,7 @@ public class ProjectService {
                 .numOfDonations(findNumOfDonationOfProject(p))
                 .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
                 .remainingTerm(Long.valueOf(String.valueOf(findRemainingTermOfProject(p))))
-                .verified(p.getVerified()).status(findStatusOfProject(p)).disbursed(p.getDisbursed()).closed(p.getClosed())
+                .verified(p.getVerified()).status(p.getStatus()).disbursed(p.getDisbursed()).closed(p.getClosed())
                 .prt_ID(p.getProjectType().getPRT_ID()).projectType(p.getProjectType())
                 .stp_ID(p.getSupportedPeople().getSTP_ID()).supportedPeople(p.getSupportedPeople())
                 .clb_ID(p.getCollaborator().getCLB_ID()).collaborator(p.getCollaborator())
@@ -201,6 +197,57 @@ public class ProjectService {
             r.add(mapToDTO(p));
         }
         return r;
+    }
+
+    public int countAllWhereActivatingByCollaboratorId(Integer clb_id){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivatingByCollaboratorId", Project.class);
+        query.setParameter("id", clb_id);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getActivatingProjectDTOsByCollaboratorId(Integer clb_id,Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivatingByCollaboratorId", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        query.setParameter("id", clb_id);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
+    }
+
+    public int countAllWhereReachedByCollaboratorId(Integer clb_id){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findReachedByCollaboratorId", Project.class);
+        query.setParameter("id", clb_id);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getReachedProjectDTOsByCollaboratorId(Integer clb_id,Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findReachedByCollaboratorId", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        query.setParameter("id", clb_id);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
+    }
+
+    public int countAllWhereOverdueByCollaboratorId(Integer clb_id){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findOverdueByCollaboratorId", Project.class);
+        query.setParameter("id", clb_id);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getOverdueProjectDTOsByCollaboratorId(Integer clb_id,Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findOverdueByCollaboratorId", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        query.setParameter("id", clb_id);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
     }
 
     public Integer countCloseByCollaboratorId(Integer id) {
@@ -228,7 +275,7 @@ public class ProjectService {
 
 
 
-    // Services for Donator(Only show Verified and Unclose) and Admin(Verified Project)
+    // Services for Admin(Verified and Unclose Project)
     public Integer countAllWhereUncloseAndVerified() {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findUncloseAndVerified", Project.class);
         return query.getResultList().size();
@@ -298,33 +345,20 @@ public class ProjectService {
             jso.put("errorCode",1);
             jso.put("message","Đã xảy ra lỗi! Không tìm thấy dự án");
         }
-        if(clb_id == 0){
-            jso.put("data",getOverdueProjectDTOs());
-        }else{
-            jso.put("data",getOverdueProjectDTOs().stream()
-                    .filter(x-> x.getCollaborator().getCLB_ID().equals(clb_id))
-                    .collect(Collectors.toList()));
-        }
         return jso;
     }
-    public JSONObject extendProject(Integer id,Integer nod,Integer clb_id){
+    public JSONObject extendProject(Integer id,Integer nod){
         JSONObject jso = new JSONObject();
         Project p = repo.findById(id).orElseThrow();
-        if(findStatusOfProject(p).equals(EProjectStatus.OVERDUE)){
+        if(p.getStatus().equals(EProjectStatus.OVERDUE)){
             p.setEndDate(LocalDate.now().plusDays(nod));
+            p.setStatus(EProjectStatus.ACTIVATING);
             repo.saveAndFlush(p);
             jso.put("errorCode",0);
             jso.put("message","Gia hạn dự án thành công!");
         }else{
             jso.put("errorCode",1);
             jso.put("message","Dự án đã được gia hạn trước đó!");
-        }
-        if(clb_id == 0){
-            jso.put("data",getOverdueProjectDTOs());
-        }else{
-            jso.put("data",getOverdueProjectDTOs().stream()
-                    .filter(x-> x.getCollaborator().getCLB_ID().equals(clb_id))
-                    .collect(Collectors.toList()));
         }
         return jso;
     }
@@ -348,6 +382,7 @@ public class ProjectService {
         np.setVerified(collaboratorId == 0);
         np.setDisbursed(false);
         np.setClosed(false);
+        np.setStatus(EProjectStatus.ACTIVATING);
         this.repo.saveAndFlush(np);
         if(collaboratorId == 0){
             this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),ENotificationTopic.NEW);
@@ -356,7 +391,7 @@ public class ProjectService {
         jso.put("message", "Thêm dự án thành công!");
         return jso;
     }
-    public JSONObject updateProject(ProjectDTO p,Integer collaboratorId) {
+    public JSONObject updateProject(ProjectDTO p) {
         Project np = this.findProjectById(p.getPRJ_ID());
         JSONObject jso = new JSONObject();
         if(np!=null){
@@ -400,6 +435,7 @@ public class ProjectService {
             this.projectImagesService.updateListProjectImage(np,p.getImages());
             this.repo.saveAndFlush(np);
             this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),ENotificationTopic.NEW);
+            np.setStatus(EProjectStatus.ACTIVATING);
             jso.put("errorCode", 0);
             jso.put("message", "Phê duyệt thành công!");
         }else{
@@ -430,42 +466,74 @@ public class ProjectService {
         return r;
     }
 
-    public List<ProjectDTO> getProjectDTOs(){
-        List<ProjectDTO> r = new ArrayList<>();
-        List<Project> ps = this.findAll();
-        for(Project p : ps){
-            r.add(mapToDTO(p));
-        }
-        return r;
-    }
+//    public List<ProjectDTO> getProjectDTOs(){
+//        List<ProjectDTO> r = new ArrayList<>();
+//        List<Project> ps = this.findAll();
+//        for(Project p : ps){
+//            r.add(mapToDTO(p));
+//        }
+//        return r;
+//    }
 
+    public List<ProjectDTO> getAllActivatingProjectDTOs(){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
+    }
     public List<ProjectDTO> getProjectReadyToMoveMoney(int money){
-        return this.getActivatingProjectDTOs().stream()
+        return this.getAllActivatingProjectDTOs().stream()
                 .filter(p->p.getTargetMoney()-p.getCurMoney()>=money)
                 .collect(Collectors.toList());
     }
 
-    public List<ProjectDTO> getActivatingProjectDTOs(){
-        return this.getProjectDTOs().stream()
-                .filter(p-> !p.getClosed())
-                .filter(p-> p.getVerified())
-                .filter(p->p.getStatus().equals(EProjectStatus.ACTIVATING))
-                .collect(Collectors.toList());
+    // Services for Admin
+    public int countAllWhereActivating(){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getActivatingProjectDTOs(Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
     }
 
-    public List<ProjectDTO> getReachedProjectDTOs(){
-        return this.getProjectDTOs().stream().
-                filter(p-> !p.getClosed()).
-                filter(p->p.getStatus().equals(EProjectStatus.REACHED))
-                .collect(Collectors.toList());
+    public int countAllWhereReached(){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findReached", Project.class);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getReachedProjectDTOs(Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findReached", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
     }
 
-    public List<ProjectDTO> getOverdueProjectDTOs(){
-        return this.getProjectDTOs().stream()
-                .filter(p-> !p.getClosed())
-                .filter(p->p.getStatus().equals(EProjectStatus.OVERDUE))
-                .sorted(Comparator.comparing(ProjectDTO::getCurMoney).reversed())
-                .collect(Collectors.toList());
+    public int countAllWhereOverdue(){
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findOverdue", Project.class);
+        return query.getResultList().size();
+    }
+    public List<ProjectDTO> getOverdueProjectDTOs(Integer a,Integer b){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findOverdue", Project.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
     }
 
     public int countAllWhereClosed(){
@@ -482,8 +550,10 @@ public class ProjectService {
         }
         for(ProjectDTO p:ls){
             float curMoney = findCurMoneyOfProjectById(p.getPRJ_ID());
-            float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
-            p.setMoveMoneyProgress(round(movedMoney/curMoney*100,1));
+            if(curMoney>0){
+                float movedMoney = findMovedMoneyOfClosedProject(p.getPRJ_ID());
+                p.setMoveMoneyProgress(round(movedMoney/curMoney*100,1));
+            }
         }
         return ls;
     }
@@ -502,6 +572,10 @@ public class ProjectService {
         }
         return r;
     }
+
+
+
+
 
 
     //===================================== Filter ==================================//
@@ -532,6 +606,7 @@ public class ProjectService {
     }
 
 
+    // service for Donator(Only show Verified and Unclose) and apply filter + search
     public List<ProjectDTO> getProjectsByMultiFilterAndSearchKey(String did, List<String> c_ids, List<String> pt_ids, List<String> status, String key,Integer page,Integer size) {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findProjectMultiFilterAndSearchKey", Project.class)
                 .setFirstResult(page*size).setMaxResults(size);

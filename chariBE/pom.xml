@@ -8,7 +8,7 @@
 		<version>2.3.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.isc.chariBE</groupId>
+	<groupId>com.macia.chariBE</groupId>
 	<artifactId>chariBE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>chariBE</name>
@@ -75,11 +75,11 @@
             <artifactId>firebase-admin</artifactId>
             <version>7.1.0</version>
         </dependency>
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>2.4.4</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.modelmapper</groupId>-->
+<!--			<artifactId>modelmapper</artifactId>-->
+<!--			<version>2.4.4</version>-->
+<!--		</dependency>-->
     </dependencies>
 
 	<build>

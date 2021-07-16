@@ -85,7 +85,7 @@ export class PostComponent implements OnInit {
       content: '',
       projectId:null,
       projectName:'',
-      isPublic: null,
+      isPublic: true,
       imageUrl: '',
       videoUrl: '',
       collaboratorId:0,

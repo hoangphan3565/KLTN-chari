@@ -17,6 +17,21 @@ export class ProjectActivatingComponent implements OnInit {
   Post: Post;
   clb_id: Number;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+
   constructor(
     private projectService: ProjectService,
     private postService: PostService,
@@ -25,11 +40,19 @@ export class ProjectActivatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getActivating()
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
   }
-  public async getActivating(){
-    this.Projects = await (await this.projectService.getActivating(this.clb_id)).data as Project[];
+
+
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countActivating(this.clb_id)).data;
   }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getActivating(this.clb_id,a,b)).data as Project[];
+  }  
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostComponent, {

@@ -93,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
       _checkNewNotificationsByDonatorId();
       _countTotalDonateHistory();
       _getPushNotification();
-      _checkAndSubscribeFavoriteNotificationOfDonator();
+      _checkAndSubscribeNotification();
     }
     getDataAfterBuildWidget();
 
@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
         _checkNewNotificationsByDonatorId();
         _countTotalDonateHistory();
         _getPushNotification();
-        _checkAndSubscribeFavoriteNotificationOfDonator();
+        _checkAndSubscribeNotification();
       }
       _checkLogin();
     });
@@ -127,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  _checkAndSubscribeFavoriteNotificationOfDonator() async {
+  _checkAndSubscribeNotification() async {
     if(Platform.isIOS){
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
@@ -153,12 +153,7 @@ class _MainScreenState extends State<MainScreen> {
         print("onLaunch: $message");
       },
     );
-    String favorite_notification = this.donator.favorite_notification;
-    for(int i=0;i<push_notification_list.length;i++){
-      if(favorite_notification.contains(push_notification_list.elementAt(i).nof_ID.toString())){
-        _fcm.subscribeToTopic(push_notification_list.elementAt(i).topic.toString());
-      }
-    }
+    _fcm.subscribeToTopic('NEW');
   }
 
   _getPushNotification() async{
@@ -327,14 +322,14 @@ class _MainScreenState extends State<MainScreen> {
               if(index == 0){
                 _countTotalProject();
                 _getProjectTypes();
-                _checkAndSubscribeFavoriteNotificationOfDonator();
+                _checkAndSubscribeNotification();
                 _checkNewNotificationsByDonatorId();
               }
               else if(index == 2){
                 _countTotalPosts();
                 _countTotalNotification();
                 _getPushNotification();
-                _checkAndSubscribeFavoriteNotificationOfDonator();
+                _checkAndSubscribeNotification();
                 setState(() {
                   isNewNotification=false;
                   DonatorNotificationService.putReadDonatorNotificationsByDonatorId(this.donator.id, this.donator.token);

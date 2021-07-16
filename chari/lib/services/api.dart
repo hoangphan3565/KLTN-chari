@@ -1,5 +1,6 @@
 //local ip và port server đang deploy
-const baseUrl = 'http://192.168.1.202:8080/api';
+const baseUrl = 'http://192.168.43.202:8080/api';
+// const baseUrl = 'http://192.168.1.202:8080/api';
 // const baseUrl = 'http://172.20.10.2:8080/api';
 // const baseUrl = 'http://192.168.1.121:8080/api';
 

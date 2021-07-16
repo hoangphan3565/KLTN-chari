@@ -5,14 +5,14 @@ import { DonateDetail } from '../../models/DonateDetail';
 import * as XLSX from 'xlsx';
 import { NotificationService } from '../../services/notification.service';
 import { DonateDetailsService } from '../../services/donate-details.service';
+import { ProjectService } from '../../services/Project.service';
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  constructor(
+  constructor(private projectService: ProjectService
   ) { }
-
 
   radioModel: string = 'Month';
 
@@ -385,6 +385,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.projectService.updateProjectStatus();
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));

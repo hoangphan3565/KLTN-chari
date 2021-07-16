@@ -70,7 +70,7 @@ insert into jwt_user(username,password,usertype,status) values('1231231233','$2a
 insert into jwt_user(username,password,usertype,status) values('4564564565','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Collaborator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('1231231231','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('4564564564','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
-insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','NOT_ACTIVATED');
+insert into jwt_user(username,password,usertype,status) values('7897897897','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Donator','ACTIVATED');
 insert into jwt_user(username,password,usertype,status) values('admin','$2a$10$sszb2tF.4wuIvgsXpG8JDeRNNYsd0HfC0kEKJY./4OVLkEctyQ5tK','Admin','ACTIVATED');
 
 insert into collaborator(username,is_accept,clb_id,full_name,phone_number,email,address,certificate) values('collaborator_admin',true,0,'Admin','admin','admin','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
@@ -79,9 +79,9 @@ insert into collaborator(username,is_accept,full_name,phone_number,email,address
 insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231233',false,'Phan Văn B','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 
 
-insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('1231231231','Phan Đình Hoàng','1231231231','Quận 1, TP Hà Nội','1 2 10 ','1 2 3 4 5 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('4564564564','Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
-insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('7897897897','Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 5 6 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('1231231231','Phan Đình Hoàng','1231231231','Quận 10, TP HCM','1 2 10 ','1 2 3 4 5 ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('4564564564','Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3  ','https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('7897897897','Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 ','https://i.pinimg.com/originals/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg');
 
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(false,'Sứ mệnh 1.000','Cùng Chari trên chặn đường xây dựng 1.000 điểm trường và mái ấm cho những hoàn cảnh khó khăn trên khắp đất nước.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fxay-truong-dung-uoc-mo.jpeg?alt=media&token=9aa38892-ed33-45b4-b4cb-17bfc9a43de1');
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(true,'Hướng về miền Trung','Cùng chung tay ủng hộ bà con miền Trung vượt qua khó khăn mùa bão lũ.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fhuong-ve-mien-trung.png?alt=media&token=a4401234-f6b0-4b9c-b71b-7c722c4fa791');
@@ -263,7 +263,7 @@ insert into project(cti_id,update_time,project_code,project_name,verified,disbur
 values(20,'2021-05-27 20:50:40.075187','G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
-'2020-11-01','2021-08-01',400000,
+'2020-11-01','2021-08-01',999000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp1',2,1,1);
 
@@ -403,11 +403,11 @@ insert into donate_details(donate_date,money,dna_id) values('2020-11-12',50000,1
 insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','CLOSED',80000,8,1);
 insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','CLOSED',40000,12,1);
 
-insert into push_notification(topic,title,message) values('NEW','Dự án từ thiện mới','Có một dự án từ thiện mới, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này');
-insert into push_notification(topic,title,message) values('OVERDUE','Dự án đã quá hạn','Dự án mà bạn tham gia quyên góp thật không may đã bị thất bại do quá hạn quyên góp. Hãy xem thông báo để cập nhật tình hình mới nhất.');
-insert into push_notification(topic,title,message) values('CLOSED','Xử lý tiền dự án quá hạn','Dự án mà bạn tham gia quyên góp đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari');
-insert into push_notification(topic,title,message) values('EXTENDED','Dự án đã được gia hạn','Dự án mà bạn tham gia quyên góp đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
-insert into push_notification(topic,title,message) values('REACHED','Chương trình thành công','Cám ơn bạn đã đồng hành cùng chương trình này, chương trình đã quyên góp thành công và sẽ được tiến hành thi công. Những bài viết liên quan đến chương trình này sẽ được gửi đến bạn.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi có dự án mới','NEW','Dự án từ thiện mới',' đã được chúng tôi gây quỹ, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp được gia hạn','EXTENDED','Dự án được gia hạn',' đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp bị đóng','CLOSED','Xử lý tiền dự án quá hạn',' đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp được giải ngân','DISBURSED','Bạn đã làm nên điều diệu kỳ',' đã được chúng tôi giải ngân thành công. Cám ơn bạn đã ủng hộ cho hoàn cảnh này.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án nhận được tiền quyên góp của bạn','DONATED','Chúng tôi đã nhận được lòng tốt của bạn',' đã nhận được tiền từ bạn. Cám ơn bạn đã ủng hộ cho hoàn cảnh này.');
 
 insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'

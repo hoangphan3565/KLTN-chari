@@ -17,29 +17,51 @@ export class ProjectOverdueComponent implements OnInit {
   data: [][];
   DonateDetail: DonateDetail;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+
   constructor(
-    private ProjectService: ProjectService,
+    private projectService: ProjectService,
     private DonateDetailsService: DonateDetailsService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getOverdue()
-  };
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
+  }
 
-  public async getOverdue(){
-    this.Projects = await (await this.ProjectService.getOverdue()).data as Project[];
-  };
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countOverdueProjects()).data;
+  }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getOverdueProjects(a,b)).data as Project[];
+  } 
+
 
   public closeProject = async (id) => {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const res = await (await this.ProjectService.closeProject(id,0)).data;
+        const res = await (await this.projectService.closeProject(id,0)).data;
         if (res)
         {
           this.notificationService.warn(res.message);
-          this.Projects = res.data as Project[];
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -71,11 +93,11 @@ export class ProjectOverdueComponent implements OnInit {
   public extendProject = async (id,nod) => {
     try 
     {
-      const res = await (await this.ProjectService.extendProject(id,nod,0)).data;
+      const res = await (await this.projectService.extendProject(id,nod)).data;
       if (res)
       {
         this.notificationService.warn(res.message);
-        this.Projects = res.data as any[];
+        this.getList(this.currentPage,this.itemsPerPage);
       }  
     }
     catch (e) {
@@ -109,7 +131,7 @@ export class ProjectOverdueComponent implements OnInit {
       if(res)
       {
         this.notificationService.success(res.message);
-        this.getOverdue();
+        this.getList(this.currentPage,this.itemsPerPage);
       }
     }
     catch (e) {

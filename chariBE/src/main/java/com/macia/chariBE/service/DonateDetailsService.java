@@ -8,7 +8,9 @@ import com.macia.chariBE.pushnotification.NotificationObject;
 import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.IDonateDetailsRepository;
 import com.macia.chariBE.repository.IJwtUserRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
 import com.macia.chariBE.utility.EDonateActivityStatus;
+import com.macia.chariBE.utility.ENotificationTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,7 @@ public class DonateDetailsService {
     private DonateActivityService donateActivityService;
 
     @Autowired
-    private IDonateDetailsRepository IDonateDetailsRepository;
+    private IDonateDetailsRepository donateDetailsRepository;
 
     @Autowired
     private DonatorService donatorService;
@@ -43,6 +45,9 @@ public class DonateDetailsService {
 
     @Autowired
     private PushNotificationService pushNotificationService;
+
+    @Autowired
+    private IPushNotificationRepository pushNotificationRepository;
 
     @Autowired
     private IJwtUserRepository IJwtUserRepository;
@@ -137,11 +142,7 @@ public class DonateDetailsService {
 
     public Integer findDonatorIdFromDonateDetails(String s){
         String details = cutPhoneFromDonateDetails(s);
-        if(details.length()==10 || details.length()==16){
-            return donatorService.getDonatorIdByUsername(details);
-        }else{
-            return 0;
-        }
+        return donatorService.getDonatorIdByUsername(details);
     }
 
     public String cutPhoneFromDonateDetails(String s){
@@ -172,15 +173,15 @@ public class DonateDetailsService {
             System.out.println("Donator: "+donator_id);
             System.out.println("ProjectId: "+project_id);
             System.out.println("Money: "+money);
-
             saveDonateDetails(donator_id,project_id,money,LocalDateTime.parse(d.getDate(), formatter));
         }
+        projectService.updateAllProjectStatus();
     }
 
     public void saveDonateDetails(Integer donator_id, Integer project_id, Integer money,LocalDateTime dateTime) {
         DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
         if (donateActivity == null) {
-            IDonateDetailsRepository.save(DonateDetails.builder()
+            donateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(donatorService.findById(donator_id))
                             .project(projectService.findProjectById(project_id))
@@ -193,7 +194,7 @@ public class DonateDetailsService {
         }
         else {
             if(this.findByDonateActivityIdAndDateTime(donateActivity.getDNA_ID(),dateTime).isEmpty()){
-                IDonateDetailsRepository.save(DonateDetails.builder()
+                donateDetailsRepository.save(DonateDetails.builder()
                         .donateActivity(donateActivity)
                         .donateDate(dateTime)
                         .money(money)
@@ -204,57 +205,35 @@ public class DonateDetailsService {
     }
 
     public void sendDonateNotificationToDonator(Integer donator_id,Integer project_id){
-        String title = "Chari đã nhận được tiền quyên góp.";
-        String message = "Cám ơn bạn đã đóng góp cho dự án: ";
+        PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.DONATED);
+        Project project = projectService.findProjectById(project_id);
+        String msg = "Dự án '"+project.getProjectName()+"'"+pn.getMessage();
         NotificationObject no = new NotificationObject();
-        no.setTitle(title);
+        no.setTitle(pn.getTitle());
+        no.setTopic(pn.getTopic());
         JwtUser appUser;
         DonateActivity da = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id,project_id);
         appUser = IJwtUserRepository.findByUsername(da.getDonator().getUsername());
-        no.setMessage(message+projectService.findProjectById(project_id).getProjectName());
-        if(appUser!=null){
-            if(da.getDonator().getDNT_ID()!=0){
-                if(appUser.getFcmToken() != null){
-                    no.setToken(appUser.getFcmToken());
-                    pushNotificationService.sendMessageToToken(no);
-                }
-                Project p = projectService.findProjectById(project_id);
-                donatorNotificationService.save(DonatorNotification.builder()
-                        .create_time(LocalDateTime.now()).donator(da.getDonator()).project_id(project_id)
-                        .title(title).message(message+p.getProjectName())
-                        .project_image(p.getImageUrl())
-                        .read(false).build());
-            }
-        }
-    }
-
-    public void sendDisburseNotificationToDonators(Integer project_id){
-        String title = "Bạn đã làm lên điều diệu kỳ";
-        String message = "Cám ơn sự ủng hộ của bạn cho dự án ";
-        NotificationObject no = new NotificationObject();
-        no.setTitle(title);
-        List<DonateActivity> das = donateActivityService.findDonateActivityByProjectID(project_id);
-        for(DonateActivity da:das){
-            JwtUser appUser;
-            appUser = IJwtUserRepository.findByUsername(da.getDonator().getUsername());
-            Project p = projectService.findProjectById(project_id);
-            no.setMessage(message+p.getProjectName());
-            if(appUser!=null){
-                if(da.getDonator().getDNT_ID()!=0){
-                    if(appUser.getFcmToken() != null){
-                        no.setToken(appUser.getFcmToken());
-                        pushNotificationService.sendMessageToToken(no);
+        no.setMessage(msg);
+        Donator donator = da.getDonator();
+        if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
+            String notifications = donator.getFavoriteNotification();
+            if(notifications.contains(pn.getNOF_ID().toString())){
+                if(appUser!=null){
+                    if(da.getDonator().getDNT_ID()!=0){
+                        if(appUser.getFcmToken() != null){
+                            no.setToken(appUser.getFcmToken());
+                            pushNotificationService.sendMessageToToken(no);
+                        }
+                        donatorNotificationService.save(DonatorNotification.builder()
+                                .topic(pn.getTopic()).title(pn.getTitle()).message(msg)
+                                .create_time(LocalDateTime.now()).read(false).handled(false)
+                                .donator(da.getDonator()).project_id(project_id).project_image(project.getImageUrl()).build());
                     }
-                    donatorNotificationService.save(DonatorNotification.builder()
-                            .create_time(LocalDateTime.now()).donator(da.getDonator()).project_id(project_id)
-                            .title(title).message(message+p.getProjectName())
-                            .project_image(p.getImageUrl())
-                            .read(false).build());
                 }
             }
         }
     }
-
 
     public int disbursedProjectWithBank(List<DonateDetailsWithBankDTO> donations) {
         int flag=0;
@@ -262,6 +241,7 @@ public class DonateDetailsService {
                 .filter(dn->dn.getDetails()!=null)
                 .filter(dn->dn.getDetails().toLowerCase().contains(disburseCode))
                 .collect(Collectors.toList());
+        PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.DISBURSED);
         for(DonateDetailsWithBankDTO d:ds){
             Integer project_id = Integer.valueOf(handleDonateDetails(d.getDetails().toLowerCase()));
             System.out.println("========================");
@@ -271,12 +251,13 @@ public class DonateDetailsService {
                 if(getDisburseMoney(d.getAmount())>=projectService.findCurMoneyOfProject(p)){
                     p.setDisbursed(true);
                     projectService.save(p);
-                    sendDisburseNotificationToDonators(project_id);
+                    donatorNotificationService.saveAndPushNotificationToUser(pn,project_id);
                 }else{
                     flag=1;
                 }
             }
         }
+        projectService.updateAllProjectStatus();
         return flag;
     }
 }

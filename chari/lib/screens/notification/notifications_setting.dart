@@ -27,10 +27,13 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
     DonatorService.changeStateFavoriteNotificationList(donator_id, nof_id, value, token).then((value) =>
         _prefs.setString('donator_favorite_notification',value.toString())
     );
-    if(value==true){
-      _fcm.subscribeToTopic(topic);
-    }else{
-      _fcm.unsubscribeFromTopic(topic);
+    if(topic=='NEW'){
+      if(value){
+        _fcm.subscribeToTopic(topic);
+      }else{
+        _fcm.unsubscribeFromTopic(topic);
+      }
+      print("$value->$topic");
     }
   }
 
@@ -64,7 +67,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
               ),
               for(int i=0;i<widget.push_notification_list.length;i++)
                 SwitchListTile(
-                  title: Text(widget.push_notification_list.elementAt(i).title),
+                  title: Text(widget.push_notification_list.elementAt(i).description,style: TextStyle(fontSize: 13),),
                   value: widget.favorite_notification_list.elementAt(i),
                   activeColor: kPrimaryHighLightColor,
                   onChanged: (bool value){

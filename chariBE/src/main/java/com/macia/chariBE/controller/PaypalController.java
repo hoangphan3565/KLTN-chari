@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 
@@ -20,8 +22,9 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/paypal")
 public class PaypalController {
 
-    @Value("${server.address}")
-    private String server_address;
+//    @Value("${server.address}")
+//    private String server_address;
+    String server_address = InetAddress.getLocalHost().getHostAddress();
 
     @Value("${server.port}")
     private String server_port;
@@ -43,6 +46,9 @@ public class PaypalController {
 
     @Autowired
     IDonateDetailsRepository IDonateDetailsRepository;
+
+    public PaypalController() throws UnknownHostException {
+    }
 
 
     @GetMapping()

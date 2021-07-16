@@ -14,6 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedQueries({
+        @NamedQuery(name = "named.donator.findAll",
+                query = "SELECT d FROM Donator d order by d.DNT_ID desc"),
+        @NamedQuery(name = "named.donator.findWhereHaveAccount",
+                query = "SELECT d FROM Donator d where d.favoriteNotification is not null order by d.DNT_ID desc"),
+        @NamedQuery(name = "named.donator.findById",
+                query = "SELECT d FROM Donator d where d.DNT_ID =:id"),
+})
 public class Donator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +33,7 @@ public class Donator {
     @Column(length = 200)
     private String address;
 
-    @Column(length = 10)
+    @Column(length = 20)
     private String phoneNumber;
 
     @Column(length = 400)

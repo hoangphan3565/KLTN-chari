@@ -326,7 +326,7 @@ class _FilterState extends State<Filter> {
                   children: [
                     SelectItem(
                       text: 'Đang hoạt động',
-                      width: size.width*0.29,
+                      width: size.width*0.31,
                       onTapSelectItem: ()=>{
                         setState(() {
                           activating==true?activating=false:activating=true;
@@ -348,7 +348,7 @@ class _FilterState extends State<Filter> {
                     ),
                     SelectItem(
                       text: 'Đã thất bại',
-                      width: size.width*0.28,
+                      width: size.width*0.25,
                       onTapSelectItem: ()=>{
                         setState(() {
                           overdue==true?overdue=false:overdue=true;

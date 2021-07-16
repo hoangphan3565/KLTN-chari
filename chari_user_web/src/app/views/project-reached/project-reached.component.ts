@@ -18,20 +18,40 @@ export class ProjectReachedComponent implements OnInit {
   Projects: Project[];
   clb_id: Number;
 
+  maxSize: number = 5;
+  totalItems: number;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+
+  pageChanged(event: any): void {
+    this.currentPage =  event.page;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
+  rowsChanged(event: any): void {
+    this.itemsPerPage =  event.value;
+    this.getList(this.currentPage,this.itemsPerPage);
+  }
 
   constructor(
-    private ProjectService: ProjectService,
+    private projectService: ProjectService,
     private postService: PostService,
     private notificationService: NotificationService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
-    this.getReached()
+    this.countTotal();
+    this.getList(1,this.itemsPerPage);
   }
-  public async getReached(){
-    this.Projects = await (await this.ProjectService.getReached(this.clb_id)).data as Project[];
+
+  public async countTotal(){
+    this.totalItems = await (await this.projectService.countReached(this.clb_id)).data;
   }
+
+  public async getList(a,b){
+    this.Projects = await (await this.projectService.getReached(this.clb_id,a,b)).data as Project[];
+  } 
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogPostComponent, {

@@ -326,9 +326,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
     fbLogOut();
     SharedPreferences p = await SharedPreferences.getInstance();
     UserService.saveFCMToken(p.getString('username'), null);
-    for(int i=0;i<widget.push_notification_list.length;i++){
-      _fcm.unsubscribeFromTopic(widget.push_notification_list.elementAt(i).topic.toString());
-    }
+    _fcm.unsubscribeFromTopic('NEW');
     p.setString('token','');
     p.setString('fb_token','');
     p.setInt('donator_id',null);

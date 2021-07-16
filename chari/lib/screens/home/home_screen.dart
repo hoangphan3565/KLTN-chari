@@ -685,6 +685,10 @@ class _HomeScreenState extends State<HomeScreen>{
     });
     if(value=='confirm_filter'){
       _getNewData();
+    }else{
+      setState(() {
+        _isLoading=false;
+      });
     }
   }
   _resetElement(){

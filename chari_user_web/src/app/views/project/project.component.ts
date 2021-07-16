@@ -133,7 +133,7 @@ export class ProjectComponent implements OnInit {
   public updateProject = async (data) => {
     try 
     {
-      const res = await (await this.ProjectService.updateProject(data,this.clb_id)).data;
+      const res = await (await this.ProjectService.updateProject(data)).data;
       if (res)
       {
         this.notificationService.success(res.message);
