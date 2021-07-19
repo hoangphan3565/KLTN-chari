@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserService{
   static signin(String username,String password) {
-    String url = baseUrl+login;
+    var url = baseUrl+login;
     final body = jsonEncode(<String, String>{
       "username":username,
       "password":password,

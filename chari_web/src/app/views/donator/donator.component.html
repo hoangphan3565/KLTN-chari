@@ -31,18 +31,15 @@
           <tbody>
         </table>
         <div class="row">
-          <div class="col-xs-12 col-12 col-md-6">
+          <div class="col">
             <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
                         previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                         [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
           </div>
-          <mat-form-field [style.width.px]="130"> 
+          <mat-form-field [style.width.px]="80" align="right">
             <mat-label>Số hàng hiển thị</mat-label>
-            <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
-              <mat-option value="5">5</mat-option>
-              <mat-option value="10">10</mat-option>
-              <mat-option value="25">25</mat-option>
-              <mat-option value="100">100</mat-option>
+            <mat-select (selectionChange)="rowsChanged($event)" [(ngModel)]="selected1">
+              <mat-option *ngFor="let option of options"  [value]="option.id">{{ option.value }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

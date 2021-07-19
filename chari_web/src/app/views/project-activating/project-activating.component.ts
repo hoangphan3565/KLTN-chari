@@ -29,8 +29,16 @@ export class ProjectActivatingComponent implements OnInit {
     this.currentPage =  event.page;
     this.getList(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
+    this.itemsPerPage = this.options[event.value-1].value;
     this.getList(this.currentPage,this.itemsPerPage);
   }
   
@@ -119,6 +127,10 @@ export class ProjectActivatingComponent implements OnInit {
   onFileChange(ev) {
     let workBook = null;
     let jsonData = null;
+    if (ev.files.length !== 1) {
+      this.notificationService.success('Chỉ được chọn 1 file');
+      return;
+    }
     const reader = new FileReader();
     const file = ev.target.files[0];
     reader.onload = (event) => {

@@ -46,17 +46,6 @@ public class PostController {
     }
 
 
-
-    //Get những bài post đã được public
-//    @GetMapping("/public/count")
-//    public ResponseEntity<?> countPublicPost() {
-//        return ResponseEntity.ok().body(PostService.countAllPublicPost());
-//    }
-//    @GetMapping("/public/page/{a}/size/{b}")
-//    public ResponseEntity<?> getPublicPostPageASizeB(@PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
-//        return ResponseEntity.ok().body(PostService.getPublicPostDTOsPageASizeB(a-1,b));
-//    }
-
     @GetMapping("/public/find/{name}/count")
     public ResponseEntity<?> countFoundPublicPost(@PathVariable(value = "name") String name) {
         return ResponseEntity.ok().body(PostService.countFoundPublicPost(name));

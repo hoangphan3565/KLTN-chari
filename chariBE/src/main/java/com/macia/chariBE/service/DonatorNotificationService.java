@@ -42,7 +42,7 @@ public class DonatorNotificationService {
     private DonateActivityService donateActivityService;
 
     @Autowired
-    private IJwtUserRepository IJwtUserRepository;
+    private IJwtUserRepository jwtUserRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -123,64 +123,61 @@ public class DonatorNotificationService {
        return !repo.findByReadFalse().isEmpty(); //list thông báo chưa đọc rỗng -> đã đọc hết -> không có thông báo mới
     }
 
-    public void saveAndPushNotificationToUser(PushNotification pn,Integer project_id) {
-        NotificationObject no = new NotificationObject();
+
+    public void saveAndPushNotificationToUsers(PushNotification pn,Integer project_id) {
         Project project = projectService.findProjectById(project_id);
-        no.setTitle(pn.getTitle());
-        String msg = "Dự án '"+project.getProjectName()+"'"+pn.getMessage();
-        no.setMessage(msg);
-        no.setTopic(pn.getTopic());
         List<Donator> donatorsHaveDonate = new ArrayList<>();
-        List<DonateActivity> listDA = this.donateActivityService.findDonateActivityByProjectID(project_id);
+        List<DonateActivity> listDA = this.donateActivityService.findByProjectID(project_id);
         for(DonateActivity da:listDA){
-            JwtUser appUser = IJwtUserRepository.findByUsername(da.getDonator().getUsername());
             Donator donator = da.getDonator();
             donatorsHaveDonate.add(donator);
-            if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
-                String notifications = donator.getFavoriteNotification();
-                if(notifications.contains(pn.getNOF_ID().toString())){
-                    if(appUser.getFcmToken() != null){
-                        no.setToken(appUser.getFcmToken());
-                        pushNotificationService.sendMessageToToken(no);
-                    }
-                    if(pn.getTopic().equals(ENotificationTopic.CLOSED)){
-                        this.save(DonatorNotification.builder().topic(pn.getTopic()).title(pn.getTitle())
-                                .message(msg).create_time(LocalDateTime.now()).read(false).handled(false)
-                                .total_money(donatorService.getTotalDonateMoneyOfDonatorByProjectId(project_id,da.getDonator().getDNT_ID()))
-                                .donator(da.getDonator()).project_id(project_id).project_image(project.getImageUrl()).build());
-                    }else{
-                        this.save(DonatorNotification.builder()
-                                .topic(pn.getTopic()).title(pn.getTitle()).message(msg)
-                                .create_time(LocalDateTime.now()).read(false).handled(false)
-                                .donator(da.getDonator()).project_id(project_id).project_image(project.getImageUrl()).build());
-                    }
-                }
-            }
+            saveAndPushNotificationToOneUser(donator,pn,project);
         }
         List<Donator> donators = this.donatorService.findWhereHaveAccount().stream().filter(d->!donatorsHaveDonate.contains(d)).collect(Collectors.toList());
         for(Donator d:donators){
-            JwtUser appUser = IJwtUserRepository.findByUsername(d.getUsername());
-            if(d.getFavoriteProject().contains(project_id.toString())){
-                if(d.getFavoriteNotification().contains(pn.getNOF_ID().toString())){
-                    if(appUser.getFcmToken() != null){
-                        no.setToken(appUser.getFcmToken());
-                        pushNotificationService.sendMessageToToken(no);
-                    }
+            saveAndPushNotificationToOneUser(d,pn,project);
+        }
+    }
+
+    private NotificationObject createNotificationForDonator(PushNotification pn,Project project){
+        NotificationObject no = new NotificationObject();
+        no.setTitle(pn.getTitle());
+        String msg = "Dự án '"+project.getProjectName()+"' "+pn.getMessage();
+        no.setMessage(msg);
+        no.setTopic(pn.getTopic());
+        return no;
+    }
+
+    public void saveAndPushNotificationToOneUser(Donator donator,PushNotification pn,Project project){
+        NotificationObject no = this.createNotificationForDonator(pn,project);
+        JwtUser appUser = jwtUserRepository.findByUsername(donator.getUsername());
+        if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
+            String notifications = donator.getFavoriteNotification();
+            if(notifications.contains(pn.getNOF_ID().toString())){
+                if(appUser.getFcmToken() != null){
+                    no.setToken(appUser.getFcmToken());
+                    pushNotificationService.sendMessageToToken(no);
+                }
+                if(pn.getTopic().equals(ENotificationTopic.CLOSED)){
+                    this.save(DonatorNotification.builder().topic(pn.getTopic()).title(pn.getTitle())
+                            .message(no.getMessage()).create_time(LocalDateTime.now()).read(false).handled(false)
+                            .total_money(donatorService.getTotalDonateMoneyOfDonatorByProjectId(project.getPRJ_ID(),donator.getDNT_ID()))
+                            .donator(donator).project_id(project.getPRJ_ID()).project_image(project.getImageUrl()).build());
+                }else{
                     this.save(DonatorNotification.builder()
-                            .topic(pn.getTopic()).title(pn.getTitle()).message(msg)
+                            .topic(pn.getTopic()).title(pn.getTitle()).message(no.getMessage())
                             .create_time(LocalDateTime.now()).read(false).handled(false)
-                            .donator(d).project_id(project_id).project_image(projectService.getImageUrlOfProjectById(project_id)).build());
+                            .donator(donator).project_id(project.getPRJ_ID()).project_image(project.getImageUrl()).build());
                 }
             }
         }
     }
 
 
-    public void saveAndPushNotificationToAllUser(Integer project_id, ENotificationTopic topic) {
+    public void saveAndPushNotificationToAllUser(Project p, ENotificationTopic topic) {
         NotificationObject no = new NotificationObject();
-        Project project = projectService.findProjectById(project_id);
         PushNotification pn = this.pushNotificationRepository.findByTopic(topic);
-        String msg = "Dự án '"+project.getProjectName()+"'"+pn.getMessage();
+        String msg = "Dự án '"+p.getProjectName()+"' "+pn.getMessage();
         no.setTitle(pn.getTitle());
         no.setMessage(msg);
         no.setTopic(pn.getTopic());
@@ -190,7 +187,7 @@ public class DonatorNotificationService {
                 this.save(DonatorNotification.builder()
                         .topic(pn.getTopic()).title(pn.getTitle()).message(msg)
                         .create_time(LocalDateTime.now()).read(false).handled(false)
-                        .donator(d).project_id(project_id).project_image(projectService.getImageUrlOfProjectById(project_id)).build());
+                        .donator(d).project_id(p.getPRJ_ID()).project_image(p.getImageUrl()).build());
             }
         }
         this.pushNotificationService.sendMessageWithoutData(no);

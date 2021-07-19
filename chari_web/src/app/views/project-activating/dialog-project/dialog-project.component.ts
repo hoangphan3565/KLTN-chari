@@ -28,6 +28,8 @@ export class DialogProjectComponent implements OnInit {
   SupportedPeoples: SupportedPeople[];
   canDisburseWhenOverdue:boolean=true;
   isUploadingVideo: boolean;
+  isUpLoadingImage: boolean;
+  upLoadingIndex: number;
 
   constructor(
     private notificationService: NotificationService,
@@ -44,11 +46,26 @@ export class DialogProjectComponent implements OnInit {
     this.getProjectType();
     this.getCity();
     this.getSupportedPeople();
-    this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
+    this.initImageArray();
   }  
 
-  uploadImages(event) {
+  initImageArray(): void {
+    this.imageUrls = this.data.images;
+    let left = this.imageUrls.length;
+    for (let i = 0; i < (6-left); i++) {
+      this.imageUrls.push("");
+    }
+  }
+  uploadImages(event,i) {
+    this.isUpLoadingImage=true;
+    this.upLoadingIndex=i;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 ảnh');
+      this.isUpLoadingImage=false;
+      this.upLoadingIndex=null;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -62,7 +79,9 @@ export class DialogProjectComponent implements OnInit {
             this.downloadURL = fileRef.getDownloadURL();
             this.downloadURL.subscribe(url => {
               if (url) {
-                this.imageUrls.push(url);
+                this.imageUrls[i] = url;
+                this.isUpLoadingImage=false;
+                this.upLoadingIndex=null;
               }
             });
           })
@@ -76,6 +95,11 @@ export class DialogProjectComponent implements OnInit {
   }  
   uploadVideo(event) {
     this.isUploadingVideo=true;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 video');
+      this.isUploadingVideo=false;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -104,8 +128,8 @@ export class DialogProjectComponent implements OnInit {
   }
 
 
-  deleteAttachment(index) {
-    this.imageUrls.splice(index, 1);
+  deleteAttachment(i) {
+    this.imageUrls[i]="";
   }  
   deleteVideo() {
     this.videoUrl=null;
@@ -136,6 +160,12 @@ export class DialogProjectComponent implements OnInit {
   
   save(){
     this.data.videoUrl=this.videoUrl;
+    while (this.imageUrls.indexOf("", 0)>-1){
+      const index = this.imageUrls.indexOf("", 0);
+      if (index > -1) {
+        this.imageUrls.splice(index, 1);
+      }
+    }
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
     this.dialogRef.close(this.data);

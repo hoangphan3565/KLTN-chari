@@ -24,7 +24,7 @@ class _PostScreenState extends State<PostScreen>{
   int numOfItem = 0;
   int page = 1;
   var inpage_posts_list=List<Post>();
-  var p = List<Project>();
+  var project;
 
   TextEditingController _searchQueryController = TextEditingController();
   bool _isTapingSearchKey = false;
@@ -35,13 +35,13 @@ class _PostScreenState extends State<PostScreen>{
   _getProjectAndNavigate(Post post) async {
     await ProjectService.getProjectById(post.projectId).then((response) {
       setState(() {
-        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        p = list.map((model) => Project.fromJson(model)).toList();
+        final Map res = json.decode(utf8.decode(response.bodyBytes));
+        project = Project.fromJson(res);
       });
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PostDetailsScreen(post: post,project: p.elementAt(0),donator: widget.donator,)),
+      MaterialPageRoute(builder: (context) => PostDetailsScreen(post: post,project: project,donator: widget.donator,)),
     );
   }
 
@@ -83,8 +83,8 @@ class _PostScreenState extends State<PostScreen>{
       }
       if(numOfItem>inpage_posts_list.length){
         page++;
+        print("Call load more API! page:$page");
         _getMorePost();
-        print('Call API!!');
       }
     });
   }

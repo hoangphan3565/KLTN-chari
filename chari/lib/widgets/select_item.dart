@@ -50,7 +50,7 @@ class SelectItem extends StatelessWidget {
         Positioned(
           left: -1,top: -1,
           child: selected? Icon(Icons.check_box_rounded, size: 15, color: kPrimaryHighLightColor)
-              : Icon(Icons.check_box_outline_blank, size: 0, color: Colors.grey),
+              : Icon(Icons.check_box_outline_blank, size: 0, color: Colors.black12.withOpacity(0.000001)),
         ),
       ],
     );

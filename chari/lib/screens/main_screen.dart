@@ -216,24 +216,25 @@ class _MainScreenState extends State<MainScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     DateTime expirationDate = JwtDecoder.getExpirationDate(token);
-    var now = new DateTime.now();
 
     setState(() {
-      if(token==null || expirationDate.isBefore(now)) {
-        islogin=false;
-        prefs.clear();
-      }
-      else{
-        islogin=true;
-        donator.id = prefs.getInt('donator_id');
-        donator.full_name = prefs.getString('donator_full_name');
-        donator.address = prefs.getString('donator_address');
-        donator.phone_number = prefs.getString('donator_phone');
-        donator.username = prefs.getString('donator_username');
-        donator.avatar_url = prefs.getString('donator_avatar_url');
-        donator.favorite_project=prefs.getString('donator_favorite_project');
-        donator.favorite_notification=prefs.getString('donator_favorite_notification');
-        donator.token=prefs.getString('token');
+      if(expirationDate!=null){
+        if(token==null || expirationDate.isBefore(DateTime.now())) {
+          islogin=false;
+          prefs.clear();
+        }
+        else{
+          islogin=true;
+          donator.id = prefs.getInt('donator_id');
+          donator.full_name = prefs.getString('donator_full_name');
+          donator.address = prefs.getString('donator_address');
+          donator.phone_number = prefs.getString('donator_phone');
+          donator.username = prefs.getString('donator_username');
+          donator.avatar_url = prefs.getString('donator_avatar_url');
+          donator.favorite_project=prefs.getString('donator_favorite_project');
+          donator.favorite_notification=prefs.getString('donator_favorite_notification');
+          donator.token=prefs.getString('token');
+        }
       }
     });
   }
@@ -246,15 +247,15 @@ class _MainScreenState extends State<MainScreen> {
           key: _bottomNavigationKeyUnLogged,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
+              icon: Icon(Icons.home_rounded,color: kPrimaryHighLightColor,),
               label: 'Trang chủ',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
+              icon: Icon(Icons.article_outlined,color: kPrimaryHighLightColor,),
               label: 'Bản tin',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.login_rounded),
+              icon: Icon(Icons.login_rounded,color: kPrimaryHighLightColor,),
               label: 'Đăng nhập',
             ),
           ],
@@ -284,18 +285,18 @@ class _MainScreenState extends State<MainScreen> {
           key: _bottomNavigationKeyLogged,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
+              icon: Icon(Icons.home_rounded,color: kPrimaryHighLightColor,),
               label: 'Trang chủ',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
+              icon: Icon(Icons.article_outlined,color: kPrimaryHighLightColor,),
               label: 'Bản tin',
             ),
             BottomNavigationBarItem(
               label: 'Thông báo',
               icon: Stack(
                   children: <Widget>[
-                    Icon(Icons.notifications_rounded),
+                    Icon(Icons.notifications_rounded,color: kPrimaryHighLightColor,),
                     if(this.isNewNotification==true)
                       Positioned(
                         top: 0.0,
@@ -307,11 +308,11 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history_rounded),
+              icon: Icon(Icons.history_rounded,color: kPrimaryHighLightColor,),
               label: 'Lịch sử',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
+              icon: Icon(Icons.account_circle,color: kPrimaryHighLightColor,),
               label: 'Cá nhân',
             ),
           ],

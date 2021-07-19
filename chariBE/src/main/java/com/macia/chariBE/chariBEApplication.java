@@ -26,7 +26,9 @@ public class chariBEApplication implements CommandLineRunner {
 
 		Connection conn = DriverManager.getConnection(url);
 		Statement stmt = conn.createStatement();
-		String query_add_donator="insert into donator(dnt_id,full_name,phone_number,address) values (0,'Nhà hảo tâm ẩn danh','','');";
+		String query_add_donator=
+				"insert into donator(dnt_id,full_name) values (0,'Nhà hảo tâm ẩn danh');" +
+				"insert into donator(full_name,username) values ('Quỹ chung Chari','chari');";
 		stmt.execute(query_add_donator);
 	}
 

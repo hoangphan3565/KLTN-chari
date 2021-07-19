@@ -19,34 +19,45 @@ class SendRecommendInfoScreen extends StatefulWidget {
 
 class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
   var focusNode = FocusNode();
-  bool haveTitle = false;
-  bool haveContent = false;
-  TextEditingController _titleField = TextEditingController();
+
+  bool _haveName = false;
+  bool _haveContent = false;
+  bool _havePhone = false;
+  bool _haveAddress = false;
+  bool _haveBankName = false;
+  bool _haveBankAccount = false;
+
+  TextEditingController _nameField = TextEditingController();
   TextEditingController _descriptionField = TextEditingController();
+  TextEditingController _phoneField = TextEditingController();
+  TextEditingController _addressField= TextEditingController();
+  TextEditingController _bankNameField = TextEditingController();
+  TextEditingController _bankAccountField = TextEditingController();
 
   @override
   initState() {
     super.initState();
     focusNode.requestFocus();
   }
-  validateAndSendPeopleRecommend(String fullName,String description,String address,BuildContext context) async{
+  validateAndSendPeopleRecommend(String description,String fullName,String address,String phoneNumber,String bankName,String bankAccount,BuildContext context) async{
     String message;
     int errorCode;
-    if(description.length != 0) {
+    if(description.length != 0 && fullName.length !=0) {
       var jsonResponse;
-      // var res = await FeedbackService.sendFeedback(contributor,widget.donator.phone_number, title, description, widget.donator.token);
-      // jsonResponse = json.decode(utf8.decode(res.bodyBytes));
+      var res = await RecommendSupportedPeople.sendInformation(widget.donator.full_name,widget.donator.phone_number, description,
+                                                              fullName,address,phoneNumber,bankName,bankAccount,widget.donator.token);
+      jsonResponse = json.decode(utf8.decode(res.bodyBytes));
       message = jsonResponse['message'];
       errorCode = jsonResponse['errorCode'];
       Navigator.pop(context);
     }else{
-      message='Bạn hãy điền thông tin ở ô Nội dung!';
+      message='Hãy cung cấp mô tả hoàn cảnh và tên người cần được hỗ trợ!';
     }
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
+        timeInSecForIosWeb: 2,
         backgroundColor: errorCode==0 ? kPrimaryColor : Colors.orangeAccent,
         textColor: Colors.white,
         fontSize: 16.0
@@ -90,34 +101,82 @@ class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
                   child: Column(
                     children: [
                       RoundedInputField(
-                        icon: Icons.adjust,
-                        focusNode: focusNode,
-                        keyboardType: TextInputType.text,
-                        controller: _titleField,
-                        showClearIcon: haveTitle,
-                        onTapClearIcon: ()=>{_titleField.clear(),setState(() {haveTitle=false;})},
-                        hintText: 'Tiêu đề',
-                        onChanged: (value) {
-                          value!=''?setState(() {haveTitle=true;}):setState(() {haveTitle=false;});
-                        },
-                      ),
-                      RoundedInputField(
                         icon: Icons.message,
                         keyboardType: TextInputType.text,
                         controller: _descriptionField,
-                        showClearIcon: haveContent,
-                        onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {haveContent=false;})},
-                        hintText: 'Nội dung đóng góp',
+                        showClearIcon: _haveContent,
+                        onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {_haveContent=false;})},
+                        hintText: 'Mô tả hoàn cảnh',
+                        hintSize: 13,
                         onChanged: (value) {
-                          value!=''?setState(() {haveContent=true;}):setState(() {haveContent=false;});
+                          value!=''?setState(() {_haveContent=true;}):setState(() {_haveContent=false;});
                         },
                       ),
-
+                      RoundedInputField(
+                        icon: Icons.adjust,
+                        focusNode: focusNode,
+                        keyboardType: TextInputType.text,
+                        controller: _nameField,
+                        showClearIcon: _haveName,
+                        onTapClearIcon: ()=>{_nameField.clear(),setState(() {_haveName=false;})},
+                        hintText: 'Tên người cần hỗ trợ',
+                        hintSize: 13,
+                        onChanged: (value) {
+                          value!=''?setState(() {_haveName=true;}):setState(() {_haveName=false;});
+                        },
+                      ),
+                      RoundedInputField(
+                        icon: Icons.phone,
+                        keyboardType: TextInputType.text,
+                        controller: _phoneField,
+                        showClearIcon: _havePhone,
+                        onTapClearIcon: ()=>{_phoneField.clear(),setState(() {_havePhone=false;})},
+                        hintText: 'SĐT của người cần hỗ trợ',
+                        hintSize: 13,
+                        onChanged: (value) {
+                          value!=''?setState(() {_havePhone=true;}):setState(() {_havePhone=false;});
+                        },
+                      ),
+                      RoundedInputField(
+                        icon: Icons.location_on_outlined,
+                        keyboardType: TextInputType.text,
+                        controller: _addressField,
+                        showClearIcon: _haveAddress,
+                        onTapClearIcon: ()=>{_addressField.clear(),setState(() {_haveAddress=false;})},
+                        hintText: 'Địa chỉ của người cần hỗ trợ',
+                        hintSize: 13,
+                        onChanged: (value) {
+                          value!=''?setState(() {_haveAddress=true;}):setState(() {_haveAddress=false;});
+                        },
+                      ),
+                      RoundedInputField(
+                        icon: Icons.comment_bank_outlined,
+                        keyboardType: TextInputType.text,
+                        controller: _bankNameField,
+                        showClearIcon: _haveBankName,
+                        onTapClearIcon: ()=>{_bankNameField.clear(),setState(() {_haveBankName=false;})},
+                        hintText: 'Tên ngân hàng (nếu có)',
+                        hintSize: 13,
+                        onChanged: (value) {
+                          value!=''?setState(() {_haveBankName=true;}):setState(() {_haveBankName=false;});
+                        },
+                      ),
+                      RoundedInputField(
+                        icon: Icons.attach_money_rounded,
+                        keyboardType: TextInputType.text,
+                        controller: _bankAccountField,
+                        showClearIcon: _haveBankAccount,
+                        onTapClearIcon: ()=>{_bankAccountField.clear(),setState(() {_haveBankAccount=false;})},
+                        hintText: 'Số tài khoản ngân hàng (nếu có)',
+                        hintSize: 13,
+                        onChanged: (value) {
+                          value!=''?setState(() {_haveBankAccount=true;}):setState(() {_haveBankAccount=false;});
+                        },
+                      ),
                       RoundedButton(
                         text: "Xác nhận",
-                        press: ()async{
-                          SharedPreferences _prefs = await SharedPreferences.getInstance();
-                          validateAndSendPeopleRecommend(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
+                        press: ()=>{
+                          validateAndSendPeopleRecommend(_descriptionField.text,_nameField.text,_addressField.text,_phoneField.text,_bankNameField.text,_bankAccountField.text,context)
                         },
                       ),
                     ],

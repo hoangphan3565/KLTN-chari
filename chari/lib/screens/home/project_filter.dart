@@ -337,7 +337,7 @@ class _FilterState extends State<Filter> {
                     ),
                     SelectItem(
                       text: 'Đã thành công',
-                      width: size.width*0.28,
+                      width: size.width*0.29,
                       onTapSelectItem: ()=>{
                         setState(() {
                           reached==true?reached=false:reached=true;
@@ -398,7 +398,7 @@ class _FilterState extends State<Filter> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ActionButton(
-                    width: size.width/3.5,
+                    width: size.width/3.3,
                     onPressed:() => {
                       _reset(),
                       Navigator.pop(context,'confirm_filter'),

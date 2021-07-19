@@ -18,6 +18,11 @@ public class DonateDetailsController {
     @Autowired
     DonateDetailsService donateDetailsService;
 
+    @GetMapping("/donator/{dntid}")
+    public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorId(@PathVariable(value = "dntid") Integer id) {
+        return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorId(id));
+    }
+
     @GetMapping("/donator/{dntid}/find/{name}/count")
     public ResponseEntity<?> getTotalDonateDetailsOfDonator(@PathVariable(value = "dntid") Integer id,@PathVariable(value = "name") String name) {
         return ResponseEntity.ok().body(donateDetailsService.countAllDonateDetailsByDonatorIdAndProjectName(id,name));
@@ -29,15 +34,21 @@ public class DonateDetailsController {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorIdAndProjectName(id,name,a-1,b));
     }
 
-
-    @GetMapping("/donator/{dntid}")
-    public ResponseEntity<?> getDonateDetailsOfDonatorByDonatorId(@PathVariable(value = "dntid") Integer id) {
-        return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByDonatorId(id));
-    }
-
     @GetMapping("/project/{prjid}")
     public ResponseEntity<?> getDonateDetailsByProjectId(@PathVariable(value = "prjid") Integer id) {
         return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByProjectId(id));
+    }
+
+    @GetMapping("/project/{prjid}/count")
+    public ResponseEntity<?> countTotalByProjectId(@PathVariable(value = "prjid") Integer id) {
+        return ResponseEntity.ok().body(donateDetailsService.countAllDonateDetailsByProjectId(id));
+    }
+
+    @GetMapping("/project/{prjid}/page/{a}/size/{b}")
+    public ResponseEntity<?> getDonateDetailsByProjectIdPerPageAndSize(@PathVariable(value = "prjid") Integer id,
+                                                                       @PathVariable(value = "a") Integer a,
+                                                                       @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(donateDetailsService.findDonateDetailsByProjectIdPerPageAndSize(id,a,b));
     }
 
     @PostMapping("/donate_with_bank")

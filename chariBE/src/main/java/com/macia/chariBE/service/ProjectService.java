@@ -3,8 +3,13 @@ package com.macia.chariBE.service;
 //import com.macia.chariBE.DTO.Project.ProjectDTOForAdmin;
 import com.macia.chariBE.DTO.ProjectDTO;
 import com.macia.chariBE.model.*;
+import com.macia.chariBE.pushnotification.NotificationObject;
+import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.ICityRepository;
+import com.macia.chariBE.repository.IJwtUserRepository;
 import com.macia.chariBE.repository.IProjectRepository;
+import com.macia.chariBE.repository.IPushNotificationRepository;
+import com.macia.chariBE.utility.EDonateDetailsStatus;
 import com.macia.chariBE.utility.ENotificationTopic;
 import com.macia.chariBE.utility.EProjectStatus;
 import com.macia.chariBE.utility.NumberUtility;
@@ -20,8 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +40,16 @@ public class ProjectService {
     private IProjectRepository repo;
 
     @Autowired
+    private PushNotificationService pushNotificationService;
+
+    @Autowired
+    private IPushNotificationRepository pushNotificationRepository;
+
+    @Autowired
     private DonateActivityService donateActivityService;
+
+    @Autowired
+    private IJwtUserRepository jwtUserRepository;
 
     @Autowired
     private DonatorService donatorService;
@@ -94,12 +106,15 @@ public class ProjectService {
     // find the attribute for DTO
     public int findCurMoneyOfProject(Project p){
         int curMoney = 0;
-        List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(p.getPRJ_ID());
+        List<DonateActivity> donateActivityList = donateActivityService.findByProjectID(p.getPRJ_ID());
         if(!donateActivityList.isEmpty()){
-            for(DonateActivity donateActivity:donateActivityList){
-                List<DonateDetails> donateDetailsList = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
-                for(DonateDetails donateDetails: donateDetailsList){
-                    curMoney+=donateDetails.getMoney();
+            for(DonateActivity da:donateActivityList){
+                List<DonateDetails> donateDetailsList = donateDetailsService.findDonateDetailByDonateActivityId(da.getDNA_ID());
+                for(DonateDetails dd: donateDetailsList){
+                    if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
+                        curMoney+=dd.getMoney();
+                    }
+
                 }
             }
         }
@@ -107,7 +122,7 @@ public class ProjectService {
     }
     public int findCurMoneyOfProjectById(Integer id){
         int curMoney = 0;
-        List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(id);
+        List<DonateActivity> donateActivityList = donateActivityService.findByProjectID(id);
         if(!donateActivityList.isEmpty()){
             for(DonateActivity donateActivity:donateActivityList){
                 List<DonateDetails> donateDetailsList = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
@@ -120,7 +135,7 @@ public class ProjectService {
     }
     public Integer findNumOfDonationOfProject(Project p){
         Integer numOfDonate = 0;
-        List<DonateActivity> donateActivityList = donateActivityService.findDonateActivityByProjectID(p.getPRJ_ID());
+        List<DonateActivity> donateActivityList = donateActivityService.findByProjectID(p.getPRJ_ID());
         if(!donateActivityList.isEmpty()){
             for(DonateActivity donateActivity:donateActivityList){
                 List<DonateDetails> donateDetailsList = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
@@ -151,11 +166,13 @@ public class ProjectService {
     }
     public int findMovedMoneyOfClosedProject(Integer prjid){
         int money=0;
-        List<DonateActivity> donateActivities = donateActivityService.findByProjectIdAndClosedNonDisburse(prjid);
+        List<DonateActivity> donateActivities = donateActivityService.findByProjectID(prjid);
         for(DonateActivity da:donateActivities){
-            List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(da.getDNA_ID());
+            List<DonateDetails> donateDetails = da.getDonateDetails();
             for(DonateDetails details: donateDetails){
-                money+=details.getMoney();
+                if(details.getStatus().equals(EDonateDetailsStatus.MOVED.toString())){
+                    money+=details.getMoney();
+                }
             }
         }
         return money;
@@ -321,7 +338,7 @@ public class ProjectService {
             Project p = repo.findById(id).orElseThrow();
             p.setVerified(true);
             repo.saveAndFlush(p);
-            donatorNotificationService.saveAndPushNotificationToAllUser(id, ENotificationTopic.NEW);
+            donatorNotificationService.saveAndPushNotificationToAllUser(p, ENotificationTopic.NEW);
             jso.put("errorCode",0);
             jso.put("data",getUnverifiedProjects(0,5));
             jso.put("message","Duyệt dự án thành công!");
@@ -332,7 +349,7 @@ public class ProjectService {
         }
         return jso;
     }
-    public JSONObject closeProject(Integer id,Integer clb_id){
+    public JSONObject closeProject(Integer id){
         JSONObject jso = new JSONObject();
         if(repo.findById(id).isPresent()){
             Project p = repo.findById(id).orElseThrow();
@@ -385,7 +402,7 @@ public class ProjectService {
         np.setStatus(EProjectStatus.ACTIVATING);
         this.repo.saveAndFlush(np);
         if(collaboratorId == 0){
-            this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),ENotificationTopic.NEW);
+            this.donatorNotificationService.saveAndPushNotificationToAllUser(np,ENotificationTopic.NEW);
         }
         jso.put("errorCode", 0);
         jso.put("message", "Thêm dự án thành công!");
@@ -434,7 +451,7 @@ public class ProjectService {
             np.setCity(this.ICityRepository.findById(p.getCti_ID()).orElseThrow());
             this.projectImagesService.updateListProjectImage(np,p.getImages());
             this.repo.saveAndFlush(np);
-            this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(),ENotificationTopic.NEW);
+            this.donatorNotificationService.saveAndPushNotificationToAllUser(np,ENotificationTopic.NEW);
             np.setStatus(EProjectStatus.ACTIVATING);
             jso.put("errorCode", 0);
             jso.put("message", "Phê duyệt thành công!");
@@ -444,7 +461,7 @@ public class ProjectService {
         }
         return jso;
     }
-    public JSONObject deleteProjectByID(Integer id,Integer clb_id) {
+    public JSONObject deleteProjectByID(Integer id) {
         JSONObject jso = new JSONObject();
         if(repo.findById(id).isPresent()){
             this.repo.deleteById(id);
@@ -459,36 +476,11 @@ public class ProjectService {
     // End - Handle a project =============================================================
 
 
-    public List<ProjectDTO> getProjectDTOById(Integer id){
-        List<ProjectDTO> r = new ArrayList<>();
+    public ProjectDTO getProjectDTOById(Integer id){
         Project p = this.findProjectById(id);
-        r.add(mapToDTO(p));
-        return r;
+        return mapToDTO(p);
     }
 
-//    public List<ProjectDTO> getProjectDTOs(){
-//        List<ProjectDTO> r = new ArrayList<>();
-//        List<Project> ps = this.findAll();
-//        for(Project p : ps){
-//            r.add(mapToDTO(p));
-//        }
-//        return r;
-//    }
-
-    public List<ProjectDTO> getAllActivatingProjectDTOs(){
-        List<ProjectDTO> ls = new ArrayList<>();
-        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class);
-        List<Project> ps = query.getResultList();
-        for(Project p : ps){
-            ls.add(mapToDTO(p));
-        }
-        return ls;
-    }
-    public List<ProjectDTO> getProjectReadyToMoveMoney(int money){
-        return this.getAllActivatingProjectDTOs().stream()
-                .filter(p->p.getTargetMoney()-p.getCurMoney()>=money)
-                .collect(Collectors.toList());
-    }
 
     // Services for Admin
     public int countAllWhereActivating(){
@@ -504,6 +496,21 @@ public class ProjectService {
             ls.add(mapToDTO(p));
         }
         return ls;
+    }
+
+    public List<ProjectDTO> getAllActivatingProjectDTOs(){
+        List<ProjectDTO> ls = new ArrayList<>();
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class);
+        List<Project> ps = query.getResultList();
+        for(Project p : ps){
+            ls.add(mapToDTO(p));
+        }
+        return ls;
+    }
+    public List<ProjectDTO> getProjectReadyToMoveMoney(int money){
+        return this.getAllActivatingProjectDTOs().stream()
+                .filter(p->p.getTargetMoney()-p.getCurMoney()>=money)
+                .collect(Collectors.toList());
     }
 
     public int countAllWhereReached(){
@@ -611,6 +618,7 @@ public class ProjectService {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findProjectMultiFilterAndSearchKey", Project.class)
                 .setFirstResult(page*size).setMaxResults(size);
         if(!did.equals("*")){
+            System.out.println("Donator Id: "+did);
             Donator donator = donatorService.findById(Integer.valueOf(did));
             if(donator.getFavoriteProject().equals("")){
                 query.setParameter("ids", -1);
@@ -722,9 +730,82 @@ public class ProjectService {
     //*** update all project status
     public void updateAllProjectStatus(){
         List<Project> ls = findAll();
-        for(Project p:ls){
-            p.setStatus(findStatusOfProject(p));
+        if(!ls.isEmpty()){
+            for(Project p:ls){
+                p.setStatus(findStatusOfProject(p));
+            }
         }
         repo.saveAll(ls);
+    }
+
+//    public void disburseFund() {
+//        updateAllProjectStatus();
+//        List<ProjectDTO> activatingProject = getAllActivatingProjectDTOs().stream().filter(p->p.getPRJ_ID()!=0).collect(Collectors.toList());
+//        Project fund = findProjectById(0);
+//        int curFund = findCurMoneyOfProject(fund);
+//        int divFund = curFund/activatingProject.size();
+//        Donator chari = donatorService.findByUsername("chari");
+//        if(curFund>0){
+//            List<DonateActivity> listDA = donateActivityService.findByProjectID(0);
+//            NotificationObject no = new NotificationObject();
+//            no.setTitle("Quỹ chung Chari");
+//            int numOfAnotherDonator = listDA.size()-1;
+//            String msg;
+//            if (numOfAnotherDonator == 0) {
+//                msg = "Dự án '"+fund.getProjectName()+"' do bạn tham gia gây quỹ đã được chia đều cho tất cả dự án đang hoạt động";
+//            }else{
+//                msg = "Dự án '"+fund.getProjectName()+"' do bạn và "+listDA.size()+" nhà hảo tâm tham gia gây quỹ đã được chia đều cho tất cả dự án đang hoạt động";
+//            }
+//            no.setMessage(msg);
+//            no.setTopic(ENotificationTopic.FUND);
+//            for(DonateActivity da:listDA){
+//                JwtUser appUser = jwtUserRepository.findByUsername(da.getDonator().getUsername());
+//                Donator donator = da.getDonator();
+//                List<DonateDetails> detailsList =  da.getDonateDetails();
+//                for(DonateDetails dd:detailsList){
+//                    if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
+//                        dd.setStatus(EDonateDetailsStatus.MOVED.toString());
+//                    }
+//                }
+//                if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
+//                    if(appUser.getFcmToken() != null){
+//                        no.setToken(appUser.getFcmToken());
+//                        pushNotificationService.sendMessageToToken(no);
+//                    }
+//                    donatorNotificationService.save(DonatorNotification.builder()
+//                            .topic(no.getTopic()).title(no.getTitle()).message(msg)
+//                            .create_time(LocalDateTime.now()).read(false).handled(false)
+//                            .donator(da.getDonator()).project_id(0).project_image(fund.getImageUrl()).build());
+//                }
+//            }
+//            for(ProjectDTO p:activatingProject){
+//                donateDetailsService.saveDonateDetails(chari.getDNT_ID(),p.getPRJ_ID(),divFund,LocalDateTime.now());
+//            }
+//        }
+//    }
+
+    public void disburseFund() {
+        updateAllProjectStatus();
+        List<ProjectDTO> activatingProject = getAllActivatingProjectDTOs().stream().filter(p->p.getPRJ_ID()!=0).collect(Collectors.toList());
+        Project fund = findProjectById(0);
+        int curFund = findCurMoneyOfProject(fund);
+        int divFund = curFund/activatingProject.size();
+        Donator chari = donatorService.findByUsername("chari");
+        PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.FUND);
+        if(curFund>0){
+            List<DonateActivity> listDA = donateActivityService.findByProjectID(0);
+            for(DonateActivity da:listDA){
+                List<DonateDetails> detailsList =  da.getDonateDetails();
+                for(DonateDetails dd:detailsList){
+                    if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
+                        dd.setStatus(EDonateDetailsStatus.MOVED.toString());
+                    }
+                }
+            }
+            donatorNotificationService.saveAndPushNotificationToUsers(pn,0);
+            for(ProjectDTO p:activatingProject){
+                donateDetailsService.saveDonateDetails(chari.getDNT_ID(),p.getPRJ_ID(),divFund,LocalDateTime.now());
+            }
+        }
     }
 }

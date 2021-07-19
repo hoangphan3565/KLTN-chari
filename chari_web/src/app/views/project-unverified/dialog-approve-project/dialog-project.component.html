@@ -1,3 +1,7 @@
+<button mat-icon-button mat-dialog-close class="close-button" >
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>  
+
 <h3 mat-dialog-tile *ngIf="data.prj_ID!=undefined">Xét duyệt Dự án từ thiện</h3>
 
 <mat-dialog-content>
@@ -86,7 +90,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close class="btn btn-secondary" tooltip="Đóng hộp thoại">Đóng</button>
     <button mat-button class="btn btn-danger" (click)="deleteProject()" tooltip="Xóa vĩnh viễn dự án">Xoá</button>
     <button mat-button class="btn btn-success" (click)="save()" tooltip="Duyệt dự án">Duyệt</button>
 </mat-dialog-actions>

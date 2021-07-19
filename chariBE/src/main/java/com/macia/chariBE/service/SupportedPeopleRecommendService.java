@@ -5,6 +5,7 @@ import com.macia.chariBE.model.*;
 import com.macia.chariBE.repository.*;
 import com.macia.chariBE.utility.ENotificationTopic;
 import com.macia.chariBE.utility.EProcessingStatus;
+import com.macia.chariBE.utility.EProjectStatus;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,12 @@ public class SupportedPeopleRecommendService {
 
     @Autowired
     private ISupportedPeopleRecommendRepository repo;
+
+    @Autowired
+    private DonatorService donatorService;
+
+    @Autowired
+    private IPushNotificationRepository pushNotificationRepository;
 
     @Autowired
     private ISupportedPeopleDraftRepository draftRepository;
@@ -171,10 +178,16 @@ public class SupportedPeopleRecommendService {
         np.setVerified(p.getClb_ID()==0);
         np.setDisbursed(false);
         np.setClosed(false);
+        np.setStatus(EProjectStatus.ACTIVATING);
         projectRepository.saveAndFlush(np);
 
+        Donator donator = donatorService.findByUsername(p.getReferrerPhone());
+        if(donator!=null){
+            PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.INTRODUCTION);
+            donatorNotificationService.saveAndPushNotificationToOneUser(donator,pn,np);
+        }
         if(p.getClb_ID() == 0){
-            this.donatorNotificationService.saveAndPushNotificationToAllUser(np.getPRJ_ID(), ENotificationTopic.NEW);
+            this.donatorNotificationService.saveAndPushNotificationToAllUser(np, ENotificationTopic.NEW);
         }
 
         repo.deleteById(p.getSprID());

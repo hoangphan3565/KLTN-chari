@@ -40,7 +40,7 @@
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
           <td style="width: 80px; cursor:pointer"><img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px"></td>
-          <td style="width: 25%;">{{data.projectName}}</td>
+          <td style="width: 20%;">{{data.projectName}}</td>
           <td style="width: 10%; text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
           <td style="width: 10%; text-align: right">{{numberWithCommas(data.curMoney)}}</td>
           <td style="width: 10%; text-align: right">{{data.achieved}}</td>
@@ -129,18 +129,15 @@
         <tbody>
       </table>
       <div class="row">
-        <div class="col-xs-12 col-12 col-md-6">
+        <div class="col">
           <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
                       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"(pageChanged)="pageChanged($event)"
                       [boundaryLinks]="true" [rotate]="false" [itemsPerPage]="itemsPerPage"></pagination>
         </div>
-        <mat-form-field [style.width.px]="130"> 
+        <mat-form-field [style.width.px]="80" align="right">
           <mat-label>Số hàng hiển thị</mat-label>
-          <mat-select (selectionChange)="rowsChanged($event)" [value]="5">
-            <mat-option value="5">5</mat-option>
-            <mat-option value="10">10</mat-option>
-            <mat-option value="25">25</mat-option>
-            <mat-option value="100">100</mat-option>
+          <mat-select (selectionChange)="rowsChanged($event)" [(ngModel)]="selected1">
+            <mat-option *ngFor="let option of options"  [value]="option.id">{{ option.value }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

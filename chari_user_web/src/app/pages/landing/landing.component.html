@@ -116,3 +116,130 @@
   </div>
   </section>
 </div>
+
+
+<div id="ser121">
+  <section class="bg-pink-light bg-cover pb-0">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card mx-4">
+          <div class="card-body p-4">
+            <form>
+              <h1>Gửi thông tin của những hoàn cảnh khó khăn đến chúng tôi</h1>
+              <p class="text-muted">Tạo tài khoản cộng tác viên để đăng những hoàn cảnh khó khăn cần được giúp đỡ</p>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-info"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Họ và tên" (keyup)="getName($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Email *" (keyup)="getEmail($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-phone"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Số điện thoại" (keyup)="getPhone($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-user"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Tên đăng nhập *" (keyup)="getUsername($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Mật khẩu *" (keyup)="getPassword1($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Nhập lại mật khẩu *" (keyup)="getPassword2($event.target.value)" (keyup.enter)="register()" required>
+              </div>
+              <div class="input-group mb-4">
+                <label>Tải hình ảnh chứng chỉ cộng tác viên (chỉ hỗ trợ định dạng .jpg, .jpeg và png)</label>
+                <input type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg,.jpeg,.png">
+                <div class="container">
+                  <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 20px;" width="100px" height="100px">
+                  <button *ngIf="imageUrl" type="button" class="mybtn" (click)="deleteAttachment()">
+                      <i class="fa fa-remove"></i>
+                  </button>
+               </div>
+              </div>
+              <button type="button" class="btn btn-block btn-success" (click)="register()">Tạo tài khoản</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+<!-- <div class="row">
+  <div class="col-md-6 mx-auto">
+    <div class="card mx-4">
+      <div class="card-body p-4">
+        <form>
+          <h1>Gửi thông tin của những hoàn cảnh khó khăn đến chúng tôi</h1>
+          <p class="text-muted">Tạo tài khoản cộng tác viên để đăng những hoàn cảnh khó khăn cần được giúp đỡ</p>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-info"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Họ và tên" (keyup)="getName($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">@</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Email *" (keyup)="getEmail($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-phone"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Số điện thoại" (keyup)="getPhone($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-user"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Tên đăng nhập *" (keyup)="getUsername($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Mật khẩu *" (keyup)="getPassword1($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Nhập lại mật khẩu *" (keyup)="getPassword2($event.target.value)" (keyup.enter)="register()" required>
+          </div>
+          <div class="input-group mb-4">
+            <label>Tải hình ảnh chứng chỉ cộng tác viên (chỉ hỗ trợ định dạng .jpg, .jpeg và png)</label>
+            <input type="file" #imageInput (change)="uploadImages($event.target.files)" accept=".jpg,.jpeg,.png">
+            <div class="container">
+              <img *ngIf="imageUrl" [src]="imageUrl"  style="border-radius: 20px;" width="100px" height="100px">
+              <button *ngIf="imageUrl" type="button" class="mybtn" (click)="deleteAttachment()">
+                  <i class="fa fa-remove"></i>
+              </button>
+           </div>
+          </div>
+          <button type="button" class="btn btn-block btn-success" (click)="register()">Tạo tài khoản</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->

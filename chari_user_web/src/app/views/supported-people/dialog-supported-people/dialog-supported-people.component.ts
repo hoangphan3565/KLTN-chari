@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
 import { SupportedPeople } from '../../../models/SupportedPeople';
 import { NotificationService } from '../../../services/notification.service';
 

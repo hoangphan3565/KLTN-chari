@@ -26,6 +26,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
   int page = 1;
   var inpage_donate_details_list=List<DonateDetails>();
   var p = List<Project>();
+  var project;
 
   TextEditingController _searchQueryController = TextEditingController();
   bool _isTapingSearchKey = false;
@@ -33,19 +34,6 @@ class _HistoryScreenState extends State<HistoryScreen>{
   bool _isLoading = true;
   String searchQuery = "*";
 
-
-  _getProjectAndNavigate(DonateDetails d) async {
-    await ProjectService.getProjectById(d.project_id).then((response) {
-      setState(() {
-        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        p = list.map((model) => Project.fromJson(model)).toList();
-      });
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),donator: widget.donator,)),
-    );
-  }
 
   _countTotalDonateHistory() async{
     await DonateDetailsService.getTotalDonateDetailsListByDonatorId('*',widget.donator.id,widget.donator.token).then((response) {
@@ -84,8 +72,8 @@ class _HistoryScreenState extends State<HistoryScreen>{
       }
       if(numOfItem>inpage_donate_details_list.length){
         page++;
+        print("Call load more API! page:$page");
         _getMoreDonateHistory();
-        print('Load more!');
       }
     });
   }
@@ -203,7 +191,10 @@ class _HistoryScreenState extends State<HistoryScreen>{
   GestureDetector buildHistoryInfo(DonateDetails donate_details){
     return GestureDetector(
         onTap: (){
-          _getProjectAndNavigate(donate_details);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project_id:donate_details.project_id,donator: widget.donator,)),
+          );
         },
         child: Container(
           margin: EdgeInsets.fromLTRB(5,5,5,0),
@@ -245,13 +236,13 @@ class _HistoryScreenState extends State<HistoryScreen>{
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
-                        if(donate_details.status=='FAILED')
+                        if(donate_details.status=='MOVED')
                           Text(
                             " (Đã chuyển dời tiền!)",
                             style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.red),
+                                color: Colors.green),
                           ),
                       ],
                     ),

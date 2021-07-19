@@ -1,27 +1,22 @@
-<h3 mat-dialog-tile>Trả lời phản hồi</h3>
+<button mat-icon-button class="close-button" mat-dialog-close>
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>  
 
-<mat-dialog-content >
-
+<h3 mat-dialog-title>Trả lời phản hồi</h3>
+<mat-dialog-content>
     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tiêu đề</mat-label>
         <input disabled matInput name="title"  [(ngModel)]="data.title" >
     </mat-form-field>
-    
     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Nội dung</mat-label>
-        <input matInput name="description" [(ngModel)]="data.description">
+        <textarea matInput name="description" [(ngModel)]="data.description"></textarea>
     </mat-form-field> 
-    
      <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Trả lời</mat-label>
-        <input matInput name="theReply" [(ngModel)]="data.theReply" (keyup.enter)="save()" required cdkFocusInitial>
-    </mat-form-field>   
-
-
-
+        <textarea matInput name="theReply" [(ngModel)]="data.theReply" (keyup.enter)="save()" required cdkFocusInitial></textarea>
+    </mat-form-field>
 </mat-dialog-content>
-
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
-    <button mat-button class="btn btn-success" (click)="save()">Lưu</button>
+    <button mat-button class="btn btn-success" (click)="save()">Gửi</button>
 </mat-dialog-actions>

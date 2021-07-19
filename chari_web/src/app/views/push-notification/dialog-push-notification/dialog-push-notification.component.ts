@@ -7,6 +7,7 @@ import { NotificationService } from '../../../services/notification.service';
 @Component({
     selector: 'app-dialog-push-notification',
     templateUrl: './dialog-push-notification.component.html',
+    styleUrls: ['./dialog-push-notification.component.css']
   })
   export class DialogPushNotificationComponent implements OnInit {
 

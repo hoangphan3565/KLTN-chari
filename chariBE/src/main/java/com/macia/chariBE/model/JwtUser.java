@@ -15,6 +15,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedQueries({
+        @NamedQuery(name = "named.user.findAll",
+                query = "SELECT d FROM JwtUser d order by d.id desc"),
+})
 public class JwtUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

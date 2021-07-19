@@ -1,26 +1,27 @@
+<button mat-icon-button mat-dialog-close class="close-button" >
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>  
+
 <h3 mat-dialog-title>Thông tin giải ngân</h3>
 <mat-dialog-content>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tên đầy đủ</mat-label>
         <input name="fullname" matInput [(ngModel)]="data.supportedPeople.fullName">
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Tên ngân hàng</mat-label>
         <input name="bankName" matInput [(ngModel)]="data.supportedPeople.bankName">
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Số tài khoản</mat-label>
         <input name="bankAccount" matInput [(ngModel)]="data.supportedPeople.bankAccount" cdkFocusInitial>
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Số tiền</mat-label>
         <input name="bankAccount" matInput [(ngModel)]="data.curMoney">
     </mat-form-field>
-     <mat-form-field appearance="outline">
+     <mat-form-field appearance="outline" [style.width.%]="100">
         <mat-label>Nội dung chuyển khoản</mat-label>
         <input name="disbureCode" matInput [(ngModel)]="disburseCode">
     </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close class="btn btn-secondary">Đóng</button>
-</mat-dialog-actions>

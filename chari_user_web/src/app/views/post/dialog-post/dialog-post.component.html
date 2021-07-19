@@ -31,7 +31,7 @@
     <mat-checkbox name="publicPost" [(ngModel)]="data.isPublic">Công bố Tin</mat-checkbox>
 
 
-    <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg , .jpeg và .png)</label>
+    <!-- <label>Tải hình ảnh cho dự án (chỉ hỗ trợ định dạng .jpg , .jpeg và .png)</label>
     <input hidden type="file" #imageInput onclick="this.value=null" (change)="uploadImages($event.target.files)" multiple="true" accept=".jpg,.jpeg,.png">
     <button class="btn btn-primary btn-sm" (click)="imageInput.click()">
         <i class="icon-cloud-upload"></i>
@@ -42,6 +42,18 @@
             <div class="container">
                 <img *ngIf="imageUrl" [src]="imageUrl" alt=""/>
                 <button *ngIf="imageUrl" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment(i)">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list> -->
+
+    <mat-grid-list cols="3">
+        <mat-grid-tile *ngFor="let number of [0,1,2,3,4,5];let i=index">
+            <div class="image-container">
+                <input hidden type="file" #imageInput onclick="this.value=null" (change)="uploadImages($event.target.files)" multiple="true" accept=".jpg,.jpeg,.png">
+                <img *ngIf="imageUrls[number]" [src]="imageUrls[number]" alt=""/>
+                <button *ngIf="imageUrls[number]" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment(i)">
                     <i class="fa fa-remove"></i>
                 </button>
             </div>

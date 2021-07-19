@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedQueries({
+        @NamedQuery(name = "named.collaborator.findAll",
+                query = "SELECT d FROM Collaborator d order by d.CLB_ID desc"),
+})
 public class Collaborator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

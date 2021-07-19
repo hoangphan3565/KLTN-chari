@@ -112,7 +112,6 @@ class _SendFeedbackScreenState extends State<SendFeedbackScreen> {
                           value!=''?setState(() {haveContent=true;}):setState(() {haveContent=false;});
                         },
                       ),
-
                       RoundedButton(
                         text: "Xác nhận",
                         press: ()async{

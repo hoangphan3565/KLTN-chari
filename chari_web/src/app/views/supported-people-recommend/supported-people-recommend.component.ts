@@ -27,11 +27,19 @@ export class SupportedPeopleRecommendComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.currentPage =  event.page;
-    this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+    this.getList(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
-    this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+    this.itemsPerPage = this.options[event.value-1].value;
+    this.getList(this.currentPage,this.itemsPerPage);
   }
 
   constructor(
@@ -42,16 +50,16 @@ export class SupportedPeopleRecommendComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemsPerPage=5;
-    this.getTotalSupportedPeopleRecommends();
-    this.getSupportedPeopleRecommend(1,this.itemsPerPage)  
+    this.countAll();
+    this.getList(1,this.itemsPerPage)  
   }
 
 
-  public async getTotalSupportedPeopleRecommends(){
+  public async countAll(){
     this.totalItems = await (await this.SupportedPeopleRecommendService.countAll()).data;
   }
 
-  public async getSupportedPeopleRecommend(a,b){
+  public async getList(a,b){
     this.SupportedPeopleRecommends = await (await this.SupportedPeopleRecommendService.getFromAtoB(a,b)).data as any[];
   }
 
@@ -66,7 +74,7 @@ export class SupportedPeopleRecommendComponent implements OnInit {
         }else{
           this.notificationService.success(res.message);
         }
-        this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+        this.getList(this.currentPage,this.itemsPerPage);
       }  
     }
     catch (e) {
@@ -115,7 +123,7 @@ export class SupportedPeopleRecommendComponent implements OnInit {
       if(res){
         this.openHandleStep2Dialog(res);
       }
-      this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+      this.getList(this.currentPage,this.itemsPerPage);
     });
   }
 
@@ -144,7 +152,7 @@ export class SupportedPeopleRecommendComponent implements OnInit {
       if (res)
       {
         this.notificationService.success(res.message);
-        this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+        this.getList(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
@@ -161,7 +169,7 @@ export class SupportedPeopleRecommendComponent implements OnInit {
         if (res)
         {
           this.notificationService.warn(res.message);
-          this.getSupportedPeopleRecommend(this.currentPage,this.itemsPerPage);
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }

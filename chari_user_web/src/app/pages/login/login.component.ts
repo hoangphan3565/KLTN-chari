@@ -22,22 +22,25 @@ export class LoginComponent{
     this.password=data;
   }
   public async login(){
-    const res = await (await this.authService.login(this.username,this.password)).data as any;
-    console.log(res)
-    if(res){
-      if(res.errorCode == 0){
-        if(res.data.usertype=="Collaborator"&&res.data.status=='ACTIVATED'){
-          this.notificationService.warn('Đăng nhập thành công');
-          Cookies.set("loginInfo",JSON.stringify(res),{expires: 1});
-          window.location.href="/dashboard";
+    try {
+      const res = await (await this.authService.login(this.username,this.password)).data as any;
+      if(res){
+        if(res.errorCode == 0){
+          if(res.data.usertype=="Collaborator"&&res.data.status=='ACTIVATED'){
+            this.notificationService.warn('Đăng nhập thành công');
+            Cookies.set("loginInfo",JSON.stringify(res),{expires: 1});
+            window.location.href="/dashboard";
+          }else{
+            this.notificationService.warn('Đăng nhập thất bại! Tài khoản đã bị khoá');
+          }
         }else{
-          this.notificationService.warn('Đăng nhập thất bại! Tài khoản đã bị khoá');
+          this.notificationService.warn('Đăng nhập thất bại');
         }
-      } else{
+      }else{
         this.notificationService.warn('Đăng nhập thất bại');
       }
-    }else{
-      this.notificationService.warn('Đăng nhập thất bại');
+    }catch(e){
+      this.notificationService.warn('Sai tên đăng nhập hoặc mật khẩu');
     }
   }
 }

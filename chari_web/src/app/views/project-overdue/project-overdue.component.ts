@@ -6,8 +6,8 @@ import { Project } from '../../models/Project';
 import { NotificationService } from '../../services/notification.service';
 import { ProjectService } from '../../services/Project.service';
 import { DialogDisburseProjectComponent } from './dialog-disburse-project/dialog-disburse-project.component';
-import { DialogExtendComponent } from './dialog-extend/dialog-extend.component';
 import * as XLSX from 'xlsx';
+import { DialogExtendComponent } from './dialog-extend/dialog-extend.component';
 
 @Component({
   templateUrl: './project-overdue.component.html',
@@ -27,8 +27,16 @@ export class ProjectOverdueComponent implements OnInit {
     this.currentPage =  event.page;
     this.getList(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
+    this.itemsPerPage = this.options[event.value-1].value;
     this.getList(this.currentPage,this.itemsPerPage);
   }
 
@@ -57,7 +65,7 @@ export class ProjectOverdueComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự đóng dự án này?')){
-        const res = await (await this.projectService.closeProject(id,0)).data;
+        const res = await (await this.projectService.closeProject(id)).data;
         if (res)
         {
           this.notificationService.warn(res.message);

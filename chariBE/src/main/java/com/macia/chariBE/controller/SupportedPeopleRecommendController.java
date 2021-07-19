@@ -23,6 +23,7 @@ public class SupportedPeopleRecommendController {
     @Autowired
     ISupportedPeopleRecommendRepository repo;
 
+
     @GetMapping()
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok().body(repo.findAll());
@@ -34,9 +35,13 @@ public class SupportedPeopleRecommendController {
     }
 
 
+    @GetMapping("/page/{a}/size/{b}")
+    public ResponseEntity<?> getAllSupportedPeople(@PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(service.findPageASizeB(a-1,b));
+    }
+
     @GetMapping("/check/{id}/collaborator/{clb_id}")
-    public ResponseEntity<?> checkStatus(@PathVariable(value = "id") Integer id,
-                                         @PathVariable(value = "clb_id") Integer clb_id) {
+    public ResponseEntity<?> checkStatus(@PathVariable(value = "id") Integer id, @PathVariable(value = "clb_id") Integer clb_id) {
         return ResponseEntity.ok().body(service.checkStatus(id,clb_id));
     }
 
@@ -57,18 +62,16 @@ public class SupportedPeopleRecommendController {
 
     @PostMapping("/create_project")
     public ResponseEntity<?> createProject(@RequestBody SupportedPeopleDraftDTO sp) {
-        return ResponseEntity.ok().body(service.createProject(sp));
-    }
 
-    @GetMapping("/page/{a}/size/{b}")
-    public ResponseEntity<?> getAllSupportedPeople(@PathVariable(value = "a") Integer a,
-                                                   @PathVariable(value = "b") Integer b) {
-        return ResponseEntity.ok().body(service.findPageASizeB(a-1,b));
+        return ResponseEntity.ok().body(service.createProject(sp));
     }
 
     @PostMapping()
     public ResponseEntity<?> saveSupportedPeople(@RequestBody SupportedPeopleRecommend sp) {
+        JSONObject jso = new JSONObject();
         service.save(sp);
-        return ResponseEntity.ok().body("Gửi hoàn cảnh thành công! Chúng tôi sẽ liên hệ lại!");
+        jso.put("errorCode",0);
+        jso.put("message","Gửi hoàn cảnh thành công! Chúng tôi sẽ liên hệ lại!");
+        return ResponseEntity.ok().body(jso);
     }
 }

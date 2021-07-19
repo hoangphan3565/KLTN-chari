@@ -1,5 +1,5 @@
 name: chari
-description: A new Flutter application.
+description: A Flutter application for Charity Donation Activity
 
 publish_to: 'none'
 
@@ -18,8 +18,9 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   firebase_messaging: ^5.0.2
   shared_preferences: ^0.5.12+4
-  http: ^0.12.1 
-  fluttertoast: ^7.1.1 
+  http: ^0.12.1
+#  http: ^0.13.3
+  fluttertoast: ^7.1.1
   percent_indicator: ^2.1.8 
   unicode: ^0.2.4 
   chewie: ^0.12.0 

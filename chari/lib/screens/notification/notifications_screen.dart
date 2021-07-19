@@ -42,19 +42,6 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   bool _isLoading = true;
   String searchQuery = "*";
 
-  _getProjectAndNavigate(DonatorNotification n) async {
-    await ProjectService.getProjectById(n.project_id).then((response) {
-      setState(() {
-        List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
-        p = list.map((model) => Project.fromJson(model)).toList();
-      });
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: p.elementAt(0),donator: widget.donator,)),
-    );
-  }
-
   _getProjectReadyToMoveMoney(int money) async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String token = _prefs.getString('token');
@@ -121,8 +108,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
       }
       if(numOfItem>inpage_donator_notification_list.length){
         page++;
+        print("Call load more API! page:$page");
         _getMoreDonatorNotification();
-        print('Call API!!');
       }
     });
   }
@@ -263,7 +250,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomAlertDialog(
+          return AlertDialog(
             content: Container(
               width: MediaQuery.of(context).size.width / 1,
               color: Colors.white,
@@ -538,8 +525,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         onTap: () async {
           _getProjectReadyToMoveMoney(notification.total_money);
           if(notification.topic!='CLOSED'&&notification.topic!=null){
-            _getProjectAndNavigate(notification);
-          }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project_id: notification.project_id,donator: widget.donator,)),
+            );          }
           if(notification.topic=='CLOSED'){
             if(notification.handled==true){
               _showInformDialog(context);

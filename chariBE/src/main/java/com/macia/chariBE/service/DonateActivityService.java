@@ -24,7 +24,7 @@ public class DonateActivityService {
         return donateAvtRepo.saveAndFlush(donateActivity);
     }
 
-    public DonateActivity findDonateActivityByDonatorIdAndProjectID(Integer donator_id, Integer project_id) {
+    public DonateActivity findByDonatorIdAndProjectID(Integer donator_id, Integer project_id) {
         try {
             TypedQuery<DonateActivity> query = em.createNamedQuery("named.donate_activity.findByDonatorIdAndProjectId", DonateActivity.class);
             query.setParameter("did", donator_id);
@@ -35,7 +35,7 @@ public class DonateActivityService {
         }
     }
 
-    public List<DonateActivity> findDonateActivityByProjectID(Integer id) {
+    public List<DonateActivity> findByProjectID(Integer id) {
         try {
             TypedQuery<DonateActivity> query = em.createNamedQuery("named.donate_activity.findByProjectId", DonateActivity.class);
             query.setParameter("id", id);

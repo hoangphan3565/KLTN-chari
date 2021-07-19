@@ -17,13 +17,25 @@ public class CollaboratorController {
         return ResponseEntity.ok().body(service.findAll());
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<?> countAll() {
+        return ResponseEntity.ok().body(service.countAll());
+    }
+    @GetMapping("/page/{a}/size/{b}")
+    public ResponseEntity<?> getAll(@PathVariable(value = "a") Integer a,
+                                    @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(service.getPerPageAndSize(a-1,b));
+    }
+
     @PutMapping("/accept/{id}")
     public ResponseEntity<?> acceptCollaborator(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(service.accept(id));
+        service.accept(id);
+        return ResponseEntity.ok().body("Phê duyệt thành công");
     }
     @PutMapping("/block/{id}")
     public ResponseEntity<?> blockCollaborator(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok().body(service.block(id));
+        service.block(id);
+        return ResponseEntity.ok().body("Block thành công");
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeCollaboratorById(@PathVariable(value = "id") Integer id) {

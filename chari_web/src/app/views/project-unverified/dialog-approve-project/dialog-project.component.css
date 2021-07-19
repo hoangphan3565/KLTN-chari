@@ -17,6 +17,11 @@ img {
   right: -10px;
 }
 
+.close-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}
 
 .video-container-loading {
   position: relative;

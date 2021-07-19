@@ -18,9 +18,11 @@ import 'package:video_player/video_player.dart';
 
 
 class ProjectDetailsScreen extends StatefulWidget {
-  final Project project;
-  final Donator donator;
-  ProjectDetailsScreen({@required this.project,this.donator});
+  // static const routeName = '/project_details';
+  int project_id;
+  Donator donator;
+  ProjectDetailsScreen({this.project_id,this.donator});
+
   @override
   _ProjectDetailsScreenState createState() => _ProjectDetailsScreenState();
 }
@@ -29,6 +31,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   final dataKey = new GlobalKey();
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
+
+  bool _isLoading=true;
+  var project;
 
   List<String> listProjectIdFavorite = new List<String>();
 
@@ -40,14 +45,24 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   bool viewAll = false;
 
+  _getProjectById() async {
+    await ProjectService.getProjectById(widget.project_id).then((response) {
+      setState(() {
+        final Map res = json.decode(utf8.decode(response.bodyBytes));
+        project = Project.fromJson(res);
+        this.initializePlayer(project.video_url);
+        _isLoading=false;
+      });
+    });
+  }
+
   @override
   void initState() {
-    super.initState();
-    this.initializePlayer(widget.project.video_url);
+    _getProjectById();
     _getDonation();
     _getComment();
     timeago.setLocaleMessages('vi',timeago.ViMessages());
-
+    super.initState();
   }
 
   @override
@@ -57,7 +72,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   _getDonation() {
-    DonateDetailsService.getDonateDetailsByProjectId(widget.project.prj_id).then((response) {
+    DonateDetailsService.getDonateDetailsByProjectId(widget.project_id).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         listDonation = list.map((model) => DonateDetailsOfProject.fromJson(model)).toList();
@@ -71,7 +86,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   _getComment() {
-    CommentService.getCommentListByProjectId(widget.project.prj_id).then((response) {
+    CommentService.getCommentListByProjectId(widget.project_id).then((response) {
       setState(() {
         List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
         listComment = list.map((model) => Comment.fromJson(model)).toList();
@@ -97,7 +112,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       msg='Hãy điền nội dung bình luận';
       haveError=true;
     }else{
-      CommentService.saveComment(widget.project.prj_id,name,content).then((response) {
+      CommentService.saveComment(project.prj_id,name,content).then((response) {
         setState(() {
           List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
           listComment = list.map((model) => Comment.fromJson(model)).toList();
@@ -147,6 +162,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -167,19 +183,30 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             child: Container(
               margin: EdgeInsets.only(top: 0),
               decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
+                  // color: Colors.grey.withOpacity(0.2),
+                  color: Colors.white,
                   borderRadius:
                   BorderRadius.vertical(top: Radius.circular(0))),
               child: SingleChildScrollView(
-                child: Column(
+                child: _isLoading?Container(
+                  margin: EdgeInsets.symmetric(vertical: size.height/4,horizontal: size.width/2.5),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "assets/images/loading.gif",
+                        height: size.height * 0.13,
+                      ),
+                    ],
+                  ),
+                ): Column(
                   children: [
-                    if(widget.project.video_url!=null)
+                    if(project.video_url!=null)
                       buildProjectVideo(),
-                    if(widget.project.video_url==null)
-                      buildMainImage(widget.project),
+                    if(project.video_url==null)
+                      buildMainImage(project),
                     SizedBox(height: 8),
-                    buildProjectInfo(widget.project),  
-                    buildProjectDetails(widget.project),
+                    buildProjectInfo(project),  
+                    buildProjectDetails(project),
                     buildCommentContainer(context),
                     if(!listDonation.isEmpty)
                       buildRecentDonatorList(context),
@@ -200,12 +227,12 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             width: MediaQuery.of(context).size.width * 0.6,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4), color: kPrimaryColor),
-            child:((widget.project.status=='ACTIVATING')?
+            child:_isLoading?null:(project.status=='ACTIVATING')?
             FlatButton(
               onPressed:()=> {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: widget.project,donator: widget.donator,)),
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
                 ),
               },
               child: Text(
@@ -229,7 +256,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     color: Colors.white),
               ),
             )
-            ),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
           Container(
@@ -241,7 +267,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               onPressed:()=> {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: widget.project,donator: widget.donator,)),
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
                 ),
               },
               child: Text(
@@ -387,12 +413,12 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           SizedBox(height: 10),
           viewAll==false?
           Text(
-            widget.project.description.substring(0, 180),
+            project.description.substring(0, 180),
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black),
           ):Text(
-            widget.project.description,
+            project.description,
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black),
@@ -456,7 +482,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     aspectRatio: 2.0,
                     enlargeCenterPage: true,
                   ),
-                  items: widget.project.imgList.map((item) => Container(
+                  items: project.imgList.map((item) => Container(
                     child: Container(
                       margin: EdgeInsets.all(5.0),
                       child: ClipRRect(
@@ -704,7 +730,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     color: Colors.black),
               ),
               ActionButton(
-                width: size.width/4,
+                width: size.width/3.9,
                 onPressed:() => {
                   _showCommentDialog(context)
                 },
@@ -992,13 +1018,13 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               fontWeight: FontWeight.bold,
               color: Colors.black),
         ),
-        if(donation.status=='FAILED')
+        if(donation.status=='MOVED')
           Text(
             " (Đã chuyển dời tiền)",
             style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.normal,
-                color: Colors.red),
+                color: Colors.green),
           ),
       ],
     );

@@ -8,6 +8,6 @@ export class SupportedPeopleService {
   public getAll = () => Api.get(`${Api.url.supportedPeoples}`);
   public getSupportedPeoples = (a,b) => Api.get(`${Api.url.supportedPeoples}/page/${a}/size/${b}`);
   public saveSupportedPeople = (data,clb_id) => Api.post(`${Api.url.supportedPeoples}/collaborator/${clb_id}`,data);
-  public deleteSupportedPeople = (id,clb_id) => Api.delete(`${Api.url.supportedPeoples}/${id}/collaborator/${clb_id}`);
+  public deleteSupportedPeople = (id) => Api.delete(`${Api.url.supportedPeoples}/${id}`);
 }
 

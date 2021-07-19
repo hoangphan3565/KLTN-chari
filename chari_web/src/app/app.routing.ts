@@ -105,35 +105,35 @@ export const routes: Routes = [
         loadChildren: () => import('./views/supported-people-recommend/supported-people-recommend.module').then(m => m.SupportedPeopleRecommendModule)
       },
 
-      {
-        path: 'base',
-        loadChildren: () => import('./temp/base/base.module').then(m => m.BaseModule)
-      },
-      {
-        path: 'buttons',
-        loadChildren: () => import('./temp/buttons/buttons.module').then(m => m.ButtonsModule)
-      },
-      {
-        path: 'charts',
-        loadChildren: () => import('./temp/chartjs/chartjs.module').then(m => m.ChartJSModule)
-      },
+      // {
+      //   path: 'base',
+      //   loadChildren: () => import('./temp/base/base.module').then(m => m.BaseModule)
+      // },
+      // {
+      //   path: 'buttons',
+      //   loadChildren: () => import('./temp/buttons/buttons.module').then(m => m.ButtonsModule)
+      // },
+      // {
+      //   path: 'charts',
+      //   loadChildren: () => import('./temp/chartjs/chartjs.module').then(m => m.ChartJSModule)
+      // },
 
-      {
-        path: 'icons',
-        loadChildren: () => import('./temp/icons/icons.module').then(m => m.IconsModule)
-      },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./temp/notifications/notifications.module').then(m => m.NotificationsModule)
-      },
-      {
-        path: 'theme',
-        loadChildren: () => import('./temp/theme/theme.module').then(m => m.ThemeModule)
-      },
-      {
-        path: 'widgets',
-        loadChildren: () => import('./temp/widgets/widgets.module').then(m => m.WidgetsModule)
-      }
+      // {
+      //   path: 'icons',
+      //   loadChildren: () => import('./temp/icons/icons.module').then(m => m.IconsModule)
+      // },
+      // {
+      //   path: 'notifications',
+      //   loadChildren: () => import('./temp/notifications/notifications.module').then(m => m.NotificationsModule)
+      // },
+      // {
+      //   path: 'theme',
+      //   loadChildren: () => import('./temp/theme/theme.module').then(m => m.ThemeModule)
+      // },
+      // {
+      //   path: 'widgets',
+      //   loadChildren: () => import('./temp/widgets/widgets.module').then(m => m.WidgetsModule)
+      // }
     ]
   },
   { path: '**', component: P404Component }

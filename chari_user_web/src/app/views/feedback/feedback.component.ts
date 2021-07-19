@@ -18,17 +18,25 @@ export class FeedbackComponent implements OnInit {
 
   maxSize: number = 5;
   totalItems: number;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
   currentPage: number = 1;
-
   
+
   pageChanged(event: any): void {
     this.currentPage =  event.page;
     this.getFeedback(this.currentPage,this.itemsPerPage);
-
   }
+
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
+    this.itemsPerPage = this.options[event.value-1].value;
     this.getFeedback(this.currentPage,this.itemsPerPage);
   }
 

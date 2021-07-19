@@ -23,7 +23,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomAlertDialog(
+          return AlertDialog(
             content: Container(
               width: MediaQuery.of(context).size.width / 1,
               color: Colors.white,
@@ -76,7 +76,7 @@ class _DonateWithPaypalWebViewScreenState extends State<DonateWithPaypalWebViewS
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomAlertDialog(
+          return AlertDialog(
             content: Container(
               width: MediaQuery.of(context).size.width / 1,
               color: Colors.white,

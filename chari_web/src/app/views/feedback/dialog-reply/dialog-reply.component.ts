@@ -5,6 +5,7 @@ import { Feedback } from '../../../models/Feedback';
 
 @Component({
     templateUrl: './dialog-reply.component.html',
+    styleUrls: ['./dialog-reply.component.css']
 })
 export class DialogReplyComponent implements OnInit {
 

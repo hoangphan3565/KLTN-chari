@@ -36,6 +36,11 @@
 			</array>
 		</dict>
 	</array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 	<key>FacebookAppID</key>
 	<string>1111520262657862</string>
 	<key>FacebookDisplayName</key>

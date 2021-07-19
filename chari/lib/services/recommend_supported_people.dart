@@ -9,7 +9,15 @@ class RecommendSupportedPeople {
                                 String fullName,String address,String phoneNumber,String bankName,String bankAccount,String token) {
     var url = "$baseUrl$supported_people_recommends";
     final body = jsonEncode(<String, dynamic>{
-
+      "referrerName": referrerName,
+      "referrerPhone": referrerPhone,
+      "referrerDescription": description,
+      "fullName": fullName,
+      "address": address,
+      "phoneNumber": phoneNumber,
+      "bankName": bankName,
+      "bankAccount": bankAccount,
+      "status": "PENDING",
     });
     return http.post(url,headers:getHeaderJWT(token),body: body);
   }

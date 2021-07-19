@@ -1,12 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
-import { ProjectType } from '../../../models/ProjectType';
 import { NotificationService } from '../../../services/notification.service';
 
 @Component({
     selector: 'app-dialog-extend',
     templateUrl: './dialog-extend.component.html',
+    styleUrls: ['./dialog-extend.component.css']
 })
 export class DialogExtendComponent implements OnInit {
   constructor(

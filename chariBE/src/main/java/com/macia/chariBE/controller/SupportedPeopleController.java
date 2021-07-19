@@ -26,11 +26,9 @@ public class SupportedPeopleController {
         return ResponseEntity.ok().body(service.countAll());
     }
     @GetMapping("/page/{a}/size/{b}")
-    public ResponseEntity<?> getAllSupportedPeople(@PathVariable(value = "a") Integer a,
-                                                   @PathVariable(value = "b") Integer b) {
+    public ResponseEntity<?> getAllSupportedPeople(@PathVariable(value = "a") Integer a,@PathVariable(value = "b") Integer b) {
         return ResponseEntity.ok().body(service.findAllPageAToB(a-1,b));
     }
-
 
     @GetMapping("/collaborator/{clb_id}")
     public ResponseEntity<?> getAllByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
@@ -43,8 +41,7 @@ public class SupportedPeopleController {
     }
     @GetMapping("/collaborator/{clb_id}/page/{a}/size/{b}")
     public ResponseEntity<?> getAllSupportedPeopleByCollaboratorId(@PathVariable(value = "clb_id") Integer id,
-                                                                   @PathVariable(value = "a") Integer a,
-                                                                   @PathVariable(value = "b") Integer b) {
+                                                                   @PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
         return ResponseEntity.ok().body(service.findByCollaboratorIdPageAToB(id,a-1,b));
     }
 
@@ -53,9 +50,8 @@ public class SupportedPeopleController {
                                                  @PathVariable(value = "clb_id") Integer clb_id) {
         return ResponseEntity.ok().body(service.save(sp,clb_id));
     }
-    @DeleteMapping("/{id}/collaborator/{clb_id}")
-    public ResponseEntity<?> removeSupportedPeopleById(@PathVariable(value = "id") Integer id,
-                                                       @PathVariable(value = "clb_id") Integer clb_id) {
-        return ResponseEntity.ok().body(service.delete(id,clb_id));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeSupportedPeopleById(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(service.delete(id));
     }
 }

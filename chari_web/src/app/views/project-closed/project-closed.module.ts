@@ -12,6 +12,7 @@ import { MaterialModule } from '../../material-module';
   imports: [
     CommonModule,
     ProjectClosedRoutingModule,
+    FormsModule,
     PaginationModule.forRoot(),
     TooltipModule.forRoot(),
     MaterialModule,

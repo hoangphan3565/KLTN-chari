@@ -9,7 +9,7 @@ import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.IDonateDetailsRepository;
 import com.macia.chariBE.repository.IJwtUserRepository;
 import com.macia.chariBE.repository.IPushNotificationRepository;
-import com.macia.chariBE.utility.EDonateActivityStatus;
+import com.macia.chariBE.utility.EDonateDetailsStatus;
 import com.macia.chariBE.utility.ENotificationTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,6 +110,24 @@ public class DonateDetailsService {
         }
     }
 
+    public int countAllDonateDetailsByProjectId(Integer id) {
+        TypedQuery<DonateDetailsOfProjectDTO> query = em.createNamedQuery("named.donate_details.findByProjectId", DonateDetailsOfProjectDTO.class);
+        query.setParameter("prjid", id);
+        return query.getResultList().size();
+    }
+
+    public List<DonateDetailsOfProjectDTO> findDonateDetailsByProjectIdPerPageAndSize(Integer id,Integer a, Integer b) {
+        try {
+            TypedQuery<DonateDetailsOfProjectDTO> query = em.createNamedQuery("named.donate_details.findByProjectId", DonateDetailsOfProjectDTO.class)
+                    .setFirstResult(a*b).setMaxResults(b);
+            query.setParameter("prjid", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+
     public List<DonateDetails> findDonateDetailByDonateActivityId(Integer id) {
         try {
             TypedQuery<DonateDetails> query = em.createNamedQuery("named.donate_details.findByDonateActivityId", DonateDetails.class);
@@ -118,7 +136,18 @@ public class DonateDetailsService {
         } catch (NoResultException e) {
             return null;
         }
+    }    
+    
+    public List<DonateDetails> findSUCCESSFULByDonateActivityId(Integer id) {
+        try {
+            TypedQuery<DonateDetails> query = em.createNamedQuery("named.donate_details.findSUCCESSFULByDonateActivityId", DonateDetails.class);
+            query.setParameter("id", id);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
+    
     public List<DonateDetails> findByDonateActivityIdAndDateTime(Integer id,LocalDateTime datetime) {
         TypedQuery<DonateDetails> query = em.createNamedQuery("named.donate_details.findByDonateActivityIdAndDateTime", DonateDetails.class);
         query.setParameter("id", id);
@@ -179,15 +208,15 @@ public class DonateDetailsService {
     }
 
     public void saveDonateDetails(Integer donator_id, Integer project_id, Integer money,LocalDateTime dateTime) {
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
+        DonateActivity donateActivity = donateActivityService.findByDonatorIdAndProjectID(donator_id, project_id);
         if (donateActivity == null) {
             donateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(donatorService.findById(donator_id))
                             .project(projectService.findProjectById(project_id))
-                            .status(EDonateActivityStatus.SUCCESSFUL.toString())
                             .build()))
                     .donateDate(dateTime)
+                    .status(EDonateDetailsStatus.SUCCESSFUL.toString())
                     .money(money)
                     .build());
             sendDonateNotificationToDonator(donator_id,project_id);
@@ -197,6 +226,7 @@ public class DonateDetailsService {
                 donateDetailsRepository.save(DonateDetails.builder()
                         .donateActivity(donateActivity)
                         .donateDate(dateTime)
+                        .status(EDonateDetailsStatus.SUCCESSFUL.toString())
                         .money(money)
                         .build());
                 sendDonateNotificationToDonator(donator_id,project_id);
@@ -212,7 +242,7 @@ public class DonateDetailsService {
         no.setTitle(pn.getTitle());
         no.setTopic(pn.getTopic());
         JwtUser appUser;
-        DonateActivity da = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id,project_id);
+        DonateActivity da = donateActivityService.findByDonatorIdAndProjectID(donator_id,project_id);
         appUser = IJwtUserRepository.findByUsername(da.getDonator().getUsername());
         no.setMessage(msg);
         Donator donator = da.getDonator();
@@ -251,7 +281,7 @@ public class DonateDetailsService {
                 if(getDisburseMoney(d.getAmount())>=projectService.findCurMoneyOfProject(p)){
                     p.setDisbursed(true);
                     projectService.save(p);
-                    donatorNotificationService.saveAndPushNotificationToUser(pn,project_id);
+                    donatorNotificationService.saveAndPushNotificationToUsers(pn,project_id);
                 }else{
                     flag=1;
                 }

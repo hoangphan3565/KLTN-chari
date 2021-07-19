@@ -1,6 +1,9 @@
 <button mat-icon-button mat-dialog-close class="close-button" >
     <mat-icon class="close-icon" color="warn">close</mat-icon>
 </button>  
+<button mat-icon-button class="back-button" (click)="back()">
+    <mat-icon>keyboard_backspace</mat-icon>
+</button>  
 <h1 mat-dialog-title>Xử lý hoàn cảnh</h1>
 <h5 mat-dialog-title>Bước 2: Thêm thông tin dự  án</h5>
 <mat-dialog-content>
@@ -92,7 +95,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button class="btn btn-secondary"(click)="back()">Quay lại</button>
     <button mat-button class="btn btn-danger"(click)="unHandle()">Hủy</button>
     <button mat-button class="btn btn-primary" (click)="saveDraft()">Lưu nháp</button>
     <button mat-button class="btn btn-success" (click)="finish()">Hoàn tất</button>

@@ -30,3 +30,8 @@ img {
   position: absolute;
   right: 0px;
 }
+.close-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}

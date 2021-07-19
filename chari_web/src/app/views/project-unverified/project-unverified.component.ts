@@ -21,8 +21,16 @@ export class ProjectUnverifiedComponent implements OnInit {
     this.currentPage =  event.page;
     this.getUnverified(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
+    this.itemsPerPage = this.options[event.value-1].value;
     this.getUnverified(this.currentPage,this.itemsPerPage);
   }
 
@@ -32,11 +40,11 @@ export class ProjectUnverifiedComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getTotaUnverified();
+    this.countAll();
     this.getUnverified(1,this.itemsPerPage);
   }
 
-  public async getTotaUnverified(){
+  public async countAll(){
     this.totalItems = await (await this.ProjectService.countUnverifiedProjects()).data;
   }
   async getUnverified(a,b){
@@ -52,7 +60,7 @@ export class ProjectUnverifiedComponent implements OnInit {
         if (res)
         {
           this.notificationService.warn(res.message);
-          this.getTotaUnverified();
+          this.countAll();
           this.getUnverified(this.currentPage,this.itemsPerPage);
         }
       }
@@ -65,7 +73,7 @@ export class ProjectUnverifiedComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn xoá dự án này?')){
-        const res = await (await this.ProjectService.deleteProject(id,0)).data;
+        const res = await (await this.ProjectService.deleteProject(id)).data;
         if (res)
         {
           this.notificationService.warn(res.message);

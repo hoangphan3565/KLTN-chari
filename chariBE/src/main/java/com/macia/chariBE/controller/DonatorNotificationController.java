@@ -22,10 +22,8 @@ public class DonatorNotificationController {
     }
 
     @GetMapping("/donator/{dntid}/find/{skey}/page/{a}/size/{b}")
-    public ResponseEntity<?> getDonateDetailsOfDonatorByNotificationTitle(@PathVariable(value = "dntid") Integer id,
-                                                                          @PathVariable(value = "skey") String skey,
-                                                                          @PathVariable(value = "a") Integer a,
-                                                                          @PathVariable(value = "b") Integer b) {
+    public ResponseEntity<?> getDonateDetailsOfDonatorByNotificationTitle(@PathVariable(value = "dntid") Integer id, @PathVariable(value = "skey") String skey,
+                                                                          @PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
         return ResponseEntity.ok().body(service.findDonatorNotificationByDonatorIdAndTitlePageASizeB(id,skey,a-1,b));
     }
 

@@ -136,7 +136,7 @@ export class DialogApproveProjectComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn xoá dự án này?')){
-        const res = await (await this.projectService.deleteProject(this.data.prj_ID,0)).data;
+        const res = await (await this.projectService.deleteProject(this.data.prj_ID)).data;
         if (res)
         {
           this.notificationService.warn(res.message);

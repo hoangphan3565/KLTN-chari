@@ -1,5 +1,5 @@
 package com.macia.chariBE.utility;
 
 public enum ENotificationTopic {
-    NEW,CLOSED,EXTENDED,DONATED,DISBURSED
+    NEW,CLOSED,EXTENDED,DONATED,DISBURSED,FUND,INTRODUCTION
 }

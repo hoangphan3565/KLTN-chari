@@ -14,21 +14,16 @@
     </li>
   </ul>
   <ul class="nav navbar-nav ml-auto">
-    <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
-    </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com"/>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-        <div class="dropdown-header text-center"><strong>Tài khoản</strong></div>
-        <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> Thông báo<span class="badge badge-info">42</span></a>
         <div class="dropdown-header text-center"><strong>Cài đặt</strong></div>
         <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Thông tin cá nhân</a>
-        <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Cài đặt</a>
+        <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Đổi mật khẩu</a>
         <div class="divider"></div>
-        <a class="dropdown-item" [routerLink]="['/lading']" (click)="logout()" ><i class="fa fa-lock"></i> Đăng xuất</a>
+        <a class="dropdown-item" [routerLink]="['/lading']" (click)="logout()" ><i class="fa fa-sign-out"></i> Đăng xuất</a>
       </div>
     </li>
   </ul>

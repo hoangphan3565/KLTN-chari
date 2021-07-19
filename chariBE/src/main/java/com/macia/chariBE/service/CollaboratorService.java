@@ -1,6 +1,7 @@
 package com.macia.chariBE.service;
 
 import com.macia.chariBE.model.Collaborator;
+import com.macia.chariBE.model.Donator;
 import com.macia.chariBE.model.JwtUser;
 import com.macia.chariBE.repository.ICollaboratorRepository;
 import com.macia.chariBE.repository.IJwtUserRepository;
@@ -8,11 +9,17 @@ import com.macia.chariBE.utility.EUserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Service
 public class CollaboratorService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private ICollaboratorRepository repo;
@@ -31,8 +38,21 @@ public class CollaboratorService {
         repo.deleteById(id);
     }
 
-    public List<Collaborator> findAll(){return repo.findAll();}
+    public List<Collaborator> findAll(){
+        TypedQuery<Collaborator> query = em.createNamedQuery("named.collaborator.findAll", Collaborator.class);
+        return query.getResultList();
+    }
 
+    public int countAll() {
+        TypedQuery<Collaborator> query = em.createNamedQuery("named.collaborator.findAll", Collaborator.class);
+        return query.getResultList().size();
+    }
+
+    public List<Collaborator> getPerPageAndSize(int a,int b) {
+        TypedQuery<Collaborator> query = em.createNamedQuery("named.collaborator.findAll", Collaborator.class)
+                .setFirstResult(a*b).setMaxResults(b);
+        return query.getResultList();
+    }
     public Collaborator findByUsername(String usn) {
         try {
             return repo.findByUsername(usn);
@@ -40,6 +60,7 @@ public class CollaboratorService {
             return null;
         }
     }
+
     public Collaborator findById(Integer clb_id) {
         try {
             return repo.findById(clb_id).orElseThrow();
@@ -47,22 +68,20 @@ public class CollaboratorService {
             return null;
         }
     }
-    public List<Collaborator> accept(Integer id){
+    public void accept(Integer id){
         Collaborator c = findById(id);
         c.setIsAccept(true);
         repo.saveAndFlush(c);
         JwtUser user = userRepository.findByUsername(c.getUsername());
         user.setStatus(EUserStatus.ACTIVATED);
         userRepository.save(user);
-        return findAll();
     }
-    public List<Collaborator> block(Integer id){
+    public void block(Integer id){
         Collaborator c = findById(id);
         c.setIsAccept(false);
         repo.saveAndFlush(c);
         JwtUser user = userRepository.findByUsername(c.getUsername());
         user.setStatus(EUserStatus.BLOCKED);
         userRepository.save(user);
-        return findAll();
     }
 }

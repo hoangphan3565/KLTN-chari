@@ -28,6 +28,17 @@ public class DonatorController {
         return ResponseEntity.ok().body(donatorRepo.findAll());
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<?> countAll() {
+        return ResponseEntity.ok().body(donatorService.countAll());
+    }
+
+    @GetMapping("/page/{a}/size/{b}")
+    public ResponseEntity<?> getAll(@PathVariable(value = "a") Integer a,
+                                    @PathVariable(value = "b") Integer b) {
+        return ResponseEntity.ok().body(donatorService.getPerPageAndSize(a-1,b));
+    }
+
 
     @GetMapping("/favorite_notification_list/{id}")
     public ResponseEntity<?> getNotificationListByDonatorId(@PathVariable(value = "id") Integer id) {

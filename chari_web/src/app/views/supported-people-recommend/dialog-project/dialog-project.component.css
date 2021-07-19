@@ -4,7 +4,11 @@
   right:-24px;
 }
 
-
+.back-button{
+  float: left;
+  top:-24px;
+  left:-24px;
+}
 
 .container {
   position: relative;
@@ -69,3 +73,4 @@ video {
   position: absolute;
   right: 0px;
 }
+

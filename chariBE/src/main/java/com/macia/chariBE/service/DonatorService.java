@@ -5,7 +5,7 @@ import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.IDonateDetailsRepository;
 import com.macia.chariBE.repository.IDonatorRepository;
 import com.macia.chariBE.repository.IPushNotificationRepository;
-import com.macia.chariBE.utility.EDonateActivityStatus;
+import com.macia.chariBE.utility.EDonateDetailsStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,12 +48,19 @@ public class DonatorService {
         donatorRepo.saveAndFlush(donator);
     }
 
-    public Donator findById(Integer id) {
-        return donatorRepo.findById(id).orElseThrow();
-    }
-
     public List<Donator> findAll(){
         TypedQuery<Donator> query = em.createNamedQuery("named.donator.findAll", Donator.class);
+        return query.getResultList();
+    }
+
+    public int countAll() {
+        TypedQuery<Donator> query = em.createNamedQuery("named.donator.findAll", Donator.class);
+        return query.getResultList().size();
+    }
+
+    public List<Donator> getPerPageAndSize(int a, int b) {
+        TypedQuery<Donator> query = em.createNamedQuery("named.donator.findAll", Donator.class)
+                .setFirstResult(a*b).setMaxResults(b);
         return query.getResultList();
     }
 
@@ -62,7 +69,7 @@ public class DonatorService {
         return query.getResultList();
     }
 
-    public Donator findByUserName(Integer id){
+    public Donator findById(Integer id){
         TypedQuery<Donator> query = em.createNamedQuery("named.donator.findById", Donator.class);
         query.setParameter("id",id);
         return query.getSingleResult();
@@ -135,7 +142,7 @@ public class DonatorService {
     }
 
     public int getTotalDonateMoneyOfDonatorByProjectId(Integer prjid,Integer dntid){
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(dntid, prjid);
+        DonateActivity donateActivity = donateActivityService.findByDonatorIdAndProjectID(dntid, prjid);
         List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
         int money=0;
         if(donateDetails.isEmpty()){
@@ -149,18 +156,21 @@ public class DonatorService {
     }
 
     public void moveMoney(Integer project_id,Integer donator_id,Integer targetProjectId,Integer money) {
-        DonateActivity oldDonateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, project_id);
-        oldDonateActivity.setStatus(EDonateActivityStatus.FAILED.toString());
+        DonateActivity oldDonateActivity = donateActivityService.findByDonatorIdAndProjectID(donator_id, project_id);
+        List<DonateDetails> oldDonateDetails = oldDonateActivity.getDonateDetails();
+        for(DonateDetails dd:oldDonateDetails){
+            dd.setStatus(EDonateDetailsStatus.MOVED.toString());
+        }
         donateActivityService.save(oldDonateActivity);
-        DonateActivity donateActivity = donateActivityService.findDonateActivityByDonatorIdAndProjectID(donator_id, targetProjectId);
+        DonateActivity donateActivity = donateActivityService.findByDonatorIdAndProjectID(donator_id, targetProjectId);
         if (donateActivity == null) {
             IDonateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivityService.save(DonateActivity.builder()
                             .donator(this.findById(donator_id))
                             .project(projectService.findProjectById(targetProjectId))
-                            .status(EDonateActivityStatus.SUCCESSFUL.toString())
                             .build()))
                     .donateDate(LocalDateTime.now())
+                    .status(EDonateDetailsStatus.SUCCESSFUL.toString())
                     .money(money)
                     .build());
         }
@@ -168,6 +178,7 @@ public class DonatorService {
             IDonateDetailsRepository.save(DonateDetails.builder()
                     .donateActivity(donateActivity)
                     .donateDate(LocalDateTime.now())
+                    .status(EDonateDetailsStatus.SUCCESSFUL.toString())
                     .money(money)
                     .build());
         }

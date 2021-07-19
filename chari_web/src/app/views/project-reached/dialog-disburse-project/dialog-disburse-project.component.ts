@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '../../../services/notification.service';
 import { Project } from '../../../models/Project';
 
 @Component({
     templateUrl: './dialog-disburse-project.component.html',
+    styleUrls: ['./dialog-disburse-project.component.css']
   })
 export class DialogDisburseProjectComponent implements OnInit {
   disburseCode: string;
@@ -20,7 +20,4 @@ export class DialogDisburseProjectComponent implements OnInit {
   ngOnInit(): void {
     this.disburseCode = 'GIAINGAN'+this.data.prj_ID
   }
-  numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 }

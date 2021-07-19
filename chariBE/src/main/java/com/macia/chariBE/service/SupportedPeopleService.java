@@ -111,7 +111,7 @@ public class SupportedPeopleService {
         return jso;
     }
 
-    public JSONObject delete(Integer id, Integer clb_id) {
+    public JSONObject delete(Integer id) {
         JSONObject jso = new JSONObject();
         if(repo.findById(id).isPresent()){
             this.repo.deleteById(id);

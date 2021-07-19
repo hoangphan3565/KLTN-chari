@@ -31,7 +31,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
   initState(){
     _getDonatorDetails();
-    print(widget.donator.username);
     super.initState();
   }
 

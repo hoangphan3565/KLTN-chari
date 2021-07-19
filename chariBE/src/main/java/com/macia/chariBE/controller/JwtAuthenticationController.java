@@ -12,6 +12,7 @@ import com.macia.chariBE.security.JwtTokenUtil;
 import com.macia.chariBE.security.JwtUserDetailsService;
 import com.macia.chariBE.service.CollaboratorService;
 import com.macia.chariBE.service.DonatorService;
+import com.macia.chariBE.service.UserService;
 import com.macia.chariBE.utility.EUserStatus;
 import com.macia.chariBE.utility.EUserType;
 import net.minidev.json.JSONObject;
@@ -50,7 +51,11 @@ public class JwtAuthenticationController {
 	private DonatorService donatorService;
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private PushNotificationService pushNotificationService;
+
 
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -172,6 +177,18 @@ public class JwtAuthenticationController {
 	public ResponseEntity<?> getAllUser() {
 		return ResponseEntity.ok().body(jwtuserRepo.findAll());
 	}
+
+	@GetMapping("/users/count")
+	public ResponseEntity<?> countAll() {
+		return ResponseEntity.ok().body(userService.countAll());
+	}
+
+	@GetMapping("/users/page/{a}/size/{b}")
+	public ResponseEntity<?> getAll(@PathVariable(value = "a") Integer a,
+									@PathVariable(value = "b") Integer b) {
+		return ResponseEntity.ok().body(userService.getPerPageAndSize(a-1,b));
+	}
+
 
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> blockUser(@PathVariable(value = "id") Integer id) {

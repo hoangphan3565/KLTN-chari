@@ -110,8 +110,9 @@ class _HomeScreenState extends State<HomeScreen>{
       }else{
         numOfItem+= widget.total - numOfItem;
       }
-      if(numOfItem>=inpage_project_list.length){
+      if(numOfItem>inpage_project_list.length){
         page++;
+        print("Call load more API! page:$page");
         _getMoreProject();
       }
     });
@@ -343,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen>{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project: project,donator: widget.donator,)),
+          MaterialPageRoute(builder: (context) => ProjectDetailsScreen(project_id: project.prj_id,donator: widget.donator,)),
         );
       },
       child: Container(

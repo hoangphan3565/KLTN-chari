@@ -29,10 +29,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.fromLTRB(0,10,0,10),
-      padding: EdgeInsets.fromLTRB(0,0,0,0),
       width: size.width,
-      height: size.height*0.055,
       decoration: BoxDecoration(
         color: Colors.black12.withOpacity(0.07),
         borderRadius: BorderRadius.circular(5),

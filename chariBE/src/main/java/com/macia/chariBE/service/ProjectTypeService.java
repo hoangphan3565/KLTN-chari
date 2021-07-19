@@ -1,5 +1,6 @@
 package com.macia.chariBE.service;
 
+import com.macia.chariBE.model.JwtUser;
 import com.macia.chariBE.model.ProjectType;
 import com.macia.chariBE.repository.IProjectTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,16 @@ public class ProjectTypeService {
     private IProjectTypeRepository repo;
     public List<ProjectType> findAll() {
         TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findAll", ProjectType.class);
+        return query.getResultList();
+    }
+    public int countAll() {
+        TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findAll", ProjectType.class);
+        return query.getResultList().size();
+    }
+
+    public List<ProjectType> getPerPageAndSize(int a, int b) {
+        TypedQuery<ProjectType> query = em.createNamedQuery("named.projectType.findAll", ProjectType.class)
+                .setFirstResult(a*b).setMaxResults(b);
         return query.getResultList();
     }
 

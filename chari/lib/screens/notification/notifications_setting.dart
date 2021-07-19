@@ -33,7 +33,6 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
       }else{
         _fcm.unsubscribeFromTopic(topic);
       }
-      print("$value->$topic");
     }
   }
 

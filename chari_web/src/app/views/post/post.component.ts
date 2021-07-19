@@ -26,8 +26,16 @@ export class PostComponent implements OnInit {
     this.currentPage =  event.page;
     this.getPost(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
+    this.itemsPerPage = this.options[event.value-1].value;
     this.getPost(this.currentPage,this.itemsPerPage);
   }
 

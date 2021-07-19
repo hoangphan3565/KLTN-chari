@@ -26,12 +26,21 @@ export class SupportedPeopleComponent implements OnInit {
   
   pageChanged(event: any): void {
     this.currentPage =  event.page;
-    this.getSupportedPeople(this.currentPage,this.itemsPerPage);
+    this.getList(this.currentPage,this.itemsPerPage);
   }
+  public options = [
+    {"id": 1, "value": 5},
+    {"id": 2, "value": 10},
+    {"id": 3, "value": 25},
+    {"id": 4, "value": 100},
+  ]
+  public selected1 = this.options[0].id;
+
   rowsChanged(event: any): void {
-    this.itemsPerPage =  event.value;
-    this.getSupportedPeople(this.currentPage,this.itemsPerPage);
+    this.itemsPerPage = this.options[event.value-1].value;
+    this.getList(this.currentPage,this.itemsPerPage);
   }
+
 
   constructor(
     private SupportedPeopleService: SupportedPeopleService,
@@ -42,14 +51,14 @@ export class SupportedPeopleComponent implements OnInit {
   ngOnInit(): void {
     this.itemsPerPage=5;
     this.getTotalSupportedPeoples();
-    this.getSupportedPeople(1,this.itemsPerPage)
+    this.getList(1,this.itemsPerPage)
   }
 
   public async getTotalSupportedPeoples(){
     this.totalItems = await (await this.SupportedPeopleService.countTotal()).data;
   }
 
-  public async getSupportedPeople(a,b){
+  public async getList(a,b){
     this.SupportedPeoples = await (await this.SupportedPeopleService.getSupportedPeoples(a,b)).data as SupportedPeople[];
   }
 
@@ -91,7 +100,7 @@ export class SupportedPeopleComponent implements OnInit {
       if (res)
       {
         this.notificationService.success(res.message);
-        this.SupportedPeoples = res.data as SupportedPeople[];
+        this.getList(this.currentPage,this.itemsPerPage);
       }    
     }
     catch (e) {
@@ -104,11 +113,11 @@ export class SupportedPeopleComponent implements OnInit {
     try 
     {
       if(confirm('Bạn có thực sự muốn xoá Người thụ hưởng này?')){
-        const res = await (await this.SupportedPeopleService.deleteSupportedPeople(id,0)).data;
+        const res = await (await this.SupportedPeopleService.deleteSupportedPeople(id)).data;
         if (res)
         {
           this.notificationService.warn(res.message);
-          this.SupportedPeoples = res.data as SupportedPeople[];
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }
