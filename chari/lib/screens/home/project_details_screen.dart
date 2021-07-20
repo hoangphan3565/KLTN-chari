@@ -29,7 +29,6 @@ class ProjectDetailsScreen extends StatefulWidget {
 }
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
-  final String fbAppId = "1111520262657862";
   final dataKey = new GlobalKey();
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
@@ -227,54 +226,52 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       floatingActionButton: Row(
         children: [
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          _isLoading? ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-              ),
-            },
-            buttonText: 'Quyên góp ngay',
-            buttonColor: kPrimaryHighLightColor,
-            textColor: Colors.white,
-          ):
-          (project.status=='ACTIVATING')?
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-              ),
-            },
-            buttonText: 'Quyên góp ngay',
-            buttonColor: kPrimaryHighLightColor,
-            textColor: Colors.white,
-          ):
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
-            onPressed: () => {
-              Navigator.of(context).pop()
-            },
-            buttonText: 'Quay lại',
-            // buttonColor: kPrimaryHighLightColor,
-            // textColor: Colors.white,
-          ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.34,
-            onPressed: () => { share() },
-            buttonText: 'Chia sẻ',
-          ),
+          _isLoading? SizedBox() : ((project.status=='ACTIVATING')?
+          Row(children: [
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.6,
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
+                ),
+              },
+              buttonText: 'Quyên góp ngay',
+              buttonColor: kPrimaryHighLightColor,
+              textColor: Colors.white,
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.34,
+              onPressed: () => { share() },
+              buttonText: 'Chia sẻ',
+            ),
+
+          ],)
+          :
+          Row(children: [
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.6,
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              buttonText: 'Quay lại',
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.34,
+              onPressed: () => { share() },
+              buttonText: 'Chia sẻ',
+            ),
+          ],))
         ],
       ),
       bottomNavigationBar: Container(
@@ -1002,7 +999,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     await FlutterShare.share(
         title: project.project_name,
         text: project.project_name,
-        linkUrl: project.image_url,
+        linkUrl: "https://hoangphan3565.github.io/#/project_detail?id="+project.prj_id.toString(),
         chooserTitle: "Hãy chọn phương thức chia sẻ"
     );
   }

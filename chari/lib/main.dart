@@ -41,16 +41,11 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(
             settings: settings,
             builder: (context) => MainScreen());
-      case '/project-detail':
+      case '/project_detail':
         var id = int.tryParse(routingData['id']);
         return MaterialPageRoute(
             settings: settings,
             builder: (context) => ProjectDetailsScreen(project_id: id));
-      case 'post-detail':
-        var id = int.tryParse(routingData['id']);
-        return MaterialPageRoute(
-            settings: settings,
-            builder: (context) => PostDetailsScreen(post_id: id));
       default:
         return MaterialPageRoute(
             settings: settings,

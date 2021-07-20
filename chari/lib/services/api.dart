@@ -1,9 +1,9 @@
 //local ip và port server đang deploy
-const baseUrl = 'http://192.168.43.202:8080/api';
+// const baseUrl = 'http://192.168.43.202:8080/api';
 
 // const baseUrl = 'http://10.0.2.2:8080/api';
 
-// const baseUrl = 'https://2497f96ea2d6.ngrok.io/api';
+const baseUrl = 'https://1ac784221d9f.ngrok.io/api';
 
 
 const login = '/login';

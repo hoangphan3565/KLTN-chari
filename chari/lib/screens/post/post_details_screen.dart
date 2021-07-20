@@ -154,25 +154,12 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       floatingActionButton: Row(
         children: [
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          _isLoading? ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-              ),
-            },
-            buttonText: 'Quyên góp ngay',
-            buttonColor: kPrimaryHighLightColor,
-            textColor: Colors.white,
-          ):
+          _isLoading? SizedBox():
           (project.status=='ACTIVATING')?
           ActionButton(
             height: 45,
             fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: MediaQuery.of(context).size.width * 0.96,
             onPressed: () => {
               Navigator.push(
                 context,
@@ -186,7 +173,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           ActionButton(
             height: 45,
             fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: MediaQuery.of(context).size.width * 0.96,
             onPressed: () => {
               Navigator.of(context).pop()
             },
@@ -195,13 +182,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             // textColor: Colors.white,
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.34,
-            onPressed: () => { share() },
-            buttonText: 'Chia sẻ',
-          ),
         ],
       ),
       bottomNavigationBar: Container(

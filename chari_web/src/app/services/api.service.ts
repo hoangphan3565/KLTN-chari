@@ -4,7 +4,9 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 
 const url = {
-    baseUrl: "http://localhost:8080/api",
+    // baseUrl: "http://localhost:8080/api",
+    baseUrl: "https://1ac784221d9f.ngrok.io/api",
+
 
     projects: '/projects',
     cities: '/cities',
