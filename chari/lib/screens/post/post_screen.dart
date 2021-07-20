@@ -32,18 +32,6 @@ class _PostScreenState extends State<PostScreen>{
   bool _isLoading = true;
   String searchQuery = "*";
 
-  _getProjectAndNavigate(Post post) async {
-    await ProjectService.getProjectById(post.projectId).then((response) {
-      setState(() {
-        final Map res = json.decode(utf8.decode(response.bodyBytes));
-        project = Project.fromJson(res);
-      });
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PostDetailsScreen(post: post,project: project,donator: widget.donator,)),
-    );
-  }
 
   _countTotalFoundPosts() async{
     await PostService.getTotalFoundPost(searchQuery).then((response) {
@@ -97,6 +85,14 @@ class _PostScreenState extends State<PostScreen>{
       if(widget.total>=size){numOfItem=size;}
       else{numOfItem = widget.total;}
     });
+  }
+
+  @override
+  void dispose() {
+    setState(() {
+      _isLoading = false;
+    });
+    super.dispose();
   }
 
   @override
@@ -199,7 +195,10 @@ class _PostScreenState extends State<PostScreen>{
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
-        _getProjectAndNavigate(post);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PostDetailsScreen(post_id:post.pos_id,donator: widget.donator,)),
+        );
       },
       child: Container(
         margin: EdgeInsets.fromLTRB(8,4,8,4),

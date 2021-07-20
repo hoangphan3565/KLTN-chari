@@ -26,5 +26,9 @@ export class ProjectService {
   public deleteProject = (id) => Api.delete(`${Api.url.projects}/${id}`);
   public closeProject = (id) => Api.put(`${Api.url.projects}/close/${id}`);
   public extendProject = (id,nod) => Api.put(`${Api.url.projects}/extend/${id}/num_of_date/${nod}`);
+
+  public countVerified = clb_id => Api.get(`${Api.url.projects}/verified/collaborator/${clb_id}/count`);
+  public countTotalMoney = clb_id => Api.get(`${Api.url.projects}/verified/collaborator/${clb_id}/count_money`);
+
 }
 

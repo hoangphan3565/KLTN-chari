@@ -14,7 +14,7 @@ import { City } from '../../../models/City';
 @Component({
     selector: 'app-dialog-project',
     templateUrl: './dialog-project.component.html',
-    styleUrls: ['./dialog-project.component.css']
+    styleUrls: ['../../../app.component.css']
 })
 export class DialogProjectAddComponent implements OnInit {
 
@@ -26,6 +26,8 @@ export class DialogProjectAddComponent implements OnInit {
   SupportedPeoples: SupportedPeople[];
   canDisburseWhenOverdue:boolean=true;
   isUploadingVideo: boolean;
+  isUpLoadingImage: boolean;
+  upLoadingIndex: number;
 
   constructor(
     private notificationService: NotificationService,
@@ -40,11 +42,26 @@ export class DialogProjectAddComponent implements OnInit {
   ngOnInit(): void {
     this.getProjectType();
     this.getCity();
-    this.imageUrls = this.data.images;
+    this.initImageArray();
     this.videoUrl = this.data.videoUrl;
   }  
 
-  uploadImages(event) {
+  initImageArray(): void {
+    this.imageUrls = this.data.images;
+    let left = this.imageUrls.length;
+    for (let i = 0; i < (6-left); i++) {
+      this.imageUrls.push("");
+    }
+  }
+  uploadImages(event,i) {
+    this.isUpLoadingImage=true;
+    this.upLoadingIndex=i;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 ảnh');
+      this.isUpLoadingImage=false;
+      this.upLoadingIndex=null;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -58,7 +75,9 @@ export class DialogProjectAddComponent implements OnInit {
             this.downloadURL = fileRef.getDownloadURL();
             this.downloadURL.subscribe(url => {
               if (url) {
-                this.imageUrls.push(url);
+                this.imageUrls[i] = url;
+                this.isUpLoadingImage=false;
+                this.upLoadingIndex=null;
               }
             });
           })
@@ -72,6 +91,11 @@ export class DialogProjectAddComponent implements OnInit {
   }  
   uploadVideo(event) {
     this.isUploadingVideo=true;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 video');
+      this.isUploadingVideo=false;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -100,8 +124,8 @@ export class DialogProjectAddComponent implements OnInit {
   }
 
 
-  deleteAttachment(index) {
-    this.imageUrls.splice(index, 1);
+  deleteAttachment(i) {
+    this.imageUrls[i]="";
   }  
   deleteVideo() {
     this.videoUrl=null;
@@ -127,10 +151,31 @@ export class DialogProjectAddComponent implements OnInit {
     return this.ProjectTypes.filter(x => x.canDisburseWhenOverdue == this.canDisburseWhenOverdue);
   }
   
-  save(){
+  saveImageAndVideo(){
     this.data.videoUrl=this.videoUrl;
+    while (this.imageUrls.indexOf("", 0)>-1){
+      const index = this.imageUrls.indexOf("", 0);
+      if (index > -1) {
+        this.imageUrls.splice(index, 1);
+      }
+    }
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
-    this.dialogRef.close(this.data);
+  }
+
+  save(){
+    this.saveImageAndVideo();
+    if(this.data.projectName==''||this.data.briefDescription==''||this.data.description==''||this.data.cti_ID==null||this.data.startDate==''||this.data.endDate==''||this.data.targetMoney==''||this.data.prt_ID==null||this.data.stp_ID==null){
+      this.notificationService.warn('Hãy điền và chọn đầy đủ thông tin')
+      return;
+    }else if(this.data.description.length<300){
+      this.notificationService.warn('Hãy điền nội dung dự án tối thiểu 100 từ')
+      return;
+    }else if(this.data.imageUrl==null){
+      this.notificationService.warn('Hãy tải lên ít nhất 1 hình ảnh cho tin tức')
+      return;
+    }else{
+      this.dialogRef.close(this.data);
+    }
   }
 }

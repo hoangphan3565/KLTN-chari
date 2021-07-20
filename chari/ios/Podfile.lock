@@ -321,6 +321,8 @@ PODS:
     - FBSDKCoreKit (~> 5.5)
     - FBSDKLoginKit (~> 5.5)
     - Flutter
+  - flutter_share (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -402,6 +404,7 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
+  - flutter_share (from `.symlinks/plugins/flutter_share/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
@@ -450,6 +453,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_facebook_login:
     :path: ".symlinks/plugins/flutter_facebook_login/ios"
+  flutter_share:
+    :path: ".symlinks/plugins/flutter_share/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   shared_preferences:
@@ -482,6 +487,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
+  flutter_share: 4be0208963c60b537e6255ed2ce1faae61cd9ac2
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   GoogleAppMeasurement: a6a3a066369828db64eda428cb2856dc1cdc7c4e
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833

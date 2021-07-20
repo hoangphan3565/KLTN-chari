@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { VideoDragDropDirective } from './drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { VideoDragDropDirective } from './drag-drop.directive';
   declarations: [ 
     ProjectReachedComponent,
     DialogPostComponent,
-    VideoDragDropDirective
+    VideoDragDropDirective,
+    ImageDragDropDirective,
   ]
 })
 export class ProjectReachedModule { }

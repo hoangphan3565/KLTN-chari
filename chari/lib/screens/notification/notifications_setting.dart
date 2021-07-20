@@ -40,7 +40,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen>{
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
       child: Stack(
         children: [
           Positioned(

@@ -12,12 +12,14 @@ import { environment } from '../../../environments/environment';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DialogProjectComponent } from './dialog-project/dialog-project.component';
-import { VideoDragDropDirective } from './drag-drop.directive';
+import { VideoDragDropDirective } from './video-drag-drop.directive';
 import { ImageDragDropDirective } from './image-drag-drop.directive';
+
+
 
 @NgModule({
   imports: [
-  CommonModule,
+CommonModule,
     ProjectActivatingRoutingModule,
     PaginationModule.forRoot(),
     FormsModule,

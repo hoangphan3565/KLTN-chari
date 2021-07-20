@@ -16,6 +16,7 @@ class RoundedInputField extends StatelessWidget {
   final FocusNode focusNode;
   final int maxLines;
   final double hintSize;
+  final IconData clearIcon;
   const RoundedInputField({
     Key key,
     this.hintText,
@@ -30,6 +31,7 @@ class RoundedInputField extends StatelessWidget {
     this.focusNode,
     this.maxLines=null,
     this.hintSize=15,
+    this.clearIcon=FontAwesomeIcons.solidTimesCircle,
   }) : super(key: key);
 
   @override
@@ -59,13 +61,8 @@ class RoundedInputField extends StatelessWidget {
               splashRadius: 18,
               iconSize: 15,
               onPressed: onTapClearIcon,
-              icon: FaIcon(FontAwesomeIcons.solidTimesCircle,color: Colors.black38,)
-          ):IconButton(
-              splashRadius: 18,
-              iconSize: 15,
-              onPressed: ()=>{},
-              icon: FaIcon(FontAwesomeIcons.solidTimesCircle,color: kPrimaryLightColor,)
-          ),
+              icon: FaIcon(clearIcon,color: Colors.black38,)
+          ):null,
           hintText: hintText,
           border: InputBorder.none,
         ),

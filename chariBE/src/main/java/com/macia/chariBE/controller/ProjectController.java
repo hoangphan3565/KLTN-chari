@@ -38,10 +38,16 @@ public class ProjectController {
     }
 
     // Services for admin
+    @GetMapping("/count_money")
+    public ResponseEntity<?> countTotalMoney() {
+        return ResponseEntity.ok().body(projectService.countTotalMoney());
+    }
+
     @GetMapping("/count")
     public ResponseEntity<?> countAllProject() {
         return ResponseEntity.ok().body(projectService.countAllWhereUncloseAndVerified());
     }
+
     @GetMapping("/page/{a}/size/{b}")
     public ResponseEntity<?> getProjectDTOsPageASizeB(@PathVariable(value = "a") Integer a, @PathVariable(value = "b") Integer b) {
         return ResponseEntity.ok().body(projectService.getProjectDTOsWhereUncloseAndVerifiedPageASizeB(a-1,b));
@@ -91,6 +97,17 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getClosedProjects(a-1,b));
     }
     //for collaborator
+
+    @GetMapping("/verified/collaborator/{clb_id}/count")
+    public ResponseEntity<?> countAllProjectOfCollaborator(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countAllProjectOfCollaborator(clb_id));
+    }
+
+    @GetMapping("/verified/collaborator/{clb_id}/count_money")
+    public ResponseEntity<?> countTotalMoneyAllProjectOfCollaborator(@PathVariable(value = "clb_id") Integer clb_id) {
+        return ResponseEntity.ok().body(projectService.countTotalMoneyAllProjectOfCollaborator(clb_id));
+    }
+
     @GetMapping("/collaborator/{clb_id}/count")
     public ResponseEntity<?> countAllProjectDTOByCollaboratorId(@PathVariable(value = "clb_id") Integer clb_id) {
         return ResponseEntity.ok().body(projectService.countAllUnverifiedByCollaboratorId(clb_id));

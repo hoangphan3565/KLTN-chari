@@ -5,7 +5,7 @@ import { Project } from '../../../models/Project';
 
 @Component({
     templateUrl: './dialog-disburse-project.component.html',
-    styleUrls: ['./dialog-disburse-project.component.css']
+    styleUrls: ['../../../app.component.css']
   })
 export class DialogDisburseProjectComponent implements OnInit {
   disburseCode: string;

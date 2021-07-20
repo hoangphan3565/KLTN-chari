@@ -8,3 +8,4 @@ export 'text_field_container.dart';
 export 'select_item.dart';
 export 'action_button.dart';
 export 'search_field.dart';
+export 'image_previews.dart';

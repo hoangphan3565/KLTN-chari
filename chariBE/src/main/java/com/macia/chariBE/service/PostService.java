@@ -33,15 +33,12 @@ public class PostService {
     private CollaboratorService collaboratorService;
 
 
-//    public List<PostDTO> getPostDTOsLikePostName(String name){
-//        List<PostDTO> r = new ArrayList<>();
-//        List<Post> ps = this.findLikePostName(name);
-//        for(Post p : ps){
-//            Project project =  projectService.findProjectById(p.getProjectId());
-//            r.add(mapToDTO(p,project));
-//        }
-//        return r;
-//    }
+    public PostDTO getPostDTOById(Integer id) {
+        Post p = this.findById(id);
+        Project project =  projectService.findProjectById(p.getProjectId());
+        return mapToDTO(p,project);
+    }
+
 
     //== Services for Admin
     public Integer countAllPost() {

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import { ProjectService } from '../../services/project.service';
+import Cookies from 'js-cookie'
+import { PostService } from '../../services/Post.service';
 
 
 @Component({
@@ -10,8 +13,9 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(
+    private projectService:ProjectService,
+    private postService:PostService,
   ) { }
-
 
 
   radioModel: string = 'Month';
@@ -384,12 +388,42 @@ export class DashboardComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  clb_id: Number;
+  totalProject: number;
+  totalReachedProject: number;
+  totalInMoney: number;
+  totalPost: number;
+
   ngOnInit(): void {
-    // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
       this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
+    this.clb_id = JSON.parse(Cookies.get("loginInfo")).info.clb_ID;
+    this.getTotalProject();
+    this.getTotalReachedProject();
+    this.getTotalInMoney();
+    this.getTotalPost();
+  }
+
+  public async getTotalProject(){
+    this.totalProject = await (await this.projectService.countVerified(this.clb_id)).data;
+  }  
+  
+  public async getTotalReachedProject(){
+    this.totalReachedProject = await (await this.projectService.countReached(this.clb_id)).data;
+  }
+
+  public async getTotalInMoney(){
+    this.totalInMoney = await (await this.projectService.countTotalMoney(this.clb_id)).data;
+  }  
+  
+  public async getTotalPost(){
+    this.totalPost = await (await this.postService.countPosts(this.clb_id)).data;
+  }
+
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 }

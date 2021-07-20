@@ -12,6 +12,8 @@ import { environment } from '../../../environments/environment';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SupportedPeopleRecommendRoutingModule } from './supported-people-recommend-routing.module';
 import { SupportedPeopleRecommendComponent } from './supported-people-recommend.component';
+import { VideoDragDropDirective } from './drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,6 +30,8 @@ import { SupportedPeopleRecommendComponent } from './supported-people-recommend.
     SupportedPeopleRecommendComponent,
     DialogSupportedPeopleRecommendComponent, 
     DialogProjectAddComponent,
+    VideoDragDropDirective,
+    ImageDragDropDirective,
   ]
 })
 export class SupportedPeopleRecommendModule { }

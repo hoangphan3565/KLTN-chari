@@ -15,6 +15,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../../environments/environment';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VideoDragDropDirective } from './drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -36,6 +38,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     SupportedPeopleComponent,
     DialogSupportedPeopleComponent, 
     DialogProjectAddComponent,
+    VideoDragDropDirective,
+    ImageDragDropDirective,
   ]
 })
 export class SupportedPeopleModule { }

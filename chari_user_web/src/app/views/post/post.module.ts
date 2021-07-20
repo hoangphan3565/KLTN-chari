@@ -13,6 +13,7 @@ import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { VideoDragDropDirective } from './drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { VideoDragDropDirective } from './drag-drop.directive';
     PostComponent,
     DialogPostComponent,
     VideoDragDropDirective,
+    ImageDragDropDirective
   ]
 })
 export class ProjectPostModule { }

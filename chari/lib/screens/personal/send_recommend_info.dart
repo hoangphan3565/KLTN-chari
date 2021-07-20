@@ -70,7 +70,7 @@ class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
       child: Stack(
         children: [
           Positioned(
@@ -95,92 +95,88 @@ class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 0),
                 ),
                 SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    children: [
-                      RoundedInputField(
-                        icon: Icons.message,
-                        keyboardType: TextInputType.text,
-                        controller: _descriptionField,
-                        showClearIcon: _haveContent,
-                        onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {_haveContent=false;})},
-                        hintText: 'Mô tả hoàn cảnh',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_haveContent=true;}):setState(() {_haveContent=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.adjust,
-                        focusNode: focusNode,
-                        keyboardType: TextInputType.text,
-                        controller: _nameField,
-                        showClearIcon: _haveName,
-                        onTapClearIcon: ()=>{_nameField.clear(),setState(() {_haveName=false;})},
-                        hintText: 'Tên người cần hỗ trợ',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_haveName=true;}):setState(() {_haveName=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.phone,
-                        keyboardType: TextInputType.text,
-                        controller: _phoneField,
-                        showClearIcon: _havePhone,
-                        onTapClearIcon: ()=>{_phoneField.clear(),setState(() {_havePhone=false;})},
-                        hintText: 'SĐT của người cần hỗ trợ',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_havePhone=true;}):setState(() {_havePhone=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.location_on_outlined,
-                        keyboardType: TextInputType.text,
-                        controller: _addressField,
-                        showClearIcon: _haveAddress,
-                        onTapClearIcon: ()=>{_addressField.clear(),setState(() {_haveAddress=false;})},
-                        hintText: 'Địa chỉ của người cần hỗ trợ',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_haveAddress=true;}):setState(() {_haveAddress=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.comment_bank_outlined,
-                        keyboardType: TextInputType.text,
-                        controller: _bankNameField,
-                        showClearIcon: _haveBankName,
-                        onTapClearIcon: ()=>{_bankNameField.clear(),setState(() {_haveBankName=false;})},
-                        hintText: 'Tên ngân hàng (nếu có)',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_haveBankName=true;}):setState(() {_haveBankName=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.attach_money_rounded,
-                        keyboardType: TextInputType.text,
-                        controller: _bankAccountField,
-                        showClearIcon: _haveBankAccount,
-                        onTapClearIcon: ()=>{_bankAccountField.clear(),setState(() {_haveBankAccount=false;})},
-                        hintText: 'Số tài khoản ngân hàng (nếu có)',
-                        hintSize: 13,
-                        onChanged: (value) {
-                          value!=''?setState(() {_haveBankAccount=true;}):setState(() {_haveBankAccount=false;});
-                        },
-                      ),
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: ()=>{
-                          validateAndSendPeopleRecommend(_descriptionField.text,_nameField.text,_addressField.text,_phoneField.text,_bankNameField.text,_bankAccountField.text,context)
-                        },
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    RoundedInputField(
+                      icon: Icons.message,
+                      keyboardType: TextInputType.text,
+                      controller: _descriptionField,
+                      showClearIcon: _haveContent,
+                      onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {_haveContent=false;})},
+                      hintText: 'Mô tả hoàn cảnh',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_haveContent=true;}):setState(() {_haveContent=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.adjust,
+                      focusNode: focusNode,
+                      keyboardType: TextInputType.text,
+                      controller: _nameField,
+                      showClearIcon: _haveName,
+                      onTapClearIcon: ()=>{_nameField.clear(),setState(() {_haveName=false;})},
+                      hintText: 'Tên người cần hỗ trợ',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_haveName=true;}):setState(() {_haveName=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.phone,
+                      keyboardType: TextInputType.text,
+                      controller: _phoneField,
+                      showClearIcon: _havePhone,
+                      onTapClearIcon: ()=>{_phoneField.clear(),setState(() {_havePhone=false;})},
+                      hintText: 'SĐT của người cần hỗ trợ',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_havePhone=true;}):setState(() {_havePhone=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.location_on_outlined,
+                      keyboardType: TextInputType.text,
+                      controller: _addressField,
+                      showClearIcon: _haveAddress,
+                      onTapClearIcon: ()=>{_addressField.clear(),setState(() {_haveAddress=false;})},
+                      hintText: 'Địa chỉ của người cần hỗ trợ',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_haveAddress=true;}):setState(() {_haveAddress=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.comment_bank_outlined,
+                      keyboardType: TextInputType.text,
+                      controller: _bankNameField,
+                      showClearIcon: _haveBankName,
+                      onTapClearIcon: ()=>{_bankNameField.clear(),setState(() {_haveBankName=false;})},
+                      hintText: 'Tên ngân hàng (nếu có)',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_haveBankName=true;}):setState(() {_haveBankName=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.attach_money_rounded,
+                      keyboardType: TextInputType.text,
+                      controller: _bankAccountField,
+                      showClearIcon: _haveBankAccount,
+                      onTapClearIcon: ()=>{_bankAccountField.clear(),setState(() {_haveBankAccount=false;})},
+                      hintText: 'Số tài khoản ngân hàng (nếu có)',
+                      hintSize: 14,
+                      onChanged: (value) {
+                        value!=''?setState(() {_haveBankAccount=true;}):setState(() {_haveBankAccount=false;});
+                      },
+                    ),
+                    RoundedButton(
+                      text: "Xác nhận",
+                      press: ()=>{
+                        validateAndSendPeopleRecommend(_descriptionField.text,_nameField.text,_addressField.text,_phoneField.text,_bankNameField.text,_bankAccountField.text,context)
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,21 +1,24 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chari/models/models.dart';
 import 'package:chari/screens/screens.dart';
+import 'package:chari/services/services.dart';
 import 'package:chari/utility/utility.dart';
+import 'package:chari/widgets/widgets.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:video_player/video_player.dart';
 
 
 
 class PostDetailsScreen extends StatefulWidget {
-  final Post post;
-  final Project project;
+  final int post_id;
   final Donator donator;
-  PostDetailsScreen({@required this.post,this.project,this.donator});
+  PostDetailsScreen({@required this.post_id,this.donator});
   @override
   _PostDetailsScreenState createState() => _PostDetailsScreenState();
 }
@@ -25,17 +28,40 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
 
+  bool _isLoading=true;
+  Project project;
+  Post post;
+
+  _getPostById() async {
+    await PostService.getPostById(widget.post_id).then((response) {
+      setState(() {
+        final Map res = json.decode(utf8.decode(response.bodyBytes));
+        post = Post.fromJson(res);
+        this.initializePlayer(post.video_url);
+      });
+    });
+    await ProjectService.getProjectById(post.projectId).then((response) {
+      setState(() {
+        final Map res = json.decode(utf8.decode(response.bodyBytes));
+        project = Project.fromJson(res);
+        this.initializePlayer(project.video_url);
+        _isLoading=false;
+      });
+    });
+  }
+
+
   @override
   void initState() {
+    _getPostById();
     super.initState();
-    this.initializePlayer(widget.post.video_url);
-
   }
 
   @override
   void dispose() {
-    super.dispose();
     this._videoPlayerController.dispose();
+    _isLoading=false;
+    super.dispose();
   }
   
 
@@ -63,6 +89,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -92,19 +119,29 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             child: Container(
               margin: EdgeInsets.only(top: 0),
               decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: _isLoading? Colors.white:Colors.grey.withOpacity(0.2),
                   borderRadius:
                   BorderRadius.vertical(top: Radius.circular(0))),
               child: SingleChildScrollView(
-                child: Column(
+                child:_isLoading?Container(
+                  margin: EdgeInsets.symmetric(vertical: size.height/4,horizontal: size.width/2.5),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "assets/images/loading.gif",
+                        height: size.height * 0.13,
+                      ),
+                    ],
+                  ),
+                ): Column(
                   children: [
-                    if(widget.post.video_url!=null)
+                    if(post.video_url!=null)
                       buildPostVideo(),
-                    if(widget.post.video_url==null)
-                      buildMainImage(widget.post),
+                    if(post.video_url==null)
+                      buildMainImage(post),
                     SizedBox(height: 8),
-                    buildPostInfo(widget.post),
-                    buildPostDetails(widget.post),
+                    buildPostInfo(post),
+                    buildPostDetails(post),
                   ],
                 ),
               ),
@@ -114,53 +151,69 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        height: 45,
-        width: MediaQuery.of(context).size.width * 0.9,
-        decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: kPrimaryColor),
-            borderRadius: BorderRadius.circular(8), color: kPrimaryColor),
-        child:((widget.project.status=='ACTIVATING')?
-        FlatButton(
-          onPressed:()=> {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DonateScreen(project: widget.project,donator: widget.donator,)),
-            ),
-          },
-          child: Text(
-            "Quyên góp ngay",
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+      floatingActionButton: Row(
+        children: [
+          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+          _isLoading? ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.6,
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
+              ),
+            },
+            buttonText: 'Quyên góp ngay',
+            buttonColor: kPrimaryHighLightColor,
+            textColor: Colors.white,
+          ):
+          (project.status=='ACTIVATING')?
+          ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.6,
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
+              ),
+            },
+            buttonText: 'Quyên góp ngay',
+            buttonColor: kPrimaryHighLightColor,
+            textColor: Colors.white,
+          ):
+          ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.6,
+            onPressed: () => {
+              Navigator.of(context).pop()
+            },
+            buttonText: 'Quay lại',
+            // buttonColor: kPrimaryHighLightColor,
+            // textColor: Colors.white,
           ),
-        )
-            :
-        FlatButton(
-          onPressed:()=> {
-            Navigator.of(context).pop()
-          },
-          child: Text(
-            "Quay lại",
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+          ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.34,
+            onPressed: () => { share() },
+            buttonText: 'Chia sẻ',
           ),
-        )
-        ),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: kPrimaryColor.withOpacity(0.1),
+                color: Colors.white12,
                 spreadRadius: 1,
               )
             ],
-            color: Colors.grey.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(5)),
+            color: Colors.white12.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(0)),
         child: Row(
           children: [
             buildNavBarItem(),
@@ -292,7 +345,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     aspectRatio: 2.0,
                     enlargeCenterPage: true,
                   ),
-                  items: widget.post.imgList.map((item) => Container(
+                  items: post.imgList.map((item) => Container(
                     child: Container(
                       margin: EdgeInsets.all(5.0),
                       child: ClipRRect(
@@ -324,6 +377,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           ),
         ],
       ),
+    );
+  }
+  Future<void> share() async{
+    await FlutterShare.share(
+        title: post.post_name,
+        text: post.post_name,
+        linkUrl: post.image_url,
+        chooserTitle: "Hãy chọn phương thức chia sẻ"
     );
   }
 }

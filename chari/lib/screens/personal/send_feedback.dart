@@ -59,7 +59,7 @@ class _SendFeedbackScreenState extends State<SendFeedbackScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
       child: Stack(
         children: [
           Positioned(
@@ -84,43 +84,39 @@ class _SendFeedbackScreenState extends State<SendFeedbackScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 0),
                 ),
                 SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    children: [
-                      RoundedInputField(
-                        icon: Icons.adjust,
-                        focusNode: focusNode,
-                        keyboardType: TextInputType.text,
-                        controller: _titleField,
-                        showClearIcon: haveTitle,
-                        onTapClearIcon: ()=>{_titleField.clear(),setState(() {haveTitle=false;})},
-                        hintText: 'Tiêu đề',
-                        onChanged: (value) {
-                          value!=''?setState(() {haveTitle=true;}):setState(() {haveTitle=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: Icons.message,
-                        keyboardType: TextInputType.text,
-                        controller: _descriptionField,
-                        showClearIcon: haveContent,
-                        onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {haveContent=false;})},
-                        hintText: 'Nội dung đóng góp',
-                        onChanged: (value) {
-                          value!=''?setState(() {haveContent=true;}):setState(() {haveContent=false;});
-                        },
-                      ),
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: ()async{
-                          SharedPreferences _prefs = await SharedPreferences.getInstance();
-                          validateAndSendFeedback(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
-                        },
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    RoundedInputField(
+                      icon: Icons.adjust,
+                      focusNode: focusNode,
+                      keyboardType: TextInputType.text,
+                      controller: _titleField,
+                      showClearIcon: haveTitle,
+                      onTapClearIcon: ()=>{_titleField.clear(),setState(() {haveTitle=false;})},
+                      hintText: 'Tiêu đề',
+                      onChanged: (value) {
+                        value!=''?setState(() {haveTitle=true;}):setState(() {haveTitle=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: Icons.message,
+                      keyboardType: TextInputType.text,
+                      controller: _descriptionField,
+                      showClearIcon: haveContent,
+                      onTapClearIcon: ()=>{_descriptionField.clear(),setState(() {haveContent=false;})},
+                      hintText: 'Nội dung đóng góp',
+                      onChanged: (value) {
+                        value!=''?setState(() {haveContent=true;}):setState(() {haveContent=false;});
+                      },
+                    ),
+                    RoundedButton(
+                      text: "Xác nhận",
+                      press: ()async{
+                        SharedPreferences _prefs = await SharedPreferences.getInstance();
+                        validateAndSendFeedback(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

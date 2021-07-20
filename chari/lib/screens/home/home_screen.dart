@@ -140,6 +140,9 @@ class _HomeScreenState extends State<HomeScreen>{
 
   @override
   dispose() {
+    setState(() {
+      _isLoading = false;
+    });
     super.dispose();
   }
 
@@ -286,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen>{
           return Wrap(
             children: [
               Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+                padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
                 child: Stack(
                   children: [
                     Positioned(

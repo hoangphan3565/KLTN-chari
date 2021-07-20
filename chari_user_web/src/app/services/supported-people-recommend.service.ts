@@ -4,6 +4,7 @@ import { Api } from './api.service';
 @Injectable({providedIn: 'root'})
 export class SupportedPeopleRecommendService {
   constructor(){ }
+  public sendInfo = (data) => Api.post(`${Api.url.supportedPeopleRecommends}`,data);
   public getAll = () => Api.get(`${Api.url.supportedPeopleRecommends}`);
   public countAll = () => Api.get(`${Api.url.supportedPeopleRecommends}/count`);
   public getFromAtoB = (a,b) => Api.get(`${Api.url.supportedPeopleRecommends}/page/${a}/size/${b}`);

@@ -52,13 +52,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/api/save_user","/api/change/password","/api/username/{usn}","/api/save_fcmtoken",
 				"/api/cities","/api/projects","/api/projects/find/{key}","/api/projects/count",
 				"/api/projects/page/{a}/size/{b}","/api/projects/{id}","/api/project_types",
-				"/api/posts/public/count","/api/posts/public/page/{a}/size/{b}",
+				"/api/posts/{id}","/api/posts/public/count","/api/posts/public/page/{a}/size/{b}",
 				"/api/posts/public/find/{name}/count","/api/posts/public/find/{name}/page/{a}/size/{b}",
 				"/api/paypal/donator_id/{did}/project_id/{pid}/donate",
 				"/api/paypal/success/donator_id/{did}/project_id/{pid}/money/{money}",
 				"/api/donate_details/project/{prjid}","/api/comments/project/{id}","/api/comments/{id}/project/{pid}",
 				"/api/projects/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/page/{p}/size/{s}",
-				"/api/projects/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/count"
+				"/api/projects/filter/favorite/donator/{did}/city/{c_ids}/project_type/{pt_ids}/status/{st}/find/{key}/count",
+				"/api/supported_people_recommends"
 				).permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().

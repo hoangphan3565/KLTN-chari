@@ -42,6 +42,8 @@ import java.util.List;
 
         @NamedQuery(name = "named.project.findUnVerifiedByCollaboratorId",
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.verified=false ORDER BY p.PRJ_ID desc"),
+        @NamedQuery(name = "named.project.findVerifiedByCollaboratorId",
+                query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.verified=true ORDER BY p.PRJ_ID desc"),
         @NamedQuery(name = "named.project.findUncloseByCollaboratorId",
                 query = "SELECT p FROM Project p where p.collaborator.CLB_ID =: id and p.closed=false ORDER BY p.PRJ_ID desc"),
         @NamedQuery(name = "named.project.findClosedByCollaboratorId",

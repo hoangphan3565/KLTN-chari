@@ -6,7 +6,7 @@ import { NotificationService } from '../../../services/notification.service';
 @Component({
     selector: 'app-dialog-supported-people',
     templateUrl: './dialog-supported-people.component.html',
-    styleUrls: ['./dialog-supported-people.component.css']
+    styleUrls: ['../../../app.component.css']
 
   })
 export class DialogSupportedPeopleComponent implements OnInit {

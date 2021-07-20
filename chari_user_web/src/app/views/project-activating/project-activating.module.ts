@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 import { DialogDonateInfoComponent } from './dialog-donateinfo-project/dialog-donateinfo-project.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { VideoDragDropDirective } from './drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { VideoDragDropDirective } from './drag-drop.directive';
     ProjectActivatingComponent,
     DialogPostComponent,
     DialogDonateInfoComponent,
-    VideoDragDropDirective
+    VideoDragDropDirective,
+    ImageDragDropDirective,
   ]
 })
 export class ProjectActivatingModule { }

@@ -12,7 +12,7 @@ import { ProjectService } from '../../../services/Project.service';
 @Component({
     selector: 'app-dialog-post',
     templateUrl: './dialog-post.component.html',
-    styleUrls: ['./dialog-post.component.css']
+    styleUrls: ['../../../app.component.css']
 })
 export class DialogPostComponent implements OnInit {
 
@@ -21,6 +21,8 @@ export class DialogPostComponent implements OnInit {
   downloadURL: Observable<string>;
   Projects: Project[];
   isUploadingVideo: boolean=false;
+  isUpLoadingImage: boolean;
+  upLoadingIndex: number;
 
   constructor(
     private notificationService: NotificationService,
@@ -33,17 +35,34 @@ export class DialogPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
-    this.imageUrls = this.data.images;
     this.videoUrl = this.data.videoUrl;
+    this.initImageArray();
   }  
 
-  uploadImages(event) {
+  initImageArray(): void {
+    this.imageUrls = this.data.images;
+    let left = this.imageUrls.length;
+    for (let i = 0; i < (6-left); i++) {
+      this.imageUrls.push("");
+    }
+  }
+
+
+  uploadImages(event,i) {
+    this.isUpLoadingImage=true;
+    this.upLoadingIndex=i;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 ảnh');
+      this.isUpLoadingImage=false;
+      this.upLoadingIndex=null;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
-      const filePath = `chari_post_image/${n}`;
+      const filePath = `chari/${n}`;
       const fileRef = this.storage.ref(filePath);
-      const task = this.storage.upload(`chari_post_image/${n}`, file);
+      const task = this.storage.upload(`chari/${n}`, file);
       task
         .snapshotChanges()
         .pipe(
@@ -51,7 +70,9 @@ export class DialogPostComponent implements OnInit {
             this.downloadURL = fileRef.getDownloadURL();
             this.downloadURL.subscribe(url => {
               if (url) {
-                this.imageUrls.push(url);
+                this.imageUrls[i] = url;
+                this.isUpLoadingImage=false;
+                this.upLoadingIndex=null;
               }
             });
           })
@@ -65,6 +86,11 @@ export class DialogPostComponent implements OnInit {
   }  
   uploadVideo(event) {
     this.isUploadingVideo=true;
+    if (event.length > 1) {
+      this.notificationService.warn('Chỉ được chọn 1 video');
+      this.isUploadingVideo=false;
+      return;
+    }
     for (let index = 0; index < event.length; index++) {
       var n = Date.now();
       const file = event[index];
@@ -92,9 +118,8 @@ export class DialogPostComponent implements OnInit {
     }
   }
 
-
-  deleteAttachment(index) {
-    this.imageUrls.splice(index, 1);
+  deleteAttachment(i) {
+    this.imageUrls[i]="";
   }  
   deleteVideo() {
     this.videoUrl=null;
@@ -105,10 +130,20 @@ export class DialogPostComponent implements OnInit {
   }
 
   
-  save(){
+  saveImageAndVideo(){
     this.data.videoUrl=this.videoUrl;
+    while (this.imageUrls.indexOf("", 0)>-1){
+      const index = this.imageUrls.indexOf("", 0);
+      if (index > -1) {
+        this.imageUrls.splice(index, 1);
+      }
+    }
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
+  }
+
+  save(){
+    this.saveImageAndVideo();
     if(this.data.name==''||this.data.content==''||this.data.projectId==null){
       this.notificationService.warn('Hãy điền đầy đủ thông tin')
       return;

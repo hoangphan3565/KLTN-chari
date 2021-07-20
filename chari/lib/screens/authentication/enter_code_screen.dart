@@ -59,16 +59,15 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
 
   @override
   void initState() {
-    super.initState();
     startTimer();
     focusNode.requestFocus();
-
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     setState(() { _current = 0; });
+    super.dispose();
   }
 
   @override

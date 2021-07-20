@@ -24,19 +24,18 @@
 
       
 
-    <label>Tải hình ảnh cho Tin (chỉ hỗ trợ định dạng .jpg , .jpeg và .png)</label>
-    <input hidden type="file" #imageInput onclick="this.value=null" (change)="uploadImages($event.target.files)" multiple="true" accept=".jpg,.jpeg,.png">
-    <button class="btn btn-primary btn-sm" (click)="imageInput.click()">
-        <i class="icon-cloud-upload"></i>
-        <a>Tải lên hình ảnh</a>
-    </button>
     <mat-grid-list cols="3">
-        <mat-grid-tile *ngFor="let imageUrl of imageUrls;let i=index">
-            <div class="container">
-                <img *ngIf="imageUrl" [src]="imageUrl" alt=""/>
-                <button *ngIf="imageUrl" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment(i)">
+        <mat-grid-tile *ngFor="let number of [0,1,2,3,4,5];let i=index">
+            <div *ngIf="!imageUrls[number] && !isUpLoadingImage" class="image-container" (click)="imageInput.click()" imageDragDrop (files)="uploadImages($event,number)">
+                <input hidden type="file" #imageInput (change)="uploadImages($event.target.files,number)" multiple="false" accept=".jpg,.jpeg,.png">
+            </div>
+            <div *ngIf="!imageUrls[number] && isUpLoadingImage && number==upLoadingIndex" class="image-container-loading"></div>
+            <div *ngIf="!imageUrls[number] && isUpLoadingImage && number!=upLoadingIndex" class="image-container"></div>
+            <div *ngIf="imageUrls[number]" class="image-container">
+                <img *ngIf="imageUrls[number]" [src]="imageUrls[number]" alt=""/>
+                <button *ngIf="imageUrls[number]" type="button" class="button btn btn-danger btn-sm" (click)="deleteAttachment(i)">
                     <i class="fa fa-remove"></i>
-                </button>            
+                </button>
             </div>
         </mat-grid-tile>
     </mat-grid-list>

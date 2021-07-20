@@ -8,7 +8,7 @@ import { SupportedPeopleRecommendService } from '../../../services/supported-peo
 @Component({
     selector: 'app-dialog-supported-people-recommend',
     templateUrl: './dialog-supported-people-recommend.component.html',
-    styleUrls: ['./dialog-supported-people-recommend.component.css']
+    styleUrls: ['../../../app.component.css']
 
   })
 export class DialogSupportedPeopleRecommendComponent implements OnInit {

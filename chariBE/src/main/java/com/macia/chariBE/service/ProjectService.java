@@ -199,6 +199,24 @@ public class ProjectService {
     }
 
     // Services for Collaborator(Only show Unclose Project Of them)
+
+    public int countAllProjectOfCollaborator(Integer id) {
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findVerifiedByCollaboratorId", Project.class);
+        query.setParameter("id", id);
+        return query.getResultList().size();
+    }
+
+    public int countTotalMoneyAllProjectOfCollaborator(Integer id) {
+        int money=0;
+        TypedQuery<Project> query = em.createNamedQuery("named.project.findVerifiedByCollaboratorId", Project.class);
+        query.setParameter("id", id);
+        List<Project> ls = query.getResultList();
+        for(Project p:ls){
+            money+=findCurMoneyOfProject(p);
+        }
+        return  money;
+    }
+
     public Integer countAllUnverifiedByCollaboratorId(Integer id) {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findUnVerifiedByCollaboratorId", Project.class);
         query.setParameter("id", id);
@@ -483,6 +501,15 @@ public class ProjectService {
 
 
     // Services for Admin
+    public int countTotalMoney() {
+        int money=0;
+        List<Project> ls = this.findAll();
+        for(Project p:ls){
+            money+=findCurMoneyOfProject(p);
+        }
+        return  money;
+    }
+
     public int countAllWhereActivating(){
         TypedQuery<Project> query = em.createNamedQuery("named.project.findActivating", Project.class);
         return query.getResultList().size();
@@ -738,51 +765,6 @@ public class ProjectService {
         repo.saveAll(ls);
     }
 
-//    public void disburseFund() {
-//        updateAllProjectStatus();
-//        List<ProjectDTO> activatingProject = getAllActivatingProjectDTOs().stream().filter(p->p.getPRJ_ID()!=0).collect(Collectors.toList());
-//        Project fund = findProjectById(0);
-//        int curFund = findCurMoneyOfProject(fund);
-//        int divFund = curFund/activatingProject.size();
-//        Donator chari = donatorService.findByUsername("chari");
-//        if(curFund>0){
-//            List<DonateActivity> listDA = donateActivityService.findByProjectID(0);
-//            NotificationObject no = new NotificationObject();
-//            no.setTitle("Quỹ chung Chari");
-//            int numOfAnotherDonator = listDA.size()-1;
-//            String msg;
-//            if (numOfAnotherDonator == 0) {
-//                msg = "Dự án '"+fund.getProjectName()+"' do bạn tham gia gây quỹ đã được chia đều cho tất cả dự án đang hoạt động";
-//            }else{
-//                msg = "Dự án '"+fund.getProjectName()+"' do bạn và "+listDA.size()+" nhà hảo tâm tham gia gây quỹ đã được chia đều cho tất cả dự án đang hoạt động";
-//            }
-//            no.setMessage(msg);
-//            no.setTopic(ENotificationTopic.FUND);
-//            for(DonateActivity da:listDA){
-//                JwtUser appUser = jwtUserRepository.findByUsername(da.getDonator().getUsername());
-//                Donator donator = da.getDonator();
-//                List<DonateDetails> detailsList =  da.getDonateDetails();
-//                for(DonateDetails dd:detailsList){
-//                    if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
-//                        dd.setStatus(EDonateDetailsStatus.MOVED.toString());
-//                    }
-//                }
-//                if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
-//                    if(appUser.getFcmToken() != null){
-//                        no.setToken(appUser.getFcmToken());
-//                        pushNotificationService.sendMessageToToken(no);
-//                    }
-//                    donatorNotificationService.save(DonatorNotification.builder()
-//                            .topic(no.getTopic()).title(no.getTitle()).message(msg)
-//                            .create_time(LocalDateTime.now()).read(false).handled(false)
-//                            .donator(da.getDonator()).project_id(0).project_image(fund.getImageUrl()).build());
-//                }
-//            }
-//            for(ProjectDTO p:activatingProject){
-//                donateDetailsService.saveDonateDetails(chari.getDNT_ID(),p.getPRJ_ID(),divFund,LocalDateTime.now());
-//            }
-//        }
-//    }
 
     public void disburseFund() {
         updateAllProjectStatus();

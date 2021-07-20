@@ -21,6 +21,12 @@ public class PostController {
     PostService PostService;
 
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProjectByID(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok().body(PostService.getPostDTOById(id));
+    }
+
+
     //Services for admin
     @GetMapping("/count")
     public ResponseEntity<?> countAllPost() {
@@ -57,11 +63,6 @@ public class PostController {
         return ResponseEntity.ok().body(PostService.getPublicPostDTOsPageASizeBByName(name,a-1,b));
     }
 
-
-    @GetMapping("/{id}")
-    public Post getPostById(@PathVariable(value = "id") Integer id) {
-        return PostService.findById(id);
-    }
 
     @PostMapping("/collaborator/{clb_id}")
     public ResponseEntity<?> savePost(@RequestBody PostDTO p,@PathVariable(value = "clb_id") Integer clb_id) {

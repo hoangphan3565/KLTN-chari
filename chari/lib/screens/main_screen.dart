@@ -38,15 +38,15 @@ class _MainScreenState extends State<MainScreen> {
   bool isNewNotification = false;
 
   var projects = new List<Project>();
-  int totalProject;
+  int totalProject=0;
   var project_types = new List<ProjectType>();
   var posts = new List<Post>();
-  int totalPost;
+  int totalPost=0;
   var donate_details_list = new List<DonateDetails>();
-  int totalDonate;
+  int totalDonate=0;
   var push_notification_list = new List<PushNotification>();
   var donator_notification_list = new List<DonatorNotification>();
-  int totalNotification;
+  int totalNotification=0;
   var donator = new Donator(null,null,null,null,null,null,null,null,null);
 
 
@@ -83,11 +83,12 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   initState() {
-    _initFilterElement();
     _checkLogin();
     _countTotalProject();
     _getProjectTypes();
     _countTotalPosts();
+
+    _initFilterElement();
 
     if(this.islogin==true){
       _checkNewNotificationsByDonatorId();
@@ -95,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
       _getPushNotification();
       _checkAndSubscribeNotification();
     }
+
     getDataAfterBuildWidget();
 
     //Gọi API get dữ liệu để Cập nhật những thay đổi của các bài viết sau một khoảng thời gian

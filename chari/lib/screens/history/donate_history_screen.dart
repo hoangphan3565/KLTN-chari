@@ -87,6 +87,14 @@ class _HistoryScreenState extends State<HistoryScreen>{
   }
 
   @override
+  void dispose() {
+    setState(() {
+      _isLoading = false;
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(

@@ -4,6 +4,7 @@ import { Api } from './api.service';
 @Injectable({providedIn: 'root'})
 export class ProjectService {  
   constructor(){ }
+
   public getProjects = ()=> Api.get(Api.url.projects);
   public countVerifiedProjects = () => Api.get(Api.url.projects+'/count');
   public getVerifiedProjects = (a,b) => Api.get(`${Api.url.projects}/page/${a}/size/${b}`);
@@ -24,8 +25,6 @@ export class ProjectService {
   public countOverdueProjects = () => Api.get(Api.url.projects+'/overdue/count');
   public getOverdueProjects = (a,b) => Api.get(`${Api.url.projects}/overdue/page/${a}/size/${b}`);
  
-
- 
   public updateMoveMoneyProgress = () => Api.put(`${Api.url.projects}/handle_all_money`);
   public updateProjectStatus = () => Api.get(Api.url.projects+'/update_donate_status');
 
@@ -36,6 +35,9 @@ export class ProjectService {
   public approveProject = id => Api.put(`${Api.url.projects}/approve/${id}`);
   public closeProject = (id) => Api.put(`${Api.url.projects}/close/${id}`);
   public extendProject = (id,nod) => Api.put(`${Api.url.projects}/extend/${id}/num_of_date/${nod}`);
+
+
+  public countTotalMoney = () => Api.get(Api.url.projects+'/count_money');
 
 }
 

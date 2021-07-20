@@ -16,7 +16,7 @@ import { City } from '../../../models/City';
 @Component({
     selector: 'app-dialog-project',
     templateUrl: './dialog-project.component.html',
-    styleUrls: ['./dialog-project.component.css']
+    styleUrls: ['../../../app.component.css']
 })
 export class DialogProjectComponent implements OnInit {
 
@@ -158,7 +158,7 @@ export class DialogProjectComponent implements OnInit {
     return this.ProjectTypes.filter(x => x.canDisburseWhenOverdue == this.canDisburseWhenOverdue);
   }
   
-  save(){
+  saveImageAndVideo(){
     this.data.videoUrl=this.videoUrl;
     while (this.imageUrls.indexOf("", 0)>-1){
       const index = this.imageUrls.indexOf("", 0);
@@ -168,6 +168,21 @@ export class DialogProjectComponent implements OnInit {
     }
     this.data.imageUrl=this.imageUrls[0];
     this.data.images=this.imageUrls;
-    this.dialogRef.close(this.data);
+  }
+
+  save(){
+    this.saveImageAndVideo();
+    if(this.data.projectName==''||this.data.briefDescription==''||this.data.description==''||this.data.cti_ID==null||this.data.startDate==''||this.data.endDate==''||this.data.targetMoney==''||this.data.prt_ID==null||this.data.stp_ID==null){
+      this.notificationService.warn('Hãy điền và chọn đầy đủ thông tin')
+      return;
+    }else if(this.data.description.length<300){
+      this.notificationService.warn('Hãy điền nội dung dự án tối thiểu 100 từ')
+      return;
+    }else if(this.data.imageUrl==null){
+      this.notificationService.warn('Hãy tải lên ít nhất 1 hình ảnh cho tin tức')
+      return;
+    }else{
+      this.dialogRef.close(this.data);
+    }
   }
 }

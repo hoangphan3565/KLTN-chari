@@ -384,13 +384,47 @@ export class DashboardComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  totalActivatingProject: number;
+  totalUnverifyProject: number;
+  totalReachedProject: number;
+  totalInMoney: number;
+
   ngOnInit(): void {
-    this.projectService.updateProjectStatus();
-    // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
       this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
+    this.projectService.updateProjectStatus();
+
+    this.getTotalActivatingProject();
+    this.getTotalReachedProject();
+    this.getTotalUnverifyProject();
+    this.getTotalInMoney();
   }
+
+  public async getTotalActivatingProject(){
+    this.totalActivatingProject = await (await this.projectService.countActivatingProjects()).data;
+  }  
+  
+  public async getTotalUnverifyProject(){
+    this.totalUnverifyProject = await (await this.projectService.countUnverifiedProjects()).data;
+  }
+
+  public async getTotalReachedProject(){
+    this.totalReachedProject = await (await this.projectService.countReachedProjects()).data;
+  }    
+  
+  public async getTotalInMoney(){
+    this.totalInMoney = await (await this.projectService.countTotalMoney()).data;
+  }  
+  
+
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  
 }
+
+
+

@@ -78,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
       child: Stack(
         children: [
           Positioned(
@@ -102,70 +102,62 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   color: Colors.grey[300],
                   margin: EdgeInsets.symmetric(horizontal: 0),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    children: [
-                      TextFieldContainer(
-                        child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
-                            style: TextStyle(
-                              color: kPrimaryHighLightColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                            )),
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Mật khẩu hiện tại",
-                        focusNode: focusNode,
-                        icon: FontAwesomeIcons.unlock,
-                        obscureText: notSeePassword,
-                        controller: _curPasswordField,
-                        showClearIcon: havePass,
-                        onTapClearIcon: ()=>{_curPasswordField.clear(),setState(() {havePass=false;})},
-                        switchObscureTextMode: ()=>{
-                          notSeePassword==true?setState((){notSeePassword=false;}):setState((){notSeePassword=true;})
-                        },
-                        onChanged: (value) {
-                          value!=''?setState(() {havePass=true;}):setState(() {havePass=false;});
-                        },
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Mật khẩu mới",
-                        icon: FontAwesomeIcons.lockOpen,
-                        obscureText: notSeePassword1,
-                        controller: _newPasswordField,
-                        showClearIcon: havePass1,
-                        onTapClearIcon: ()=>{_newPasswordField.clear(),setState(() {havePass1=false;})},
-                        switchObscureTextMode: ()=>{
-                          notSeePassword1==true?setState((){notSeePassword1=false;}):setState((){notSeePassword1=true;})
-                        },
-                        onChanged: (value) {
-                          value!=''?setState(() {havePass1=true;}):setState(() {havePass1=false;});
-                        },
-                      ),
-                      RoundedPasswordField(
-                        hintText: "Nhập lại mật khẩu mới",
-                        icon: FontAwesomeIcons.lock,
-                        obscureText: notSeePassword2,
-                        controller: _reWritePasswordField,
-                        onTapClearIcon: ()=>{_reWritePasswordField.clear(), setState(() {havePass2=false;}),},
-                        showClearIcon: havePass2,
-                        switchObscureTextMode: ()=>{
-                          notSeePassword2==true?setState((){notSeePassword2=false;}):setState((){notSeePassword2=true;})
-                        },
-                        onChanged: (value) {
-                          value!=''?setState(() {havePass2=true;}):setState(() {havePass2=false;});
-                        }
-                      ),
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: ()=>{
-                          _changePassword(widget.username,widget.password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
-                        },
-                      ),
-                    ],
-                  ),
+                TextFieldContainer(
+                  child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
+                      style: TextStyle(
+                        color: kPrimaryHighLightColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      )),
+                ),
+                RoundedPasswordField(
+                  hintText: "Mật khẩu hiện tại",
+                  focusNode: focusNode,
+                  icon: FontAwesomeIcons.unlock,
+                  obscureText: notSeePassword,
+                  controller: _curPasswordField,
+                  showClearIcon: havePass,
+                  onTapClearIcon: ()=>{_curPasswordField.clear(),setState(() {havePass=false;})},
+                  switchObscureTextMode: ()=>{
+                    notSeePassword==true?setState((){notSeePassword=false;}):setState((){notSeePassword=true;})
+                  },
+                  onChanged: (value) {
+                    value!=''?setState(() {havePass=true;}):setState(() {havePass=false;});
+                  },
+                ),
+                RoundedPasswordField(
+                  hintText: "Mật khẩu mới",
+                  icon: FontAwesomeIcons.lockOpen,
+                  obscureText: notSeePassword1,
+                  controller: _newPasswordField,
+                  showClearIcon: havePass1,
+                  onTapClearIcon: ()=>{_newPasswordField.clear(),setState(() {havePass1=false;})},
+                  switchObscureTextMode: ()=>{
+                    notSeePassword1==true?setState((){notSeePassword1=false;}):setState((){notSeePassword1=true;})
+                  },
+                  onChanged: (value) {
+                    value!=''?setState(() {havePass1=true;}):setState(() {havePass1=false;});
+                  },
+                ),
+                RoundedPasswordField(
+                    hintText: "Nhập lại mật khẩu mới",
+                    icon: FontAwesomeIcons.lock,
+                    obscureText: notSeePassword2,
+                    controller: _reWritePasswordField,
+                    onTapClearIcon: ()=>{_reWritePasswordField.clear(), setState(() {havePass2=false;}),},
+                    showClearIcon: havePass2,
+                    switchObscureTextMode: ()=>{
+                      notSeePassword2==true?setState((){notSeePassword2=false;}):setState((){notSeePassword2=true;})
+                    },
+                    onChanged: (value) {
+                      value!=''?setState(() {havePass2=true;}):setState(() {havePass2=false;});
+                    }
+                ),
+                RoundedButton(
+                  text: "Xác nhận",
+                  press: ()=>{
+                    _changePassword(widget.username,widget.password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
+                  },
                 ),
               ],
             ),

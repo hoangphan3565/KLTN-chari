@@ -73,7 +73,7 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+      padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
       child: Stack(
         children: [
           Positioned(
@@ -98,45 +98,40 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 0),
                 ),
                 SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    children: [
-                      RoundedInputField(
-                        icon: Icons.person,
-                        focusNode: focusNode,
-                        hintText: 'Họ và tên',
-                        keyboardType: TextInputType.name,
-                        controller: _fullnameField,
-                        showClearIcon: haveFullName,
-                        onTapClearIcon: ()=>{_fullnameField.clear(),setState(() {haveFullName=false;})},
-                        onChanged: (value) {
-                          value!=''?setState(() {haveFullName=true;}):setState(() {haveFullName=false;});
-                        },
-                      ),
-                      RoundedInputField(
-                        icon: FontAwesomeIcons.addressCard,
-                        hintText: 'Địa chỉ',
-                        keyboardType: TextInputType.streetAddress,
-                        controller: _addressField,
-                        showClearIcon: haveAddress,
-                        onTapClearIcon: ()=>{_addressField.clear(),setState(() {haveAddress=false;})},
-                        onChanged: (value) {
-                          value!=''?setState(() {haveAddress=true;}):setState(() {haveAddress=false;});
-                        },
-                      ),
+                Column(
+                  children: [
+                    RoundedInputField(
+                      icon: Icons.person,
+                      focusNode: focusNode,
+                      hintText: 'Họ và tên',
+                      keyboardType: TextInputType.name,
+                      controller: _fullnameField,
+                      showClearIcon: haveFullName,
+                      onTapClearIcon: ()=>{_fullnameField.clear(),setState(() {haveFullName=false;})},
+                      onChanged: (value) {
+                        value!=''?setState(() {haveFullName=true;}):setState(() {haveFullName=false;});
+                      },
+                    ),
+                    RoundedInputField(
+                      icon: FontAwesomeIcons.addressCard,
+                      hintText: 'Địa chỉ',
+                      keyboardType: TextInputType.streetAddress,
+                      controller: _addressField,
+                      showClearIcon: haveAddress,
+                      onTapClearIcon: ()=>{_addressField.clear(),setState(() {haveAddress=false;})},
+                      onChanged: (value) {
+                        value!=''?setState(() {haveAddress=true;}):setState(() {haveAddress=false;});
+                      },
+                    ),
 
-                      RoundedButton(
-                        text: "Xác nhận",
-                        press: (){
-                          _updateInformation(widget.donator.id,_fullnameField.text,_addressField.text);
-                        },
-                      ),
-                    ],
-                  ),
+                    RoundedButton(
+                      text: "Xác nhận",
+                      press: (){
+                        _updateInformation(widget.donator.id,_fullnameField.text,_addressField.text);
+                      },
+                    ),
+                  ],
                 ),
-
               ],
             ),
           ),

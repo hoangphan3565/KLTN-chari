@@ -10,6 +10,7 @@ import 'package:chari/widgets/widgets.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -18,7 +19,7 @@ import 'package:video_player/video_player.dart';
 
 
 class ProjectDetailsScreen extends StatefulWidget {
-  // static const routeName = '/project_details';
+  static const routeName = '/project_detail';
   int project_id;
   Donator donator;
   ProjectDetailsScreen({this.project_id,this.donator});
@@ -28,12 +29,13 @@ class ProjectDetailsScreen extends StatefulWidget {
 }
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
+  final String fbAppId = "1111520262657862";
   final dataKey = new GlobalKey();
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
 
   bool _isLoading=true;
-  var project;
+  Project project;
 
   List<String> listProjectIdFavorite = new List<String>();
 
@@ -67,9 +69,13 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   @override
   void dispose() {
+    setState(() {
+      _isLoading = false;
+      this._videoPlayerController.dispose();
+    });
     super.dispose();
-    this._videoPlayerController.dispose();
   }
+
 
   _getDonation() {
     DonateDetailsService.getDonateDetailsByProjectId(widget.project_id).then((response) {
@@ -183,8 +189,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             child: Container(
               margin: EdgeInsets.only(top: 0),
               decoration: BoxDecoration(
-                  // color: Colors.grey.withOpacity(0.2),
-                  color: Colors.white,
+                  color: _isLoading? Colors.white:Colors.grey.withOpacity(0.2),
                   borderRadius:
                   BorderRadius.vertical(top: Radius.circular(0))),
               child: SingleChildScrollView(
@@ -222,62 +227,53 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       floatingActionButton: Row(
         children: [
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          Container(
+          _isLoading? ActionButton(
             height: 45,
+            fontSize: 18,
             width: MediaQuery.of(context).size.width * 0.6,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4), color: kPrimaryColor),
-            child:_isLoading?null:(project.status=='ACTIVATING')?
-            FlatButton(
-              onPressed:()=> {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-                ),
-              },
-              child: Text(
-                "Quyên góp ngay",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
               ),
-            )
-                :
-            FlatButton(
-              onPressed:()=> {
-                Navigator.of(context).pop()
-              },
-              child: Text(
-                "Quay lại",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+            },
+            buttonText: 'Quyên góp ngay',
+            buttonColor: kPrimaryHighLightColor,
+            textColor: Colors.white,
+          ):
+          (project.status=='ACTIVATING')?
+          ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.6,
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
               ),
-            )
+            },
+            buttonText: 'Quyên góp ngay',
+            buttonColor: kPrimaryHighLightColor,
+            textColor: Colors.white,
+          ):
+          ActionButton(
+            height: 45,
+            fontSize: 18,
+            width: MediaQuery.of(context).size.width * 0.6,
+            onPressed: () => {
+              Navigator.of(context).pop()
+            },
+            buttonText: 'Quay lại',
+            // buttonColor: kPrimaryHighLightColor,
+            // textColor: Colors.white,
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          Container(
+          ActionButton(
             height: 45,
+            fontSize: 18,
             width: MediaQuery.of(context).size.width * 0.34,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4), color: kPrimaryColor),
-            child: FlatButton(
-              onPressed:()=> {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-                ),
-              },
-              child: Text(
-                "Chia sẻ",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            )
+            onPressed: () => { share() },
+            buttonText: 'Chia sẻ',
           ),
         ],
       ),
@@ -847,72 +843,44 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
         ),
         builder: (BuildContext context){
-          return Stack(
-            children: [
-              Positioned(
-                right: size.width*0.42,top:-22,
-                child: Icon(Icons.horizontal_rule_rounded,size: 60,color: Colors.black38,),
-              ),
-              SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 24),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Bình luận",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryHighLightColor,
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(right: 0, left: 0, top: 0, bottom: 0),
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    children: [
+                      if(widget.donator==null)
+                        RoundedInputField(
+                          icon: Icons.person,
+                          hintText: 'Tên',
+                          focusNode: focusNodeName,
+                          keyboardType: TextInputType.name,
+                          controller: _nameField,
+                          onTapClearIcon: ()=>{_nameField.clear()},
+                          onChanged: (value) {},
                         ),
-                      ),
-                      SizedBox(height: 12),
-                      Container(
-                        height: 1.5,
-                        color: Colors.grey[300],
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                      ),
-                      SizedBox(height: 5),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: Column(
-                          children: [
-                            if(widget.donator==null)
-                              RoundedInputField(
-                                icon: Icons.person,
-                                hintText: 'Tên',
-                                focusNode: focusNodeName,
-                                keyboardType: TextInputType.name,
-                                controller: _nameField,
-                                onTapClearIcon: ()=>{_nameField.clear()},
-                                onChanged: (value) {},
-                              ),
-                            RoundedInputField(
-                              icon: Icons.chat_outlined,
-                              hintText: 'Nội dung',
-                              focusNode: focusNodeContent,
-                              keyboardType: TextInputType.name,
-                              controller: _contentField,
-                              onTapClearIcon: ()=>{_contentField.clear()},
-                              onChanged: (value) {},
-                              onSubmitted: (value)=>{
-                                _sendComment(_nameField.text,_contentField.text,context)
-                              },
-                            ),
-                            RoundedButton(
-                              text: "Gửi",
-                              press: (){
-                                _sendComment(_nameField.text,_contentField.text,context);
-                              },
-                            ),
-                          ],
-                        ),
+                      RoundedInputField(
+                        icon: Icons.chat_outlined,
+                        hintText: 'Nội dung',
+                        focusNode: focusNodeContent,
+                        keyboardType: TextInputType.name,
+                        controller: _contentField,
+                        showClearIcon: true,
+                        clearIcon: Icons.send_rounded,
+                        onTapClearIcon: ()=>{
+                          _sendComment(_nameField.text,_contentField.text,context)
+                        },
+                        onChanged: (value) {},
+                        onSubmitted: (value)=>{
+                          _sendComment(_nameField.text,_contentField.text,context)
+                        },
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           );
         }
     );
@@ -1030,6 +998,12 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-
-
+  Future<void> share() async{
+    await FlutterShare.share(
+        title: project.project_name,
+        text: project.project_name,
+        linkUrl: project.image_url,
+        chooserTitle: "Hãy chọn phương thức chia sẻ"
+    );
+  }
 }

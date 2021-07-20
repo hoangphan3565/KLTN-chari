@@ -12,11 +12,13 @@ import { environment } from '../../../environments/environment';
 import { DialogPostComponent } from './dialog-post/dialog-post.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { VideoDragDropDirective } from './drag-drop.directive';
+import { VideoDragDropDirective } from './video-drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
+
 
 @NgModule({
   imports: [
-    CommonModule,
+   CommonModule,
     PostRoutingModule,
     MatDialogModule,
     PaginationModule.forRoot(),
@@ -25,12 +27,12 @@ import { VideoDragDropDirective } from './drag-drop.directive';
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"),
     TooltipModule.forRoot(),
-
   ],
   declarations: [ 
     PostComponent,
     DialogPostComponent,
-    VideoDragDropDirective
+    VideoDragDropDirective,
+    ImageDragDropDirective,
   ]
 })
 export class ProjectPostModule { }

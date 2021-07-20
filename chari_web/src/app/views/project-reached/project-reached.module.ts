@@ -12,7 +12,9 @@ import { environment } from '../../../environments/environment';
 import { DialogPostReachedComponent } from './dialog-post/dialog-post.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { VideoDragDropDirective } from '../post/drag-drop.directive';
+import { ImageDragDropDirective } from './image-drag-drop.directive';
+import { VideoDragDropDirective } from './video-drag-drop.directive';
+
 
 @NgModule({
   imports: [
@@ -29,7 +31,8 @@ import { VideoDragDropDirective } from '../post/drag-drop.directive';
     ProjectReachedComponent,
     DialogDisburseProjectComponent,
     DialogPostReachedComponent,
-    VideoDragDropDirective
+    ImageDragDropDirective,
+    VideoDragDropDirective,
   ]
 })
 export class ProjectReachedModule { }

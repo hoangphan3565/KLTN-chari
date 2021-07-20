@@ -4,7 +4,7 @@ import { Project } from '../../../models/Project';
 
 @Component({
     templateUrl: './dialog-donateinfo-project.component.html',
-    styleUrls: ['./dialog-donateinfo-project.component.css']
+    styleUrls: ['../../../app.component.css']
   })
 export class DialogDonateInfoComponent implements OnInit {
   disburseCode: string;

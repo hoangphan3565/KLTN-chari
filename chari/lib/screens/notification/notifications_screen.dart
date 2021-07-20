@@ -115,6 +115,14 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
   }
 
   @override
+  void dispose() {
+    setState(() {
+      _isLoading = false;
+    });
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _getNotification();
@@ -300,7 +308,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
         ),
         builder: (BuildContext context){
           return Container(
-            padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+            padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
             child: Stack(
               children: [
                 Positioned(
@@ -401,7 +409,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>{
           return Wrap(
             children: [
               Container(
-                padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 24),
+                padding: EdgeInsets.only(right: 24, left: 24, top: 12, bottom: 0),
                 child: Stack(
                   children: [
                     Positioned(

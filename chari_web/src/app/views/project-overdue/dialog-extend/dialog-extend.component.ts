@@ -5,7 +5,7 @@ import { NotificationService } from '../../../services/notification.service';
 @Component({
     selector: 'app-dialog-extend',
     templateUrl: './dialog-extend.component.html',
-    styleUrls: ['./dialog-extend.component.css']
+    styleUrls: ['../../../app.component.css']
 })
 export class DialogExtendComponent implements OnInit {
   constructor(

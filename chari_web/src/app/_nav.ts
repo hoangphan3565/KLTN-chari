@@ -54,16 +54,6 @@ export const navItems: INavData[] = [
     icon: 'icon-star',
   },
   {
-    name: 'Gói từ thiện',
-    url: '/project-type',
-    icon: 'icon-book-open',
-  },
-  {
-    name: 'Nhà hảo tâm',
-    url: '/donator',
-    icon: 'icon-heart'
-  },
-  {
     name: 'Người thụ hưởng',
     url: '/supported-people',
     icon: 'icon-star',
@@ -72,6 +62,16 @@ export const navItems: INavData[] = [
     name: 'Cộng tác viên',
     url: '/collaborator',
     icon: 'icon-people'
+  },
+  {
+    name: 'Nhà hảo tâm',
+    url: '/donator',
+    icon: 'icon-heart'
+  },
+  {
+    name: 'Gói từ thiện',
+    url: '/project-type',
+    icon: 'icon-book-open',
   },
   {
     name: 'Thông báo đẩy',
