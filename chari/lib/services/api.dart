@@ -1,10 +1,5 @@
-//local ip và port server đang deploy
-// const baseUrl = 'http://192.168.43.202:8080/api';
 
-// const baseUrl = 'http://10.0.2.2:8080/api';
-
-const baseUrl = 'https://1ac784221d9f.ngrok.io/api';
-
+var baseUrl = 'http://192.168.43.202:8080/api';
 
 const login = '/login';
 const login_facebook = '/login_facebook';
@@ -24,7 +19,12 @@ const feedbacks='/feedbacks';
 const supported_people_recommends = '/supported_people_recommends';
 
 const header = {'Content-Type': 'application/json; charset=UTF-8',};
+
 getHeaderJWT(token) {
   return {'Content-Type': 'application/json; charset=UTF-8','Accept': 'application/json','Authorization': 'Bearer $token',};
+}
+
+setBaseUrl(String newBaseUrl) {
+  baseUrl=newBaseUrl;
 }
 

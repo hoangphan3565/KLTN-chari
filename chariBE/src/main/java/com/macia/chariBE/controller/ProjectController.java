@@ -6,6 +6,7 @@ import com.macia.chariBE.repository.IPushNotificationRepository;
 import com.macia.chariBE.service.*;
 import com.macia.chariBE.utility.ENotificationTopic;
 import com.macia.chariBE.utility.EProjectStatus;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -239,8 +240,11 @@ public class ProjectController {
 
     @GetMapping("/disburse_fund")
     public ResponseEntity<?> disburseFund() {
+        JSONObject jso = new JSONObject();
+        jso.put("errorCode",0);
+        jso.put("message","Đã chia quỹ chung tới tất cả dự án đang hoạt động");
         projectService.disburseFund();
-        return ResponseEntity.ok().body("Đã chia quỹ chung tới tất cả dự án đang hoạt động");
+        return ResponseEntity.ok().body(jso);
     }
 
 }

@@ -253,6 +253,26 @@ export class ProjectActivatingComponent implements OnInit {
     catch (e) {
       this.notificationService.warn('Cập nhật thất bại');
     }
+  };  
+  
+  public disburseFund = async () => {
+    try 
+    {
+      const res = await (await this.projectService.disburseFund()).data;
+      if (res)
+      {
+        this.notificationService.success(res.message);
+        this.getList(this.currentPage,this.itemsPerPage);
+      }    
+    }
+    catch (e) {
+      this.notificationService.warn('Đã có lỗi xảy ra');
+    }
   };
   
+  async updateMoveMoneyProgress(){
+    await this.projectService.updateMoveMoneyProgress();
+    this.getList(this.currentPage,this.itemsPerPage); 
+  };
+
 }

@@ -251,7 +251,7 @@ values(18,'2021-05-28 20:50:40.075187','G10007','Xây dựng tủ sách cho họ
 '       Do đó Chari muốn thay mặt các nhà hảo tâm đóng góp một phần nhỏ vào việc xây dựng tủ sách cho các em học sinh nghèo vùng cao để năm học sắp tới các em có đầy đủ sách giáo khoa mới, và những cuốn sách thuộc nhiều lĩnh vực khác giúp các em thỏa thích tìm hiểu và đọc sách.',
 '2020-9-30','2021-11-30',1000000,
 'https://ktktlaocai.edu.vn/wp-content/uploads/2019/10/tre-em-vung-cao-kho-khan-1.jpg',
-'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project007.mp4?alt=media&token=e22d6351-404d-4f7f-947d-9e580e776030',1,1,1);
+'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
 insert into project(cti_id,update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
 values(39,'2021-05-19 20:50:40.075187','G10008','Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)',true,false,true,

@@ -290,6 +290,16 @@ class _LoginScreenState extends State<LoginScreen>{
             letterSpacing: -1.2,
           ),
         ),
+        actions: [
+          IconButton(
+              splashRadius: size.height * 0.03,
+              icon: Icon(
+                Icons.more_vert_rounded,
+                color: Colors.white,
+              ),
+              onPressed: (){_setBaseUrl();}
+          ),
+        ],
       ),
         body: Background(
           child: SingleChildScrollView(
@@ -415,6 +425,52 @@ class _LoginScreenState extends State<LoginScreen>{
             ),
           ),
         ),
+    );
+  }
+
+  void _setBaseUrl() {
+    TextEditingController text = TextEditingController();
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        builder: (BuildContext context){
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(right: 0, left: 0, top: 0, bottom: 0),
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    children: [
+                      RoundedInputField(
+                        icon: Icons.star_border_rounded,
+                        hintText: 'Base Url',
+                        keyboardType: TextInputType.name,
+                        showClearIcon: true,
+                        controller: text,
+                        clearIcon: Icons.send_rounded,
+                        onTapClearIcon: ()=>{
+                          setBaseUrl(text.text),
+                          Navigator.pop(context),
+                        },
+                        onChanged: (value) {},
+                        onSubmitted: (value)=>{
+                          setBaseUrl(text.text),
+                          Navigator.pop(context),
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 }

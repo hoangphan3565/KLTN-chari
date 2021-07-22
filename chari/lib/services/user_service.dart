@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserService{
   static signin(String username,String password) {
-    var url = baseUrl+login;
+    var url = "$baseUrl$login";
     final body = jsonEncode(<String, String>{
       "username":username,
       "password":password,
@@ -15,7 +15,7 @@ class UserService{
     return http.post(url,headers:header,body: body);
   }
   static loginFB(String name,String id,String avatar) {
-    String url = baseUrl+login_facebook;
+    String url = "$baseUrl$login_facebook";
     final body = jsonEncode(<String, String>{
       "name":name,
       "id":id,
@@ -26,7 +26,7 @@ class UserService{
   }
 
   static signup(String username,String password1,String password2) {
-    String url = baseUrl+register;
+    String url = "$baseUrl$register";
     final body = jsonEncode(<String, String>{
       "username":username,
       "password1":password1,
@@ -42,7 +42,7 @@ class UserService{
   }
 
   static saveUser(String username) {
-    String url = baseUrl+save_user;
+    String url = "$baseUrl$save_user";
     final body = jsonEncode(<String, String>{
       "username":username,
       "usertype":"Donator"

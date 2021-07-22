@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col">
           <h3 class="card-title">
-            <small class="text-muted"> danh sách </small> Dự án đang hoạt động
+             Dự án đang hoạt động
           </h3>
         </div>
         <div class="col-auto">
@@ -16,6 +16,10 @@
           <button class="btn btn-primary" (click)="excelInput.click()" tooltip="Tải lên file sao kê chứa nội dung quyên góp để cập nhật tiến độ của các dự án">
             <i class="icon-cloud-upload"></i>
             <a>Cập nhật tiến độ quyên góp</a>
+          </button>
+          <button type="button" class="btn btn-html5" (click)="disburseFund()" tooltip="Tiền từ quỹ chung sẽ được chia đều đến tất cả dự án đang hoạt động còn lại">
+            <i class="fa fa-heart-o"></i>
+            <a>Chia đều quỹ chung</a>
           </button>
           <button type="button" class="btn btn-facebook" (click)="openAddProjectDialog()" tooltip="Thêm mới một dự án, dự án sẽ được hiện lên ứng dụng di động ngay lập tức">
             <i class="fa fa-plus"></i>
@@ -46,8 +50,20 @@
           <td style="text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
           <td style="text-align: right">{{numberWithCommas(data.curMoney)}}</td>
           <td style="text-align: right">{{data.achieved}}</td>
-          <td style="text-align: right">{{data.remainingTerm}}</td>   
-          <td style="text-align: right">
+          <td *ngIf="data.prj_ID!=0" style="text-align: right">{{data.remainingTerm}}</td>   
+          <td *ngIf="data.prj_ID==0" style="text-align: right">Vô thời hạn</td>   
+          <td *ngIf="data.prj_ID!=0" style="text-align: right">
+            <button type="button" class="btn btn-info btn-sm" (click)="openEditProjectDialog(data)" tooltip="Cập nhật thông tin dự án">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-stack-overflow btn-sm" (click)="clearData(data);openDialog()" tooltip="Đăng tin tức">
+              <i class="fa fa-plus-square"></i>
+            </button>
+          </td>
+          <td *ngIf="data.prj_ID==0" style="text-align: right">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="updateMoveMoneyProgress()" tooltip="Cập nhật tiến độ xử lý">
+              <i class="icon-refresh"></i>
+            </button>
             <button type="button" class="btn btn-info btn-sm" (click)="openEditProjectDialog(data)" tooltip="Cập nhật thông tin dự án">
               <i class="fa fa-pencil"></i>
             </button>

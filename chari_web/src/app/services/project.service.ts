@@ -38,6 +38,7 @@ export class ProjectService {
 
 
   public countTotalMoney = () => Api.get(Api.url.projects+'/count_money');
+  public disburseFund = () => Api.get(Api.url.projects+'/disburse_fund');
 
 }
 
