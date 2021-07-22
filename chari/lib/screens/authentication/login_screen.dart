@@ -429,6 +429,8 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
   void _setBaseUrl() {
+    var focusNode = FocusNode();
+    focusNode.requestFocus();
     TextEditingController text = TextEditingController();
     showModalBottomSheet(
         context: context,
@@ -451,6 +453,7 @@ class _LoginScreenState extends State<LoginScreen>{
                         icon: Icons.star_border_rounded,
                         hintText: 'Base Url',
                         keyboardType: TextInputType.name,
+                        focusNode: focusNode,
                         showClearIcon: true,
                         controller: text,
                         clearIcon: Icons.send_rounded,

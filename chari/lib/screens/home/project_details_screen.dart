@@ -999,7 +999,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     await FlutterShare.share(
         title: project.project_name,
         text: project.project_name,
-        linkUrl: "https://hoangphan3565.github.io/#/project_detail?id="+project.prj_id.toString(),
+        linkUrl: "https://chariweb.github.io/#/project_detail?id="+project.prj_id.toString(),
         chooserTitle: "Hãy chọn phương thức chia sẻ"
     );
   }
