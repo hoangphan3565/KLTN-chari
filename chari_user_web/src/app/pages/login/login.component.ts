@@ -29,7 +29,7 @@ export class LoginComponent{
           if(res.data.usertype=="Collaborator"&&res.data.status=='ACTIVATED'){
             this.notificationService.warn('Đăng nhập thành công');
             Cookies.set("loginInfo",JSON.stringify(res),{expires: 1});
-            window.location.href="/dashboard";
+            window.location.href="/#/dashboard";
           }else{
             this.notificationService.warn('Đăng nhập thất bại! Tài khoản đã bị khoá');
           }

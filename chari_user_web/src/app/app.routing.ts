@@ -12,7 +12,7 @@ import Cookies from 'js-cookie'
 import { RegisterComponent } from './pages/register/register.component';
 import { LandingComponent } from './pages/landing/landing.component';
 
-const loginInfoStr = Cookies.get("loginInfo");
+const loginInfoStr = Cookies.get("loginInfo")==null?'':Cookies.get("loginInfo");
 export const routes: Routes = [
   {
     path: '',

@@ -9,7 +9,7 @@ import { P404Component } from './pages/error/404.component';
 import { P500Component } from './pages/error/500.component';
 import { LoginComponent } from './pages/login/login.component';
 
-const islogged = Cookies.get("loginInfo");
+const islogged = Cookies.get("loginInfo")==null?'':Cookies.get("loginInfo");
 export const routes: Routes = [
   {
     path: '',

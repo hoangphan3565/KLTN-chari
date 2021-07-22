@@ -5,6 +5,7 @@ import axios from "axios";
 
 const url = {
     baseUrl: "http://localhost:8080/api",
+    // baseUrl: "https://fac3d1fd1f8d.ngrok.io/api",
     
     projects: '/projects',
     posts:'/posts',

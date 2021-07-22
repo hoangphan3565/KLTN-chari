@@ -94,7 +94,7 @@ export class ProjectOverdueComponent implements OnInit {
   openDisburseDialog(data): void {
     const dialogRef = this.dialog.open(DialogDisburseProjectComponent, {
       width: '250px',
-      data: data
+      data: data as Project
     })
   }
 

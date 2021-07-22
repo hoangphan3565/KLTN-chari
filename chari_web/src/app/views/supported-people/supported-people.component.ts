@@ -148,6 +148,7 @@ export class SupportedPeopleComponent implements OnInit {
       videoUrl:'',
       startDate:'',
       endDate:'',
+      curMoney:'',
       targetMoney:'',
       canDisburseWhenOverdue:true,
       prt_ID:null,
