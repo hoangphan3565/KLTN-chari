@@ -30,7 +30,7 @@ export class LoginComponent{
           if(res.data.usertype=="Admin"){
             this.notificationService.warn('Đăng nhập thành công');
             Cookies.set("loginInfo",JSON.stringify(res),{expires: 1});
-            window.location.href="/#/dashboard";
+            window.location.href="/";
           }else{
             this.notificationService.warn('Đăng nhập thất bại');
           }

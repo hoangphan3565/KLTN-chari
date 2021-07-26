@@ -11,8 +11,8 @@ class LabeledRadio extends StatelessWidget {
 
   final String label;
   final EdgeInsets padding;
-  final bool groupValue;
-  final bool value;
+  final dynamic groupValue;
+  final dynamic value;
   final Function onChanged;
 
   @override
@@ -27,10 +27,10 @@ class LabeledRadio extends StatelessWidget {
         padding: padding,
         child: Row(
           children: <Widget>[
-            Radio<bool>(
+            Radio(
               groupValue: groupValue,
               value: value,
-              onChanged: (bool newValue) {
+              onChanged: (dynamic newValue) {
                 onChanged(newValue);
               },
             ),

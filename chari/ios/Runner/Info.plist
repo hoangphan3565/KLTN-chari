@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -33,6 +34,7 @@
 			<array>
 				<string>com.googleusercontent.apps.956788874265-c5fk30su04kb8keor36skbjr7c38vff5</string>
 				<string>fb1111520262657862</string>
+				<string>momo</string>
 			</array>
 		</dict>
 	</array>
