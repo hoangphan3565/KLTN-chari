@@ -55,6 +55,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
 
   _showChangeInformationDialog(BuildContext context) {
+    // hàm có dạng là Future và trả về một đối tượng string
+    // Future có nghĩa là xảy ra trong tương lai và ta có thể chờ kết quả trả về
     Future<String> future = showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -68,10 +70,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
           return UpdateInfoScreen(donator: widget.donator);
         }
     );
+    //khi dialog đóng thì tiến hành gọi hàm _closeUpdateInfoModal và truyền vào value để kiểm tra có nên setState hay không
+    //nếu dialog này không thực hiện cập nhật thì value sẽ rỗng
+    //còn nếu user có cập nhật và bấm nút 'Xác nhận' ở dialog thì lúc pop context trả về kèm value 'updated'
     future.then((String value) => _closeUpdateInfoModal(value));
   }
   _closeUpdateInfoModal(String value) async {
     SharedPreferences p = await SharedPreferences.getInstance();
+    //Nếu có thực hiện cập nhật thì mới setState tên và địa chỉ
     if(value=='updated'){
       setState(() {
         fullname = p.getString('donator_full_name');
@@ -97,7 +103,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         }
     );
   }
-  _showSendRecommedSupportedPeople(BuildContext context) {
+  _showSendRecommendSupportedPeople(BuildContext context) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -114,14 +120,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
   }
 
   _showChangePasswordDialog(String username,String password,BuildContext context) {
-    //Stateless example
-
-    // TextEditingController _curPasswordField = TextEditingController();
-    // TextEditingController _newPasswordField = TextEditingController();
-    // TextEditingController _reWritePasswordField = TextEditingController();
-    // bool notSeePassword = true;
-    // bool notSeePassword1 = true;
-    // bool notSeePassword2 = true;
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -134,91 +132,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
         builder: (BuildContext context){
           return Wrap(
             children: [
-              //Stateless example
-
-              // Container(
-              //   padding: EdgeInsets.only(right: 24, left: 24, top: 32, bottom: 24),
-              //   child: SingleChildScrollView(
-              //     child: Column(
-              //       children: <Widget>[
-              //         Text("Đổi mật khẩu",
-              //           style: TextStyle(
-              //             fontSize: 20,
-              //             fontWeight: FontWeight.bold,
-              //             color: kPrimaryHighLightColor,
-              //           ),
-              //         ),
-              //         SizedBox(height: 5),
-              //         Container(
-              //           height: 1.5,
-              //           color: Colors.grey[300],
-              //           margin: EdgeInsets.symmetric(horizontal: 0),
-              //         ),
-              //         TextFieldContainer(
-              //           child: Text('Mật khẩu mới phải thỏa các điều kiện sau\n- Phải khác mật khẩu cũ\n- Phải có 8 đến 15 ký tự\n- Phải có ít nhất 1 ký tự số và 1 ký tự chữ\nVí dụ: aqk153 hoặc 153aqk',
-              //               style: TextStyle(
-              //                 color: kPrimaryHighLightColor,
-              //                 fontSize: 15,
-              //                 fontWeight: FontWeight.normal,
-              //               )),
-              //         ),
-              //         RoundedPasswordField(
-              //           hintText: "Mật khẩu hiện tại",
-              //           icon: FontAwesomeIcons.unlock,
-              //           obscureText: notSeePassword,
-              //           controller: _curPasswordField,
-              //           onTapClearIcon: ()=>{_curPasswordField.clear()},
-              //           switchObscureTextMode: ()=>{
-              //             if(notSeePassword==true){
-              //               setState((){notSeePassword=false;})
-              //             }else{
-              //               setState((){notSeePassword=true;})
-              //             }
-              //           },
-              //           onChanged: (value) {},
-              //         ),
-              //         RoundedPasswordField(
-              //           hintText: "Mật khẩu mới",
-              //           icon: FontAwesomeIcons.lockOpen,
-              //           obscureText: notSeePassword1,
-              //           controller: _newPasswordField,
-              //           onTapClearIcon: ()=>{_newPasswordField.clear()},
-              //           switchObscureTextMode: ()=>{
-              //             if(notSeePassword1==true){
-              //               setState((){notSeePassword1=false;})
-              //             }else{
-              //               setState((){notSeePassword1=true;})
-              //             }
-              //           },
-              //           onChanged: (value) {},
-              //         ),
-              //         RoundedPasswordField(
-              //           hintText: "Nhập lại mật khẩu mới",
-              //           icon: FontAwesomeIcons.lock,
-              //           obscureText: notSeePassword2,
-              //           controller: _reWritePasswordField,
-              //           onTapClearIcon: ()=>{_reWritePasswordField.clear()},
-              //           switchObscureTextMode: ()=>{
-              //             if(notSeePassword2==true){
-              //               setState((){notSeePassword2=false;})
-              //             }else{
-              //               setState((){notSeePassword2=true;})
-              //             }
-              //           },
-              //           onChanged: (value) {},
-              //         ),
-              //         RoundedButton(
-              //           text: "Xác nhận",
-              //           press: ()=>{
-              //             _changePassword(username,password,_curPasswordField.text,_newPasswordField.text,_reWritePasswordField.text)
-              //           },
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
-              //User Stateful widget
               ChangePasswordScreen(username:username,password:password),
             ],
           );
@@ -282,7 +195,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       textColor: kPrimaryHighLightColor,
                       fontsize: 17,
                       press: ()=>{
-                        _showSendRecommedSupportedPeople(context)
+                        _showSendRecommendSupportedPeople(context)
                       },
                     ),
                     RoundedButton(

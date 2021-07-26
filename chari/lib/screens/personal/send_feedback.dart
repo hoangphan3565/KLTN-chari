@@ -111,9 +111,8 @@ class _SendFeedbackScreenState extends State<SendFeedbackScreen> {
                     ),
                     RoundedButton(
                       text: "Xác nhận",
-                      press: ()async{
-                        SharedPreferences _prefs = await SharedPreferences.getInstance();
-                        validateAndSendFeedback(_prefs.getString('donator_full_name'),_titleField.text,_descriptionField.text,context);
+                      press: (){
+                        validateAndSendFeedback(widget.donator.full_name,_titleField.text,_descriptionField.text,context);
                       },
                     ),
                   ],

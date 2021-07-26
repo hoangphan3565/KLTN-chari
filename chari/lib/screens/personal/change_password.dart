@@ -44,7 +44,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           if(new_password1!=password){
             if(CheckString.isMyCustomPassword(new_password1)){
               SharedPreferences _prefs = await SharedPreferences.getInstance();
-              var res = await UserService.changeUserPassword(username, new_password1, new_password2);
+              var res = await UserService.changeUserPassword(username, new_password1);
               var jsonResponse = json.decode(utf8.decode(res.bodyBytes));
               message = jsonResponse['message'];
               errorCode = jsonResponse['errorCode'];

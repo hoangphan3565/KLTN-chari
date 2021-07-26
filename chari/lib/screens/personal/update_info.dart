@@ -20,17 +20,22 @@ class UpdateInfoScreen extends StatefulWidget {
 }
 
 class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
-  var focusNode = FocusNode();
-  bool haveFullName = false;
-  bool haveAddress = false;
-  TextEditingController _fullnameField;
-  TextEditingController _addressField;
+  var focusNode = FocusNode();  //khi mở dialog lên thì sẽ focus
+  bool haveFullName = false;    //biến cờ xem trên field fullname hiện đang có chữ hay không
+  bool haveAddress = false;     // tương tự trên
+  TextEditingController _fullnameField; //Controller để lấy text trong field fullname
+  TextEditingController _addressField;  // tương tự trên
 
+  //Khi widget bắt đầu được tạo -> lúc nhấn mở dialog
   @override
   initState() {
-    focusNode.requestFocus();
+    focusNode.requestFocus(); //Yêu cầu foucus -> mình muốn focus tới field nào thì khai báo ở field đó
+
+    //Kiểm tra xem donator đã có tên hay địa chỉ chưa để cập nhật biến cờ
     widget.donator.full_name!=''?setState(() {haveFullName=true;}):setState(() {haveFullName=false;});
     widget.donator.address!=''?setState(() {haveAddress=true;}):setState(() {haveAddress=false;});
+
+    // Khai báo text mặc định theo tên và địa chỉ hiện tại của donator
     _fullnameField = TextEditingController(text: widget.donator.full_name);
     _addressField = TextEditingController(text: widget.donator.address);
     super.initState();
@@ -63,7 +68,7 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
         p.setString('donator_full_name',jsonResponse['data']['fullName']);
         p.setString('donator_address',jsonResponse['data']['address']);
       });
-      //Đóng dialog khi cập nhật thành công
+      //Đóng dialog khi cập nhật thành công, trả về nội dung 'updated' để màn hình cá nhân sẽ cập nhật tên và địa chỉ.
       Navigator.pop(context,'updated');
     }
   }
@@ -102,12 +107,15 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
                   children: [
                     RoundedInputField(
                       icon: Icons.person,
-                      focusNode: focusNode,
+                      focusNode: focusNode, //focus con trỏ chuột tới field này
                       hintText: 'Họ và tên',
                       keyboardType: TextInputType.name,
                       controller: _fullnameField,
+                      // thuộc tính hỏi xem có hiện icon xóa hay không
                       showClearIcon: haveFullName,
+                      //nhấn vào icon clear thì sẽ xóa hết text và cập nhật biến cờ
                       onTapClearIcon: ()=>{_fullnameField.clear(),setState(() {haveFullName=false;})},
+                      // khi thay đổi text trong field nếu value rỗng tức là ko có gì hết -> cập nhật viến cờ để ẩn icon xóa, nếu khác rỗng thì hiện icon xóa
                       onChanged: (value) {
                         value!=''?setState(() {haveFullName=true;}):setState(() {haveFullName=false;});
                       },

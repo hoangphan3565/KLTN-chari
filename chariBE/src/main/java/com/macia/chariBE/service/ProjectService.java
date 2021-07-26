@@ -645,7 +645,6 @@ public class ProjectService {
         TypedQuery<Project> query = em.createNamedQuery("named.project.findProjectMultiFilterAndSearchKey", Project.class)
                 .setFirstResult(page*size).setMaxResults(size);
         if(!did.equals("*")){
-            System.out.println("Donator Id: "+did);
             Donator donator = donatorService.findById(Integer.valueOf(did));
             if(donator.getFavoriteProject().equals("")){
                 query.setParameter("ids", -1);

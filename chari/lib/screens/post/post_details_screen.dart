@@ -151,66 +151,48 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Row(
-        children: [
-          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          _isLoading? SizedBox():
-          (project.status=='ACTIVATING')?
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.96,
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-              ),
-            },
-            buttonText: 'Quyên góp ngay',
-            buttonColor: kPrimaryHighLightColor,
-            textColor: Colors.white,
-          ):
-          ActionButton(
-            height: 45,
-            fontSize: 18,
-            width: MediaQuery.of(context).size.width * 0.96,
-            onPressed: () => {
-              Navigator.of(context).pop()
-            },
-            buttonText: 'Quay lại',
-            // buttonColor: kPrimaryHighLightColor,
-            // textColor: Colors.white,
-          ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-        ],
-      ),
-      bottomNavigationBar: Container(
+      floatingActionButton: Container(
+        padding: EdgeInsets.fromLTRB(0,5,0,5),
         decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white12,
-                spreadRadius: 1,
-              )
-            ],
-            color: Colors.white12.withOpacity(0.1),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(0)),
         child: Row(
           children: [
-            buildNavBarItem(),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+            _isLoading? SizedBox():
+            (project.status=='ACTIVATING')?
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.96,
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
+                ),
+              },
+              buttonText: 'Quyên góp ngay',
+              buttonColor: kPrimaryHighLightColor,
+              textColor: Colors.white,
+            ):
+            ActionButton(
+              height: 45,
+              fontSize: 18,
+              width: MediaQuery.of(context).size.width * 0.96,
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              buttonText: 'Quay lại',
+              // buttonColor: kPrimaryHighLightColor,
+              // textColor: Colors.white,
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
           ],
         ),
       ),
     );
   }
 
-  Widget buildNavBarItem() {
-    return GestureDetector(
-      child: Container(
-        width: MediaQuery.of(context).size.width / 5,
-        height: 30,
-      ),
-    );
-  }
 
   Container buildMainImage(Post Post) {
     return Container(
@@ -357,14 +339,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           ),
         ],
       ),
-    );
-  }
-  Future<void> share() async{
-    await FlutterShare.share(
-        title: post.post_name,
-        text: post.post_name,
-        linkUrl: post.image_url,
-        chooserTitle: "Hãy chọn phương thức chia sẻ"
     );
   }
 }

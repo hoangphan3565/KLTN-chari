@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:chari/services/city_service.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiver/async.dart';
 import 'package:chari/models/models.dart';
@@ -478,16 +479,29 @@ class _HomeScreenState extends State<HomeScreen>{
               )),
         ),
         Positioned(
-          bottom: 20,
-          right: 20,
-          child: InkWell(
-            onTap: ()=> {
-              _changeStateFavorite(project.prj_id,listProjectIdFavorite.contains(project.prj_id.toString())),
-            },
-            child: listProjectIdFavorite.contains(project.prj_id.toString()) == true ?
-            Icon(Icons.favorite_rounded, size: 35, color: kPrimaryColor.withOpacity(0.9))
-                :
-            Icon(Icons.favorite_rounded, size: 35, color: Colors.white.withOpacity(0.9)),
+          bottom: 0,
+          right: 0,
+          child: listProjectIdFavorite.contains(project.prj_id.toString()) == true ?
+          RawMaterialButton(
+            onPressed: () {_changeStateFavorite(project.prj_id,listProjectIdFavorite.contains(project.prj_id.toString()));},
+            fillColor: Colors.grey.withOpacity(0.5),
+            child: Icon(Icons.favorite_rounded, size: 23, color: kPrimaryColor),
+            shape: CircleBorder(),
+          ):RawMaterialButton(
+            onPressed: () {_changeStateFavorite(project.prj_id,listProjectIdFavorite.contains(project.prj_id.toString()));},
+            fillColor: Colors.grey.withOpacity(0.5),
+            child: Icon(Icons.favorite_rounded, size: 23, color: Colors.white),
+            shape: CircleBorder(),
+          )
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: RawMaterialButton(
+            onPressed: () {share(project);},
+            fillColor:  Colors.grey.withOpacity(0.5),
+            child: Icon(FontAwesomeIcons.share, size: 20, color: Colors.white),
+            shape: CircleBorder(),
           ),
         )
 
@@ -813,5 +827,14 @@ class _HomeScreenState extends State<HomeScreen>{
       searchQuery="*";
       _isTaping=false;
     });
+  }
+
+  Future<void> share(Project p) async{
+    await FlutterShare.share(
+        title: p.project_name,
+        text: p.project_name,
+        linkUrl: "https://chariweb.github.io/#/project_detail?id="+p.prj_id.toString(),
+        chooserTitle: "Hãy chọn phương thức chia sẻ"
+    );
   }
 }

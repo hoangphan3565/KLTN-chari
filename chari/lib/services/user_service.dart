@@ -68,12 +68,11 @@ class UserService{
     return http.post(url,headers:header,body: body);
   }
 
-  static Future changeUserPassword(String username,String new_password1,String new_password2){
+  static Future changeUserPassword(String username,String new_password1){
     String url = "$baseUrl/change/password";
     final body = jsonEncode(<String, String>{
       "username":username,
       "password1":new_password1,
-      "password2":new_password2,
       "usertype":"Donator"
     });
     return http.post(url,headers:header,body: body);

@@ -214,6 +214,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     buildCommentContainer(context),
                     if(!listDonation.isEmpty)
                       buildRecentDonatorList(context),
+                    SizedBox(height: 32),
                   ],
                 ),
               ),
@@ -223,84 +224,64 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Row(
-        children: [
-          SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-          _isLoading? SizedBox() : ((project.status=='ACTIVATING')?
-          Row(children: [
-            ActionButton(
-              height: 45,
-              fontSize: 18,
-              width: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
-                ),
-              },
-              buttonText: 'Quyên góp ngay',
-              buttonColor: kPrimaryHighLightColor,
-              textColor: Colors.white,
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-            ActionButton(
-              height: 45,
-              fontSize: 18,
-              width: MediaQuery.of(context).size.width * 0.34,
-              onPressed: () => { share() },
-              buttonText: 'Chia sẻ',
-            ),
-
-          ],)
-          :
-          Row(children: [
-            ActionButton(
-              height: 45,
-              fontSize: 18,
-              width: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () => {
-                Navigator.of(context).pop()
-              },
-              buttonText: 'Quay lại',
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
-            ActionButton(
-              height: 45,
-              fontSize: 18,
-              width: MediaQuery.of(context).size.width * 0.34,
-              onPressed: () => { share() },
-              buttonText: 'Chia sẻ',
-            ),
-          ],))
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white12,
-                spreadRadius: 1,
-              )
-            ],
-            color: Colors.white12.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(0)),
-        child: Row(
+      floatingActionButton: Container(
+        padding: EdgeInsets.fromLTRB(0,5,0,5),
+        decoration: BoxDecoration(color: Colors.white),
+        child:  Row(
           children: [
-            buildNavBarItem(),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+            _isLoading? SizedBox() : ((project.status=='ACTIVATING')?
+            Row(children: [
+              ActionButton(
+                height: 45,
+                fontSize: 18,
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DonateScreen(project: project,donator: widget.donator,)),
+                  ),
+                },
+                buttonText: 'Quyên góp ngay',
+                buttonColor: kPrimaryHighLightColor,
+                textColor: Colors.white,
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+              ActionButton(
+                height: 45,
+                fontSize: 18,
+                width: MediaQuery.of(context).size.width * 0.34,
+                onPressed: () => { share() },
+                buttonText: 'Chia sẻ',
+              ),
+
+            ],)
+                :
+            Row(children: [
+              ActionButton(
+                height: 45,
+                fontSize: 18,
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () => {
+                  Navigator.of(context).pop()
+                },
+                buttonText: 'Quay lại',
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.02,),
+              ActionButton(
+                height: 45,
+                fontSize: 18,
+                width: MediaQuery.of(context).size.width * 0.34,
+                onPressed: () => { share() },
+                buttonText: 'Chia sẻ',
+              ),
+            ],))
           ],
         ),
       ),
     );
   }
 
-  Widget buildNavBarItem() {
-    return GestureDetector(
-      child: Container(
-        width: MediaQuery.of(context).size.width*0.9,
-        height: 30,
-      ),
-    );
-  }
 
   Container buildMainImage(Project project) {
     return Container(
