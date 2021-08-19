@@ -137,6 +137,12 @@ public class DonatorNotificationService {
         for(Donator d:donators){
             saveAndPushNotificationToOneUser(d,pn,project);
         }
+//        if(!pn.getTopic().equals(ENotificationTopic.CLOSED)){
+//            List<Donator> donators = this.donatorService.findWhereHaveAccount().stream().filter(d->!donatorsHaveDonate.contains(d)).collect(Collectors.toList());
+//            for(Donator d:donators){
+//                saveAndPushNotificationToOneUser(d,pn,project);
+//            }
+//        }
     }
 
     private NotificationObject createNotificationForDonator(PushNotification pn,Project project){
@@ -154,7 +160,7 @@ public class DonatorNotificationService {
         if(donator.getDNT_ID()!=0 && donator.getFavoriteNotification()!=null){
             String notifications = donator.getFavoriteNotification();
             if(notifications.contains(pn.getNOF_ID().toString())){
-                if(appUser.getFcmToken() != null){
+                if(appUser!=null && appUser.getFcmToken() != null){
                     no.setToken(appUser.getFcmToken());
                     pushNotificationService.sendMessageToToken(no);
                 }

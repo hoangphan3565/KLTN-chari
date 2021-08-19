@@ -66,9 +66,9 @@ insert into city(name) values ('Yên Bái');
 
 insert into push_notification(description,topic,title,message) values('Thông báo khi có dự án mới','NEW','Dự án từ thiện mới','đã được chúng tôi gây quỹ, nếu bạn quan tâm hãy ghé thăm hoàn cảnh này.');
 insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp được gia hạn','EXTENDED','Dự án được gia hạn','đã được gia hạn thêm thời gian. Hãy kêu gọi bạn bè ủng hộ cho dự án.');
-insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp bị đóng','CLOSED','Xử lý tiền dự án quá hạn','đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn tham gia quyên góp bị đóng','CLOSED','Xử lý tiền dự án quá hạn','đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari.');
 insert into push_notification(description,topic,title,message) values('Thông báo khi dự án bạn quan tâm hoặc tham gia quyên góp được giải ngân','DISBURSED','Bạn đã làm nên điều diệu kỳ','đã được chúng tôi giải ngân thành công. Cám ơn bạn đã ủng hộ cho hoàn cảnh này.');
-insert into push_notification(description,topic,title,message) values('Thông báo khi dự án nhận được tiền quyên góp của bạn','DONATED','Chúng tôi đã nhận được lòng tốt của bạn','đã nhận được tiền từ bạn. Cám ơn bạn đã ủng hộ cho hoàn cảnh này.');
+insert into push_notification(description,topic,title,message) values('Thông báo khi dự án nhận được tiền quyên góp của bạn','DONATED','Cám ơn bạn đã tham gia quyên góp','đã nhận được tiền từ bạn. Cám ơn bạn đã ủng hộ cho dự án này.');
 insert into push_notification(description,topic,title,message) values('Thông báo liên quan đến Quỹ chung Chari','FUND','Quỹ chung Chari','do bạn tham gia gây quỹ đã được chúng tôi chia đều tiền ủng hộ cho tất cả dự án đang hoạt động. Cám ơn bạn đã đồng hành cùng Chari.');
 insert into push_notification(description,topic,title,message) values('Thông báo khi hoàn cảnh do bạn giới thiệu được gây quỹ','INTRODUCTION','Bạn đã giúp chúng tôi làm việc tốt','do bạn giới thiệu đã được chúng tôi tiến hành gây quỹ. Cám ơn bạn đã đồng hành cùng Chari.');
 
@@ -90,7 +90,7 @@ insert into collaborator(username,is_accept,full_name,phone_number,email,address
 insert into collaborator(username,is_accept,full_name,phone_number,email,address,certificate) values('1231231233',false,'Phan Văn B','4564564565','abc@gmail.com','TP HCM','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/collaborator_certificate%2Fdownload.png?alt=media&token=05502e8b-228c-4120-a04c-6c51e4440f26');
 
 insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('1231231231','Phan Đình Hoàng','1231231231','Quận 10, TP HCM','1 2 10 ','1 2 3 4 5 6 7','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Favt.jpeg?alt=media&token=542e7f60-3f23-432b-9098-f9c4802ec9d5');
-insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('4564564564','Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 3 6 ','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Favt.jpeg?alt=media&token=542e7f60-3f23-432b-9098-f9c4802ec9d5');
+insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('4564564564','Trần Văn Thường','4564564564','Quận 2, TP HCM','1 2 ','1 2 3 4 5 6 7','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Favt.jpeg?alt=media&token=542e7f60-3f23-432b-9098-f9c4802ec9d5');
 insert into donator(username,full_name,phone_number,address,favorite_project,favorite_notification,avatar_url) values('7897897897','Trần Văn Quân','7897897897','Quận 3, TP HCM','4 6 ','1 2 3 4 6 ','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Favt.jpeg?alt=media&token=542e7f60-3f23-432b-9098-f9c4802ec9d5');
 
 insert into project_type(can_disburse_when_overdue,project_type_name,description,image_url) values(false,'Sứ mệnh 1.000','Cùng Chari trên chặn đường xây dựng 1.000 điểm trường và mái ấm cho những hoàn cảnh khó khăn trên khắp đất nước.','https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/program%2Fxay-truong-dung-uoc-mo.jpeg?alt=media&token=9aa38892-ed33-45b4-b4cb-17bfc9a43de1');
@@ -191,7 +191,7 @@ values(58,'2021-05-27 20:50:40.075187','G10003','Tài trợ xe lăn/ xe lắc ch
 '       Việc trao tặng xe lăn sẽ góp phần hỗ trợ đắc lực cho người khuyết tật có thể tự di chuyển thuận lợi và dễ dàng, giảm bớt gánh nặng chăm sóc cho người thân; giúp người khuyết tật có thêm tự tin, nỗ lực vươn lên trong cuộc sống.
 ' ||
 '       Được biết, năm 2019, Hội Bảo trợ Người tàn tật và Trẻ mồ côi tỉnh tiếp nhận 678 chiếc xe lăn do tổ chức Trả lại tuổi thơ (Hoa Kỳ) tài trợ để cấp phát miễn phí cho người khuyết tật trên địa bàn tỉnh Thừa Thiên Huế.',
-'2020-11-01','2021-08-01',700000,
+'2020-11-01','2021-08-09',700000,
 'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpeg?alt=media&token=1b705be9-57f0-484b-829c-98c9530d26aa',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',1,1,1);
 
@@ -224,7 +224,7 @@ values(49,'2021-05-25 20:50:40.075187','G10005','Hỗ trợ "cặp phao" cứu s
 ' ||
 '       Mong muốn hoàn thành giấc mơ xây cầu cho các em nhưng còn gặp nhiều khó khăn về mặt pháp lý, nên thời điểm hiện tại để kịp thời giúp đỡ các em Chari kêu gọi các nhà hảo tâm quyên góp tặng cho các em những chiếc “Cặp phao” để các em phần nào an toàn hơn trên con đường đến trường đầy chông gai, nguy hiểm.',
 '2020-11-15','2021-02-15',700000,
-'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',
+'https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',
 'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',1,2,2);
 
 insert into project(cti_id,update_time,project_code,project_name,verified,disbursed,closed,brief_description,description,start_date,end_date,target_money,image_url,video_url,prt_id,stp_id,clb_id)
@@ -272,7 +272,7 @@ insert into project(cti_id,update_time,project_code,project_name,verified,disbur
 values(20,'2021-05-27 20:50:40.075187','G20002','Xây cầu tình thương cho làng An Phú 9',true,false,false,
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
 'Làng An Phú 9 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày. Làng An Phú 1 có nhiều sông ngòi cần xây cầu cho học sinh đi học hằng ngày',
-'2020-11-01','2021-08-01',999000,
+'2020-11-01','2021-09-01',999000,
 'https://afamilycdn.com/zoom/640_400/2019/1/23/421a5765-15482290750161494101089-crop-1548229105336344905179.jpg',
 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',2,1,1);
 
@@ -340,7 +340,7 @@ insert into project_images(image_url,prj_id) values('https://thoidai.com.vn/stor
 insert into project_images(image_url,prj_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20',4);
 insert into project_images(image_url,prj_id) values('https://baotayninh.vn/image/fckeditor/upload/2020/20200814/images/diem-tin-3.jpg',4);
 insert into project_images(image_url,prj_id) values('https://baolongan.vn/image/news/2020/20200108/thumbnail/510x286/839_1578488896.jpg',4);
-insert into project_images(image_url,prj_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',5);
+insert into project_images(image_url,prj_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',5);
 insert into project_images(image_url,prj_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',5);
 insert into project_images(image_url,prj_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',5);
 insert into project_images(image_url,prj_id) values('https://anh.eva.vn//upload/3-2015/images/2015-09-08/1441684268-11992496_1627825204133394_783327606_n.jpg',5);
@@ -380,7 +380,7 @@ insert into donate_activity(dnt_id,prj_id) values(1,2);
 insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',10000,2);
 insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-20',150000,2);
 insert into donate_activity(dnt_id,prj_id) values(1,3);
-insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',180000,3);
+insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',580000,3);
 insert into donate_activity(dnt_id,prj_id) values(1,4);
 insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',900000,4);
 insert into donate_activity(dnt_id,prj_id) values(1,5);
@@ -408,15 +408,18 @@ insert into donate_activity(dnt_id,prj_id) values(1,10);
 insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',50000,14);
 insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-12',50000,14);
 
-insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý đã quá 7 ngày...','CLOSED',80000,8,1);
-insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-09-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Testing hạn xử lý chưa quá 7 ngày...','CLOSED',40000,12,1);
+insert into donate_activity(dnt_id,prj_id) values(3,2);
+insert into donate_details(status,donate_date,money,dna_id) values('SUCCESSFUL','2020-11-05',10000,15);
+
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://baotuyenquang.com.vn/media/images/2018/04/img_20180404092429.jpg','2021-05-13 20:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Dự án ''Xây dựng khu vui chơi trong sân trường cho trường tiểu học Thanh Kim (Lào Cai)'' đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari.','CLOSED',80000,8,1);
+insert into donator_notification(project_image,create_time,read,handled,title,message,topic,total_money,project_id,dnt_id) values ('https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2021/juznus/2020_10_21/gdvn-truonghocsaulu7-giaoduc-net-vn-3067.jpg','2021-08-04 8:50:40.075187',false,false,'Xử lý tiền dự án quá hạn','Dự án ''Xây dựng sân trường cho trường tiểu học Quảng Thành'' đã bị đóng vì đã quá hạn. Nhấn để thực hiện việc chuyển tiền sang dự án khác hoặc sau 7 ngày tất cả số tiền bạn đã ủng hộ cho dự án này sẽ được chuyển vào quỹ chung của Chari.','CLOSED',40000,12,1);
 
 
 insert into post(name,content,project_id,clb_id,image_url,video_url,is_public,public_time) values ('Dự án hỗ trợ cặp phao cho các em học sinh ở vùng cao Ba Vì đã thành công'
 ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 10000 cặp phao cho trẻ em vùng cao Ba Vì tỉnh Quảng Ngãi, giúp các em yên tâm hơn khi mùa lũ lụt sắp về.'
-,5,0,'https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg'
+,5,0,'https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg'
 ,'https://firebasestorage.googleapis.com/v0/b/chari-9ed04.appspot.com/o/project005.mp4?alt=media&token=b7e2d9cf-3240-42b7-b4ef-1985f252a34a',true,'2021-05-13 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',1);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',1);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',1);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',1);
 insert into post_images(image_url,pos_id) values('https://anh.eva.vn//upload/3-2015/images/2015-09-08/1441684268-11992496_1627825204133394_783327606_n.jpg',1);
@@ -428,7 +431,7 @@ insert into post(name,content,project_id,clb_id,image_url,is_public,public_time)
 ,10,1,'https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg'
 ,true,'2021-04-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',2);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',2);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',2);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',2);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',2);
 
@@ -438,16 +441,16 @@ insert into post(name,content,project_id,clb_id,image_url,is_public,public_time)
                                                                                         ,10,1,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Fminh%20hoa%20bua%20com%20tu%20thien.jpeg?alt=media&token=9cc207c0-fb72-4d8c-9023-c9491e1a09e1'
                                                                                         ,true,'2021-04-13 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Fminh%20hoa%20bua%20com%20tu%20thien.jpeg?alt=media&token=9cc207c0-fb72-4d8c-9023-c9491e1a09e1',3);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',3);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',3);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',3);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',3);
 
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án tài trợ xe lăn cho người khuyết tật sắp thành công'
-                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,3,1,'https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg'
+insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án tài trợ xe lăn cho người khuyết tật tỉnh Thừa-Thiên-Huế sắp thành công'
+                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm, dự án "tài trợ xe lăn cho người khuyết tật tỉnh Thừa-Thiên-Huế" đã sắp đạt được mục tiêu quyên góp. Hãy chia sẻ hoàn cành này đến với bạn bè để những hoàn cảnh khó khăn này nhận được sự hổ trợ sớm nhất.'
+                                                                                        ,3,1,'https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg'
                                                                                         ,true,'2021-04-03 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',4);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',4);
+insert into post_images(image_url,pos_id) values('https://baodansinh.mediacdn.vn/2019/9/25/20180831khuyettat2-156937253284583232848-crop-15693726108981781484170.jpg',4);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',4);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',4);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',4);
 
@@ -456,43 +459,9 @@ insert into post(name,content,project_id,clb_id,image_url,is_public,public_time)
                                                                                         ,4,1,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20'
                                                                                         ,true,'2021-04-01 20:50:40.075187');
 insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',5);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',5);
+insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/zoom/700_438/upload/2-2017/images/2017-05-23/149553103421050-thumbnail.jpg',5);
 insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',5);
 insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',5);
 
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
-                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,3,1,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20'
-                                                                                        ,true,'2021-04-01 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',6);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',6);
-insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',6);
-insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',6);
 
 
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
-                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,3,1,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20'
-                                                                                        ,true,'2021-04-01 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',7);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',7);
-insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',7);
-insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',7);
-
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
-                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,3,2,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20'
-                                                                                        ,true,'2021-04-01 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',8);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',8);
-insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',8);
-insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',8);
-
-insert into post(name,content,project_id,clb_id,image_url,is_public,public_time) values ('Dự án hỗ trợ vốn sinh kế cho người dân Tây Ninh sắp thành công'
-                                                                                        ,'Với sự ủng hộ của những nhà hảo tâm Chari đã quyên gọi vốn thành công và đã tiến hành giải ngân cho người thụ hưởng của dự án. Dự án đã đem về hơn 400 phần cơm cho bệnh nhân bệnh viên 115 quận 10, giúp những bệnh nhân ở đây được bữa cơm no ấm lòng.'
-                                                                                        ,4,2,'https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Ftay%20ninh.jpeg?alt=media&token=253c969a-b451-4b8a-acb1-b9591b015c20'
-                                                                                        ,true,'2021-04-01 20:50:40.075187');
-insert into post_images(image_url,pos_id) values('https://nhandan.vn/imgold/media/k2/items/src/3764/e23c2235804f01fe0099318e62cdbc73.jpg',9);
-insert into post_images(image_url,pos_id) values('https://tamnguyenviet.vn/wp-content/uploads/2020/10/t%E1%BA%B7ng-phao-B%E1%BA%AFc-B%C3%ACnh-B%C3%ACnh-Thu%E1%BA%ADn.jpg',9);
-insert into post_images(image_url,pos_id) values('https://mb.dkn.tv/wp-content/uploads/2015/10/tre-em-mien-nui-den-truong-42.jpg',9);
-insert into post_images(image_url,pos_id) values('https://danviet.mediacdn.vn/upload/4-2014/images/2014-10-07/1434400197-134650-2.jpg',9);

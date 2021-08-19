@@ -17,14 +17,18 @@
             <th>#</th>
             <th>Hình ảnh</th>
             <th>Tên Dự án</th>
-            <th style="text-align: right">Tiến độ xử lý (%)</th> 
+            <th>Cho phép giải ngân</th>
+            <th>Tiến độ xử lý</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
           <td style="width: 80px; cursor:pointer"><img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px"></td>
-          <td style="width: 70%;">{{data.projectName}}</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true" style="text-align: right">{{data.moveMoneyProgress}}</td>
+          <td>{{data.projectName}}</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">N/A</td>
+          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">{{data.moveMoneyProgress}}</td>
         </tbody>
         <tbody>
       </table>

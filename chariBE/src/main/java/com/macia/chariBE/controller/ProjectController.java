@@ -173,10 +173,6 @@ public class ProjectController {
 
     @PutMapping("/close/{id}")
     public ResponseEntity<?> closeProject(@PathVariable(value = "id") Integer id) {
-        PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.CLOSED);
-        if(!projectService.findProjectById(id).getProjectType().getCanDisburseWhenOverdue()){
-            donatorNotificationService.saveAndPushNotificationToUsers(pn,id);
-        }
         return ResponseEntity.ok().body(projectService.closeProject(id));
     }
 
@@ -185,8 +181,6 @@ public class ProjectController {
     public ResponseEntity<?> extendProjectDeadline(
             @PathVariable(value = "id") Integer id,
             @PathVariable(value = "nod") Integer nod) {
-        PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.EXTENDED);
-        donatorNotificationService.saveAndPushNotificationToUsers(pn,id);
         return ResponseEntity.ok().body(projectService.extendProject(id,nod));
     }
 
@@ -240,11 +234,7 @@ public class ProjectController {
 
     @GetMapping("/disburse_fund")
     public ResponseEntity<?> disburseFund() {
-        JSONObject jso = new JSONObject();
-        jso.put("errorCode",0);
-        jso.put("message","Đã chia quỹ chung tới tất cả dự án đang hoạt động");
-        projectService.disburseFund();
-        return ResponseEntity.ok().body(jso);
+        return ResponseEntity.ok().body(projectService.disburseFund());
     }
 
 }

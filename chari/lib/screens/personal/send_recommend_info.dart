@@ -99,6 +99,7 @@ class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
                   children: [
                     RoundedInputField(
                       icon: Icons.message,
+                      focusNode: focusNode,
                       keyboardType: TextInputType.text,
                       controller: _descriptionField,
                       showClearIcon: _haveContent,
@@ -111,7 +112,6 @@ class _SendRecommendInfoScreenState extends State<SendRecommendInfoScreen> {
                     ),
                     RoundedInputField(
                       icon: Icons.adjust,
-                      focusNode: focusNode,
                       keyboardType: TextInputType.text,
                       controller: _nameField,
                       showClearIcon: _haveName,

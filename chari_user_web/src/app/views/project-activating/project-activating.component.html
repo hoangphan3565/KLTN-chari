@@ -20,6 +20,7 @@
             <th style="text-align: right">Đã quyên góp </th>
             <th style="text-align: right">Đạt được (%)</th>
             <th style="text-align: right">Thời hạn còn (Ngày)</th>
+            <th style="text-align: right">Số tin</th>
             <th style="text-align: right">Tác vụ</th>
           </tr>
         </thead>
@@ -30,6 +31,7 @@
           <td style="text-align: right">{{numberWithCommas(data.curMoney)}}</td>
           <td style="text-align: right">{{data.achieved}}</td>
           <td style="text-align: right">{{data.remainingTerm}}</td>   
+          <td style="text-align: right">{{data.numOfPost}}</td> 
           <td style="text-align: right">
             <button type="button" class="btn btn-stack-overflow btn-sm" (click)="clearData(data);openDialog()" tooltip="Đăng tin tức">
               <i class="fa fa-plus-square"></i>

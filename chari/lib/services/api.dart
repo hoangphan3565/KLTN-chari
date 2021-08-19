@@ -1,6 +1,6 @@
 
-var baseUrl = 'http://192.168.43.202:8080/api';
-// var baseUrl = 'https://fac3d1fd1f8d.ngrok.io/api';
+var baseUrl = 'http://192.168.1.13:8080/api';
+// var baseUrl = 'https://b09350b55dd9.ngrok.io/api';
 
 const login = '/login';
 const login_facebook = '/login_facebook';

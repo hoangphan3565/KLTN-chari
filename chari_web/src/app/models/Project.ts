@@ -12,6 +12,7 @@ export class Project {
     endDate:string;
     curMoney:string;
     targetMoney:string;
+    numOfPost:number;
     videoUrl:string;
     imageUrl:string;
     images:string[];

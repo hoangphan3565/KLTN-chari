@@ -130,11 +130,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
           ),
         ),
         builder: (BuildContext context){
-          return Wrap(
-            children: [
-              ChangePasswordScreen(username:username,password:password),
-            ],
-          );
+          return ChangePasswordScreen(username:username,password:password);
         }
     );
   }

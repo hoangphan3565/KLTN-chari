@@ -149,6 +149,7 @@ export class SupportedPeopleComponent implements OnInit {
       startDate:'',
       endDate:'',
       curMoney:'',
+      numOfPost:0,
       targetMoney:'',
       canDisburseWhenOverdue:true,
       prt_ID:null,

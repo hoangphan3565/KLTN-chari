@@ -117,6 +117,10 @@ export class ProjectOverdueComponent implements OnInit {
   onFileChange(ev) {
     let workBook = null;
     let jsonData = null;
+    if (ev.target.files.length > 1) {
+      this.notificationService.success('Chỉ được chọn 1 file');
+      return;
+    }
     const reader = new FileReader();
     const file = ev.target.files[0];
     reader.onload = (event) => {

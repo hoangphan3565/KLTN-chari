@@ -40,7 +40,7 @@ public class FeedbackController {
     }
 
     @PostMapping("/reply")
-    public ResponseEntity<?> replyFeedback(@RequestBody Feedback fk) {
-        return ResponseEntity.ok().body(service.replyFeedback(fk));
+    public ResponseEntity<?> replyFeedback(@RequestBody Feedback fb) {
+        return ResponseEntity.ok().body(service.replyFeedback(fb));
     }
 }

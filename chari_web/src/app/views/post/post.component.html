@@ -25,8 +25,8 @@
             <th>Tiêu đề tin tức</th>
             <th>Dự án liên quan</th>
             <th>Đăng bởi</th>
-            <th style="width: 18%">Tình trạng</th>
-            <th style="text-align: right">Tác vụ</th>
+            <th style="width: 15%">Tình trạng</th>
+            <th style="width: 150px;text-align: right">Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Posts;let i=index;">
@@ -35,8 +35,8 @@
           <td style="width: 25%;cursor:pointer" (click)="openEditDialog(data)">{{data.name}}</td>
           <td style="width: 25%;cursor:pointer" (click)="openEditDialog(data)">{{data.projectName}}</td>
           <td>{{data.collaboratorName}}</td>
-          <td style="width: 18%" *ngIf="data.isPublic==true">Đã công bố</td>
-          <td style="width: 18%" *ngIf="data.isPublic!=true">Chưa công bố</td>
+          <td style="width: 15%" *ngIf="data.isPublic==true">Đã công bố</td>
+          <td style="width: 15%" *ngIf="data.isPublic!=true">Chưa công bố</td>
           <td style="text-align: right" *ngIf="data.isPublic==true">
             <button type="button" class="btn btn-warning btn-sm" (click)="unPublicPost(data.pos_ID)" tooltip="Ẩn tin tức">
               <i class="fa fa-remove"></i>

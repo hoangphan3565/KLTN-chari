@@ -33,6 +33,7 @@
             <th>Mục tiêu</th>
             <th>Đạt được</th>
             <th>Tình trạng</th>
+            <th style="text-align: right">Số tin</th>
             <th style="text-align: right">Tác vụ</th>
           </tr>
         </thead>
@@ -45,6 +46,7 @@
           <td>{{numberWithCommas(data.curMoney)}}</td>
           <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
           <td *ngIf="data.disbursed==true">Đã giải ngân</td>
+          <td style="text-align: right">{{data.numOfPost}}</td>
           <td style="text-align: right" *ngIf="data.disbursed==false">
             <button type="button" class="btn btn-secondary btn-sm" (click)="openDisburseDialog(data)" tooltip="Hiện thông tin giải ngân">
               <i class="fa fa-eye"></i>

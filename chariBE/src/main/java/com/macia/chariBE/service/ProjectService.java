@@ -146,6 +146,11 @@ public class ProjectService {
         }
         return numOfDonate;
     }
+    public Integer findNumOfPostOfProject(Integer id){
+        TypedQuery<Post> query = em.createNamedQuery("named.post.findByProjectId", Post.class);
+        query.setParameter("id",id);
+        return query.getResultList().size();
+    }
     public long findRemainingTermOfProject(Project p){
         return ChronoUnit.DAYS.between(LocalDate.now(), p.getEndDate());
     }
@@ -186,8 +191,7 @@ public class ProjectService {
                 .imageUrl(p.getImageUrl()).videoUrl(p.getVideoUrl())
                 .images(this.projectImagesService.findListStringProjectImagesByProjectId(p.getPRJ_ID()))
                 .targetMoney(p.getTargetMoney()).curMoney(Integer.valueOf(String.valueOf(findCurMoneyOfProject(p))))
-                .achieved(findAchieved(p))
-                .numOfDonations(findNumOfDonationOfProject(p))
+                .achieved(findAchieved(p)).numOfDonations(findNumOfDonationOfProject(p)).numOfPost(findNumOfPostOfProject(p.getPRJ_ID()))
                 .startDate(p.getStartDate().toString()).endDate(p.getEndDate().toString())
                 .remainingTerm(Long.valueOf(String.valueOf(findRemainingTermOfProject(p))))
                 .verified(p.getVerified()).status(p.getStatus()).disbursed(p.getDisbursed()).closed(p.getClosed())
@@ -369,19 +373,38 @@ public class ProjectService {
     }
     public JSONObject closeProject(Integer id){
         JSONObject jso = new JSONObject();
+        PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.CLOSED);
+        Project p = findProjectById(id);
         if(repo.findById(id).isPresent()){
-            Project p = repo.findById(id).orElseThrow();
-            p.setClosed(true);
-            p.setUpdateTime(LocalDateTime.now().minusYears(10));
-            repo.saveAndFlush(p);
-            jso.put("errorCode",0);
-            jso.put("message","Đóng dự án thành công!");
+            if(!p.getClosed()){
+                if(!p.getProjectType().getCanDisburseWhenOverdue()){
+                    donatorNotificationService.saveAndPushNotificationToUsers(pn,id);
+                    p.setClosed(true);
+                    repo.saveAndFlush(p);
+                    jso.put("errorCode",0);
+                    jso.put("message","Đóng dự án thành công!");
+                }else{
+                    if(!p.getDisbursed()){
+                        jso.put("errorCode",1);
+                        jso.put("message","Dự án này chưa giải ngân, không thể đóng!");
+                    }else{
+                        p.setClosed(true);
+                        repo.saveAndFlush(p);
+                        jso.put("errorCode",0);
+                        jso.put("message","Đóng dự án thành công!");
+                    }
+                }
+            }else{
+                jso.put("errorCode",1);
+                jso.put("message","Dự án đã được đóng trước đó");
+            }
         }else{
             jso.put("errorCode",1);
             jso.put("message","Đã xảy ra lỗi! Không tìm thấy dự án");
         }
         return jso;
     }
+
     public JSONObject extendProject(Integer id,Integer nod){
         JSONObject jso = new JSONObject();
         Project p = repo.findById(id).orElseThrow();
@@ -391,6 +414,8 @@ public class ProjectService {
             repo.saveAndFlush(p);
             jso.put("errorCode",0);
             jso.put("message","Gia hạn dự án thành công!");
+            PushNotification pn = this.pushNotificationRepository.findByTopic(ENotificationTopic.EXTENDED);
+            donatorNotificationService.saveAndPushNotificationToUsers(pn,id);
         }else{
             jso.put("errorCode",1);
             jso.put("message","Dự án đã được gia hạn trước đó!");
@@ -411,7 +436,7 @@ public class ProjectService {
         np.setVideoUrl(p.getVideoUrl());
         np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
         np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
-        np.setCity(this.ICityRepository.findById(p.getCti_ID()).orElseThrow());
+        np.setCity(this.cityRepository.findById(p.getCti_ID()).orElseThrow());
         np.setCollaborator(this.collaboratorService.findById(collaboratorId));
         np.setProjectImages(this.projectImagesService.createListProjectImage(np,p.getImages()));
         np.setVerified(collaboratorId == 0);
@@ -440,7 +465,7 @@ public class ProjectService {
             np.setVideoUrl(p.getVideoUrl());
             np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
             np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
-            np.setCity(this.ICityRepository.findById(p.getCti_ID()).orElseThrow());
+            np.setCity(this.cityRepository.findById(p.getCti_ID()).orElseThrow());
             this.projectImagesService.updateListProjectImage(np,p.getImages());
             this.repo.saveAndFlush(np);
             jso.put("errorCode", 0);
@@ -466,7 +491,7 @@ public class ProjectService {
             np.setVerified(true);
             np.setProjectType(this.projectTypeService.findById(p.getPrt_ID()));
             np.setSupportedPeople(this.supportedPeopleService.findById(p.getStp_ID()));
-            np.setCity(this.ICityRepository.findById(p.getCti_ID()).orElseThrow());
+            np.setCity(this.cityRepository.findById(p.getCti_ID()).orElseThrow());
             this.projectImagesService.updateListProjectImage(np,p.getImages());
             this.repo.saveAndFlush(np);
             this.donatorNotificationService.saveAndPushNotificationToAllUser(np,ENotificationTopic.NEW);
@@ -765,28 +790,41 @@ public class ProjectService {
     }
 
 
-    public void disburseFund() {
-        updateAllProjectStatus();
+    public Object disburseFund() {
+        JSONObject jso = new JSONObject();
         List<ProjectDTO> activatingProject = getAllActivatingProjectDTOs().stream().filter(p->p.getPRJ_ID()!=0).collect(Collectors.toList());
-        Project fund = findProjectById(0);
-        int curFund = findCurMoneyOfProject(fund);
-        int divFund = curFund/activatingProject.size();
-        Donator chari = donatorService.findByUsername("chari");
-        PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.FUND);
-        if(curFund>0){
-            List<DonateActivity> listDA = donateActivityService.findByProjectID(0);
-            for(DonateActivity da:listDA){
-                List<DonateDetails> detailsList =  da.getDonateDetails();
-                for(DonateDetails dd:detailsList){
-                    if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
-                        dd.setStatus(EDonateDetailsStatus.MOVED.toString());
+        if(activatingProject.isEmpty()){
+            jso.put("errorCode",1);
+            jso.put("message","Không còn dự án nào khác đang hoạt động");
+        }else{
+            Project fund = findProjectById(0);
+            int curFund = findCurMoneyOfProject(fund);
+            int divFund = curFund/activatingProject.size();
+            Donator chari = donatorService.findByUsername("chari");
+            PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.FUND);
+            if(curFund>0){
+                List<DonateActivity> listDA = donateActivityService.findByProjectID(0);
+                for(DonateActivity da:listDA){
+                    List<DonateDetails> detailsList =  da.getDonateDetails();
+                    for(DonateDetails dd:detailsList){
+                        if(dd.getStatus().equals(EDonateDetailsStatus.SUCCESSFUL.toString())){
+                            dd.setStatus(EDonateDetailsStatus.MOVED.toString());
+                        }
                     }
                 }
-            }
-            donatorNotificationService.saveAndPushNotificationToUsers(pn,0);
-            for(ProjectDTO p:activatingProject){
-                donateDetailsService.saveDonateDetails(chari.getDNT_ID(),p.getPRJ_ID(),divFund,LocalDateTime.now());
+                donatorNotificationService.saveAndPushNotificationToUsers(pn,0);
+                for(ProjectDTO p:activatingProject){
+                    donateDetailsService.saveDonateDetails(chari.getDNT_ID(),p.getPRJ_ID(),divFund,LocalDateTime.now());
+                }
+                jso.put("errorCode",0);
+                jso.put("message","Đã chia quỹ chung tới tất cả dự án đang hoạt động");
+                updateAllProjectStatus();
+            }else{
+                jso.put("errorCode",1);
+                jso.put("message","Quỹ chung đã hết");
             }
         }
+
+        return jso;
     }
 }

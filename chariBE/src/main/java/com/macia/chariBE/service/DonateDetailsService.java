@@ -237,7 +237,7 @@ public class DonateDetailsService {
     public void sendDonateNotificationToDonator(Integer donator_id,Integer project_id){
         PushNotification pn = pushNotificationRepository.findByTopic(ENotificationTopic.DONATED);
         Project project = projectService.findProjectById(project_id);
-        String msg = "Dự án '"+project.getProjectName()+"'"+pn.getMessage();
+        String msg = "Dự án '"+project.getProjectName()+"' "+pn.getMessage();
         NotificationObject no = new NotificationObject();
         no.setTitle(pn.getTitle());
         no.setTopic(pn.getTopic());

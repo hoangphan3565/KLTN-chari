@@ -62,7 +62,7 @@
         <input disabled matInput name="content" [(ngModel)]="data.supportedPeople.fullName">
     </mat-form-field> 
 
-    <mat-grid-list cols="3">
+    <mat-grid-list cols="3" [rowHeight]="190">
         <mat-grid-tile *ngFor="let number of [0,1,2,3,4,5];let i=index">
             <div *ngIf="!imageUrls[number] && !isUpLoadingImage" class="image-container" (click)="imageInput.click()" imageDragDrop (files)="uploadImages($event,number)">
                 <input hidden type="file" #imageInput (change)="uploadImages($event.target.files,number)" multiple="false" accept=".jpg,.jpeg,.png">

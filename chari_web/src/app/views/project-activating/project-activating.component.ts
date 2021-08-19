@@ -105,29 +105,11 @@ export class ProjectActivatingComponent implements OnInit {
       alert('Thêm tin tức thất bại');
     }
   };  
-
-  // onFileChange(evt: any) {
-  //   const target : DataTransfer =  <DataTransfer>(evt.target);
-  //   if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-  //   const reader: FileReader = new FileReader();
-  //   reader.onload = (e: any) =>  {
-  //     const bstr: string = e.target.res;
-  //     var wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-      
-  //     wb.SheetNames.forEach(sheet => {
-  //       let rowObject = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
-  //       console.log(rowObject);
-  //       this.saveDonateWithBank(rowObject);
-  //     })
-  //   };
-  
-  //   reader.readAsBinaryString(target.files[0]);
-  // }
   
   onFileChange(ev) {
     let workBook = null;
     let jsonData = null;
-    if (ev.files.length !== 1) {
+    if (ev.target.files.length > 1) {
       this.notificationService.success('Chỉ được chọn 1 file');
       return;
     }
@@ -191,6 +173,7 @@ export class ProjectActivatingComponent implements OnInit {
       endDate:p.endDate,
       curMoney:p.curMoney,
       targetMoney:p.targetMoney,
+      numOfPost:p.numOfPost,
       canDisburseWhenOverdue:p.projectType.canDisburseWhenOverdue,
       prt_ID:p.projectType.prt_ID,
       projectType:p.projectType,      
@@ -214,6 +197,7 @@ export class ProjectActivatingComponent implements OnInit {
       endDate:'',
       curMoney:'',
       targetMoney:'',
+      numOfPost:0,
       canDisburseWhenOverdue:true,
       prt_ID:null,
       projectType:null,      

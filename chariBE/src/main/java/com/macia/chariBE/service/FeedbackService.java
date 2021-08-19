@@ -8,6 +8,7 @@ import com.macia.chariBE.pushnotification.PushNotificationService;
 import com.macia.chariBE.repository.IDonatorRepository;
 import com.macia.chariBE.repository.IFeedbackRepository;
 import com.macia.chariBE.repository.IJwtUserRepository;
+import com.macia.chariBE.utility.ENotificationTopic;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class FeedbackService {
     private IDonatorRepository donatorRepo;
 
     public void save(Feedback Feedback) {
-        repo.saveAndFlush(Feedback);
+        repo.save(Feedback);
     }
 
     public JSONObject deleteById(Integer id){
@@ -47,10 +48,10 @@ public class FeedbackService {
         if(repo.findById(id).isPresent()){
             this.repo.deleteById(id);
             jso.put("errorCode",0);
-            jso.put("message","Xoá tin tức thành công!");
+            jso.put("message","Xoá ý kiến thành công!");
         }else{
             jso.put("errorCode",1);
-            jso.put("message","Tin đã bị xoá trước đó!");
+            jso.put("message","Ý kiến đã bị xoá trước đó!");
         }
         return jso;
     }
@@ -65,7 +66,9 @@ public class FeedbackService {
                 if(appUser!=null){
                     if(appUser.getFcmToken()!=null){
                         pushNotificationService.sendMessageToToken(NotificationObject.builder()
-                                .message(fk.getTheReply()).title("Trả lời cho ý kiến "+fk.getTitle()).token(appUser.getFcmToken()).build());
+                                .message(fk.getTheReply()).topic(ENotificationTopic.GLOBAL)
+                                .title("Trả lời cho ý kiến "+fk.getTitle())
+                                .token(appUser.getFcmToken()).build());
                     }
                     else{
                         donatorNotificationService.save(DonatorNotification.builder()

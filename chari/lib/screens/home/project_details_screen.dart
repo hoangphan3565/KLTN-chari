@@ -516,7 +516,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               ],
             ),
             SizedBox(
-              width: 50,
+              width: 20,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,51 +539,60 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             SizedBox(
               width: 40,
             ),
-            if (project.status == 'ACTIVATING')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Thời hạn còn",
-                    style: TextStyle(
-                      fontSize: 13,
-                    ),
+            project.status == 'ACTIVATING' && project.prj_id==0?Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Vô thời hạn',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
+                ),
+              ],
+            ):
+            project.status == 'ACTIVATING' && project.prj_id!=0?Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Thời hạn còn",
+                  style: TextStyle(
+                    fontSize: 13,
                   ),
-                  Text(
-                    project.remaining_term.toString()+" Ngày",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                ),
+                Text(
+                  project.remaining_term.toString()+" Ngày",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
+            ):
+            project.status == 'REACHED'?Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đã đạt mục tiêu",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: kPrimaryColor,
                   ),
-                ],
-              ),
-            if (project.status == 'REACHED')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Đã đạt mục tiêu",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: kPrimaryColor,
-                    ),
+                ),
+              ],
+            ):
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đã hết thời hạn",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
                   ),
-                ],
-              ),
-            if (project.status == 'OVERDUE')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Đã hết thời hạn",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              )
+                ),
+              ],
+            )
           ],
         ),
       ],

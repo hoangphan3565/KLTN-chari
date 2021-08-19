@@ -62,7 +62,7 @@ export class UserComponent implements OnInit {
         if (res)
         {
           this.notificationService.warn('Khoá người dùng thành công');
-          this.Users = res.data as User[];
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }
@@ -78,7 +78,7 @@ export class UserComponent implements OnInit {
         if (res)
         {
           this.notificationService.warn('Mở khoá người dùng thành công');
-          this.Users = res.data as User[];
+          this.getList(this.currentPage,this.itemsPerPage);
         }  
       }
     }

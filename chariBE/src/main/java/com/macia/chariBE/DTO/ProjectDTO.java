@@ -44,4 +44,5 @@ public class ProjectDTO {
     private Long remainingTerm;
     private List<String> images;
     private double moveMoneyProgress;
+    private Integer numOfPost;
 }

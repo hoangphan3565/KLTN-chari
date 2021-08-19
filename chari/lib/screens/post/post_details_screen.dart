@@ -103,15 +103,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             letterSpacing: -1.2,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            onPressed: () {
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [

@@ -91,7 +91,11 @@ public class DonatorService {
         if(d!=null){
             id = d.getDNT_ID();
         }else{
-            donatorRepo.saveAndFlush(Donator.builder().phoneNumber(s).username(s).build());
+//            donatorRepo.saveAndFlush(Donator.builder().phoneNumber(s).username(s).build());
+            donatorRepo.saveAndFlush(Donator.builder()
+                    .phoneNumber(s).fullName("Nhà hảo tâm ẩn danh").username(s)
+                    .avatarUrl("https://firebasestorage.googleapis.com/v0/b/chari-c3f85.appspot.com/o/resource%2Favt.jpeg?alt=media&token=542e7f60-3f23-432b-9098-f9c4802ec9d5")
+                    .address("").favoriteNotification(pushNotificationService.findAllIdAsString()).favoriteProject("").build());
             Donator donator = donatorRepo.findByUsername(s);
             id = donator.getDNT_ID();
         }
@@ -143,15 +147,19 @@ public class DonatorService {
 
     public int getTotalDonateMoneyOfDonatorByProjectId(Integer prjid,Integer dntid){
         DonateActivity donateActivity = donateActivityService.findByDonatorIdAndProjectID(dntid, prjid);
-        List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
-        int money=0;
-        if(donateDetails.isEmpty()){
-            return 0;
-        }else{
-            for(DonateDetails details: donateDetails){
-                money+=details.getMoney();
+        if(donateActivity!=null){
+            List<DonateDetails> donateDetails = donateDetailsService.findDonateDetailByDonateActivityId(donateActivity.getDNA_ID());
+            int money=0;
+            if(donateDetails.isEmpty()){
+                return 0;
+            }else{
+                for(DonateDetails details: donateDetails){
+                    money+=details.getMoney();
+                }
+                return money;
             }
-            return money;
+        }else{
+            return 0;
         }
     }
 

@@ -15,25 +15,28 @@
         <thead>
           <tr>
             <th>#</th>
+            <th style="width: 75px;">Hình ảnh</th>
             <th>Tên Dự án</th>
             <th style="text-align: right">Mục tiêu</th>
             <th style="text-align: right">Đã quyên góp </th>
             <th style="text-align: right">Đạt được (%)</th>
-            <th style="width: 15%;">Cho phép giải ngân</th>
+            <th >Cho phép giải ngân</th>
             <th>Tình trạng</th>
-            <th style="width: 15%;text-align: right">Tác vụ</th>
+            <th style="width: 150px;text-align: right">Tác vụ</th>
           </tr>
         </thead>
         <tbody *ngFor="let data of Projects;let i=index;">
           <td>{{i+1}}</td>
-          <td style="width: 30%;">{{data.projectName}}</td>
-          <td style="text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
-          <td style="text-align: right">{{numberWithCommas(data.curMoney)}}</td>
-          <td style="text-align: right">{{data.achieved}}</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
-          <td *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
-          <td *ngIf="data.disbursed==false">Chưa giải ngân</td>
-          <td *ngIf="data.disbursed==true">Đã giải ngân</td>
+          <td style="width: 80px; cursor:pointer"><img style="border-radius: 5px;" [src]="data.imageUrl" width="70px" height="50px"></td>
+          <td style="width: 20%;">{{data.projectName}}</td>
+          <td style="width: 10%; text-align: right">{{numberWithCommas(data.targetMoney)}}</td>
+          <td style="width: 10%; text-align: right">{{numberWithCommas(data.curMoney)}}</td>
+          <td style="width: 10%; text-align: right">{{data.achieved}}</td>
+          <td style="width: 15%;" *ngIf="data.projectType.canDisburseWhenOverdue==true">Có</td>
+          <td style="width: 15%;" *ngIf="data.projectType.canDisburseWhenOverdue!=true">Không</td>
+          <td style="width: 10%;" *ngIf="data.projectType.canDisburseWhenOverdue!=true && data.disbursed==false">Không thể giải ngân</td>
+          <td style="width: 10%;" *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==false">Chưa giải ngân</td>
+          <td style="width: 10%;" *ngIf="data.projectType.canDisburseWhenOverdue==true && data.disbursed==true">Đã giải ngân</td>
           
 
           <td style="text-align: right" *ngIf="data.projectType.canDisburseWhenOverdue != true && data.curMoney/data.targetMoney>0.8">

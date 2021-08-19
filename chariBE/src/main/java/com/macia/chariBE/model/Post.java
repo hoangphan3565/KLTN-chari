@@ -29,6 +29,8 @@ import java.util.List;
                 query = "SELECT p FROM Post p where p.collaborator.CLB_ID =:id order by p.POS_ID desc"),
         @NamedQuery(name = "named.post.findById",
                 query = "SELECT p FROM Post p where p.POS_ID =:id"),
+        @NamedQuery(name = "named.post.findByProjectId",
+                query = "SELECT p FROM Post p where p.projectId =:id"),
 })
 public class Post {
     @Id

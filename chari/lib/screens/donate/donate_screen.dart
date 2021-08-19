@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-
 class DonateScreen extends StatefulWidget {
   final Project project;
   final Donator donator;
@@ -28,12 +27,7 @@ class _DonateScreenState extends State<DonateScreen> {
   TextEditingController _moneyControllerField = TextEditingController();
   String str_donate_money='';
   bool isEnterMoney=false;
-  int paymentMethod = 1;
   String donateCode='';
-
-  bool isPaymentWithATM=true;
-  bool isPaymentWithMomo=false;
-  bool isPaymentWithPaypal=false;
   var focusNode = FocusNode();
 
   PaymentMethod _paymentMethod = PaymentMethod.atm;
@@ -130,17 +124,6 @@ class _DonateScreenState extends State<DonateScreen> {
                           },
                         ),
                         LabeledRadio(
-                          label: 'Momo',
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          value: PaymentMethod.momo,
-                          groupValue: _paymentMethod,
-                          onChanged: (PaymentMethod newValue) {
-                            setState(() {
-                              _paymentMethod = newValue;
-                            });
-                          },
-                        ),
-                        LabeledRadio(
                           label: 'Paypal',
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           value: PaymentMethod.paypal,
@@ -157,8 +140,6 @@ class _DonateScreenState extends State<DonateScreen> {
                     SizedBox(height: size.height * 0.01),
                     if(_paymentMethod==PaymentMethod.atm)
                       buildBankPayment(),
-                    if(_paymentMethod==PaymentMethod.momo)
-                      buildMomoPayment(),
                     if(_paymentMethod==PaymentMethod.paypal)
                       buildPaypalPayment(),
 
@@ -172,110 +153,6 @@ class _DonateScreenState extends State<DonateScreen> {
     );
   }
 
-  Column buildMomoPayment(){
-    Size size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Image.asset(
-          "assets/icons/momo_logo.png",
-          height: size.height * 0.06,
-        ),
-        Container(
-          width: size.width*0.8,
-          child: CustomCheckBoxGroup(
-            buttonTextStyle: ButtonTextStyle(
-              selectedColor: Colors.white,
-              unSelectedColor: Colors.black,
-              textStyle: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            autoWidth: false,
-            enableButtonWrap: true,
-            wrapAlignment: WrapAlignment.center,
-            unSelectedColor: Theme.of(context).canvasColor,
-            buttonLables: ["10k","20k","50k","100k","200k","500k",],
-            buttonValuesList: [10000,20000,50000,100000,200000,500000,],
-            checkBoxButtonValues: (values) {
-              int selected_money=0;
-              values.forEach((i) {selected_money+=i; });
-              _moneyControllerField.text=selected_money.toString();
-              setState(() {
-                str_donate_money=selected_money.toString();
-                isEnterMoney=true;
-              });
-            },
-            defaultSelected: null,
-            horizontal: false,
-            width: 80,
-            selectedColor: kPrimaryColor,
-            padding: 5,
-            enableShape: true,
-          ),
-        ),
-        SizedBox(height:5),
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            child: Text("Số tiền: "+MoneyUtility.numberToString(str_donate_money)+"đồng"),
-          ),
-        ),
-        RoundedInputField(
-          hintText: "Số tiền",
-          icon: Icons.favorite,
-          focusNode: focusNode,
-          keyboardType: TextInputType.number,
-          controller: _moneyControllerField,
-          showClearIcon: isEnterMoney,
-          onTapClearIcon: ()=>{
-            _moneyControllerField.clear(),
-            setState(() {
-              str_donate_money = '';
-              isEnterMoney=false;
-            }),
-          },
-          onChanged: (value) {
-            value!=''?setState(() {isEnterMoney=true;}):setState(() {isEnterMoney=false;});
-            setState(() {
-              str_donate_money=value;
-            });
-            if(CheckString.onlyNumber(value.toString())==false){
-              _moneyControllerField.clear();
-              str_donate_money='';
-              Fluttertoast.showToast(
-                  msg: 'Vui lòng không nhập ký tự nào khác ký tự số',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.orangeAccent,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-            }
-            if(int.tryParse(value) > 100000000){
-              _moneyControllerField.clear();
-              str_donate_money='';
-              Fluttertoast.showToast(
-                  msg: 'Số tiền tối đa có thể quyên góp là 100.000.000VNĐ',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.orangeAccent,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-            }
-          },
-        ),
-        RoundedButton(
-          text: "Ủng hộ",
-          press: ()async{
-
-          },
-        ),
-      ],
-    );
-  }
 
   Column buildPaypalPayment(){
     Size size = MediaQuery.of(context).size;
@@ -506,7 +383,7 @@ class _DonateScreenState extends State<DonateScreen> {
                         timeInSecForIosWeb: 1,
                         backgroundColor: kPrimaryColor,
                         textColor: Colors.white,
-                        fontSize: 16.0
+                        fontSize: 14.0
                     );
                   },
                   child: Row(
@@ -514,15 +391,15 @@ class _DonateScreenState extends State<DonateScreen> {
                       Text(
                         this.donateCode,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 13.5,
                           fontWeight: FontWeight.bold,
                           color: Colors.red,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 3),
                       Icon(
                         FontAwesomeIcons.copy,
-                        size: 16,
+                        size: 13,
                         color: Colors.black45,
                       ),
                     ],
@@ -531,7 +408,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ],
             ),
             if(widget.donator==null)
-              Text('Ví dụ: chari0_0771234321 ',
+              Text('Ví dụ: chari'+widget.project.prj_id.toString()+'x0771234321',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -545,4 +422,4 @@ class _DonateScreenState extends State<DonateScreen> {
   }
 }
 
-enum PaymentMethod { atm, momo, paypal }
+enum PaymentMethod { atm, paypal }

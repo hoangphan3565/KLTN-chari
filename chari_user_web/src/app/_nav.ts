@@ -31,7 +31,7 @@ export const navItems: INavData[] = [
     icon: 'icon-close',
   },
   {
-    name: 'Dự án đã đóng',
+    name: 'Đã đóng',
     url: '/project-closed',
     icon: 'icon-ban',
   },
